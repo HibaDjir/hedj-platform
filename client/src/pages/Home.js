@@ -1,11 +1,11 @@
 import React from 'react'
-
-function ComponentName() {
-    return (
-        <div>
-         <h1>MARHABBA</h1>   
-        </div>
-    )
+import Hero  from './Hero'
+function Home() {
+  return (
+    <>
+    <Hero/>
+    </>
+  )
 }
 
-export default ComponentName
+export default Home
