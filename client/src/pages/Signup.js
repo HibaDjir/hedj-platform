@@ -16,12 +16,7 @@ function Signup ()  {
     axios.post('http://localhost:3000/api/users/signup', {firstName,lastName,email,password})
     .then(res=>{
       alert("created")
-      if(res.data.Role === 'admin'){
-        navigate('/dashboard')
-      }else{
-        navigate('/home')
-      
-    }
+   
     }).catch(err => console.log(err))
   };
 
