@@ -80,10 +80,10 @@ exports.login=async (req, res) => {
 			return res.status(401).send({ message: "Invalid Email or Password" });
 
 		const token = user.generateAuthToken();
-		//res.status(200).json({ data: token,data:user.Role, message: "logged in successfully" });
+		//res.status(200).send({ data: token, message: "logged in successfully" });
 		res.json({
-			token:token,
-			Role:user.Role
+			Role:user.Role,
+			token:token
 		})
 	} catch (error) {
 		res.status(500).json({ message: "Internal Server Error" });console.log('error',error.message)

@@ -16,9 +16,11 @@ function Signup ()  {
     axios.post('http://localhost:3000/api/users/signup', {firstName,lastName,email,password})
     .then(res=>{
       alert("created")
+
       if(res.data.token){
         localStorage.setItem('token',res.data.token)
       }
+
    
     }).catch(err => console.log(err))
   };
