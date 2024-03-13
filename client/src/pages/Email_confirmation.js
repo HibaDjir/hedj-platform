@@ -1,18 +1,24 @@
-import React, { useState } from "react";
+
+import React, { useState, useNavigate  } from "react";
+import axios from 'axios';
+import { useState } from 'react';
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar_psw";
 
 function EmailConfirmation() {
-  const [email, setEmail] = useState("");
-
-  const handleChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Submitted email:", email);
-  };
+   //
+   const [email, setEmail] = useState('');
+   const navigate=useNavigate()
+   const handleSubmit = (e) =>{
+     e.preventDefault();
+     axios.post('http://localhost:3000/api/users/forgetpassword', {email})
+     .then(res=>{
+       alert("logged in")
+   
+     }
+     ).catch(err => console.log(err))
+   }
+   //
 
   return (
     <div dir="rtl" className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
@@ -26,7 +32,7 @@ function EmailConfirmation() {
           <input
             type="email"
             value={email}
-            onChange={handleChange}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full border border-gray-300 rounded-xl py-2 px-3 mb-4 focus:outline-none focus:border-brown_palette"
             placeholder="البريد اللإلكتروني"
             required
@@ -46,6 +52,7 @@ function EmailConfirmation() {
               متابعة
               </Link>
             </button>
+
           </div>
         </form>
       </div>

@@ -1,7 +1,27 @@
 import React, { useRef } from "react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import axios from 'axios'
 
 function Modal({ onClose }) {
+  
+  //
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const handleSubmit =  (e) => {
+    e.preventDefault();
+    axios.post('http://localhost:3000/api/users/signup', {firstName,lastName,email,password})
+    .then(res=>{
+      alert("created")
+      if(res.data.token){
+        localStorage.setItem('token',res.data.token)
+      }
+    }).catch(err => console.log(err))
+  };
+  //
+
   const modalRef = useRef();
 
   const closeModal = (e) => {
@@ -21,7 +41,7 @@ function Modal({ onClose }) {
           <p className="text-fake_black bold text-3xl mb-10 flex justify-center">
             تسجيل حساب جديد
           </p>
-          <form className="signup-form">
+          <form className="signup-form" onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="text-fake_black mb-2" htmlFor="firstName">
                 الإسم
@@ -31,6 +51,8 @@ function Modal({ onClose }) {
                 type="text"
                 placeholder="الإسم"
                 name="firstName"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
                 required
               />
             </div>
@@ -43,6 +65,8 @@ function Modal({ onClose }) {
                 type="text"
                 placeholder="القب"
                 name="lastName"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
                 required
               />
             </div>
@@ -54,6 +78,8 @@ function Modal({ onClose }) {
                 className="text-black p-2 border rounded-2xl w-full"
                 type="email"
                 placeholder="البريد اللإلكتروني"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
@@ -65,6 +91,8 @@ function Modal({ onClose }) {
                 className="text-black p-2 border rounded-2xl w-full"
                 type="password"
                 placeholder="كلمة السر"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>

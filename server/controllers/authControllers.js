@@ -20,23 +20,23 @@ exports.signup = async (req, res) =>
 		if (user)
 			return res
 				.status(409)
-				.send({ message: "User with given email already Exist!" });
+				.json({ message: "User with given email already Exist!" });
 
 		const salt = await bcrypt.genSalt(Number(process.env.SALT));
 		const hashPassword = await bcrypt.hash(req.body.password, salt);
 
 		user=await new User({ ...req.body, password: hashPassword }).save();
 		const token = user.generateAuthToken();
-		const url=`${process.env.base_url}api/users/${user.id}/verify/${token}`	
+		const url=`http://3001/${user.id}/verify/${token}`	
 			await sendEmail({
 			email: user.email,
 			 subject:'Verifying Email...',
 			 message:url
 		});
-		res.status(201).send({ message: "User created successfully",token })
+		res.status(201).json({ message: "User created successfully",token ,role:user.Role})
 		
 	} catch (error) {
-		res.status(500).send({ message: "Internal Server Error" });
+		res.status(500).json({ message: "Internal Server Error" });
 	
 	}
 };
@@ -80,9 +80,13 @@ exports.login=async (req, res) => {
 			return res.status(401).send({ message: "Invalid Email or Password" });
 
 		const token = user.generateAuthToken();
-		res.status(200).send({ data: token, message: "logged in successfully" });
+		//res.status(200).send({ data: token, message: "logged in successfully" });
+		res.json({
+			Role:user.Role,
+			token:token
+		})
 	} catch (error) {
-		res.status(500).send({ message: "Internal Server Error" });console.log('error',error.message)
+		res.status(500).json({ message: "Internal Server Error" });console.log('error',error.message)
 	}
 
 
@@ -99,7 +103,7 @@ exports.forgotPassword=async(req,res,next)=>{
 		}
 		const secret = process.env.JWTPRIVATEKEY + oldUser.password
 		const token = jwt.sign({email: oldUser.email, id:oldUser._id}, secret, {expiresIn : '10m'})
-		const link=`http://localhost:3000/api/users/resetPassword/${oldUser._id}/${token}`
+		const link=`http://localhost:3001/resetPassword/${oldUser._id}/${token}`
 		console.log(link)
 		await sendEmail({
 			email: oldUser.email,
@@ -107,7 +111,7 @@ exports.forgotPassword=async(req,res,next)=>{
 			 message:link
 		});
 	} catch (error) {
-		
+		res.json('eror')
 	}
   
 }
@@ -152,7 +156,7 @@ exports.resetPassord = async(req, res) =>{
 				password: encryptedPassword
 			}}
 	)
-		res.json('password updated')
+		res.json({status:"success"})
 	} catch (error) {
 		console.log(error)
 		res.json("error while updating password")
@@ -160,6 +164,10 @@ exports.resetPassord = async(req, res) =>{
 
 
 }
+
+
+//role ----------------------------------------------
+
 
 
 
