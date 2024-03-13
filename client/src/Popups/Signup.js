@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 function Modal({ onClose }) {
   const modalRef = useRef();
+
   const closeModal = (e) => {
     if (modalRef.current === e.target) {
       onClose();
@@ -13,11 +14,11 @@ function Modal({ onClose }) {
     <div
       ref={modalRef}
       onClick={closeModal}
-      className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center"
+      className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center n"
     >
-      <div className="mt-10 flex justify-center items-center">
-        <div className="bg-white_palette rounded-2xl p-6 w-full max-w-lg">
-          <p className="text-center text-fake_black font-bold text-3xl mb-6">
+      <div className="mt-10 flex flex-col gap-5 text-white bg-transparent rounded-2xl">
+        <div className="flex flex-col justify-center py-16 px-4 mx-auto w-[400px] h-[600px] rounded-2xl bg-[#F4EFE7]">
+          <p className="text-fake_black bold text-3xl mb-10 flex justify-center">
             تسجيل حساب جديد
           </p>
           <form className="signup-form">
@@ -33,7 +34,6 @@ function Modal({ onClose }) {
                 required
               />
             </div>
-            
             <div className="mb-4">
               <label className="text-fake_black mb-2" htmlFor="lastName">
                 القب
