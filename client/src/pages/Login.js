@@ -4,14 +4,22 @@ import { Link, useNavigate } from 'react-router-dom';
 import horloge from "../images/horloge_makkah.jpeg";
 import axios from 'axios'
 
+
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate=useNavigate()
   const handleSubmit = (e) =>{
     e.preventDefault();
     axios.post('http://localhost:3000/api/users/login', {email,password})
     .then(res=>{
       alert("logged in")
+      if(res.data.Role === 'admin'){
+        navigate('/dashboard')
+      }else{
+        navigate('/home')
+      
+    }
     }).catch(err => console.log(err))
   }
   return (
