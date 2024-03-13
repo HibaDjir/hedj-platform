@@ -7,19 +7,17 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "./index";
 import Resset from "./pages/Resetpassword";
 
-
 import Manassik from "../src/pages/Manassik";
 function App() {
   return (
     <Router>
       <div className="App">
         <Navbar />
-        <Routes> 
-        <Route path="" element={<Home />} />       
-        <Route path="/home" element={<Home />} />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/nussuki" element={<Manassik />} />
           <Route path="/resset_pssw" element={<Resset />} />
-         
         </Routes>
       </div>
     </Router>
