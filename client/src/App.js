@@ -14,9 +14,8 @@ function App() {
     <Router>
       <div className="App">
         <Navbar />
-        <Routes>
-      
-        
+        <Routes> 
+        <Route path="" element={<Home />} />       
         <Route path="/home" element={<Home />} />
           <Route path="/nussuki" element={<Manassik />} />
           <Route path="/resset_pssw" element={<Resset />} />
