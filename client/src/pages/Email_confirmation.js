@@ -1,44 +1,64 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-function Email_confirmation() {
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import Navbar from "../components/Navbar_psw";
+
+function EmailConfirmation() {
+  const [email, setEmail] = useState("");
+
+  const handleChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Submitted email:", email);
+  };
+
   return (
-    <div>
-        <div className=" flex justify-items-center bg-taupe_palette max-w-[1240px] max-h-screen">
-       
-       <div
-            
-            className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center"
-          >
-            <div className="mt-10 flex flex-col gap-5 text-black_palette bg-transparent rounded-2xl">
-              <div className="flex flex-col justify-center py-16 px-4 mx-auto w-[400px] rounded-2xl bg-[#F2EBDF]">
-                <p className="text-fake_black bold text-3xl mb-10 flex justify-center">
-               VEUILLEZ SAISIR VOTRE MAIL
-               </p>
-                <form >
-                  <label className="text-black-palette" htmlFor="email">
-                 EMAIL </label>
-      
-                  <input
-                    className="mb-2 mt-2 p-2 border rounded-2xl w-full"
-                    type="email"
-                    placeholder="veuillez saisir votre mail"
-                    required
-                  />
-      
-      
-                  <button
-                    type="submit"
-                    className="bg-[#D4A373] text-white hover:bg-[#AD7946] p-2 rounded-2xl w-full mt-2"
-                  >
-                    <Link to= "/resset_pssw">
-                CONFIRMER</Link></button>
-                </form>
-              </div>
-            </div>
+    <div dir="rtl" className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <Navbar />
+      <div className="max-w-md w-full bg-white_palette  shadow-3xl rounded-3xl p-6">
+        <h2 className="text-xl font-bold mb-6">جاري البحث عن حسابك</h2>
+        <form onSubmit={handleSubmit} className="mb-4">
+          <label htmlFor="email" className="block mb-2">
+            البريد اللإلكتروني
+          </label>
+          <input
+            type="email"
+            value={email}
+            onChange={handleChange}
+            className="w-full border border-gray-300 rounded-xl py-2 px-3 mb-4 focus:outline-none focus:border-brown_palette"
+            placeholder="البريد اللإلكتروني"
+            required
+          />
+          <div className="flex justify-between">
+            <Link
+              to="/home"
+              className="text-gray-600 hover:text-taupe_palette transition-colors"
+            >
+              إلغاء
+            </Link>
+            <button
+              type="submit"
+              className="bg-taupe_palette text-white py-2 px-4 rounded-md hover:bg-brown_palette transition-colors"
+            >
+                <Link to="/resset_pssw">
+              متابعة
+              </Link>
+            </button>
           </div>
-       </div>
+        </form>
+      </div>
+      <section className="fixed bottom-0 left-0 w-full bg-taupe_palette text-white py-4 text-center">
+        <h1>Footer</h1>
+        <p>khoutti hadda hebbit n3emreh ktiba</p>
+        <p>ma 3labalich 3lah banli chbab hak</p>
+        <p>Facebook and netflix inspiration</p>
+        <p>ma t'qelqouch oumbe3 nelgaled tbel3it chbab</p>
+
+      </section>
     </div>
-  )
+  );
 }
 
-export default Email_confirmation
+export default EmailConfirmation;
