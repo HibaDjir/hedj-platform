@@ -22,6 +22,7 @@ const user_profiler = new mongoose.Schema({
     passwordChang:Date,
     passwordResettoken:String,
     passwordResettokenExpire:Date,
+    
 });
 
 user_profiler.methods.generateAuthToken = function () {

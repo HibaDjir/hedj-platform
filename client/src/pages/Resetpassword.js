@@ -1,9 +1,14 @@
-import React from "react";
+import React,{useState} from "react";
 import { Link } from "react-router-dom";
 import kaaba from "../images/kaaba (2).png";
 import horloge from "../images/horloge_makkah.jpeg";
 
 function Login() {
+///
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+///
   return (
     <div dir="rtl" className=" w-full bg-white  page-content">
       <div className=" mx-auto grid md:grid-cols-2">
@@ -18,7 +23,7 @@ function Login() {
           <p className="text-vert_foncé bold text-3xl mb-4 flex justify-center ">
             إسترجاع كلمة السر{" "}
           </p>
-          <form className="signup-form ">
+          <form className="signup-form " >
 
           
 
