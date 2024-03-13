@@ -5,6 +5,8 @@ import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import Logo from "../images/LOGO.png";
 import LoginModal from "../Popups/Login";
 import SignupModal from "../Popups/Signup";
+import Home from "../pages/Home";
+
 
 function Navbar() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -56,31 +58,34 @@ function Navbar() {
   return (
     <div
       dir="rtl"
-      className={`flex justify-between items-center h-20 max-w-1240 mx-auto px-4 navbar text-fack_black `}
+      className={`flex justify-between items-center h-20 max-w-1240 mx-auto px-4 navbar text-fack_black  `}
     >
       <img style={{ width: "80px", height: "auto" }} src={Logo} alt="LOGO" />
 
       <ul className={`text-white hidden md:flex ${desktopNav ? "flex-col" : ""}`}>
-        <li className="p-4 m-2 hover:border-b hover:cursor-pointer border-transparent hover:border-dorée duration-300">
-          <Link to="/">مناسك</Link>
+      <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-dorée duration-300 ">
+          <Link to="/home">الدار</Link>  
         </li>
-        <li className="p-4 m-2 hover:border-b hover:cursor-pointer border-transparent hover:border-dorée duration-300">
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-dorée duration-300">
+          <Link to="/nussuki">مناسك</Link>
+        </li>
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-dorée duration-300">
           <Link to="/company">اللأسئلة المتداولة</Link>
         </li>
-        <li className="p-4 m-2 hover:border-b hover:cursor-pointer border-transparent hover:border-dorée duration-300">
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-dorée duration-300">
           <Link to="/resources">من نحن</Link>
         </li>
-        <li className="p-4 m-2 hover:border-b hover:cursor-pointer border-transparent hover:border-dorée duration-300">
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-dorée duration-300">
           <Link to="/hajj">إتصل بنا</Link>
         </li>
-        <li className=" hover:border-b hover:cursor-pointer border-transparent">
+        <li className=" hover:border-b hover:cursor-pointer ease-in-out border-transparent">
         <button 
         className=" border border-[#D4A373] text-white rounded-2xl p-4 m-2 hover:bg-[#D4A373] "
         onClick={openLoginModal}>دخول</button>
         {isLoginModalOpen && <LoginModal onClose={closeLoginModal} />}
       </li>
 
-      <li className="hover:border-b hover:cursor-pointer border-transparent ">
+      <li className="hover:border-b hover:cursor-pointer ease-in-out border-transparent ">
         <button className="bg-[#D4A373] hover:opacity-85  p-4 text-white rounded-2xl m-2 "
         onClick={openSignupModal}>تسجيل حساب جديد</button>
         {isSignupModalOpen && <SignupModal onClose={closeSignupModal} />}
@@ -102,16 +107,16 @@ function Navbar() {
       >
         <img style={{ width: "80px", height: "auto" }} src={Logo} alt="LOGO" />
         <ul className={`md:flex flex-col ${mobileNav ? "block" : "hidden"}`}>
-          <li className="p-4 text-white hover:border-b hover:cursor-pointer border-transparent hover:border-dorée duration-300">
+          <li className="p-4 text-white hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-dorée duration-300">
             <Link to="/">مناسك</Link>
           </li>
-          <li className="p-4 hover:border-b hover:cursor-pointer border-transparent hover:border-dorée duration-300">
+          <li className="p-4 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-dorée duration-300">
             <Link to="/company">اللأسئلة المتداولة</Link>
           </li>
-          <li className="p-4 hover:border-b hover:cursor-pointer border-transparent hover:border-dorée duration-300">
+          <li className="p-4 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-dorée duration-300">
             <Link to="/resources">من نحن</Link>
           </li>
-          <li className="p-4 hover:border-b hover:cursor-pointer border-transparent hover:border-dorée duration-300">
+          <li className="p-4 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-dorée duration-300">
             <Link to="/hajj">إتصل بنا</Link>
           </li>
           <li>

@@ -43,6 +43,12 @@ function Modal({ onClose }) {
               placeholder="كلمة السر"
               required
             />
+               <p className="mt-4 text-black mb-2   p-2 ">
+              {' '} هل نسيت كلمة المرور؟{' '}
+              <Link to="/resset_pssw" className="text-vert_claire hover:text-vert_foncés">
+                انقر هنا لإعادة تعيينها
+              </Link>
+            </p>
 
             <button
               type="submit"
