@@ -97,7 +97,7 @@ function Signup ()  {
           <p className="mt-4 text-vert_claire">
             {' '}
             تملك حسابا مسبقا؟ دخولك من هذاالحساب{' '}
-            <Link to="/login" className="text-vert_claire hv:text-fake_black">
+            <Link to="/login" className="text-vert_claire hv:text-fake_black"  >
               بالنقرهنا
             </Link>
           </p>
