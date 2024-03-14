@@ -7,9 +7,9 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar_psw";
 
 function Resset_password() {
-  //
+  
   const [password, setPassword] = useState("");
-  //const [confirmPassword, setConfirmPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
   const { id, token } = useParams();
   const handleSubmit = (e) => {
@@ -27,7 +27,7 @@ function Resset_password() {
       .catch();
   };
 
-  //
+  
 
   return (
     <div

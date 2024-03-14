@@ -1,12 +1,12 @@
 
-import React, { useState, useNavigate  } from "react";
-import axios from 'axios';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar_psw";
 
 function EmailConfirmation() {
-   //
+   
    const [email, setEmail] = useState('');
    const navigate=useNavigate()
    const handleSubmit = (e) =>{
@@ -18,7 +18,7 @@ function EmailConfirmation() {
      }
      ).catch(err => console.log(err))
    }
-   //
+   
 
   return (
     <div dir="rtl" className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
@@ -48,7 +48,7 @@ function EmailConfirmation() {
               type="submit"
               className="bg-taupe_palette text-white py-2 px-4 rounded-md hover:bg-brown_palette transition-colors"
             >
-                <Link to="/resset_pssw">
+                <Link to="/resetPassword">
               متابعة
               </Link>
             </button>
