@@ -10,6 +10,8 @@ function Modal({ onClose }) {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
   const handleSubmit =  (e) => {
     e.preventDefault();
     axios.post('http://localhost:3000/api/users/signup', {firstName,lastName,email,password})
@@ -18,7 +20,13 @@ function Modal({ onClose }) {
       if(res.data.token){
         localStorage.setItem('token',res.data.token)
       }
-    }).catch(err => console.log(err))
+    }).catch(err => {
+      if (err.response && err.response.data && err.response.data.message) {
+        setErrorMessage(err.response.data.message);
+      } else {
+        setErrorMessage('An error occurred. Please try again later.');
+      }
+      console.log(err)})
   };
   //
 
@@ -102,6 +110,8 @@ function Modal({ onClose }) {
             >
               <Link to="/home">تأكيد</Link>
             </button>
+            {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
+
           </form>
         </div>
       </div>

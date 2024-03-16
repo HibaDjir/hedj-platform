@@ -5,15 +5,23 @@ import { useState } from 'react';
 function Email_confirmation() {
   //
   const [email, setEmail] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
   const navigate=useNavigate()
   const handleSubmit = (e) =>{
     e.preventDefault();
     axios.post('http://localhost:3000/api/users/forgetpassword', {email})
     .then(res=>{
-      alert("logged in")
-  
+      alert(res.message)
+      navigate('/home')
     }
-    ).catch(err => console.log(err))
+    ).catch(err => {
+      if (err.response && err.response.data && err.response.data.message) {
+        setErrorMessage(err.response.data.message);
+      } else {
+        setErrorMessage('An error occurred. Please try again later.');
+      }
+      console.log(err)})
   }
   //
   return (
@@ -47,8 +55,10 @@ function Email_confirmation() {
                     type="submit"
                     className="bg-[#D4A373] text-white hover:bg-[#AD7946] p-2 rounded-2xl w-full mt-2"
                   >
-                    <Link to= "/">
-                CONFIRMER</Link></button>
+                   Confirmer
+                </button>
+                            {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
+
                 </form>
               </div>
             </div>
