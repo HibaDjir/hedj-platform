@@ -27,7 +27,7 @@ exports.signup = async (req, res) =>
 
 		user=await new User({ ...req.body, password: hashPassword }).save();
 		const token = user.generateAuthToken();
-		const url=`${process.env.base_url}api/users/${user.id}/verify/${token}`	
+		const url=`http://3001/${user.id}/verify/${token}`	
 			await sendEmail({
 			email: user.email,
 			 subject:'Verifying Email...',
@@ -103,7 +103,7 @@ exports.forgotPassword=async(req,res,next)=>{
 		}
 		const secret = process.env.JWTPRIVATEKEY + oldUser.password
 		const token = jwt.sign({email: oldUser.email, id:oldUser._id}, secret, {expiresIn : '10m'})
-		const link=`http://localhost:3000/api/users/resetPassword/${oldUser._id}/${token}`
+		const link=`http://localhost:3001/resetPassword/${oldUser._id}/${token}`
 		console.log(link)
 		await sendEmail({
 			email: oldUser.email,
@@ -111,7 +111,7 @@ exports.forgotPassword=async(req,res,next)=>{
 			 message:link
 		});
 	} catch (error) {
-		
+		res.json('eror')
 	}
   
 }
@@ -156,7 +156,7 @@ exports.resetPassord = async(req, res) =>{
 				password: encryptedPassword
 			}}
 	)
-		res.json('password updated')
+		res.json({status:"success"})
 	} catch (error) {
 		console.log(error)
 		res.json("error while updating password")

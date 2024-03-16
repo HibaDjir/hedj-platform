@@ -5,6 +5,7 @@ import axios from "axios";
 
 
 function Modal({ onClose }) {
+
   //
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -13,6 +14,9 @@ function Modal({ onClose }) {
       e.preventDefault();
       axios.post('http://localhost:3000/api/users/login', {email,password})
       .then(res=>{
+        if(res.data.token){
+          localStorage.setItem('token',res.data.token)
+        }
         alert("logged in")
         if(res.data.Role === 'admin'){
           navigate('/dashboard')
@@ -22,6 +26,9 @@ function Modal({ onClose }) {
       }).catch(err => console.log(err))
     }
   //
+ 
+  const handleResetPasswordClick = () => {
+    onClose();};
   const modalRef = useRef();
   const closeModal = (e) => {
     if (modalRef.current == e.target) {
@@ -66,9 +73,11 @@ function Modal({ onClose }) {
             />
                <p className="mt-4 text-black mb-2   p-2 ">
               {' '} هل نسيت كلمة المرور؟{' '}
-              <Link to="/resset_pssw" className="text-vert_claire hover:text-vert_foncés">
+              <Link 
+              to="/mail_conf" onClick={handleResetPasswordClick}  className="text-brown_palette hover:text-taupe_palette">
                 انقر هنا لإعادة تعيينها
               </Link>
+              
             </p>
 
             <button
