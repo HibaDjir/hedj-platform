@@ -7,7 +7,6 @@ import LoginModal from "../Popups/Login";
 import SignupModal from "../Popups/Signup";
 import Home from "../pages/Home";
 
-
 function Navbar() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
@@ -62,9 +61,11 @@ function Navbar() {
     >
       <img style={{ width: "80px", height: "auto" }} src={Logo} alt="LOGO" />
 
-      <ul className={`text-white hidden md:flex ${desktopNav ? "flex-col" : ""}`}>
-      <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-dorée duration-300 ">
-          <Link to="/home">الدار</Link>  
+      <ul
+        className={`text-white hidden md:flex ${desktopNav ? "flex-col" : ""}`}
+      >
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-dorée duration-300 ">
+          <Link to="/home">الدار</Link>
         </li>
         <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-dorée duration-300">
           <Link to="/nussuki">مناسك</Link>
@@ -79,17 +80,16 @@ function Navbar() {
           <Link to="/hajj">إتصل بنا</Link>
         </li>
         <li className=" hover:border-b hover:cursor-pointer ease-in-out border-transparent">
-        <button 
-        className=" border border-[#D4A373] text-white rounded-2xl p-4 m-2 hover:bg-[#D4A373] "
-        onClick={openLoginModal}>دخول</button>
-        {isLoginModalOpen && <LoginModal onClose={closeLoginModal} />}
-      </li>
+          <button
+            className=" border border-[#D4A373] text-white rounded-2xl p-4 m-2 hover:bg-[#D4A373] "
+            onClick={openLoginModal}
+          >
+            دخول
+          </button>
+          {isLoginModalOpen && <LoginModal onClose={closeLoginModal} />}
+        </li>
 
-      <li className="hover:border-b hover:cursor-pointer ease-in-out border-transparent ">
-        <button className="bg-[#D4A373] hover:opacity-85  p-4 text-white rounded-2xl m-2 "
-        onClick={openSignupModal}>تسجيل حساب جديد</button>
-        {isSignupModalOpen && <SignupModal onClose={closeSignupModal} />}
-      </li>
+        
       </ul>
 
       <div onClick={handleMobileNav} className="block md:hidden">

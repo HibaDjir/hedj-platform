@@ -47,7 +47,7 @@ function Modal({ onClose }) {
     <div
       ref={modalRef}
       onClick={closeModal}
-      className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center"
+      className="fixed inset-0 z-[9999] bg-fixed  bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center"
     >
       <div className="mt-10 flex flex-col gap-5 text-whiteb bg-transparent rounded-2xl">
         <div className="flex flex-col justify-center py-16 px-4 mx-auto w-[400px]  rounded-2xl bg-[#F2EBDF]   ">

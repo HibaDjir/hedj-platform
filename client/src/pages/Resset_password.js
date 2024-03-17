@@ -1,7 +1,10 @@
-import React from 'react'
-import axios from 'axios';
-import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React from "react";
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+
+import { Link } from "react-router-dom";
+import Navbar from "../components/Navbar_psw";
 
 function Resset_password() {
   //
@@ -90,4 +93,4 @@ function Resset_password() {
   )
 }
 
-export default Resset_password
+export default Resset_password;
