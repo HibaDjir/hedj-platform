@@ -17,7 +17,7 @@ function App() {
     <Navbar/>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<Home />} />
           <Route path="/nussuki" element={<Manassik />} />
           <Route path="/resetPassword/:id/:token" element={< Resset_password/>} />
           <Route path="/mail_conf" element={< EmailConfirmation/>} />

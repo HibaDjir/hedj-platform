@@ -9,6 +9,7 @@ function Modal({ onClose }) {
   //
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
     const navigate=useNavigate()
     const handleSubmit = (e) =>{
       e.preventDefault();
@@ -23,7 +24,14 @@ function Modal({ onClose }) {
         }else{
           navigate('/home')
       }
-      }).catch(err => console.log(err))
+      }).catch(err => {
+        console.log(err)
+        if (err.response && err.response.data && err.response.data.message) {
+          setErrorMessage(err.response.data.message);
+        } else {
+          setErrorMessage('An error occurred. Please try again later.');
+        }
+      })
     }
   //
  
@@ -86,6 +94,7 @@ function Modal({ onClose }) {
             >
               <Link to="/home">تأكيد</Link>
             </button>
+            {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
           </form>
          
         </div>
