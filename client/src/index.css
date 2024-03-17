@@ -5,7 +5,7 @@ body {
   margin: 0;
  
 }
-/* styles.css */
+/* hadou stekhdemthoum le transition lqdima ta3 login w signup*/
 .page-enter {
   opacity: 0;
   transform: translateX(100%);
@@ -34,5 +34,10 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000; 
+  z-index: 9999; 
 }
+
+.slide-container {
+  margin-right: 20px; /* Adjust as needed */
+}
+
