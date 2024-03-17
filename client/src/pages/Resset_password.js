@@ -20,7 +20,7 @@ function Resset_password() {
       })
       .then((res) => {
         if (res.data.status === "success") {
-          navigate("/login");
+          navigate("/home");
           alert("password updated");
         }
       })
@@ -47,8 +47,9 @@ function Resset_password() {
             className="mb-2 mt-2 p-2 border rounded-2xl w-full"
             type="password"
             placeholder="كلمة السر"
-            required
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
           <label htmlFor="confirm-password" className="text-black-palette">
             تأكيد كلمة السر

@@ -19,7 +19,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/nussuki" element={<Manassik />} />
-          <Route path="/resetPassword" element={< Resset_password/>} />
+          <Route path="/resetPassword/:id/:token" element={< Resset_password/>} />
           <Route path="/mail_conf" element={< EmailConfirmation/>} />
         </Routes>
       </div>

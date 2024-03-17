@@ -6,15 +6,26 @@ import Navbar from "../components/Navbar_psw";
 
 function EmailConfirmation() {
    
-   const [email, setEmail] = useState('');
-   const navigate = useNavigate();
+  //  const [email, setEmail] = useState('');
+  //  const navigate = useNavigate();
    
-   const handleSubmit = (e) =>{
-     e.preventDefault();
-     axios.post('http://localhost:3000/api/users/forgetpassword', {email})
-     .then(res=>{
-       alert("logged in");
-     }).catch(err => console.log(err));
+  //  const handleSubmit = (e) =>{
+  //    e.preventDefault();
+  //    axios.post('http://localhost:3000/api/users/forgetpassword', {email})
+  //    .then(res=>{
+  //      alert("logged in");
+  //    }).catch(err => console.log(err));
+  const [email, setEmail] = useState('');
+  const navigate=useNavigate()
+  const handleSubmit = (e) =>{
+    e.preventDefault();
+    axios.post('http://localhost:3000/api/users/forgetpassword', {email})
+    .then(res=>{
+      alert("logged in")
+  
+    }
+    ).catch(err => console.log(err))
+  
    }
    
 
@@ -30,10 +41,10 @@ function EmailConfirmation() {
             </label>
             <input
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
               className="w-full border border-gray-300 rounded-xl py-2 px-3 mb-4 focus:outline-none focus:border-brown_palette"
               placeholder="البريد اللإلكتروني"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
             <div className="flex flex-col sm:flex-row sm:justify-between">
@@ -47,7 +58,7 @@ function EmailConfirmation() {
                 type="submit"
                 className="bg-taupe_palette text-white py-2 px-4 rounded-md hover:bg-brown_palette transition-colors self-center"
               >
-                <Link to="/resetPassword">
+                <Link to="/">
                   متابعة
                 </Link>
               </button>
