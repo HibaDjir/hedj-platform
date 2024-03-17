@@ -10,16 +10,20 @@ import "./index";
 
 
 import Manassik from "../src/pages/Manassik";
+import Candidature from "./pages/Candidature";
 function App() {
   return (
     <Router>
+
       <div className="App">
-    <Navbar/>
+     <Navbar/>
+   
+
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
           <Route path="/nussuki" element={<Manassik />} />
-          <Route path="/resetPassword" element={< Resset_password/>} />
+          <Route path="/resetPassword/:id/:token" element={< Resset_password/>} />
           <Route path="/mail_conf" element={< EmailConfirmation/>} />
         </Routes>
       </div>
