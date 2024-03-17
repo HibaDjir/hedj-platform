@@ -1,55 +1,26 @@
-
-import { BrowserRouter as Router, Routes, Route ,Link} from 'react-router-dom';
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
+// App.js
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Resset_password from "./pages/Resset_password";
 import Home from "./pages/Home";
-import Navbar from './components/Navbar';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import './index';
-import Resset from "./pages/Resetpassword";
-import Dashboard from './pages/dashboard';
+import EmailConfirmation from './pages/Email_confirmation';
+
+import Navbar from "./components/Navbar";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+import "./index";
+
+
+import Manassik from "../src/pages/Manassik";
 function App() {
   return (
     <Router>
       <div className="App">
-       <Navbar/>
+        <Navbar />
         <Routes>
-        <Route path="/" element={<Login />} />
-          <Route
-            path="/login"
-            element={
-              <TransitionGroup>
-                <CSSTransition
-                  key="login"
-                  timeout={1000}
-                  classNames="page"
-                >
-                  <Login />
-                </CSSTransition>
-              </TransitionGroup>
-            }
-          />
-          <Route
-            path="/signup"
-            element={
-              <TransitionGroup>
-                <CSSTransition
-                  key="signup"
-                  timeout={1000}
-                  classNames="page"
-                >
-                  <Signup />
-                </CSSTransition>
-              </TransitionGroup>
-            }
-          />
-          <Route path='/dashboard' element={<Dashboard/>}></Route>
-
-          <Route path="/resset_pssw" element={< Resset/>} />
-
-          <Route path="/home" element={<Home/>} />
-
-          
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/nussuki" element={<Manassik />} />
+          <Route path="/resetPassword/:id/:token" element={< Resset_password/>} />
+          <Route path="/mail_conf" element={< EmailConfirmation/>} />
         </Routes>
       </div>
     </Router>
