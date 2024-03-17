@@ -1,28 +1,40 @@
-import React from 'react';
-
-import heroBg from '../images/hero_bg.png';
-import makkah from '../clip/bg_mekkah.mp4';
-import makkah_02 from '../clip/bg_mekkah_02.mp4';
+import React from "react";
+import { useState } from "react";
+import heroBg from "../images/hero_bg.png";
+import ElHadj from "../images/ELHADJ.jpg";
+import Navbar from "../components/Navbar";
+import SignupModal from "../Popups/Signup";
 function Hero() {
+  const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
+  const openSignupModal = () => {
+    setIsSignupModalOpen(true);
+  };
+
+  const closeSignupModal = () => {
+    setIsSignupModalOpen(false);
+  };
   return (
     <div
-      dir="rtl"
-      className=" w-full h-screen mx-auto text-center flex flex-col justify-center bg-cover bg-center "
-      >
-      <video
-        className="w-full h-full object-cover "
-        autoPlay
-        muted
-        loop
-        playsInline
-      >
-        <source src={makkah} type="video/mp4" />
-      </video>
+      dir="rtl "
+      className="w-full h-[87vh] mx-auto  text-right flex flex-col justify-center bg-cover bg-center"
+      style={{ backgroundImage: `url(${ElHadj})` }}
+    >
+      <div className="-w-[1240px] mx-auto grid md:grid-cols-2 w-full">
+        <div></div>
+        <div className="flex flex-col justify-center items-center">
+  <h1 className="text-5xl text-center text-white">
+    ابدأ رحلتك للحج مع لبيك
+  </h1>
+  <button
+    className="bg-[#D4A373] hover:opacity-85 p-4 text-white rounded-2xl mt-10 m-2"
+    onClick={openSignupModal}
+  >
+    تسجيل حساب جديد
+  </button>
+  {isSignupModalOpen && <SignupModal onClose={closeSignupModal} />}
+</div>
 
-      <h1 className="text-white font-extrabold text-4xl mb-4">13:14</h1>
-      <h2 className="text-white font-extrabold text-2xl mb-4">شعبان 1445 29</h2>
-     
-    
+      </div>
     </div>
   );
 }

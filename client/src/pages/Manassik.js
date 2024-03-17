@@ -12,15 +12,14 @@ import LastTawaf from "../images/NussukiPic/tawaf_02.jpg";
 import Navbar from "../components/Navbar";
 function Manassik() {
   return (
-
     <div dir="rtl">
-      <Navbar/>
+      <Navbar />
       <div className="w-full bg-white_palette py-16 px-4 ">
         <div className="max-w-[1240px] mx-auto grid md:grid-cols-3">
           <img
             className="w-[500px] mx-auto my-4  border rounded-3xl border-gray-300 shadow-2xl transition-transform duration-500 ease-in-out transform hover:scale-110"
             src={ihram}
-            alt="Tawaf_el_qoudoum"
+            alt="first mansak"
           ></img>
           <div className="flex flex-col justify-center lg:col-span-2 mr-10">
             <p className="text-brown_palette font-bold">
@@ -54,7 +53,8 @@ function Manassik() {
         <div className="max-w-[1240px] mx-auto grid md:grid-cols-2 w-full">
           <div className="flex flex-col justify-center">
             <p className="text-brown_palette font-bold">
-              الطواف بالقدوم - بداية الحج والعمرة
+              الطواف بالقدوم
+              - بداية الحج والعمرة
             </p>
             <h1 className="md:text-4xl sm:text-3xl text-2xl font-bold  text-black_palette py-2">
               تقرب إلى الله بأولى خطواتك حول الكعبة
@@ -93,7 +93,8 @@ function Manassik() {
           ></img>
           <div className="flex flex-col justify-center ">
             <p className="text-brown_palette font-bold">
-              الصفا والمروة - ركنان من أركان الحج والعمرة
+              الصفا والمروة 
+              - ركنان من أركان الحج والعمرة
             </p>
             <h1 className="md:text-4xl sm:text-3xl text-2xl font-bold  text-black_palette py-2">
               تجسيد للسير في طاعة الله والبحث عن التوبة والمغفرة
@@ -122,7 +123,8 @@ function Manassik() {
         <div className="max-w-[1240px] mx-auto grid md:grid-cols-2 w-full">
           <div className="flex flex-col justify-center">
             <p className="text-brown_palette font-bold">
-              الوقوف بعرفة: وقوف الحجاج في عرفة
+              الوقوف بعرفة
+              : وقوف الحجاج في عرفة
             </p>
             <h1 className="md:text-4xl sm:text-3xl text-2xl font-bold  text-black_palette py-2">
               الاستماع لدعوة الله وتجديد العهد في عرفة
