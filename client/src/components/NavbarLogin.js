@@ -6,7 +6,6 @@ import Logo from "../images/LOGO.png";
 import NetflixModal from "../Popups/Netflix";
 import user from "../images/User.png";
 
-
 function Navbar_lgin() {
   const [isNetflixModalOpen, setIsNetflixModalOpen] = useState(false);
   const openNetflixModal = () => {
@@ -57,7 +56,7 @@ function Navbar_lgin() {
         className={`text-white hidden md:flex ${desktopNav ? "flex-col" : ""}`}
       >
         <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300 ">
-          <Link to="/home">الدار</Link>
+          <Link to="/home">الصفحة الرإيسية</Link>
         </li>
         <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300">
           <Link to="/nussuki">مناسك</Link>
@@ -100,29 +99,33 @@ function Navbar_lgin() {
       >
         <img style={{ width: "80px", height: "auto" }} src={Logo} alt="LOGO" />
         <ul className={`md:flex flex-col ${mobileNav ? "block" : "hidden"}`}>
-          <li className="p-4 text-white hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-dorée duration-300">
-            <Link to="/">مناسك</Link>
-          </li>
-          <li className="p-4 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-dorée duration-300">
-            <Link to="/company">اللأسئلة المتداولة</Link>
-          </li>
-          <li className="p-4 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-dorée duration-300">
-            <Link to="/resources">من نحن</Link>
-          </li>
-          <li className="p-4 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-dorée duration-300">
-            <Link to="/hajj">إتصل بنا</Link>
-          </li>
-          <li>
-            <button className="p-4 bg-fake_black text-dorée rounded-2xl  m-2  ">
-              <Link to="/signup">إنشاء حساب</Link>
-            </button>
-          </li>
-
-          <li>
-            <button className="p-4 bg-dorée text-fake_black rounded-2xl m-2 hover:opacity-85 ">
-              <Link to="/login">تسجيل</Link>
-            </button>
-          </li>
+        <li className="p-4 m-2  hover:cursor-pointer ">
+          <Link to="/user_profile"> <img src={user} className="h-[30px] w-[30px]  " /></Link>
+        </li>
+     
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300">
+          <Link 
+           onClick={openNetflixModal}
+           >التسجيل للحج</Link>
+            {isNetflixModalOpen && <NetflixModal onClose={closeNetflixModal} />}
+        </li>
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300">
+          <Link to="/">الحالة الصحية</Link>
+        </li>
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300">
+          <Link to="/">دفع التكاليف</Link>
+        </li>
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300">
+          <Link to="/"> حجز الرحلات</Link>
+        </li>
+          
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300 ">
+          <Link to="/home">الصفحة الرإيسية</Link>
+        </li>
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300">
+          <Link to="/nussuki">مناسك</Link>
+        </li>
+          
         </ul>
       </div>
     </div>

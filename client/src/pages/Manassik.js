@@ -13,7 +13,7 @@ import Navbar from "../components/Navbar";
 function Manassik() {
   return (
     <div dir="rtl">
-      <Navbar />
+      
       <div className="w-full bg-white_palette py-16 px-4 ">
         <div className="max-w-[1240px] mx-auto grid md:grid-cols-3">
           <img
