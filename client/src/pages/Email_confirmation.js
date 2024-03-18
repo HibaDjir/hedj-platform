@@ -6,15 +6,21 @@ import Navbar from "../components/Navbar_psw";
 
 function EmailConfirmation() {
   const [email, setEmail] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate=useNavigate()
   const handleSubmit = (e) =>{
     e.preventDefault();
     axios.post('http://localhost:3000/api/users/forgetpassword', {email})
     .then(res=>{
-      alert("logged in")
-  
+      navigate('/home')
     }
-    ).catch(err => console.log(err))
+    ).catch(err => {
+      if (err.response && err.response.data && err.response.data.message) {
+                        setErrorMessage(err.response.data.message);
+                   } else {
+                   setErrorMessage('An error occurred. Please try again later.');
+                 }
+      console.log(err)})
   
    }
    
@@ -48,11 +54,12 @@ function EmailConfirmation() {
                 type="submit"
                 className="bg-taupe_palette text-white py-2 px-4 rounded-md hover:bg-brown_palette transition-colors self-center"
               >
-                <Link to="/">
+                
                   متابعة
-                </Link>
+                
               </button>
             </div>
+            {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
           </form>
         </div>
       </div>

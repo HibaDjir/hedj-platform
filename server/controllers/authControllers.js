@@ -99,7 +99,7 @@ exports.forgotPassword=async(req,res,next)=>{
 	try {
 		const oldUser=await User.findOne({email})
 		if(!oldUser){
-			return res.json({status: "User not exist"})
+			return res.status(401).send({message: "User does not exist"})
 		}
 		const secret = process.env.JWTPRIVATEKEY + oldUser.password
 		const token = jwt.sign({email: oldUser.email, id:oldUser._id}, secret, {expiresIn : '10m'})
@@ -125,7 +125,7 @@ exports.resetPassord = async(req, res) =>{
 	return res.status(400).send({ message: error.details[0].message });
 	const oldUser=await User.findOne({_id: id})
 		if(!oldUser){
-			return res.json({status: "User not exist"})
+			return res.status(401).send({message: "User does not exist"})
 		}
 	const secret = process.env.JWTPRIVATEKEY + oldUser.password
 	try {

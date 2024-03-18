@@ -19,7 +19,7 @@ function Hero() {
       className="w-full h-[87vh] mx-auto  text-right flex flex-col justify-center bg-cover bg-center"
       style={{ backgroundImage: `url(${ElHadj})` }}
     >
-      <div className="-w-[1240px] mx-auto grid md:grid-cols-2 w-full">
+      <div className="maw-w-[1240px] mx-auto grid md:grid-cols-2 w-full">
         <div></div>
         <div className="flex flex-col justify-center items-center">
   <h1 className="text-5xl text-center text-white">

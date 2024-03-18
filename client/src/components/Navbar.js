@@ -64,19 +64,19 @@ function Navbar() {
       <ul
         className={`text-white hidden md:flex ${desktopNav ? "flex-col" : ""}`}
       >
-        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-dorée duration-300 ">
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300 ">
           <Link to="/home">الدار</Link>
         </li>
-        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-dorée duration-300">
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300">
           <Link to="/nussuki">مناسك</Link>
         </li>
-        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-dorée duration-300">
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300">
           <Link to="/company">اللأسئلة المتداولة</Link>
         </li>
-        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-dorée duration-300">
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300">
           <Link to="/resources">من نحن</Link>
         </li>
-        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-dorée duration-300">
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300">
           <Link to="/hajj">إتصل بنا</Link>
         </li>
         <li className=" hover:border-b hover:cursor-pointer ease-in-out border-transparent">
@@ -89,7 +89,7 @@ function Navbar() {
           {isLoginModalOpen && <LoginModal onClose={closeLoginModal} />}
         </li>
 
-        
+     
       </ul>
 
       <div onClick={handleMobileNav} className="block md:hidden">
