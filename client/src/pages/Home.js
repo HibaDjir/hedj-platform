@@ -8,6 +8,7 @@ import HotelSlider from './HotelSlider';
 function Home() {
   return (
   <div className=' bg-white_palette'>
+    <Navbar />
     <Hero/>
     <HotelSlider/>
     <ManassikSlider/>

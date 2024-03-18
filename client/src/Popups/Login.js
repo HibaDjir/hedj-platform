@@ -22,7 +22,7 @@ function Modal({ onClose }) {
         if(res.data.Role === 'admin'){
           navigate('/dashboard')
         }else{
-          navigate('/home')
+          navigate('/homelgin')
       }
       }).catch(err => {
         console.log(err)
