@@ -10,29 +10,54 @@ import bold_guy from "../images/NussukiPic/bold-guy.jpg";
 import Tawaf from "../images/NussukiPic/tawaf_01.jpg";
 import LastTawaf from "../images/NussukiPic/tawaf_02.jpg";
 import Navbar from "../components/Navbar";
-function Manassik() {
-  async function checkAuthentication() {
-    try {
-        // Retrieve token from localStorage
-        const token = localStorage.getItem('token');
+import Navbarlogin from "../components/NavbarLogin"
+import React, { useEffect, useState } from 'react';
+// Function to check user authentication status
+async function checkAuthentication() {
+  try {
+      // Retrieve token from localStorage
+      const token = localStorage.getItem('token');
 
-        // Check if token exists
-        if (token) {
-            // Import navbar-lgn if token exists
-            const NavbarLgn = require('../components/NavbarLogin');
-            return NavbarLgn;
-        } else {
-            // Import nav-bar if token does not exist
-            const NavBar = require('../components/Navbar');
-            return NavBar;
-        }
-    } catch (error) {
-        console.error('Error checking authentication:', error);
-    }
-}checkAuthentication()
+      // Return true if token exists, false otherwise
+      return !!token;
+  } catch (error) {
+      console.error('Error checking authentication:', error);
+      return false;
+  }
+}
+
+function Manassik() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+      // Check authentication status when the component mounts
+      checkAuthentication().then((authenticated) => {
+          setIsAuthenticated(authenticated);
+      });
+  }, []);
+//   async function checkAuthentication() {
+//     try {
+//         // Retrieve token from localStorage
+//         const token = localStorage.getItem('token');
+
+//         // Check if token exists
+//         if (token) {
+//             // Import navbar-lgn if token exists
+//             const NavbarLgn = require('../components/NavbarLogin');
+//             return NavbarLgn;
+//         } else {
+//             // Import nav-bar if token does not exist
+//             const NavBar = require('../components/Navbar');
+//             return NavBar;
+//         }
+//     } catch (error) {
+//         console.error('Error checking authentication:', error);
+//     }
+// }checkAuthentication()
   return (
     <div dir="rtl">
-      <Navbar />
+ 
+    {isAuthenticated ? <Navbarlogin /> : <Navbar />}
       <div className="w-full bg-white_palette py-16 px-4 ">
         <div className="max-w-[1240px] mx-auto grid md:grid-cols-3">
           <img
