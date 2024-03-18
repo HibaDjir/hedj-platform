@@ -35,25 +35,7 @@ function Manassik() {
           setIsAuthenticated(authenticated);
       });
   }, []);
-//   async function checkAuthentication() {
-//     try {
-//         // Retrieve token from localStorage
-//         const token = localStorage.getItem('token');
 
-//         // Check if token exists
-//         if (token) {
-//             // Import navbar-lgn if token exists
-//             const NavbarLgn = require('../components/NavbarLogin');
-//             return NavbarLgn;
-//         } else {
-//             // Import nav-bar if token does not exist
-//             const NavBar = require('../components/Navbar');
-//             return NavBar;
-//         }
-//     } catch (error) {
-//         console.error('Error checking authentication:', error);
-//     }
-// }checkAuthentication()
   return (
     <div dir="rtl">
  
