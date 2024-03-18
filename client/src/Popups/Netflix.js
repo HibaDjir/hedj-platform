@@ -43,7 +43,7 @@ function Netflix({ onClose }) {
         <div className="flex justify-center items-center mt-8">
 
         <div className="flex flex-col justify-center items-center ml-4">
-            <Link to="/candidature">
+            <Link to="/homelgin">
               <img
                 src={user_out}
                 className="h-[60px] w-[60px] transition-transform duration-500 ease-in-out transform hover:scale-110"

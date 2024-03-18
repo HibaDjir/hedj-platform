@@ -11,6 +11,7 @@ import "./index";
 
 import Manassik from "../src/pages/Manassik";
 import Candidature from "./pages/Candidature";
+import UserProfile from "./pages/UserProfile";
 function App() {
   return (
     <Router>
@@ -20,7 +21,9 @@ function App() {
         <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/homelgin" element={<Home_log_in />} />  
-          <Route path="/candidature" element={<Candidature />} /> 
+          <Route path="/candidature" element={<Candidature />} />
+          <Route path="/user_profile" element={<UserProfile/>} />
+
           <Route path="/nussuki" element={<Manassik />} />
           <Route
             path="/resetPassword/:id/:token"

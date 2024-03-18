@@ -4,6 +4,7 @@ import "tailwindcss/tailwind.css";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import Logo from "../images/LOGO.png";
 import NetflixModal from "../Popups/Netflix";
+import user from "../images/User.png";
 
 
 function Navbar_lgin() {
@@ -77,6 +78,11 @@ function Navbar_lgin() {
            >التسجيل للحج</Link>
             {isNetflixModalOpen && <NetflixModal onClose={closeNetflixModal} />}
         </li>
+
+        <li className="p-4 m-2  hover:cursor-pointer ">
+          <Link to="/user_profile"> <img src={user} className="h-[30px] w-[30px]  " /></Link>
+        </li>
+     
       </ul>
 
       <div onClick={handleMobileNav} className="block md:hidden">
