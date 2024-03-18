@@ -22,7 +22,8 @@ const user_profiler = new mongoose.Schema({
     passwordChang:Date,
     passwordResettoken:String,
     passwordResettokenExpire:Date,
-    
+    //added for candidat
+    candidat: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Candidat' }] // Reference to the Candidate model
 });
 
 user_profiler.methods.generateAuthToken = function () {

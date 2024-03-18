@@ -12,10 +12,22 @@ index.use(express.json())
 index.use(cors());
  
 //Route handler function 
-
+//user
 const authRouter=require('./routes/authRouter') 
-
 index.use("/api/users",authRouter) 
+
+// candidat
+const candidatRoutes = require("./routes/candidatRouter");
+index.use("/api/candidats", candidatRoutes);
+// wilaya et daira 
+
+const wilayaRouter = require('./routes/wilayaRouter');
+const dairaRouter = require('./routes/dairaRouter');
+
+index.use('/api/wilayas', wilayaRouter);
+index.use('/api/dairas', dairaRouter);
+
+
 
 //create server 
 
@@ -33,3 +45,26 @@ const port=process.env.port||3000
 index.listen(port,()=>{ 
     console.log("server has started ..") 
 })
+
+
+////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
