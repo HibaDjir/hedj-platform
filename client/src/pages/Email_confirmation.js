@@ -5,16 +5,6 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar_psw";
 
 function EmailConfirmation() {
-   
-  //  const [email, setEmail] = useState('');
-  //  const navigate = useNavigate();
-   
-  //  const handleSubmit = (e) =>{
-  //    e.preventDefault();
-  //    axios.post('http://localhost:3000/api/users/forgetpassword', {email})
-  //    .then(res=>{
-  //      alert("logged in");
-  //    }).catch(err => console.log(err));
   const [email, setEmail] = useState('');
   const navigate=useNavigate()
   const handleSubmit = (e) =>{
