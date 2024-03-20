@@ -1,70 +1,61 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import axios from "axios";
-import berra from "../images/log-in.png";
 import user from "../images/User.png";
 import user_out from "../images/User_outlined.png";
 import Add from "../images/Untitled.png";
+
 function Netflix({ onClose }) {
   const modalRef = useRef();
 
-  const closeModal = (e) => {
-    if (modalRef.current === e.target) {
-      onClose();
-    }
+  useEffect(() => {
+    // Focus the close button when the modal opens
+    modalRef.current.focus();
+  }, []);
+
+  const closeModal = () => {
+    onClose();
   };
 
   return (
     <div
-      dir="rtl"
       ref={modalRef}
       onClick={closeModal}
-      className="fixed inset-0 z-[9999] bg-fixed  bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center n"
+      className="fixed inset-0 z-[9999] flex justify-center items-center bg-black bg-opacity-50 backdrop-blur-md"
     >
-      <div className="flex flex-col justify-center py-8 px-4 mx-auto w-[600px] h-auto rounded-2xl bg-[#F4EFE7]">
-        <div className="flex justify-between ">
-          <div className="flex justify-center items-center">
-            <img
-              src={berra}
-              className="h-[40px] w-[40px] ml-2 transition-transform duration-500 ease-in-out transform hover:scale-110"
-            />
-            <p className=" text-brown_palette">تسجيل الخروج</p>
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="bg-white rounded-lg p-8 w-full max-w-[700px] max-h-[400px] relative"
+      >
+     
+        <div className="flex justify-between mb-6">
+          <div className="flex items-center">
+            <img src={user} className="h-8 mr-2" alt="User" />
+            <p className="text-lg font-bold text-brown_palette">اسم المستخدم</p>
           </div>
-
-          <div className="flex justify-center items-center">
-            <div className="flex flex-col text-right ml-2">
-              <p className=" text-fake_black">إسم المستخدم</p>
-              <p className=" text-brown_palette"> معلوممات الحساب</p>
-            </div>
-            <img src={user} className="h-[50px] w-[50px]" />
-          </div>
+          <button onClick={onClose} className="text-brown_palette">
+            تسجيل الخروج
+          </button>
         </div>
-        <div className="flex justify-center items-center mt-8">
-
-        <div className="flex flex-col justify-center items-center ml-4">
+        <div className="flex justify-center items-center">
+          <div className="flex flex-col items-center mr-8">
             <Link to="/homelgin">
               <img
                 src={user_out}
-                className="h-[60px] w-[60px] transition-transform duration-500 ease-in-out transform hover:scale-110"
-                alt="Add"
+                className="w-16 h-16 mb-2 transition-transform hover:scale-110"
+                alt="User Outlined"
               />
             </Link>
-            <p className=" text-fake_black"> الإسم و اللقب</p>
-
+            <p className="text-sm text-fake_black">الاسم واللقب</p>
           </div>
-
-
-          <div className="flex flex-col justify-center items-center">
+          <div className="flex flex-col items-center">
             <Link to="/candidature">
               <img
                 src={Add}
-                className="h-[60px] w-[60px] transition-transform duration-500 ease-in-out transform hover:scale-110"
+                className="w-16 h-16 mb-2 transition-transform hover:scale-110"
                 alt="Add"
               />
             </Link>
-            <p className=" text-brown_palette "> تسجيل شخص آخر</p>
-
+            <p className="text-sm text-brown_palette">تسجيل شخص آخر</p>
           </div>
         </div>
       </div>

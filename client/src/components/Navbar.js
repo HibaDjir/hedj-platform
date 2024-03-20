@@ -57,31 +57,31 @@ function Navbar() {
   return (
     <div
       dir="rtl"
-      className={`flex justify-between items-center h-20 max-w-1240 mx-auto px-4 navbar text-fack_black  `}
+      className={`flex justify-between items-center h-20 max-w-1240 mx-auto px-4 navbar bg-gradient-to-b from-fake_black to-transparent `}
     >
       <img style={{ width: "80px", height: "auto" }} src={Logo} alt="LOGO" />
 
       <ul
         className={`text-white hidden md:flex ${desktopNav ? "flex-col" : ""}`}
       >
-        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300 ">
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-brown_palette text-brown_palette duration-300 ">
           <Link to="/home">الصفحة الرإيسية</Link>
         </li>
-        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300">
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-brown_palette text-brown_palette duration-300">
           <Link to="/nussuki">مناسك</Link>
         </li>
-        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300">
-          <Link to="/company">اللأسئلة المتداولة</Link>
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-brown_palette text-brown_palette duration-300">
+          <a href="/home#FAQ">اللأسئلة المتداولة</a>
         </li>
-        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300">
-          <Link to="/resources">من نحن</Link>
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-brown_palette text-brown_palette duration-300">
+          <a href="/home#about_us">من نحن</a>
         </li>
-        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300">
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-brown_palette text-brown_palette duration-300">
           <Link to="/hajj">إتصل بنا</Link>
         </li>
         <li className=" hover:border-b hover:cursor-pointer ease-in-out border-transparent">
           <button
-            className=" border border-[#D4A373] text-white rounded-2xl p-4 m-2 hover:bg-[#D4A373] "
+            className="w-full border border-[#D4A373]  text-brown_palette rounded-2xl p-4 m-2 hover:bg-[#D4A373] hover:text-fake_black "
             onClick={openLoginModal}
           >
             دخول

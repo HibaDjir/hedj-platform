@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import heroBg from "../images/medine_soir.jpeg";
+import heroBg from "../images/houdjadjes.jpeg";
 
 function Herolgin() {
   const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
