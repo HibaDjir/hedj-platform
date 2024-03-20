@@ -1,7 +1,7 @@
 
 const jwt=require('jsonwebtoken')
 const Joi = require("joi");
-const { User, validateLog, validateSignup} = require("../models/user_profiler");
+const { User, validateLog, validateSignup,validatePassword} = require("../models/user_profiler");
 const bcrypt = require("bcrypt");
 const sendEmail=require('../util/sendEmail')
 
@@ -108,7 +108,7 @@ exports.forgotPassword=async(req,res,next)=>{
 		await sendEmail({
 			email: oldUser.email,
 			 subject:'reset password mail...',
-			 message:link
+			 message: ` to reset your password click on the link below \n\n ${link}`
 		});
 	} catch (error) {
 		res.json('eror')
@@ -116,35 +116,19 @@ exports.forgotPassword=async(req,res,next)=>{
   
 }
 
-// exports.resetPassordget = async(req, res) =>{
-// 	const {id, token} = req.params
-// 	console.log(req.params)
-// 	const oldUser=await User.findOne({_id: id})
-// 		if(!oldUser){
-// 			return res.json({status: "User not exist"})
-// 		}
-// 	const secret = process.env.JWTPRIVATEKEY + oldUser.password
-// 	try {
-// 		const verify = jwt.verify(token, secret)
-// 		res.json('verified')
-// 	} catch (error) {
-// 		res.json("Not verified")
-// 	}
-
-
-// }
 
 exports.resetPassord = async(req, res) =>{
 	const {id, token} = req.params
 	const {password} = req.body
-	console.log(req.params)
+	const { error } = validatePassword(req.body);
+	if (error)
+	return res.status(400).send({ message: error.details[0].message });
 	const oldUser=await User.findOne({_id: id})
 		if(!oldUser){
 			return res.status(401).send({message: "User does not exist"})
 		}
 	const secret = process.env.JWTPRIVATEKEY + oldUser.password
 	try {
-		console.log(secret)
 		const verify = jwt.verify(token, secret)
 		const encryptedPassword = await bcrypt.hash(password, 10)
 		await User.updateOne(

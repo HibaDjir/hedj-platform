@@ -21,12 +21,12 @@ function Hero() {
     >
       <div className="maw-w-[1240px] mx-auto grid md:grid-cols-2 w-full">
         <div></div>
-        <div className="flex flex-col justify-center items-center">
+        <div className="flex flex-col justify-center items-center w-full mt-20 ">
   <h1 className="text-5xl text-center text-white">
     ابدأ رحلتك للحج مع لبيك
   </h1>
   <button
-    className="bg-[#D4A373] hover:opacity-85 p-4 text-white rounded-2xl mt-10 m-2"
+    className="bg-[#D4A373] hover:opacity-85 p-4 text-white rounded-2xl mt-10 m-2  w-80 mx-auto "
     onClick={openSignupModal}
   >
     تسجيل حساب جديد

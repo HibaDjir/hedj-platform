@@ -10,10 +10,40 @@ import bold_guy from "../images/NussukiPic/bold-guy.jpg";
 import Tawaf from "../images/NussukiPic/tawaf_01.jpg";
 import LastTawaf from "../images/NussukiPic/tawaf_02.jpg";
 import Navbar from "../components/Navbar";
+import Navbarlogin from "../components/NavbarLogin"
+import React, { useEffect, useState } from 'react';
+// Function to check user authentication status
+async function checkAuthentication() {
+  try {
+      // Retrieve token from localStorage
+      const token = localStorage.getItem('token');
+
+      // Return true if token exists, false otherwise
+      return !!token;
+  } catch (error) {
+      console.error('Error checking authentication:', error);
+      return false;
+  }
+}
+
 function Manassik() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+      // Check authentication status when the component mounts
+      checkAuthentication().then((authenticated) => {
+          setIsAuthenticated(authenticated);
+      });
+  }, []);
+
   return (
     <div dir="rtl">
+<<<<<<< HEAD
       
+=======
+ 
+    {isAuthenticated ? <Navbarlogin /> : <Navbar />}
+>>>>>>> 8c61c69fe19e60070b16158623a345746a56afea
       <div className="w-full bg-white_palette py-16 px-4 ">
         <div className="max-w-[1240px] mx-auto grid md:grid-cols-3">
           <img
