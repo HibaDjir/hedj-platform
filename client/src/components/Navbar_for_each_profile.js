@@ -5,6 +5,7 @@ import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import Logo from "../images/LOGO.png";
 import NetflixModal from "../Popups/Netflix";
 import user from "../images/User.png";
+import DropdownMenu from "./DropDownMenue";
 
 function Navbar_for_each_profile() {
 
@@ -66,7 +67,7 @@ function Navbar_for_each_profile() {
         </li>
 
         <li className="p-4 m-2  hover:cursor-pointer ">
-          <Link to="/user_profile"> <img src={user} className="h-[30px] w-[30px]  " /></Link>
+          <DropdownMenu/>
         </li>
      
       </ul>
