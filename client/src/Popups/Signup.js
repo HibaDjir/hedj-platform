@@ -10,6 +10,8 @@ function Modal({ onClose }) {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
   const handleSubmit =  (e) => {
     e.preventDefault();
     axios.post('http://localhost:3000/api/users/signup', {firstName,lastName,email,password})
@@ -18,7 +20,13 @@ function Modal({ onClose }) {
       if(res.data.token){
         localStorage.setItem('token',res.data.token)
       }
-    }).catch(err => console.log(err))
+    }).catch(err => {
+      if (err.response && err.response.data && err.response.data.message) {
+        setErrorMessage(err.response.data.message);
+      } else {
+        setErrorMessage('An error occurred. Please try again later.');
+      }
+      console.log(err)})
   };
   //
 
@@ -32,9 +40,10 @@ function Modal({ onClose }) {
 
   return (
     <div
+    dir="rtl"
       ref={modalRef}
       onClick={closeModal}
-      className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center n"
+      className="fixed inset-0 z-[9999] bg-fixed  bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center n"
     >
       <div className="mt-10 flex flex-col gap-5 text-white bg-transparent rounded-2xl">
         <div className="flex flex-col justify-center py-16 px-4 mx-auto w-[400px] h-[600px] rounded-2xl bg-[#F4EFE7]">
@@ -102,6 +111,8 @@ function Modal({ onClose }) {
             >
               <Link to="/home">تأكيد</Link>
             </button>
+            {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
+
           </form>
         </div>
       </div>

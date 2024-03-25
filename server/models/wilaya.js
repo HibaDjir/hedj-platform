@@ -1,14 +1,20 @@
-// wilaya.js
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const wilayaSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
+const schema = mongoose.Schema
+
+const WilayaSchema = new schema({
+    code: {
+        type: Number,
+        require: true,
     },
-   
-});
+    ar_name:{
+        type: String,
+        require: true,
+    },
+    name:{
+        type: String,
+        require: true,
+    }
+}, { timeseries: true})
 
-const Wilaya = mongoose.model('Wilaya', wilayaSchema);
-
-module.exports = Wilaya;
+module.exports = mongoose.model('Wilaya', WilayaSchema)

@@ -8,7 +8,7 @@ function Signup ()  {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate()
+  
 
  
   const handleSubmit =  (e) => {
@@ -16,6 +16,11 @@ function Signup ()  {
     axios.post('http://localhost:3000/api/users/signup', {firstName,lastName,email,password})
     .then(res=>{
       alert("created")
+
+      if(res.data.token){
+        localStorage.setItem('token',res.data.token)
+      }
+
    
     }).catch(err => console.log(err))
   };
@@ -92,7 +97,7 @@ function Signup ()  {
           <p className="mt-4 text-vert_claire">
             {' '}
             تملك حسابا مسبقا؟ دخولك من هذاالحساب{' '}
-            <Link to="/login" className="text-vert_claire hv:text-fake_black">
+            <Link to="/login" className="text-vert_claire hv:text-fake_black"  >
               بالنقرهنا
             </Link>
           </p>
@@ -103,4 +108,5 @@ function Signup ()  {
 };
 
 export default Signup;
+
 

@@ -9,6 +9,7 @@ function Modal({ onClose }) {
   //
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
     const navigate=useNavigate()
     const handleSubmit = (e) =>{
       e.preventDefault();
@@ -21,9 +22,16 @@ function Modal({ onClose }) {
         if(res.data.Role === 'admin'){
           navigate('/dashboard')
         }else{
-          navigate('/home')
+          navigate('/homelgin')
       }
-      }).catch(err => console.log(err))
+      }).catch(err => {
+        console.log(err)
+        if (err.response && err.response.data && err.response.data.message) {
+          setErrorMessage(err.response.data.message);
+        } else {
+          setErrorMessage('An error occurred. Please try again later.');
+        }
+      })
     }
   //
  
@@ -39,7 +47,7 @@ function Modal({ onClose }) {
     <div
       ref={modalRef}
       onClick={closeModal}
-      className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center"
+      className="fixed inset-0 z-[9999] bg-fixed  bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center"
     >
       <div className="mt-10 flex flex-col gap-5 text-whiteb bg-transparent rounded-2xl">
         <div className="flex flex-col justify-center py-16 px-4 mx-auto w-[400px]  rounded-2xl bg-[#F2EBDF]   ">
@@ -86,6 +94,7 @@ function Modal({ onClose }) {
             >
               <Link to="/home">تأكيد</Link>
             </button>
+            {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
           </form>
          
         </div>
