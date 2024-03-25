@@ -4,8 +4,11 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ar from "date-fns/locale/ar";
 import ConfModal from "../Popups/ConfimCandid";
+
+
 import Cnd_bg from "../images/MOSQUE.jpg";
 import add from "../images/add_khel.png";
+import { Link } from 'react-router-dom';
 
 function Candidature() {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -55,6 +58,7 @@ function Candidature() {
     setSelectedDate(date);
   };
 
+  //manipuler confirmer_cnadid
   const [isConfModalOpen, setIsConfModalOpen] = useState(false);
   const openConfModal = () => {
     setIsConfModalOpen(true);
@@ -63,6 +67,10 @@ function Candidature() {
   const closeConfModal = () => {
     setIsConfModalOpen(false);
   };
+
+  
+
+
 
   const options = [
     { value: "O+", label: "O+" },
@@ -454,15 +462,20 @@ function Candidature() {
                 required
               />
             </div>
-            {isFormFilled && selectedOption && selectedOption.value === "female" && (
-  <div className="flex justify-center items-center w-full mt-10">
+     
+           
+    <Link to="/candidature_mahram">
+    <div className="flex justify-center items-center w-full mt-10">
     <img
       src={add}
       className="text-fake_black h-[40px] w-[40px] ml-2 transition-transform duration-500 ease-in-out transform hover:scale-110 hover:cursor-pointer"
-    />
+      />
+   
     <p className="text-xl text-fake_black">تسجيل المحرم للمرأة</p>
-  </div>
-)}
+    </div>
+    </Link>
+  
+
 
           </div>
         </div>

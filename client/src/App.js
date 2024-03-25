@@ -11,6 +11,8 @@ import "./index";
 
 import Manassik from "../src/pages/Manassik";
 import Candidature from "./pages/Candidature";
+import Candidature_mahram  from "./pages/AddMahram";
+
 import UserProfile from "./pages/UserProfile";
 import Home_each_profile from "./pages/Home_each_profile";
 import Cansulter_cand from "./pages/Consulter_candidature";
@@ -24,6 +26,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/homelgin" element={<Home_owner_account />} />  
           <Route path="/candidature" element={<Candidature />} />
+          <Route path="/candidature_mahram" element={<Candidature_mahram />} />
           <Route path="/user_profile" element={<UserProfile/>} />
           <Route path="/home_each_profile" element={<Home_each_profile />} /> 
           <Route path="/consulter_cand" element={<Cansulter_cand />} /> 
