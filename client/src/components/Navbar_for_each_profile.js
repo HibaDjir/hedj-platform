@@ -6,21 +6,7 @@ import Logo from "../images/LOGO.png";
 import NetflixModal from "../Popups/Netflix";
 import user from "../images/User.png";
 
-function Navbar_lgin() {
-
-
-
-  
-  const [isNetflixModalOpen, setIsNetflixModalOpen] = useState(false);
-  const openNetflixModal = () => {
-    setIsNetflixModalOpen(true);
-  };
-
-  const closeNetflixModal = () => {
-    setIsNetflixModalOpen(false);
-  };
-
-  
+function Navbar_for_each_profile() {
 
   const [mobileNav, setMobileNav] = useState(false);
   const [desktopNav, setDesktopNav] = useState(false);
@@ -60,7 +46,7 @@ function Navbar_lgin() {
         className={`text-white hidden md:flex ${desktopNav ? "flex-col" : ""}`}
       >
         <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent text-brown_palette duration-300 ">
-          <Link to="/homelgin">الصفحة الرإيسية</Link>
+          <Link to="/home_each_profile">الصفحة الرإيسية</Link>
         </li>
         <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent text-brown_palette duration-300">
           <Link to="/nussuki">مناسك</Link>
@@ -76,10 +62,7 @@ function Navbar_lgin() {
         </li>
      
         <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent text-brown_palette duration-300">
-          <Link 
-           onClick={openNetflixModal}
-           >التسجيل للحج</Link>
-            {isNetflixModalOpen && <NetflixModal onClose={closeNetflixModal} />}
+          <Link to="/consulter_cand">الاطلاع على الاستمارة</Link>    
         </li>
 
         <li className="p-4 m-2  hover:cursor-pointer ">
@@ -108,10 +91,8 @@ function Navbar_lgin() {
         </li>
      
         <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent text-brown_palette duration-300">
-          <Link 
-           onClick={openNetflixModal}
-           >التسجيل للحج</Link>
-            {isNetflixModalOpen && <NetflixModal onClose={closeNetflixModal} />}
+        <Link to="/consulter_cand">الاطلاع على الاستمارة</Link>   
+           
         </li>
         <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300">
           <Link to="/">الحالة الصحية</Link>
@@ -136,4 +117,4 @@ function Navbar_lgin() {
   );
 }
 
-export default Navbar_lgin;
+export default Navbar_for_each_profile;

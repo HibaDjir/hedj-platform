@@ -38,7 +38,7 @@ function Netflix({ onClose }) {
         </div>
         <div className="flex justify-center items-center">
           <div className="flex flex-col items-center mr-8">
-            <Link to="/homelgin">
+            <Link to="/home_each_profile">
               <img
                 src={user_out}
                 className="w-16 h-16 mb-2 transition-transform hover:scale-110"

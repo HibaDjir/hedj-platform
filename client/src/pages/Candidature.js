@@ -25,22 +25,22 @@ function Candidature() {
   };
 
   useEffect(() => {
-    const firstNameFilled = firstName.trim() !== '';
-    const lastNameFilled = lastName.trim() !== '';
+    const firstNameFilled = firstName!== '';
+    const lastNameFilled = lastName!== '';
     const selectedDateFilled = selectedDate !== null;
-    const birthpFilled = birthp.trim() !== '';
-    const originFilled = origin.trim() !== '';
-    const passportNumberFilled = passportNumber.trim() !== '';
-    const phoneNumberFilled = phoneNumber.trim() !== '';
-    const emailFilled = email.trim() !== '';
-    const addressFilled = address.trim() !== '';
+   
+    const originFilled = origin!== '';
+    const passportNumberFilled = passportNumber !== '';
+    const phoneNumberFilled = phoneNumber!== '';
+    const emailFilled = email!== '';
+    const addressFilled = address!== '';
     const bloodGroupSelected = selectedOption !== null;
     
     const isFormValid =
       firstNameFilled &&
       lastNameFilled &&
       selectedDateFilled &&
-      birthpFilled &&
+  
       originFilled &&
       passportNumberFilled &&
       phoneNumberFilled &&

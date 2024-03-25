@@ -10,7 +10,7 @@ import bold_guy from "../images/NussukiPic/bold-guy.jpg";
 import Tawaf from "../images/NussukiPic/tawaf_01.jpg";
 import LastTawaf from "../images/NussukiPic/tawaf_02.jpg";
 import Navbar from "../components/Navbar";
-import Navbarlogin from "../components/NavbarLogin"
+import Navbarlogin from "../components/Navbar_owner_account"
 import React, { useEffect, useState } from 'react';
 
 

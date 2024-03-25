@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Hero  from '../pages/Herolgin';
-import Navbar from '../components/NavbarLogin';
+import Hero  from './Herolgin';
+import Navbar from '../components/Navbar_for_each_profile';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -45,7 +45,7 @@ import Tawaf from "../images/NussukiPic/tawaf_01.jpg";
 import LastTawaf from "../images/NussukiPic/tawaf_02.jpg";
 
 
-function Homelgin() {
+function Home_each_profile() {
   const settings = {
     dots: true,
     infinite: true,
@@ -458,4 +458,4 @@ function Homelgin() {
   )
 }
 
-export default Homelgin
+export default Home_each_profile
