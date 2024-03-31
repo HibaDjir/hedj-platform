@@ -10,49 +10,64 @@ import Cnd_bg from "../images/MOSQUE.jpg";
 import add from "../images/add_khel.png";
 import { Link } from 'react-router-dom';
 
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+
 function Candidature() {
+
+  const navigate = useNavigate();
+  const [formCandidature, setFormCandidature] = useState({
+    nom: '',
+    prenom: '',
+    lieu_naissance: '',
+    nationalite: '',
+    civilite: '',
+    genre: '',
+    num_passeport: '',
+    telephone: '',
+    email: '',
+    address: '',
+    nss: '',
+    maladie_cronique_s: false,
+    maladie_cronique_r: false,
+    maladie_cronique_n_m: false,
+    maladie_cronique_ms: false,
+    maladie_cronique_g: false,
+    maladie_cronique_ds: false,
+    maladie_cronique_au: '',
+  });
   const [selectedDate, setSelectedDate] = useState(null);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [birthp, setBirthp] = useState('');
-  const [origin, setOrigin] = useState('');
-  const [passportNumber, setPassportNumber] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [email, setEmail] = useState('');
-  const [address, setAddress] = useState('');
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [isFormFilled, setIsFormFilled] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   const handleChangeSelect = (selectedOption) => {
-    setSelectedOption(selectedOption);
-  };
+    const { name, id } = selectedOption.target;
+    switch (id) {
+      case "single":
+        formCandidature.civilite = "اعزب/عزباء";
+        break;
+      case "married":
+        formCandidature.civilite = "متزوج(ة)";
+        break;
+      case "divorced":
+        formCandidature.civilite = "مطلق(ة)";
+        break;
+      case "widowed":
+        formCandidature.civilite = "ارمل(ة)";
+        break;
+      case "female":
+        formCandidature.genre = "أنثى";
+        setIsVisible(true);
+        break;
+      case "male":
+        setIsVisible(false);
+        formCandidature.genre = "ذكر";
+        break;
+      default:
+        // code block to be executed if none of the cases match
+    }
 
-  useEffect(() => {
-    const firstNameFilled = firstName!== '';
-    const lastNameFilled = lastName!== '';
-    const selectedDateFilled = selectedDate !== null;
-   
-    const originFilled = origin!== '';
-    const passportNumberFilled = passportNumber !== '';
-    const phoneNumberFilled = phoneNumber!== '';
-    const emailFilled = email!== '';
-    const addressFilled = address!== '';
-    const bloodGroupSelected = selectedOption !== null;
-    
-    const isFormValid =
-      firstNameFilled &&
-      lastNameFilled &&
-      selectedDateFilled &&
-  
-      originFilled &&
-      passportNumberFilled &&
-      phoneNumberFilled &&
-      emailFilled &&
-      addressFilled &&
-      bloodGroupSelected;
-    
-    setIsFormFilled(isFormValid);
-  }, [firstName, lastName, selectedDate, birthp, origin, passportNumber, phoneNumber, email, address, selectedOption]);
+    //setSelectedOption(selectedOption);
+  };
 
   const handleChangeDate = (date) => {
     setSelectedDate(date);
@@ -81,7 +96,7 @@ function Candidature() {
                 console.error('Erreur lors de la récupération des options :', error);
             });
 
-    axios.get('http://localhost:3000/api/candidature/find?fieldName=genre&fieldValue=ذكر')
+    axios.get('http://localhost:3000/api/candidature/genre/find?fieldName=genre&fieldValue=ذكر')
             .then(response => {
               const additionalOptions = response.data.map(condidature => ({value: condidature._id, label: condidature.nom +" "+ condidature.prenom}));
               setCondidature(additionalOptions);
@@ -143,7 +158,7 @@ function Candidature() {
   const handleChangeCandidature = (selectedOption) => {
     setSelectedOptionCandidature(selectedOption);
   };
-  
+
   const handleChangeCheckbox = (event) => {
     const { name, checked } = event.target;
     setFormCandidature(prevState => ({
@@ -164,21 +179,9 @@ function Candidature() {
     event.preventDefault();
     try {
         // Send form data to the backend
-        var civilite = "";
-        var genre = "ذكر";
+        var civilite = formCandidature.civilite;
+        var genre = formCandidature.genre;
         var maladie_cronique = "[";
-        if(formCandidature.genre_f == true){ 
-          genre = "أنثى";
-        }
-        if(genre == "أنثى"){
-          civilite = "عزباء";
-        }else{
-          civilite = "اعزب";
-        }
-        
-        if(formCandidature.civilite_m === true) civilite = "متزوج(ة)";
-        if(formCandidature.civilite_d === true) civilite = "مطلق(ة)";
-        if(formCandidature.civilite_v === true) civilite = "ارمل(ة)";
         
         if(formCandidature.maladie_cronique_s === true) maladie_cronique = maladie_cronique + ", السكري";
         if(formCandidature.maladie_cronique_ds === true) maladie_cronique = maladie_cronique + ", ضغط الدم";
@@ -188,19 +191,20 @@ function Candidature() {
 
         maladie_cronique = maladie_cronique + ","+ formCandidature.maladie_cronique_au + "]";
         if(formCandidature.maladie_cronique_n_m === true) maladie_cronique = "";
-        alert("----- 1 -----");
+
         const wilaya = selectedOptionWilaya, commune = selectedOptionCommune, groupage = selectedOptionGroupage.value,
         id_mahrem = selectedOptionCandidature, date_naissance = selectedDate, lieu_naissance = formCandidature.lieu_naissance,
         nom = formCandidature.nom, prenom = formCandidature.prenom, nationalite = formCandidature.nationalite,
         num_passeport = formCandidature.num_passeport, telephone = formCandidature.telephone, email = formCandidature.email,
         address = formCandidature.address, nss = formCandidature.nss;
-        alert("----- 2 -----");
+        
         const response = await axios.post('http://localhost:3000/api/candidature', { 
-          nom, prenom, date_naissance, lieu_naissance, civilite, genre, num_passeport, telephone, email, wilaya, commune, address, groupage, nss, maladie_cronique,id_mahrem
+          nom, prenom, date_naissance, lieu_naissance, nationalite, civilite, genre, num_passeport, telephone, email, wilaya, commune, address, groupage, nss, maladie_cronique,id_mahrem
         });
-        console.log('Form submitted successfully:', response.data);
+        alert("Enregistrement avec succées");
+        navigate("/homelgin");
     } catch (error) {
-        console.error('Error submitting form:', error);
+      alert("Erreur d'enregistrement :\n"+error);
     }
   };
   return (
@@ -223,8 +227,8 @@ function Candidature() {
                   w-full"
                   type="text"
                   placeholder="الإسم"
-                  name="firstName"
-                  onChange={(e) => setFirstName(e.target.value)}
+                  name="prenom"
+                  value={formCandidature.prenom} onChange={handleChangeValue}
                   required
                 />
               </div>
@@ -236,8 +240,8 @@ function Candidature() {
                   className="text-black p-2 border rounded-xl  border-fake_black  w-full"
                   type="text"
                   placeholder="القب"
-                  name="lastName"
-                  onChange={(e) => setLastName(e.target.value)}
+                  name="nom"
+                  value={formCandidature.nom} onChange={handleChangeValue}
                   required
                 />
               </div>
@@ -252,7 +256,6 @@ function Candidature() {
                   className="text-black p-2 border rounded-xl  border-fake_black   w-full"
                   selected={selectedDate}
                   onChange={handleChangeDate}
-
                   locale={ar}
                   dateFormat="dd/MM/yyyy"
                   placeholderText="تاريخ الملاد"
@@ -265,8 +268,8 @@ function Candidature() {
                 <input
                   className="text-black p-2 border rounded-xl  border-fake_black  w-full"
                   type="text"
-                  name="birthp"
-                  onChange={(e) => setBirthp(e.target.value)}
+                  name="lieu_naissance"
+                  value={formCandidature.lieu_naissance} onChange={handleChangeValue}
                   placeholder="مكان الملاد"
                   required
                 />
@@ -279,8 +282,8 @@ function Candidature() {
               </label>
               <input
                 className="text-black p-2 border rounded-xl  border-fake_black  w-full"
-                name="origin"
-                onChange={(e) => setOrigin(e.target.value)}
+                name="nationalite"
+                value={formCandidature.nationalite} onChange={handleChangeValue}
                 type="text"
                 placeholder="الجنسية"
                 required
@@ -319,7 +322,6 @@ function Candidature() {
                     type="radio"
                     id="divorced"
                     onChange={handleChangeSelect}
-
                     name="maritalStatus"
                     className="mr-2 h-4 w-4 border-fake_black rounded-xl"
                   />
@@ -350,9 +352,8 @@ function Candidature() {
                     type="radio"
                     id="female"
                     onChange={handleChangeSelect}
-
                     className="mr-2 h-4 w-4 border-fake_black rounded-xl"
-                    name="gender"
+                    name="genre"
                   />
                   <label htmlFor="female" className="text-fake_black">
                     أنثى
@@ -364,7 +365,7 @@ function Candidature() {
                     id="male"
                     onChange={handleChangeSelect}
                     className="mr-2 h-4 w-4 border-fake_black rounded-xl"
-                    name="gender"
+                    name="genre"
                   />
                   <label htmlFor="male" className="text-fake_black">
                     ذكر
@@ -381,8 +382,8 @@ function Candidature() {
                 <input
                   className="text-black p-2 border rounded-xl  border-fake_black  w-full"
                   type="text"
-                  name="passportNumber"
-                  onChange={(e) => setPassportNumber(e.target.value)}
+                  name="num_passeport"
+                  value={formCandidature.num_passeport} onChange={handleChangeValue}
                   placeholder="رقم جواز السفر :"
                   required
                 />
@@ -394,8 +395,8 @@ function Candidature() {
                 <input
                   className="text-black p-2 border rounded-xl  border-fake_black  w-full"
                   type="text"
-                  name="phoneNumber"
-                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  name="telephone"
+                  value={formCandidature.telephone} onChange={handleChangeValue}
                   placeholder=" رقم الهاتف:"
                   required
                 />
@@ -408,7 +409,7 @@ function Candidature() {
                   className="text-black p-2 border rounded-xl  border-fake_black  w-full"
                   type="text"
                   name="email"
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={formCandidature.email} onChange={handleChangeValue}
                   placeholder="  البريد الإلكتروني :"
                   required
                 />
@@ -426,9 +427,10 @@ function Candidature() {
                   الولاية:{" "}
                 </label>
                 <Select
-                
+                  name="wilaya"
                   styles={customStyles}
-                
+                  onChange={handleChangeWilaya}
+                  options={wilayas}
                   placeholder=" الولاية:"
                   isRtl={true}
                 />
@@ -438,9 +440,10 @@ function Candidature() {
                   الدائرة:{" "}
                 </label>
                 <Select
-                
+                  name="commune"
                   styles={customStyles}
-                  
+                  options={communes}
+                  onChange={handleChangeCommune}
                   placeholder=" الدائرة:"
                   isRtl={true}
                 />
@@ -456,7 +459,7 @@ function Candidature() {
                   className="text-black p-2 border rounded-xl  border-fake_black  w-full"
                   type="text"
                   name="address"
-                  onChange={(e) => setAddress(e.target.value)}
+                  value={formCandidature.address} onChange={handleChangeValue}
                   placeholder="العنوان الكامل"
                   required
                 />
@@ -469,8 +472,8 @@ function Candidature() {
                 <Select
                 
                   styles={customStyles}
-                  value={selectedOption}
-                  onChange={handleChangeSelect}
+                  //value={selectedOptionGroupage}
+                  onChange={handleChangeGroupage}
                   options={options}
                   placeholder="الزمرة الدموية"
                   isRtl={true}
@@ -485,7 +488,8 @@ function Candidature() {
                   className="text-black p-2 border rounded-xl  border-fake_black  w-full"
                   type="text"
                   placeholder="رقم التأمين الصحي"
-                  //nssiteh oumbe3 nwelli 3endeh
+                  name="nss"
+                  value={formCandidature.nss} onChange={handleChangeValue}
                   required
                 />
               </div>
@@ -500,30 +504,36 @@ function Candidature() {
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      id="myCheckbox"
+                      id="maladie_cronique_s"
+                      name="maladie_cronique_s"
+                      checked={formCandidature.maladie_cronique_s} onChange={handleChangeCheckbox}
                       className="mr-2 h-4 w-4  border-fake_black rounded-xl l"
                     />
-                    <label htmlFor="myCheckbox" className="text-fake_black">
+                    <label htmlFor="maladie_cronique_s" className="text-fake_black">
                       السكري
                     </label>
                   </div>
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      id="myCheckbox"
+                      id="maladie_cronique_r"
+                      name="maladie_cronique_r"
+                      checked={formCandidature.maladie_cronique_r} onChange={handleChangeCheckbox}
                       className="mr-2 h-4 w-4  border-fake_black rounded-xl l"
                     />
-                    <label htmlFor="myCheckbox" className="text-fake_black">
+                    <label htmlFor="maladie_cronique_r" className="text-fake_black">
                       الربو
                     </label>
                   </div>
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      id="myCheckbox"
+                      id="maladie_cronique_g"
+                      name="maladie_cronique_g"
+                      checked={formCandidature.maladie_cronique_g} onChange={handleChangeCheckbox}
                       className="mr-2 h-4 w-4  border-fake_black rounded-xl l"
                     />
-                    <label htmlFor="myCheckbox" className="text-fake_black">
+                    <label htmlFor="maladie_cronique_g" className="text-fake_black">
                       المناعة الذاتية
                     </label>
                   </div>
@@ -532,30 +542,36 @@ function Candidature() {
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      id="myCheckbox"
+                      id="maladie_cronique_ds"
+                      name="maladie_cronique_ds"
+                      checked={formCandidature.maladie_cronique_ds} onChange={handleChangeCheckbox}
                       className="mr-2 h-4 w-4  border-fake_black rounded-xl l"
                     />
-                    <label htmlFor="myCheckbox" className="text-fake_black">
+                    <label htmlFor="maladie_cronique_ds" className="text-fake_black">
                       ضغط الدم
                     </label>
                   </div>
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      id="myCheckbox"
+                      id="maladie_cronique_ms"
+                      name="maladie_cronique_ms"
+                      checked={formCandidature.maladie_cronique_ms} onChange={handleChangeCheckbox}
                       className="mr-2 h-4 w-4  border-fake_black rounded-xl l"
                     />
-                    <label htmlFor="myCheckbox" className="text-fake_black">
+                    <label htmlFor="maladie_cronique_ms" className="text-fake_black">
                       أمراض الدم
                     </label>
                   </div>
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      id="myCheckbox"
+                      id="maladie_cronique_n_m"
+                      name="maladie_cronique_n_m"
+                      checked={formCandidature.maladie_cronique_n_m} onChange={handleChangeCheckbox}
                       className="mr-2 h-4 w-4  border-fake_black rounded-xl l"
                     />
-                    <label htmlFor="myCheckbox" className="text-fake_black">
+                    <label htmlFor="maladie_cronique_n_m" className="text-fake_black">
                       لا يوجد
                     </label>
                   </div>
@@ -566,7 +582,7 @@ function Candidature() {
             <div className="flex  justify-around w-full mt-8">
               <label
                 className="text-fake_black mb-2 mt-2"
-                htmlFor="nationalité"
+                htmlFor="maladie_cronique_au"
               >
                 مرض مزمن أخر:
               </label>
@@ -574,24 +590,34 @@ function Candidature() {
                 className="text-black p-2 border   border-fake_black  rounded-xl  "
                 type="text"
                 placeholder="مرض مزمن أخر "
+                id="maladie_cronique_au"
+                name="maladie_cronique_au"
+                value={formCandidature.maladie_cronique_au} onChange={handleChangeValue}
                 required
               />
             </div>
      
-           
-            <Link to="/candidature_mahram">
+            {isVisible && 
+            <div><Link to="/candidature_mahram">
             <div className="flex justify-center items-center w-full mt-10">
-            <img
-              src={add}
-              className="text-fake_black h-[40px] w-[40px] ml-2 transition-transform duration-500 ease-in-out transform hover:scale-110 hover:cursor-pointer"
-              />
-          
-            <p className="text-xl text-fake_black">تسجيل المحرم للمرأة</p>
+              <img
+                src={add}
+                className="text-fake_black h-[40px] w-[40px] ml-2 transition-transform duration-500 ease-in-out transform hover:scale-110 hover:cursor-pointer"
+                />
+            
+              <p className="text-xl text-fake_black">تسجيل المحرم للمرأة</p>
             </div>
             </Link>
-          
-
-
+            <Select
+            
+              styles={customStyles}
+              options={condidatures}
+              placeholder="إختر محرم"
+              id="mahrem"
+              name="mahrem"
+              onChange={handleChangeCandidature}
+              isRtl={true}
+            /></div>}
           </div>
         </div>
 
@@ -599,7 +625,7 @@ function Candidature() {
         onClick={openConfModal}>
           تأكيد{" "}
         </button>
-        {isConfModalOpen && <ConfModal onClose={closeConfModal} />}
+        {isConfModalOpen && <ConfModal onClose={closeConfModal} onConfirm={handleSubmit} />}
       </div>
     </div>
   ); 

@@ -20,6 +20,18 @@ const getWilaya = async (req, res) => {
     res.status(200).json(wil)
 }
 
+const getCodeWilaya = async (req, res) => {
+    //const { code } = req.params
+    const code = req.query.fieldName; 
+    const fieldValue = req.query.fieldValue;
+    
+    const wil = await wilaya.find({[code]: fieldValue})
+    if(!wil){
+        return res.status(404).json({error: "vide"})
+    }
+    res.status(200).json(wil)
+}
+
 const createWilaya = async (req, res) => {
     const {code, ar_name, name} = req.body
     try {
@@ -65,6 +77,7 @@ module.exports = {
     createWilaya,
     getAllWilaya,
     getWilaya,
+    getCodeWilaya,
     deleteWilaya,
     updateWilaya,
 }

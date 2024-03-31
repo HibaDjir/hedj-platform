@@ -7,7 +7,6 @@ const getAllCommune = async (req, res) => {
 }
 
 const getCommune = async (req, res) => {
-    //const { code } = req.params
     const code = req.query.fieldName; 
     const minValue = parseInt(req.query.minValue);
     const maxValue = parseInt(req.query.maxValue);
@@ -20,6 +19,18 @@ const getCommune = async (req, res) => {
     };
 
     const wil = await commune.find(query)
+    if(!wil){
+        return res.status(404).json({error: "vide"})
+    }
+    res.status(200).json(wil)
+}
+
+const getCodeCommune = async (req, res) => {
+    //const { code } = req.params
+    const code = req.query.fieldName; 
+    const fieldValue = req.query.fieldValue;
+    
+    const wil = await commune.find({[code]: fieldValue})
     if(!wil){
         return res.status(404).json({error: "vide"})
     }
@@ -71,6 +82,7 @@ module.exports = {
     createCommune,
     getAllCommune,
     getCommune,
+    getCodeCommune,
     deleteCommune,
     updateCommune,
 }

@@ -3,6 +3,7 @@ const {
     createWilaya,
     getAllWilaya,
     getWilaya,
+    getCodeWilaya,
     deleteWilaya,
     updateWilaya,
 } = require('../controllers/wilayaControllers')
@@ -10,6 +11,8 @@ const {
 router.get('/All',getAllWilaya)
 
 router.get('/:id', getWilaya)
+
+router.get('/codeWil/find', getCodeWilaya)
 
 router.post('/', createWilaya)
 

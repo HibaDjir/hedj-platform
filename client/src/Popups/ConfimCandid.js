@@ -1,20 +1,7 @@
 import React, { useRef } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 
-function ConfirmCandid({ onClose }) {
+function ConfirmCandid({ onClose, onConfirm }) {
   const modalRef = useRef();
-  const navigate = useNavigate();
-
-  const closeModal = (e) => {
-    if (modalRef.current && modalRef.current.contains(e.target)) {
-      onClose();
-    }
-  };
-
-  const handleConfirm = () => {
-    navigate("/homelgin");
-  };
 
   return (
     <div
@@ -40,7 +27,8 @@ function ConfirmCandid({ onClose }) {
             <button
               type="button"
               className="bg-[#D4A373] text-fake_black hover:bg-[#AD7946] p-2 rounded-2xl w-full mt-2"
-              onClick={handleConfirm}
+              onClick={onConfirm}
+              //onClick={handleConfirm}
             >
               تأكيد
             </button>

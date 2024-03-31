@@ -2,6 +2,7 @@ const router = require('express').Router();
 const {
     createCandidature,
     getAllCandidature,
+    getFirstCandidature,
     getCandidature,
     deleteCandidature,
     updateCandidature,
@@ -9,7 +10,9 @@ const {
 
 router.get('/', getAllCandidature)
 
-router.get('/find', getCandidature)
+router.get('/:id', getFirstCandidature)
+
+router.get('/genre/find', getCandidature)
 
 router.post('/', createCandidature)
 

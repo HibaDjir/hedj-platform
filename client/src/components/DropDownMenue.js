@@ -1,12 +1,35 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import user from "../images/User.png";
 import log_out from "../images/log_out.png";
 import { Link } from 'react-router-dom';
+
+export let idCandidat = 'szdzdzdz';
 
 const DropdownMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
   const timerRef = useRef(null);
+  const [content, setContent] = useState('المستخدم');
+
+  const [candidature, setCandidature] = useState([]);
+
+  useEffect(() => {
+      fetchCandidature();
+  }, []);
+
+  const fetchCandidature = async () => {
+      try {
+          const response = await fetch('http://localhost:3000/api/candidature/');
+          if (!response.ok) {
+              throw new Error('Failed to fetch data');
+          }
+          const jsonData = await response.json();
+          setCandidature(jsonData);
+      } catch (error) {
+          console.error('Error fetching data:', error);
+      }
+  };
+
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -27,6 +50,13 @@ const DropdownMenu = () => {
   const handleMouseLeave = () => {
     closeMenu();
   };
+  
+  const handleClick = (id, nomP) => {
+    setContent(nomP);
+    idCandidat = id;
+    setIsOpen(!isOpen);
+    clearTimeout(timerRef.current);
+  };
 
   return (
     <div
@@ -40,7 +70,8 @@ const DropdownMenu = () => {
         onClick={toggleMenu}
       >
         <img src={user} className='w-[25px] h-[25px] mr-2' alt="User Icon" />
-        <span>المستخدم</span>
+        <span>{content}</span>
+        
       </button>
 
       {isOpen && (
@@ -50,30 +81,22 @@ const DropdownMenu = () => {
           onMouseLeave={handleMouseLeave}
         >
           <div role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-            <Link
-              to=""
-              className=" px-4 py-2 text-sm text-fake_black hover:bg-brown_palette hover:text-gray-900 flex items-center"
-              role="menuitem"
-            >
-              <img src={user} className='w-6 h-6 mr-2' alt="User Icon" />
-              <span>المستخدم 1</span>
-            </Link>
-            <Link
-              to=""
-              className=" px-4 py-2 text-sm text-fake_black hover:bg-brown_palette hover:text-gray-900 flex items-center"
-              role="menuitem"
-            >
-              <img src={user} className='w-6 h-6 mr-2' alt="User Icon" />
-              <span>المستخدم 2</span>
-            </Link>
-            <Link
-              to="/homelgin"
-              className=" px-4 py-2 text-sm text-fake_black hover:bg-brown_palette hover:text-gray-900 flex items-center"
-              role="menuitem"
+            {candidature.map(candidat => (
+              <button
+                className="flex items-center px-4 py-2 text-sm font-medium text-fake_black bg-transparent rounded-md focus:outline-none transition duration-300 ease-in-out"
+                onClick={() => handleClick(candidat._id, candidat.nom+" "+candidat.prenom)}
+              >
+                  <img src={user} className='w-6 h-6 mr-2' alt="User Icon" />
+                  <span>{candidat.nom} {candidat.prenom}</span>
+              </button>
+            ))}
+            <button
+              className="flex items-center px-4 py-2 text-sm font-medium text-fake_black bg-transparent rounded-md focus:outline-none transition duration-300 ease-in-out"
+              onClick={toggleMenu}
             >
               <img src={user} className='w-6 h-6 mr-2' alt="User Icon" />
               <span>صاحب الحساب</span>
-            </Link>
+            </button>
             <Link
               to="/logout"
               className=" px-4 py-2 text-sm text-fake_black hover:bg-brown_palette hover:text-gray-900 flex items-center"
