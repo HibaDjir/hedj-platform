@@ -174,6 +174,38 @@ function Candidature() {
           [name]: value
       }));
   };
+
+  const [AllCandidatures, setAllCandidatures] = useState([]);
+
+  useEffect(() => {
+      fetchAllCandidatures();
+  }, []);
+
+  const fetchAllCandidatures = async () => {
+      try {
+          const response = await fetch('http://localhost:3000/api/candidature/');
+          if (!response.ok) {
+              throw new Error('Failed to fetch data');
+          }
+          const jsonData = await response.json();
+          setAllCandidatures(jsonData);
+      } catch (error) {
+          console.error('Error fetching data:', error);
+      }
+  };
+
+  const getNumPassCandidature = async (num_pass) => {
+    try {
+        const response = await fetch('http://localhost:3000/api/candidature/genre/find?fieldName=num_passeport&fieldValue='+num_pass);
+        if (!response.ok) {
+            throw new Error('Failed to fetch data');
+        }
+        const jsonData = await response.json();
+        alert(jsonData.length)
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+  }
   
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -182,6 +214,8 @@ function Candidature() {
         var civilite = formCandidature.civilite;
         var genre = formCandidature.genre;
         var maladie_cronique = "[";
+        var id_mahrem = selectedOptionCandidature;
+        if(genre === 'ذكر') id_mahrem = null;
         
         if(formCandidature.maladie_cronique_s === true) maladie_cronique = maladie_cronique + ", السكري";
         if(formCandidature.maladie_cronique_ds === true) maladie_cronique = maladie_cronique + ", ضغط الدم";
@@ -193,16 +227,33 @@ function Candidature() {
         if(formCandidature.maladie_cronique_n_m === true) maladie_cronique = "";
 
         const wilaya = selectedOptionWilaya, commune = selectedOptionCommune, groupage = selectedOptionGroupage.value,
-        id_mahrem = selectedOptionCandidature, date_naissance = selectedDate, lieu_naissance = formCandidature.lieu_naissance,
+        date_naissance = selectedDate, lieu_naissance = formCandidature.lieu_naissance,
         nom = formCandidature.nom, prenom = formCandidature.prenom, nationalite = formCandidature.nationalite,
         num_passeport = formCandidature.num_passeport, telephone = formCandidature.telephone, email = formCandidature.email,
         address = formCandidature.address, nss = formCandidature.nss;
-        
-        const response = await axios.post('http://localhost:3000/api/candidature', { 
-          nom, prenom, date_naissance, lieu_naissance, nationalite, civilite, genre, num_passeport, telephone, email, wilaya, commune, address, groupage, nss, maladie_cronique,id_mahrem
-        });
-        alert("Enregistrement avec succées");
-        navigate("/homelgin");
+        if(genre === 'أنثى' && id_mahrem == null){
+          alert("Il est nécessaire de compléter El Mahrem pour un candidat féminin.");// le message de blocage pour un candidat féminin ne remplie pas el mahrem
+        }else{
+          
+          try {
+                const response = await fetch('http://localhost:3000/api/candidature/genre/find?fieldName=num_passeport&fieldValue='+num_passeport);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+                const jsonData = await response.json();
+                if(jsonData.length == 0){
+                  const response = await axios.post('http://localhost:3000/api/candidature', { 
+                    nom, prenom, date_naissance, lieu_naissance, nationalite, civilite, genre, num_passeport, telephone, email, wilaya, commune, address, groupage, nss, maladie_cronique,id_mahrem
+                  });
+                  alert("Enregistrement avec succées");
+                  navigate("/homelgin");
+                }else{
+                  alert("Le numéro de passeport de Cette candidat existe déjà !!");// le message de blocage pour un candidature dèjà inscris
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
     } catch (error) {
       alert("Erreur d'enregistrement :\n"+error);
     }

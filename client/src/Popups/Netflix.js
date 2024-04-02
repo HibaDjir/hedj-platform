@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import user from "../images/User.png";
 import user_out from "../images/User_outlined.png";
@@ -14,6 +14,27 @@ function Netflix({ onClose }) {
 
   const closeModal = () => {
     onClose();
+  };
+
+  
+
+  const [candidature, setCandidature] = useState([]);
+
+  useEffect(() => {
+      fetchCandidature();
+  }, []);
+
+  const fetchCandidature = async () => {
+      try {
+          const response = await fetch('http://localhost:3000/api/candidature/');
+          if (!response.ok) {
+              throw new Error('Failed to fetch data');
+          }
+          const jsonData = await response.json();
+          setCandidature(jsonData);
+      } catch (error) {
+          console.error('Error fetching data:', error);
+      }
   };
 
   return (
@@ -37,16 +58,18 @@ function Netflix({ onClose }) {
           </button>
         </div>
         <div className="flex justify-center items-center">
-          <div className="flex flex-col items-center mr-8">
-            <Link to="/home_each_profile">
-              <img
-                src={user_out}
-                className="w-16 h-16 mb-2 transition-transform hover:scale-110"
-                alt="User Outlined"
-              />
-            </Link>
-            <p className="text-sm text-fake_black">الاسم واللقب</p>
-          </div>
+          {candidature.map(candidat => (
+            <div className="flex flex-col items-center mr-8">
+              <Link to="/home_each_profile">
+                <img
+                  src={user_out}
+                  className="w-16 h-16 mb-2 transition-transform hover:scale-110"
+                  alt="User Outlined"
+                />
+              </Link>
+              <p className="text-sm text-fake_black">{candidat.nom}<br />{candidat.prenom}</p>
+            </div>
+          ))}
           <div className="flex flex-col items-center">
             <Link to="/candidature">
               <img
