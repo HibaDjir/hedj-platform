@@ -70,6 +70,10 @@ const CandidatureSchema = new schema({
     id_mahrem:{
         type: String,
         require: true,
+    },
+    id_session:{
+        type: String,
+        require: true,
     }
 }, { timeseries: true})
 

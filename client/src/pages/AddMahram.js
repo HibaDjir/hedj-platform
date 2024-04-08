@@ -78,12 +78,22 @@ function  AddMahram() {
   };
 
   const [wilayas, setWilayas] = useState([]);
+  const [id_session, setSession] = useState(null);
+  const [annee, setAnnee] = useState(null);
 
   useEffect(() => {
     axios.get('http://localhost:3000/api/wilaya/All')
             .then(response => {
               const additionalOptions = response.data.map(wilaya => ({value: wilaya.code, label: wilaya.ar_name}));
               setWilayas(additionalOptions);
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des options :', error);
+            });
+
+    axios.get('http://localhost:3000/api/session/stateSession/find?fieldName=state&fieldValue=En cours')
+            .then(response => {
+              setSession(response.data._id);setAnnee(response.data.annee);
             })
             .catch(error => {
                 console.error('Erreur lors de la récupération des options :', error);
@@ -177,11 +187,32 @@ function  AddMahram() {
         num_passeport = formCandidature.num_passeport, telephone = formCandidature.telephone, email = formCandidature.email,
         address = formCandidature.address, nss = formCandidature.nss;
         
-        const response = await axios.post('http://localhost:3000/api/candidature', { 
-          nom, prenom, date_naissance, lieu_naissance, nationalite, civilite, genre, num_passeport, telephone, email, wilaya, commune, address, groupage, nss, maladie_cronique,id_mahrem
-        });
-        alert("Enregistrement avec succées");
-        navigate("/homelgin");
+        try {
+          const response = await fetch('http://localhost:3000/api/candidature/genre/find?fieldName=num_passeport&fieldValue='+num_passeport);
+          if (!response.ok) {
+              throw new Error('Failed to fetch data');
+          }
+          const jsonData = await response.json();
+          var canAdd = false;
+          for (const key in jsonData) {
+            if(jsonData[key].id_session === id_session) {
+              canAdd = true; 
+              break;
+            }
+          }
+          if(canAdd === false){
+            const response = await axios.post('http://localhost:3000/api/candidature', { 
+              nom, prenom, date_naissance, lieu_naissance, nationalite, civilite, genre, num_passeport, telephone, email, wilaya, commune, address, groupage, nss, maladie_cronique,id_mahrem,id_session
+            });
+            alert("Enregistrement avec succées");
+            navigate("/homelgin");
+          }else{
+            alert("Le numéro de passeport de Cette candidat existe déjà dans l'année "+annee );// le message de blocage pour un candidature dèjà inscris
+          }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+
     } catch (error) {
       alert("Erreur d'enregistrement :\n"+error);
     }

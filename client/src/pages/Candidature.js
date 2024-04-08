@@ -82,9 +82,11 @@ function Candidature() {
   const closeConfModal = () => {
     setIsConfModalOpen(false);
   };
-
+  
   const [wilayas, setWilayas] = useState([]);
   const [condidatures, setCondidature] = useState([]);
+  const [id_session, setSession] = useState(null);
+  const [annee, setAnnee] = useState(null);
 
   useEffect(() => {
     axios.get('http://localhost:3000/api/wilaya/All')
@@ -100,6 +102,14 @@ function Candidature() {
             .then(response => {
               const additionalOptions = response.data.map(condidature => ({value: condidature._id, label: condidature.nom +" "+ condidature.prenom}));
               setCondidature(additionalOptions);
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des options :', error);
+            });
+
+    axios.get('http://localhost:3000/api/session/stateSession/find?fieldName=state&fieldValue=En cours')
+            .then(response => {
+              setSession(response.data._id);setAnnee(response.data.annee);
             })
             .catch(error => {
                 console.error('Erreur lors de la récupération des options :', error);
@@ -193,19 +203,6 @@ function Candidature() {
           console.error('Error fetching data:', error);
       }
   };
-
-  const getNumPassCandidature = async (num_pass) => {
-    try {
-        const response = await fetch('http://localhost:3000/api/candidature/genre/find?fieldName=num_passeport&fieldValue='+num_pass);
-        if (!response.ok) {
-            throw new Error('Failed to fetch data');
-        }
-        const jsonData = await response.json();
-        alert(jsonData.length)
-    } catch (error) {
-        console.error('Error fetching data:', error);
-    }
-  }
   
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -241,14 +238,21 @@ function Candidature() {
                     throw new Error('Failed to fetch data');
                 }
                 const jsonData = await response.json();
-                if(jsonData.length == 0){
+                var canAdd = false;
+                for (const key in jsonData) {
+                  if(jsonData[key].id_session === id_session) {
+                    canAdd = true; 
+                    break;
+                  }
+                }
+                if(canAdd === false){
                   const response = await axios.post('http://localhost:3000/api/candidature', { 
-                    nom, prenom, date_naissance, lieu_naissance, nationalite, civilite, genre, num_passeport, telephone, email, wilaya, commune, address, groupage, nss, maladie_cronique,id_mahrem
+                    nom, prenom, date_naissance, lieu_naissance, nationalite, civilite, genre, num_passeport, telephone, email, wilaya, commune, address, groupage, nss, maladie_cronique,id_mahrem,id_session
                   });
                   alert("Enregistrement avec succées");
                   navigate("/homelgin");
                 }else{
-                  alert("Le numéro de passeport de Cette candidat existe déjà !!");// le message de blocage pour un candidature dèjà inscris
+                  alert("Le numéro de passeport de Cette candidat existe déjà dans l'année "+annee );// le message de blocage pour un candidature dèjà inscris
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
