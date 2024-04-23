@@ -17,6 +17,7 @@ function Modal({ onClose }) {
       .then(res=>{
         if(res.data.token){
           localStorage.setItem('token',res.data.token)
+          localStorage.setItem('loggedIn','true')
         }
         alert("logged in")
         if(res.data.Role === 'admin'){

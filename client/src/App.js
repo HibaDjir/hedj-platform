@@ -8,11 +8,11 @@ import EmailConfirmation from "./pages/Email_confirmation";
 import Navbar from "./components/Navbar";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "./index";
-
 import Manassik from "../src/pages/Manassik";
 import Candidature from "./pages/Candidature";
 import UserProfile from "./pages/UserProfile";
 function App() {
+  const isLoggedIn=localStorage.getItem('loggedIn')
   return (
     <Router>
       <div className="App">
@@ -20,7 +20,7 @@ function App() {
         <Routes>
         <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/homelgin" element={<Home_log_in />} />  
+          <Route path="/homelgin" element={isLoggedIn==="true"?<Home_log_in />: <Home/>} />  
           <Route path="/candidature" element={<Candidature />} />
           <Route path="/user_profile" element={<UserProfile/>} />
 
