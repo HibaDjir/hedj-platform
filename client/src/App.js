@@ -8,6 +8,7 @@ import EmailConfirmation from "./pages/Email_confirmation";
 import Navbar from "./components/Navbar";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "./index";
+
 import RequireAuth from "./protectingRoutes/RequireAuth";
 
 import Manassik from "../src/pages/Manassik";
@@ -18,6 +19,7 @@ import UserProfile from "./pages/UserProfile";
 import Home_each_profile from "./pages/Home_each_profile";
 import Cansulter_cand from "./pages/Consulter_candidature";
 function App() {
+  const isLoggedIn=localStorage.getItem('loggedIn')
   return (
     <Router>
       <div className="App">

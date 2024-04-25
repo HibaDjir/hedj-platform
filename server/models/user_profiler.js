@@ -49,18 +49,19 @@ const validateSignup = (data) => {
 const validateLog = (data) => {
     const schema = Joi.object({
       email: Joi.string().email().required().label("Email"),
-      
+
       password: Joi.string().required().label("Password"),
     });
     return schema.validate(data);
   };
-  // const validatePassword = (data) => {
-  //   const schema = Joi.object({
-  //     password: Joi.string().required().label("Password")
-  //   });
-  //   return schema.validate(data);
-  // };
-  
 
+  const ValidateResetPassword=(data)=>{
+    const schema = Joi.object({
+    password: passwordComplexity().required().label("Password"),
+  });
+	return schema.validate(data);
+  }
 
-module.exports = { User, validateSignup ,validateLog};
+ 
+
+module.exports = { User, validateSignup ,validateLog, ValidateResetPassword };

@@ -1,7 +1,8 @@
 
 const jwt=require('jsonwebtoken')
 const Joi = require("joi");
-const { User, validateLog, validateSignup} = require("../models/user_profiler");
+const { User, validateLog, validateSignup,ValidateResetPassword } = require("../models/user_profiler");
+
 const bcrypt = require("bcrypt");
 const sendEmail=require('../util/sendEmail')
 
@@ -122,7 +123,11 @@ exports.forgotPassword=async(req,res,next)=>{
 exports.resetPassord = async(req, res) =>{
 	const {id, token} = req.params
 	const {password} = req.body
-	
+
+	const { error } = ValidateResetPassword(req.body);
+	if (error)
+		return res.status(400).send({ message: error.details[0].message });
+
 	const oldUser=await User.findOne({_id: id})
 		if(!oldUser){
 			return res.status(401).send({message: "User does not exist"})

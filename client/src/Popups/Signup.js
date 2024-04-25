@@ -12,6 +12,8 @@ function Modal({ onClose }) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const handleSubmit =  (e) => {
     e.preventDefault();
@@ -19,16 +21,32 @@ function Modal({ onClose }) {
       setErrorMessage('Passwords do not match');
       return;
     }
+    setIsLoading(true);
+    
     axios.post('http://localhost:3000/api/users/signup', {firstName,lastName,email,password})
     .then(res=>{
-      alert("created")
+      setIsLoading(false);
+      alert("تم إنشاء الحساب بنجاح! تفقد حسابك البريدي");
+      onClose();
+        if (res.ok) {
+        // Clear form fields
+        setFirstName('');
+        setLastName('');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+        // Show success alert
+      }
+
     }).catch(err => {
       if (err.response && err.response.data && err.response.data.message) {
         setErrorMessage(err.response.data.message);
       } else {
         setErrorMessage('An error occurred. Please try again later.');
       }
-      console.log(err)})
+      console.log(err)
+      
+    })
   };
   //
 
@@ -122,8 +140,8 @@ function Modal({ onClose }) {
               type="submit"
               className="bg-[#D4A373] text-white hover:bg-[#AD7946] p-2 rounded-2xl w-full"
             >
-              <Link to="/home">تأكيد</Link>
-            </button>
+              {isLoading ? 'جاري المعالجة...' : <Link to="/home">تأكيد</Link>}
+                          </button>
             {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
 
           </form>

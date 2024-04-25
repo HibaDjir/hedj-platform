@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
 import { Link,useNavigate  } from "react-router-dom";
-import { useLogin } from "../hooks/useLoginv2";
 import { useState } from "react";
 import { useAuthContext } from '../hooks/useAuthContext'
 
@@ -12,14 +11,16 @@ function Modal({ onClose }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null)
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
     const { dispatch } = useAuthContext()
     
     const navigate=useNavigate()
 
     const handleSubmit = async (e) =>{
       e.preventDefault();
-       const response = await fetch('http://localhost:3000/api/users/login', {
+      setIsLoading(true);
+
+      const response = await fetch('http://localhost:3000/api/users/login', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ email, password })
@@ -32,20 +33,19 @@ function Modal({ onClose }) {
 
 
     if (response.status !== 200) {
-      setIsLoading(false)
       setError(json.message)
-    }else if( response.status===200){
+    }else if( response.status===200 ){
       // save the user to local storage
       localStorage.setItem('user', JSON.stringify(json))
       // update the auth context
       dispatch({type: 'LOGIN', payload: json})
-      // update loading state
-      setIsLoading(false)
       // Navigate only if there's no error
       navigate('/homelgin',{replace: true})
+      setIsLoading(false);
     }
 
    
+
     }
   //
  
@@ -104,10 +104,9 @@ function Modal({ onClose }) {
 
             <button
               type="submit"
-              
               className="bg-[#D4A373] text-white hover:bg-[#AD7946] p-2 rounded-2xl w-full mt-2 "
             >
-              <Link to="/home">تأكيد</Link>
+              {isLoading ? 'جاري المعالجة...' : <Link to="/home">تأكيد</Link>}
             </button>
             {error && <p className="text-red-500 mb-4">{error}</p>}
           </form>
@@ -120,24 +119,3 @@ function Modal({ onClose }) {
 
 export default Modal;
 
-   // alert("logged in")
-     
-      // axios.post('http://localhost:3000/api/users/login', {email,password})
-      // .then(res=>{
-      //   if(res.data.token){
-      //     localStorage.setItem('token',res.data.token)
-      //   }
-      //   alert("logged in")
-      //   if(res.data.Role === 'admin'){
-      //     navigate('/dashboard')
-      //   }else{
-      //     navigate('/homelgin')
-      // }
-      // }).catch(err => {
-      //   console.log(err)
-      //   if (err.response && err.response.data && err.response.data.message) {
-      //     setErrorMessage(err.response.data.message);
-      //   } else {
-      //     setErrorMessage('An error occurred. Please try again later.');
-      //   }
-      // })
