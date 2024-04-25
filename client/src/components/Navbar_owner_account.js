@@ -8,8 +8,6 @@ import user from "../images/User.png";
 
 function Navbar_owner_account() {
 
-
-
   
   const [isNetflixModalOpen, setIsNetflixModalOpen] = useState(false);
   const openNetflixModal = () => {
@@ -132,6 +130,7 @@ function Navbar_owner_account() {
         </ul>
       </div>
     </div>
+
   );
 }
 

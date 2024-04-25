@@ -4,22 +4,24 @@ import { useState } from "react";
 import axios from 'axios'
 
 function Modal({ onClose }) {
-  
+    
   //
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit =  (e) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      setErrorMessage('Passwords do not match');
+      return;
+    }
     axios.post('http://localhost:3000/api/users/signup', {firstName,lastName,email,password})
     .then(res=>{
       alert("created")
-      if(res.data.token){
-        localStorage.setItem('token',res.data.token)
-      }
     }).catch(err => {
       if (err.response && err.response.data && err.response.data.message) {
         setErrorMessage(err.response.data.message);
@@ -105,6 +107,17 @@ function Modal({ onClose }) {
                 required
               />
             </div>
+            <label className="text-fake_black mb-2" htmlFor="password">
+            تأكيد كلمة السر
+           </label>
+            <input
+            className="text-black mb-2 mt-2 p-2 border rounded-2xl w-full"
+            type="password"
+            placeholder="تأكيد كلمة السر "
+             value={confirmPassword}
+             onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+           />
             <button
               type="submit"
               className="bg-[#D4A373] text-white hover:bg-[#AD7946] p-2 rounded-2xl w-full"

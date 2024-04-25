@@ -54,7 +54,7 @@ function Netflix({ onClose }) {
             <p className="text-lg font-bold text-brown_palette">اسم المستخدم</p>
           </div>
           <button onClick={onClose} className="text-brown_palette">
-            تسجيل الخروج
+            تسجيل الخروج  
           </button>
         </div>
         <div className="flex justify-center items-center">

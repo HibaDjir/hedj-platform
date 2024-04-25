@@ -8,6 +8,7 @@ import EmailConfirmation from "./pages/Email_confirmation";
 import Navbar from "./components/Navbar";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "./index";
+import RequireAuth from "./protectingRoutes/RequireAuth";
 
 import Manassik from "../src/pages/Manassik";
 import Candidature from "./pages/Candidature";
@@ -24,12 +25,12 @@ function App() {
         <Routes>
         <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/homelgin" element={<Home_owner_account />} />  
-          <Route path="/candidature" element={<Candidature />} />
-          <Route path="/candidature_mahram" element={<Candidature_mahram />} />
-          <Route path="/user_profile" element={<UserProfile/>} />
-          <Route path="/home_each_profile" element={<Home_each_profile />} /> 
-          <Route path="/consulter_cand" element={<Cansulter_cand />} /> 
+          <Route path="/homelgin" element={<RequireAuth><Home_owner_account /></RequireAuth>} />  
+          <Route path="/candidature" element={<RequireAuth><Candidature /></RequireAuth>} />
+          <Route path="/candidature_mahram" element={<RequireAuth><Candidature_mahram /></RequireAuth>} />
+          <Route path="/user_profile" element={<RequireAuth><UserProfile/></RequireAuth>} />
+          <Route path="/home_each_profile" element={<RequireAuth><Home_each_profile /></RequireAuth>} /> 
+          <Route path="/consulter_cand" element={<RequireAuth><Cansulter_cand /></RequireAuth>} /> 
           <Route path="/nussuki" element={<Manassik />} />
           <Route
             path="/resetPassword/:id/:token"
