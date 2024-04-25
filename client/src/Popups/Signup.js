@@ -17,9 +17,9 @@ function Modal({ onClose }) {
     axios.post('http://localhost:3000/api/users/signup', {firstName,lastName,email,password})
     .then(res=>{
       alert("created")
-      if(res.data.token){
-        localStorage.setItem('token',res.data.token)
-      }
+      // if(res.data.token){
+      //   localStorage.setItem('token',res.data.token)
+      // }
     }).catch(err => {
       if (err.response && err.response.data && err.response.data.message) {
         setErrorMessage(err.response.data.message);

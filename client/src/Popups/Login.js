@@ -17,7 +17,7 @@ function Modal({ onClose }) {
       .then(res=>{
         if(res.data.token){
           localStorage.setItem('token',res.data.token)
-          localStorage.setItem('loggedIn','true')
+          localStorage.setItem(' ','true')
         }
         alert("logged in")
         if(res.data.Role === 'admin'){
@@ -29,6 +29,7 @@ function Modal({ onClose }) {
         console.log(err)
         if (err.response && err.response.data && err.response.data.message) {
           setErrorMessage(err.response.data.message);
+          console.log(errorMessage)
         } else {
           setErrorMessage('An error occurred. Please try again later.');
         }

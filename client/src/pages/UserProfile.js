@@ -13,7 +13,7 @@ function UserProfile() {
               <label htmlFor="firstName" className='block text-fake_black mb-1'>الإسم</label>
               <input
                 id="firstName"
-                className="text-black p-2 border rounded-xl border-fake_black w-full"
+                className="text-black p-2 border rounded-xl border-fake_black w-full cursor-pointer"
                 type="text"
                 placeholder="الإسم"
                 readOnly
@@ -25,7 +25,7 @@ function UserProfile() {
               <label htmlFor="lastName" className='block text-fake_black mb-1'>اللقب</label>
               <input
                 id="lastName"
-                className="text-black p-2 border rounded-xl border-fake_black w-full"
+                className="text-black p-2 border rounded-xl border-fake_black w-full cursor-pointer"
                 type="text"
                 placeholder="اللقب"
                 readOnly
@@ -37,7 +37,7 @@ function UserProfile() {
               <label htmlFor="email" className='block text-fake_black mb-1'>البريد اللإلكتروني</label>
               <input
                 id="email"
-                className="text-black p-2 border rounded-xl border-fake_black w-full"
+                className="text-black p-2 border rounded-xl border-fake_black w-full cursor-pointer"
                 type="email"
                 placeholder="البريد اللإلكتروني"
                 readOnly
@@ -49,7 +49,7 @@ function UserProfile() {
               <label htmlFor="password" className='block text-fake_black mb-1'>كلمة السر</label>
               <input
                 id="password"
-                className="text-black p-2 border rounded-xl border-fake_black w-full"
+                className="text-black p-2 border rounded-xl border-fake_black w-full cursor-pointer"
                 type="password"
                 placeholder="********"
                 readOnly

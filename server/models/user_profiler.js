@@ -49,7 +49,13 @@ const validateLog = (data) => {
     });
     return schema.validate(data);
   };
+  const ValidateResetPassword=(data)=>{
+    const schema = Joi.object({
+    password: passwordComplexity().required().label("Password"),
+  });
+	return schema.validate(data);
+  }
 
  
 
-module.exports = { User, validateSignup ,validateLog };
+module.exports = { User, validateSignup ,validateLog, ValidateResetPassword };

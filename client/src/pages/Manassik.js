@@ -10,8 +10,10 @@ import bold_guy from "../images/NussukiPic/bold-guy.jpg";
 import Tawaf from "../images/NussukiPic/tawaf_01.jpg";
 import LastTawaf from "../images/NussukiPic/tawaf_02.jpg";
 import Navbar from "../components/Navbar";
-import Navbarlogin from "../components/NavbarLogin"
+import Navbarlogin from "../components/Navbar_owner_account"
 import React, { useEffect, useState } from 'react';
+
+
 // Function to check user authentication status
 async function checkAuthentication() {
   try {
@@ -38,7 +40,6 @@ function Manassik() {
 
   return (
     <div dir="rtl">
- 
     {isAuthenticated ? <Navbarlogin /> : <Navbar />}
       <div className="w-full bg-white_palette py-16 px-4 ">
         <div className="max-w-[1240px] mx-auto grid md:grid-cols-3">
