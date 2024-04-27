@@ -32,7 +32,7 @@ function App() {
           <Route path="/consulter_cand" element={<Cansulter_cand />} /> 
           <Route path="/nussuki" element={<Manassik />} />
           <Route
-            path="/resetPassword/:id/:token"
+            path="/resetPassword/:token"
             element={<Resset_password />}
           />
           <Route path="/mail_conf" element={<EmailConfirmation />} />

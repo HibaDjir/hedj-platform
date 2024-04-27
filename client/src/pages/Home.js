@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Hero  from './Hero';
@@ -45,7 +45,12 @@ import bold_guy from "../images/NussukiPic/bold-guy.jpg";
 import Tawaf from "../images/NussukiPic/tawaf_01.jpg";
 import LastTawaf from "../images/NussukiPic/tawaf_02.jpg";
 
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+
 function Home() {
+
+  const navigate = useNavigate();
   const settings = {
     dots: true,
     infinite: true,
@@ -318,6 +323,24 @@ function Home() {
     newExpandState[index] = !newExpandState[index];
     setExpandState(newExpandState);
   };
+  useEffect(()=>{
+    const cookies = document.cookie.split(';');
+    const tokenCookie = cookies.find(cookie => cookie.trim().startsWith('token='));
+    const token = tokenCookie ? tokenCookie.split('=')[1] : null;
+    axios.get('http://localhost:3000/TestLogin?fieldName=token&fieldValue='+token)
+            .then(response => {
+              axios.get('http://localhost:3000/api/users/'+response.data)
+                      .then(responseF => {
+                        navigate("/homelgin");
+                      })
+                      .catch(error => {
+                          console.error('Erreur lors de la récupération des options :', error);
+                      });
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des options :', error);
+            });
+  }, [])
   return (
 
   <div  className='w-full h-full flex flex-col justify-center items-center bg-white_palette'>

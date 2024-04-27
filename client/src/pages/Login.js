@@ -12,7 +12,6 @@ function Login() {
     e.preventDefault();
     axios.post('http://localhost:3000/api/users/login', {email,password})
     .then(res=>{
-      alert("logged in")
       if(res.data.Role === 'admin'){
         navigate('/dashboard')
       }else{
