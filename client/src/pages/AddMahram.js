@@ -3,58 +3,71 @@ import Select from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ar from "date-fns/locale/ar";
-import ConfModal from "../Popups/ConfirmCandMahram";
+import ConfModal from "../Popups/ConfimCandid";
+
+
 import Cnd_bg from "../images/MOSQUE.jpg";
-import add from "../images/add_khel.png";
+
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 function  AddMahram() {
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [birthp, setBirthp] = useState('');
-  const [origin, setOrigin] = useState('');
-  const [passportNumber, setPassportNumber] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [email, setEmail] = useState('');
-  const [address, setAddress] = useState('');
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [isFormFilled, setIsFormFilled] = useState(false);
-
-  const handleChangeSelect = (selectedOption) => {
-    setSelectedOption(selectedOption);
-  };
-
-  useEffect(() => {
-    const firstNameFilled = firstName!== '';
-    const lastNameFilled = lastName!== '';
-    const selectedDateFilled = selectedDate !== null;
-   
-    const originFilled = origin!== '';
-    const passportNumberFilled = passportNumber !== '';
-    const phoneNumberFilled = phoneNumber!== '';
-    const emailFilled = email!== '';
-    const addressFilled = address!== '';
-    const bloodGroupSelected = selectedOption !== null;
-    
-    const isFormValid =
-      firstNameFilled &&
-      lastNameFilled &&
-      selectedDateFilled &&
   
-      originFilled &&
-      passportNumberFilled &&
-      phoneNumberFilled &&
-      emailFilled &&
-      addressFilled &&
-      bloodGroupSelected;
-    
-    setIsFormFilled(isFormValid);
-  }, [firstName, lastName, selectedDate, birthp, origin, passportNumber, phoneNumber, email, address, selectedOption]);
+  const navigate = useNavigate();
+  const [formCandidature, setFormCandidature] = useState({
+    nom: '',
+    prenom: '',
+    lieu_naissance: '',
+    nationalite: '',
+    civilite: '',
+    genre: 'ذكر',
+    num_passeport: '',
+    telephone: '',
+    email: '',
+    address: '',
+    nss: '',
+    maladie_cronique_s: false,
+    maladie_cronique_r: false,
+    maladie_cronique_n_m: false,
+    maladie_cronique_ms: false,
+    maladie_cronique_g: false,
+    maladie_cronique_ds: false,
+    maladie_cronique_au: '',
+  });
+  const [selectedDate, setSelectedDate] = useState(null);
+  const handleChangeSelect = (selectedOption) => {
+    const { name, id } = selectedOption.target;
+    switch (id) {
+      case "single":
+        formCandidature.civilite = "اعزب/عزباء";
+        break;
+      case "married":
+        formCandidature.civilite = "متزوج(ة)";
+        break;
+      case "divorced":
+        formCandidature.civilite = "مطلق(ة)";
+        break;
+      case "widowed":
+        formCandidature.civilite = "ارمل(ة)";
+        break;
+      case "female":
+        formCandidature.genre = "أنثى";
+        break;
+      case "male":
+        formCandidature.genre = "ذكر";
+        break;
+      default:
+        // code block to be executed if none of the cases match
+    }
+
+    //setSelectedOption(selectedOption);
+  };
 
   const handleChangeDate = (date) => {
     setSelectedDate(date);
   };
 
+  //manipuler confirmer_cnadid
   const [isConfModalOpen, setIsConfModalOpen] = useState(false);
   const openConfModal = () => {
     setIsConfModalOpen(true);
@@ -64,10 +77,38 @@ function  AddMahram() {
     setIsConfModalOpen(false);
   };
 
+  const [wilayas, setWilayas] = useState([]);
+  const [id_session, setSession] = useState(null);
+  const [annee, setAnnee] = useState(null);
+
+  useEffect(() => {
+    axios.get('http://localhost:3000/api/wilaya/All')
+            .then(response => {
+              const additionalOptions = response.data.map(wilaya => ({value: wilaya.code, label: wilaya.ar_name}));
+              setWilayas(additionalOptions);
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des options :', error);
+            });
+
+    axios.get('http://localhost:3000/api/session/stateSession/find?fieldName=state&fieldValue=En cours')
+            .then(response => {
+              setSession(response.data._id);setAnnee(response.data.annee);
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des options :', error);
+            });
+  }, [])
+
   const options = [
     { value: "O+", label: "O+" },
+    { value: "A+", label: "A+" },
+    { value: "B+", label: "B+" },
     { value: "AB+", label: "AB+" },
     { value: "O-", label: "O-" },
+    { value: "A-", label: "A-" },
+    { value: "B-", label: "B-" },
+    { value: "AB-", label: "AB-" },
   ];
 
   const customStyles = {
@@ -79,14 +120,111 @@ function  AddMahram() {
     }),
   };
 
+  const [selectedOptionGroupage, setSelectedOptionGroupage] = useState(null);
+  const handleChangeGroupage = (selectedOption) => {
+    setSelectedOptionGroupage(selectedOption);
+  };
+
+  const [communes, setCommunes] = useState([]);
+  const [selectedOptionWilaya, setSelectedOptionWilaya] = useState(null);
+
+  const handleChangeWilaya = (event) => {
+    const selectedValue = event.value;
+    setSelectedOptionWilaya(selectedValue);
+    axios.get('http://localhost:3000/api/commune/find?fieldName=code&minValue='+selectedValue+'00&maxValue='+selectedValue+'99')
+            .then(response => {
+              const additionalOptions = response.data.map(commune => ({value: commune.code, label: commune.ar_name}));
+              setCommunes(additionalOptions);
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des options :', error);
+            });
+  };
+
+  const [selectedOptionCommune, setSelectedOptionCommune] = useState(null);
+
+  const handleChangeCommune = (event) => {
+    const selectedValue = event.value;
+    setSelectedOptionCommune(selectedValue);
+  };
+
+  const handleChangeCheckbox = (event) => {
+    const { name, checked } = event.target;
+    setFormCandidature(prevState => ({
+        ...prevState,
+        [name]: checked
+    }));
+  };
+
+  const handleChangeValue = (event) => {
+      const { name, value } = event.target;
+      setFormCandidature(prevState => ({
+          ...prevState,
+          [name]: value
+      }));
+  };
+  
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+        // Send form data to the backend
+        var civilite = formCandidature.civilite;
+        var genre = formCandidature.genre;
+        var maladie_cronique = "[";
+        
+        if(formCandidature.maladie_cronique_s === true) maladie_cronique = maladie_cronique + ", السكري";
+        if(formCandidature.maladie_cronique_ds === true) maladie_cronique = maladie_cronique + ", ضغط الدم";
+        if(formCandidature.maladie_cronique_g === true) maladie_cronique = maladie_cronique + ", المناعة الذاتية";
+        if(formCandidature.maladie_cronique_ms === true) maladie_cronique = maladie_cronique + ", أمراض الدم";
+        if(formCandidature.maladie_cronique_r === true) maladie_cronique = maladie_cronique + ", الربو";
+
+        maladie_cronique = maladie_cronique + ","+ formCandidature.maladie_cronique_au + "]";
+        if(formCandidature.maladie_cronique_n_m === true) maladie_cronique = "";
+        
+        const wilaya = selectedOptionWilaya, commune = selectedOptionCommune, groupage = selectedOptionGroupage.value,
+        id_mahrem = null, date_naissance = selectedDate, lieu_naissance = formCandidature.lieu_naissance,
+        nom = formCandidature.nom, prenom = formCandidature.prenom, nationalite = formCandidature.nationalite,
+        num_passeport = formCandidature.num_passeport, telephone = formCandidature.telephone, email = formCandidature.email,
+        address = formCandidature.address, nss = formCandidature.nss;
+        
+        try {
+          const response = await fetch('http://localhost:3000/api/candidature/genre/find?fieldName=num_passeport&fieldValue='+num_passeport);
+          if (!response.ok) {
+              throw new Error('Failed to fetch data');
+          }
+          const jsonData = await response.json();
+          var canAdd = false;
+          for (const key in jsonData) {
+            if(jsonData[key].id_session === id_session) {
+              canAdd = true; 
+              break;
+            }
+          }
+          if(canAdd === false){
+            const response = await axios.post('http://localhost:3000/api/candidature', { 
+              nom, prenom, date_naissance, lieu_naissance, nationalite, civilite, genre, num_passeport, telephone, email, wilaya, commune, address, groupage, nss, maladie_cronique,id_mahrem,id_session
+            });
+            alert("Enregistrement avec succées");
+            navigate("/homelgin");
+          }else{
+            alert("Le numéro de passeport de Cette candidat existe déjà dans l'année "+annee );// le message de blocage pour un candidature dèjà inscris
+          }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+
+    } catch (error) {
+      alert("Erreur d'enregistrement :\n"+error);
+    }
+  };
   return (
     <div
       dir="rtl"
-      className="w-full inset-0 z-[9999] h-full mx-auto  text-right flex flex-col justify-center items-center bg-cover bg-center p-5"
+      className="w-full h-full mx-auto  text-right flex flex-col justify-center items-center bg-cover bg-center p-5"
       style={{ backgroundImage: `url(${Cnd_bg})` }}
     >
       <div className=" flex flex-col justify-center items-center max-w-[1240px] mx-auto  bg-[#EAE1D1]  bg-opacity-90  rounded-xl shadow-2xl">
-        <h1 className="text-fake_black  text-3xl mt-4">إستمارة الحج للمحرم</h1>
+        <h1 className="text-fake_black  text-3xl mt-4">إستمارة الحج</h1>
         <div className="max-w-[1240px] mx-auto  grid md:grid-cols-2 w-full  ">
         <div className="flex flex-col justify-items-center  p-5">
             <div className=" w-full flex justify-center items-center">
@@ -99,8 +237,8 @@ function  AddMahram() {
                   w-full"
                   type="text"
                   placeholder="الإسم"
-                  name="firstName"
-                  onChange={(e) => setFirstName(e.target.value)}
+                  name="prenom"
+                  value={formCandidature.prenom} onChange={handleChangeValue}
                   required
                 />
               </div>
@@ -112,8 +250,8 @@ function  AddMahram() {
                   className="text-black p-2 border rounded-xl  border-fake_black  w-full"
                   type="text"
                   placeholder="القب"
-                  name="lastName"
-                  onChange={(e) => setLastName(e.target.value)}
+                  name="nom"
+                  value={formCandidature.nom} onChange={handleChangeValue}
                   required
                 />
               </div>
@@ -128,7 +266,6 @@ function  AddMahram() {
                   className="text-black p-2 border rounded-xl  border-fake_black   w-full"
                   selected={selectedDate}
                   onChange={handleChangeDate}
-
                   locale={ar}
                   dateFormat="dd/MM/yyyy"
                   placeholderText="تاريخ الملاد"
@@ -141,8 +278,8 @@ function  AddMahram() {
                 <input
                   className="text-black p-2 border rounded-xl  border-fake_black  w-full"
                   type="text"
-                  name="birthp"
-                  onChange={(e) => setBirthp(e.target.value)}
+                  name="lieu_naissance"
+                  value={formCandidature.lieu_naissance} onChange={handleChangeValue}
                   placeholder="مكان الملاد"
                   required
                 />
@@ -155,8 +292,8 @@ function  AddMahram() {
               </label>
               <input
                 className="text-black p-2 border rounded-xl  border-fake_black  w-full"
-                name="origin"
-                onChange={(e) => setOrigin(e.target.value)}
+                name="nationalite"
+                value={formCandidature.nationalite} onChange={handleChangeValue}
                 type="text"
                 placeholder="الجنسية"
                 required
@@ -164,80 +301,77 @@ function  AddMahram() {
             </div>
 
             <div className="w-full flex flex-col mt-2">
-  <p>الحالة الإجتماعية:</p>
-  <div className="w-full flex mt-2">
-    <div className="flex items-center">
-      <input
-        type="radio"
-        id="single"
-        onChange={handleChangeSelect}
-        name="maritalStatus"
-        className="mr-2 h-4 w-4 border-fake_black rounded-xl"
-      />
-      <label htmlFor="single" className="text-fake_black">
-        اعزب/عزباء
-      </label>
-    </div>
-    <div className="flex items-center">
-      <input
-        type="radio"
-        id="married"
-        onChange={handleChangeSelect}
-        name="maritalStatus"
-        className="mr-2 h-4 w-4 border-fake_black rounded-xl"
-      />
-      <label htmlFor="married" className="text-fake_black">
-        متزوج(ة)
-      </label>
-    </div>
-    <div className="flex items-center">
-      <input
-        type="radio"
-        id="divorced"
-        onChange={handleChangeSelect}
+              <p>الحالة الإجتماعية:</p>
+              <div className="w-full flex mt-2">
+                <div className="flex items-center">
+                  <input
+                    type="radio"
+                    id="single"
+                    onChange={handleChangeSelect}
+                    name="maritalStatus"
+                    className="mr-2 h-4 w-4 border-fake_black rounded-xl"
+                  />
+                  <label htmlFor="single" className="text-fake_black">
+                    اعزب/عزباء
+                  </label>
+                </div>
+                <div className="flex items-center">
+                  <input
+                    type="radio"
+                    id="married"
+                    onChange={handleChangeSelect}
+                    name="maritalStatus"
+                    className="mr-2 h-4 w-4 border-fake_black rounded-xl"
+                  />
+                  <label htmlFor="married" className="text-fake_black">
+                    متزوج(ة)
+                  </label>
+                </div>
+                <div className="flex items-center">
+                  <input
+                    type="radio"
+                    id="divorced"
+                    onChange={handleChangeSelect}
+                    name="maritalStatus"
+                    className="mr-2 h-4 w-4 border-fake_black rounded-xl"
+                  />
+                  <label htmlFor="divorced" className="text-fake_black">
+                    مطلق(ة)
+                  </label>
+                </div>
+                <div className="flex items-center">
+                  <input
+                    type="radio"
+                    id="widowed"
+                    onChange={handleChangeSelect}
+                    name="maritalStatus"
+                    className="mr-2 h-4 w-4 border-fake_black rounded-xl"
+                  />
+                  <label htmlFor="widowed" className="text-fake_black">
+                    ارمل(ة)
+                  </label>
+                </div>
+              </div>
+            </div>
 
-        name="maritalStatus"
-        className="mr-2 h-4 w-4 border-fake_black rounded-xl"
-      />
-      <label htmlFor="divorced" className="text-fake_black">
-        مطلق(ة)
-      </label>
-    </div>
-    <div className="flex items-center">
-      <input
-        type="radio"
-        id="widowed"
-        onChange={handleChangeSelect}
-        name="maritalStatus"
-        className="mr-2 h-4 w-4 border-fake_black rounded-xl"
-      />
-      <label htmlFor="widowed" className="text-fake_black">
-        ارمل(ة)
-      </label>
-    </div>
-  </div>
-</div>
-
-<div className="flex flex-col mt-2">
-  <p>الجنس:</p>
-  <div className="flex w-full mt-2">
-    
-    <div className="flex items-center">
-      <input
-        type="radio"
-        id="male"
-      
-        className="mr-2 h-4 w-4 border-fake_black rounded-xl"
-        name="gender"
-        checked={true}
-      />
-      <label htmlFor="male" className="text-fake_black">
-        ذكر
-      </label>
-    </div>
-  </div>
-</div>
-
+            <div className="flex flex-col mt-2">
+              <p>الجنس:</p>
+              <div className="flex w-full mt-2">
+                <div className="flex items-center">
+                  <input
+                    type="radio"
+                    id="male"
+                    checked="true"
+                    onChange={handleChangeSelect}
+                    className="mr-2 h-4 w-4 border-fake_black rounded-xl"
+                    name="genre"
+                  />
+                  <label htmlFor="male" className="text-fake_black">
+                    ذكر
+                  </label>
+                </div>
+              </div>
+            </div>
 
             <div className="w-full flex flex-col ">
               <div className="w-full flex flex-col mt-2 ">
@@ -247,8 +381,8 @@ function  AddMahram() {
                 <input
                   className="text-black p-2 border rounded-xl  border-fake_black  w-full"
                   type="text"
-                  name="passportNumber"
-                  onChange={(e) => setPassportNumber(e.target.value)}
+                  name="num_passeport"
+                  value={formCandidature.num_passeport} onChange={handleChangeValue}
                   placeholder="رقم جواز السفر :"
                   required
                 />
@@ -260,8 +394,8 @@ function  AddMahram() {
                 <input
                   className="text-black p-2 border rounded-xl  border-fake_black  w-full"
                   type="text"
-                  name="phoneNumber"
-                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  name="telephone"
+                  value={formCandidature.telephone} onChange={handleChangeValue}
                   placeholder=" رقم الهاتف:"
                   required
                 />
@@ -274,7 +408,7 @@ function  AddMahram() {
                   className="text-black p-2 border rounded-xl  border-fake_black  w-full"
                   type="text"
                   name="email"
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={formCandidature.email} onChange={handleChangeValue}
                   placeholder="  البريد الإلكتروني :"
                   required
                 />
@@ -292,9 +426,10 @@ function  AddMahram() {
                   الولاية:{" "}
                 </label>
                 <Select
-                
+                  name="wilaya"
                   styles={customStyles}
-                
+                  onChange={handleChangeWilaya}
+                  options={wilayas}
                   placeholder=" الولاية:"
                   isRtl={true}
                 />
@@ -304,9 +439,10 @@ function  AddMahram() {
                   الدائرة:{" "}
                 </label>
                 <Select
-                
+                  name="commune"
                   styles={customStyles}
-                  
+                  options={communes}
+                  onChange={handleChangeCommune}
                   placeholder=" الدائرة:"
                   isRtl={true}
                 />
@@ -322,7 +458,7 @@ function  AddMahram() {
                   className="text-black p-2 border rounded-xl  border-fake_black  w-full"
                   type="text"
                   name="address"
-                  onChange={(e) => setAddress(e.target.value)}
+                  value={formCandidature.address} onChange={handleChangeValue}
                   placeholder="العنوان الكامل"
                   required
                 />
@@ -335,8 +471,8 @@ function  AddMahram() {
                 <Select
                 
                   styles={customStyles}
-                  value={selectedOption}
-                  onChange={handleChangeSelect}
+                  //value={selectedOptionGroupage}
+                  onChange={handleChangeGroupage}
                   options={options}
                   placeholder="الزمرة الدموية"
                   isRtl={true}
@@ -351,7 +487,8 @@ function  AddMahram() {
                   className="text-black p-2 border rounded-xl  border-fake_black  w-full"
                   type="text"
                   placeholder="رقم التأمين الصحي"
-                  //nssiteh oumbe3 nwelli 3endeh
+                  name="nss"
+                  value={formCandidature.nss} onChange={handleChangeValue}
                   required
                 />
               </div>
@@ -366,30 +503,36 @@ function  AddMahram() {
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      id="myCheckbox"
+                      id="maladie_cronique_s"
+                      name="maladie_cronique_s"
+                      checked={formCandidature.maladie_cronique_s} onChange={handleChangeCheckbox}
                       className="mr-2 h-4 w-4  border-fake_black rounded-xl l"
                     />
-                    <label htmlFor="myCheckbox" className="text-fake_black">
+                    <label htmlFor="maladie_cronique_s" className="text-fake_black">
                       السكري
                     </label>
                   </div>
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      id="myCheckbox"
+                      id="maladie_cronique_r"
+                      name="maladie_cronique_r"
+                      checked={formCandidature.maladie_cronique_r} onChange={handleChangeCheckbox}
                       className="mr-2 h-4 w-4  border-fake_black rounded-xl l"
                     />
-                    <label htmlFor="myCheckbox" className="text-fake_black">
+                    <label htmlFor="maladie_cronique_r" className="text-fake_black">
                       الربو
                     </label>
                   </div>
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      id="myCheckbox"
+                      id="maladie_cronique_g"
+                      name="maladie_cronique_g"
+                      checked={formCandidature.maladie_cronique_g} onChange={handleChangeCheckbox}
                       className="mr-2 h-4 w-4  border-fake_black rounded-xl l"
                     />
-                    <label htmlFor="myCheckbox" className="text-fake_black">
+                    <label htmlFor="maladie_cronique_g" className="text-fake_black">
                       المناعة الذاتية
                     </label>
                   </div>
@@ -398,30 +541,36 @@ function  AddMahram() {
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      id="myCheckbox"
+                      id="maladie_cronique_ds"
+                      name="maladie_cronique_ds"
+                      checked={formCandidature.maladie_cronique_ds} onChange={handleChangeCheckbox}
                       className="mr-2 h-4 w-4  border-fake_black rounded-xl l"
                     />
-                    <label htmlFor="myCheckbox" className="text-fake_black">
+                    <label htmlFor="maladie_cronique_ds" className="text-fake_black">
                       ضغط الدم
                     </label>
                   </div>
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      id="myCheckbox"
+                      id="maladie_cronique_ms"
+                      name="maladie_cronique_ms"
+                      checked={formCandidature.maladie_cronique_ms} onChange={handleChangeCheckbox}
                       className="mr-2 h-4 w-4  border-fake_black rounded-xl l"
                     />
-                    <label htmlFor="myCheckbox" className="text-fake_black">
+                    <label htmlFor="maladie_cronique_ms" className="text-fake_black">
                       أمراض الدم
                     </label>
                   </div>
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      id="myCheckbox"
+                      id="maladie_cronique_n_m"
+                      name="maladie_cronique_n_m"
+                      checked={formCandidature.maladie_cronique_n_m} onChange={handleChangeCheckbox}
                       className="mr-2 h-4 w-4  border-fake_black rounded-xl l"
                     />
-                    <label htmlFor="myCheckbox" className="text-fake_black">
+                    <label htmlFor="maladie_cronique_n_m" className="text-fake_black">
                       لا يوجد
                     </label>
                   </div>
@@ -432,7 +581,7 @@ function  AddMahram() {
             <div className="flex  justify-around w-full mt-8">
               <label
                 className="text-fake_black mb-2 mt-2"
-                htmlFor="nationalité"
+                htmlFor="maladie_cronique_au"
               >
                 مرض مزمن أخر:
               </label>
@@ -440,11 +589,12 @@ function  AddMahram() {
                 className="text-black p-2 border   border-fake_black  rounded-xl  "
                 type="text"
                 placeholder="مرض مزمن أخر "
+                id="maladie_cronique_au"
+                name="maladie_cronique_au"
+                value={formCandidature.maladie_cronique_au} onChange={handleChangeValue}
                 required
               />
             </div>
-     
-
 
           </div>
         </div>
@@ -453,7 +603,7 @@ function  AddMahram() {
         onClick={openConfModal}>
           تأكيد{" "}
         </button>
-        {isConfModalOpen && <ConfModal onClose={closeConfModal} />}
+        {isConfModalOpen && <ConfModal onClose={closeConfModal} onConfirm={handleSubmit} />}
       </div>
     </div>
   );

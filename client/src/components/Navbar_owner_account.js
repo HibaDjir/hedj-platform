@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "tailwindcss/tailwind.css";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
@@ -7,8 +7,6 @@ import NetflixModal from "../Popups/Netflix";
 import user from "../images/User.png";
 
 function Navbar_owner_account() {
-
-
 
   
   const [isNetflixModalOpen, setIsNetflixModalOpen] = useState(false);
@@ -130,6 +128,7 @@ function Navbar_owner_account() {
         </ul>
       </div>
     </div>
+
   );
 }
 

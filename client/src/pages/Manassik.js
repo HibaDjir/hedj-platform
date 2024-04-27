@@ -18,7 +18,7 @@ import React, { useEffect, useState } from 'react';
 async function checkAuthentication() {
   try {
       // Retrieve token from localStorage
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('user');
 
       // Return true if token exists, false otherwise
       return !!token;
@@ -41,7 +41,6 @@ function Manassik() {
   return (
     <div dir="rtl">
     {isAuthenticated ? <Navbarlogin /> : <Navbar />}
-
       <div className="w-full bg-white_palette py-16 px-4 ">
         <div className="max-w-[1240px] mx-auto grid md:grid-cols-3">
           <img

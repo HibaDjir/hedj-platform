@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -43,7 +44,6 @@ import djabal from "../images/NussukiPic/djabal.jpg";
 import bold_guy from "../images/NussukiPic/bold-guy.jpg";
 import Tawaf from "../images/NussukiPic/tawaf_01.jpg";
 import LastTawaf from "../images/NussukiPic/tawaf_02.jpg";
-
 
 function Home() {
   const settings = {
@@ -319,6 +319,7 @@ function Home() {
     setExpandState(newExpandState);
   };
   return (
+
   <div  className='w-full h-full flex flex-col justify-center items-center bg-white_palette'>
     <Navbar />
     <Hero/>

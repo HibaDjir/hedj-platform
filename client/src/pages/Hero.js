@@ -36,7 +36,6 @@ function Hero() {
   </button>
   {isSignupModalOpen && <SignupModal onClose={closeSignupModal} />}
 </div>
-
       </div>
     </div>
   );

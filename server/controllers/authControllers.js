@@ -1,7 +1,8 @@
 
 const jwt=require('jsonwebtoken')
 const Joi = require("joi");
-const { User, validateLog, validateSignup,validatePassword} = require("../models/user_profiler");
+const { User, validateLog, validateSignup,ValidateResetPassword } = require("../models/user_profiler");
+
 const bcrypt = require("bcrypt");
 const sendEmail=require('../util/sendEmail')
 
@@ -67,7 +68,8 @@ exports.login=async (req, res) => {
 		const { error } = validateLog(req.body);
 		if (error)
 			return res.status(400).send({ message: error.details[0].message });
-
+	
+  
 		const user = await User.findOne({ email: req.body.email });
 		if (!user)
 			return res.status(401).send({ message: "Invalid Email or Password" });
@@ -78,15 +80,16 @@ exports.login=async (req, res) => {
 		);
 		if (!validPassword)
 			return res.status(401).send({ message: "Invalid Email or Password" });
+			
 
 		const token = user.generateAuthToken();
-		//res.status(200).send({ data: token, message: "logged in successfully" });
-		res.json({
+		res.status(200).json({
 			Role:user.Role,
-			token:token
+			token:token 
 		})
+		
 	} catch (error) {
-		res.status(500).json({ message: "Internal Server Error" });console.log('error',error.message)
+		res.status(500).json({message: 'internal server error'})	
 	}
 
 
@@ -120,9 +123,11 @@ exports.forgotPassword=async(req,res,next)=>{
 exports.resetPassord = async(req, res) =>{
 	const {id, token} = req.params
 	const {password} = req.body
-	const { error } = validatePassword(req.body);
+
+	const { error } = ValidateResetPassword(req.body);
 	if (error)
-	return res.status(400).send({ message: error.details[0].message });
+		return res.status(400).send({ message: error.details[0].message });
+
 	const oldUser=await User.findOne({_id: id})
 		if(!oldUser){
 			return res.status(401).send({message: "User does not exist"})
@@ -140,10 +145,10 @@ exports.resetPassord = async(req, res) =>{
 				password: encryptedPassword
 			}}
 	)
-		res.json({status:"success"})
+		res.send({status:"success"})
 	} catch (error) {
 		console.log(error)
-		res.json("error while updating password")
+		res.send("error while updating password")
 	}
 
 

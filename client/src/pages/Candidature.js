@@ -11,7 +11,11 @@ import Cnd_bg from "../images/MOSQUE.jpg";
 import add from "../images/add_khel.png";
 import { Link } from 'react-router-dom';
 
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+
 function Candidature() {
+
 
   const [isDivVisible, setIsDivVisible] = useState(true);
 
@@ -19,48 +23,61 @@ function Candidature() {
     // Hide the div when the link is clicked to trigger exit animation
     setIsDivVisible(false);
   };
+
+  const navigate = useNavigate();
+  const [formCandidature, setFormCandidature] = useState({
+    nom: '',
+    prenom: '',
+    lieu_naissance: '',
+    nationalite: '',
+    civilite: '',
+    genre: '',
+    num_passeport: '',
+    telephone: '',
+    email: '',
+    address: '',
+    nss: '',
+    maladie_cronique_s: false,
+    maladie_cronique_r: false,
+    maladie_cronique_n_m: false,
+    maladie_cronique_ms: false,
+    maladie_cronique_g: false,
+    maladie_cronique_ds: false,
+    maladie_cronique_au: '',
+  });
+
   const [selectedDate, setSelectedDate] = useState(null);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [birthp, setBirthp] = useState('');
-  const [origin, setOrigin] = useState('');
-  const [passportNumber, setPassportNumber] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [email, setEmail] = useState('');
-  const [address, setAddress] = useState('');
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [isFormFilled, setIsFormFilled] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   const handleChangeSelect = (selectedOption) => {
-    setSelectedOption(selectedOption);
-  };
+    const { name, id } = selectedOption.target;
+    switch (id) {
+      case "single":
+        formCandidature.civilite = "اعزب/عزباء";
+        break;
+      case "married":
+        formCandidature.civilite = "متزوج(ة)";
+        break;
+      case "divorced":
+        formCandidature.civilite = "مطلق(ة)";
+        break;
+      case "widowed":
+        formCandidature.civilite = "ارمل(ة)";
+        break;
+      case "female":
+        formCandidature.genre = "أنثى";
+        setIsVisible(true);
+        break;
+      case "male":
+        setIsVisible(false);
+        formCandidature.genre = "ذكر";
+        break;
+      default:
+        // code block to be executed if none of the cases match
+    }
 
-  useEffect(() => {
-    const firstNameFilled = firstName!== '';
-    const lastNameFilled = lastName!== '';
-    const selectedDateFilled = selectedDate !== null;
-   
-    const originFilled = origin!== '';
-    const passportNumberFilled = passportNumber !== '';
-    const phoneNumberFilled = phoneNumber!== '';
-    const emailFilled = email!== '';
-    const addressFilled = address!== '';
-    const bloodGroupSelected = selectedOption !== null;
-    
-    const isFormValid =
-      firstNameFilled &&
-      lastNameFilled &&
-      selectedDateFilled &&
-  
-      originFilled &&
-      passportNumberFilled &&
-      phoneNumberFilled &&
-      emailFilled &&
-      addressFilled &&
-      bloodGroupSelected;
-    
-    setIsFormFilled(isFormValid);
-  }, [firstName, lastName, selectedDate, birthp, origin, passportNumber, phoneNumber, email, address, selectedOption]);
+    //setSelectedOption(selectedOption);
+  };
 
   const handleChangeDate = (date) => {
     setSelectedDate(date);
@@ -75,21 +92,49 @@ function Candidature() {
   const closeConfModal = () => {
     setIsConfModalOpen(false);
   };
-
   
-//la transition
-const [currentPage, setCurrentPage] = useState(1);
+  const [wilayas, setWilayas] = useState([]);
+  const [condidatures, setCondidature] = useState([]);
+  const [id_session, setSession] = useState(null);
+  const [annee, setAnnee] = useState(null);
 
-// Function to navigate to the "mahram" candidature page (Page 2)
-const navigateToMahramPage = () => {
-  setCurrentPage(2);
-};
+  useEffect(() => {
+    axios.get('http://localhost:3000/api/wilaya/All')
+            .then(response => {
+              const additionalOptions = response.data.map(wilaya => ({value: wilaya.code, label: wilaya.ar_name}));
+              setWilayas(additionalOptions);
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des options :', error);
+            });
 
+    axios.get('http://localhost:3000/api/candidature/genre/find?fieldName=genre&fieldValue=ذكر')
+            .then(response => {
+              const additionalOptions = response.data.map(condidature => ({value: condidature._id, label: condidature.nom +" "+ condidature.prenom}));
+              setCondidature(additionalOptions);
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des options :', error);
+            });
+
+    axios.get('http://localhost:3000/api/session/stateSession/find?fieldName=state&fieldValue=En cours')
+            .then(response => {
+              setSession(response.data._id);setAnnee(response.data.annee);
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des options :', error);
+            });
+  }, [])
 
   const options = [
     { value: "O+", label: "O+" },
+    { value: "A+", label: "A+" },
+    { value: "B+", label: "B+" },
     { value: "AB+", label: "AB+" },
     { value: "O-", label: "O-" },
+    { value: "A-", label: "A-" },
+    { value: "B-", label: "B-" },
+    { value: "AB-", label: "AB-" },
   ];
 
   const customStyles = {
@@ -101,6 +146,132 @@ const navigateToMahramPage = () => {
     }),
   };
 
+  const [selectedOptionGroupage, setSelectedOptionGroupage] = useState(null);
+  const handleChangeGroupage = (selectedOption) => {
+    setSelectedOptionGroupage(selectedOption);
+  };
+
+  const [communes, setCommunes] = useState([]);
+  const [selectedOptionWilaya, setSelectedOptionWilaya] = useState(null);
+
+  const handleChangeWilaya = (event) => {
+    const selectedValue = event.value;
+    setSelectedOptionWilaya(selectedValue);
+    axios.get('http://localhost:3000/api/commune/find?fieldName=code&minValue='+selectedValue+'00&maxValue='+selectedValue+'99')
+            .then(response => {
+              const additionalOptions = response.data.map(commune => ({value: commune.code, label: commune.ar_name}));
+              setCommunes(additionalOptions);
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des options :', error);
+            });
+  };
+
+  const [selectedOptionCommune, setSelectedOptionCommune] = useState(null);
+
+  const handleChangeCommune = (event) => {
+    const selectedValue = event.value;
+    setSelectedOptionCommune(selectedValue);
+  };
+
+  const [selectedOptionCandidature, setSelectedOptionCandidature] = useState(null);
+  const handleChangeCandidature = (selectedOption) => {
+    setSelectedOptionCandidature(selectedOption);
+  };
+
+  const handleChangeCheckbox = (event) => {
+    const { name, checked } = event.target;
+    setFormCandidature(prevState => ({
+        ...prevState,
+        [name]: checked
+    }));
+  };
+
+  const handleChangeValue = (event) => {
+      const { name, value } = event.target;
+      setFormCandidature(prevState => ({
+          ...prevState,
+          [name]: value
+      }));
+  };
+
+  const [AllCandidatures, setAllCandidatures] = useState([]);
+
+  useEffect(() => {
+      fetchAllCandidatures();
+  }, []);
+
+  const fetchAllCandidatures = async () => {
+      try {
+          const response = await fetch('http://localhost:3000/api/candidature/');
+          if (!response.ok) {
+              throw new Error('Failed to fetch data');
+          }
+          const jsonData = await response.json();
+          setAllCandidatures(jsonData);
+      } catch (error) {
+          console.error('Error fetching data:', error);
+      }
+  };
+  
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+        // Send form data to the backend
+        var civilite = formCandidature.civilite;
+        var genre = formCandidature.genre;
+        var maladie_cronique = "[";
+        var id_mahrem = selectedOptionCandidature;
+        if(genre === 'ذكر') id_mahrem = null;
+        
+        if(formCandidature.maladie_cronique_s === true) maladie_cronique = maladie_cronique + ", السكري";
+        if(formCandidature.maladie_cronique_ds === true) maladie_cronique = maladie_cronique + ", ضغط الدم";
+        if(formCandidature.maladie_cronique_g === true) maladie_cronique = maladie_cronique + ", المناعة الذاتية";
+        if(formCandidature.maladie_cronique_ms === true) maladie_cronique = maladie_cronique + ", أمراض الدم";
+        if(formCandidature.maladie_cronique_r === true) maladie_cronique = maladie_cronique + ", الربو";
+
+        maladie_cronique = maladie_cronique + ","+ formCandidature.maladie_cronique_au + "]";
+        if(formCandidature.maladie_cronique_n_m === true) maladie_cronique = "";
+
+        const wilaya = selectedOptionWilaya, commune = selectedOptionCommune, groupage = selectedOptionGroupage.value,
+        date_naissance = selectedDate, lieu_naissance = formCandidature.lieu_naissance,
+        nom = formCandidature.nom, prenom = formCandidature.prenom, nationalite = formCandidature.nationalite,
+        num_passeport = formCandidature.num_passeport, telephone = formCandidature.telephone, email = formCandidature.email,
+        address = formCandidature.address, nss = formCandidature.nss;
+        if(genre === 'أنثى' && id_mahrem == null){
+          alert("Il est nécessaire de compléter El Mahrem pour un candidat féminin.");// le message de blocage pour un candidat féminin ne remplie pas el mahrem
+        }else{
+          
+          try {
+                const response = await fetch('http://localhost:3000/api/candidature/genre/find?fieldName=num_passeport&fieldValue='+num_passeport);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+                const jsonData = await response.json();
+                var canAdd = false;
+                for (const key in jsonData) {
+                  if(jsonData[key].id_session === id_session) {
+                    canAdd = true; 
+                    break;
+                  }
+                }
+                if(canAdd === false){
+                  const response = await axios.post('http://localhost:3000/api/candidature', { 
+                    nom, prenom, date_naissance, lieu_naissance, nationalite, civilite, genre, num_passeport, telephone, email, wilaya, commune, address, groupage, nss, maladie_cronique,id_mahrem,id_session
+                  });
+                  alert("Enregistrement avec succées");
+                  navigate("/homelgin");
+                }else{
+                  alert("Le numéro de passeport de Cette candidat existe déjà dans l'année "+annee );// le message de blocage pour un candidature dèjà inscris
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+    } catch (error) {
+      alert("Erreur d'enregistrement :\n"+error);
+    }
+  };
   return (
     <div
       dir="rtl"
@@ -127,8 +298,8 @@ const navigateToMahramPage = () => {
                   w-full"
                   type="text"
                   placeholder="الإسم"
-                  name="firstName"
-                  onChange={(e) => setFirstName(e.target.value)}
+                  name="prenom"
+                  value={formCandidature.prenom} onChange={handleChangeValue}
                   required
                 />
               </div>
@@ -140,8 +311,8 @@ const navigateToMahramPage = () => {
                   className="text-black p-2 border rounded-xl  border-fake_black  w-full"
                   type="text"
                   placeholder="القب"
-                  name="lastName"
-                  onChange={(e) => setLastName(e.target.value)}
+                  name="nom"
+                  value={formCandidature.nom} onChange={handleChangeValue}
                   required
                 />
               </div>
@@ -156,7 +327,6 @@ const navigateToMahramPage = () => {
                   className="text-black p-2 border rounded-xl  border-fake_black   w-full"
                   selected={selectedDate}
                   onChange={handleChangeDate}
-
                   locale={ar}
                   dateFormat="dd/MM/yyyy"
                   placeholderText="تاريخ الملاد"
@@ -169,8 +339,8 @@ const navigateToMahramPage = () => {
                 <input
                   className="text-black p-2 border rounded-xl  border-fake_black  w-full"
                   type="text"
-                  name="birthp"
-                  onChange={(e) => setBirthp(e.target.value)}
+                  name="lieu_naissance"
+                  value={formCandidature.lieu_naissance} onChange={handleChangeValue}
                   placeholder="مكان الملاد"
                   required
                 />
@@ -183,8 +353,8 @@ const navigateToMahramPage = () => {
               </label>
               <input
                 className="text-black p-2 border rounded-xl  border-fake_black  w-full"
-                name="origin"
-                onChange={(e) => setOrigin(e.target.value)}
+                name="nationalite"
+                value={formCandidature.nationalite} onChange={handleChangeValue}
                 type="text"
                 placeholder="الجنسية"
                 required
@@ -192,91 +362,88 @@ const navigateToMahramPage = () => {
             </div>
 
             <div className="w-full flex flex-col mt-2">
-  <p>الحالة الإجتماعية:</p>
-  <div className="w-full flex mt-2">
-    <div className="flex items-center">
-      <input
-        type="radio"
-        id="single"
-        onChange={handleChangeSelect}
-        name="maritalStatus"
-        className="mr-2 h-4 w-4 border-fake_black rounded-xl"
-      />
-      <label htmlFor="single" className="text-fake_black">
-        اعزب/عزباء
-      </label>
-    </div>
-    <div className="flex items-center">
-      <input
-        type="radio"
-        id="married"
-        onChange={handleChangeSelect}
-        name="maritalStatus"
-        className="mr-2 h-4 w-4 border-fake_black rounded-xl"
-      />
-      <label htmlFor="married" className="text-fake_black">
-        متزوج(ة)
-      </label>
-    </div>
-    <div className="flex items-center">
-      <input
-        type="radio"
-        id="divorced"
-        onChange={handleChangeSelect}
+              <p>الحالة الإجتماعية:</p>
+              <div className="w-full flex mt-2">
+                <div className="flex items-center">
+                  <input
+                    type="radio"
+                    id="single"
+                    onChange={handleChangeSelect}
+                    name="maritalStatus"
+                    className="mr-2 h-4 w-4 border-fake_black rounded-xl"
+                  />
+                  <label htmlFor="single" className="text-fake_black">
+                    اعزب/عزباء
+                  </label>
+                </div>
+                <div className="flex items-center">
+                  <input
+                    type="radio"
+                    id="married"
+                    onChange={handleChangeSelect}
+                    name="maritalStatus"
+                    className="mr-2 h-4 w-4 border-fake_black rounded-xl"
+                  />
+                  <label htmlFor="married" className="text-fake_black">
+                    متزوج(ة)
+                  </label>
+                </div>
+                <div className="flex items-center">
+                  <input
+                    type="radio"
+                    id="divorced"
+                    onChange={handleChangeSelect}
+                    name="maritalStatus"
+                    className="mr-2 h-4 w-4 border-fake_black rounded-xl"
+                  />
+                  <label htmlFor="divorced" className="text-fake_black">
+                    مطلق(ة)
+                  </label>
+                </div>
+                <div className="flex items-center">
+                  <input
+                    type="radio"
+                    id="widowed"
+                    onChange={handleChangeSelect}
+                    name="maritalStatus"
+                    className="mr-2 h-4 w-4 border-fake_black rounded-xl"
+                  />
+                  <label htmlFor="widowed" className="text-fake_black">
+                    ارمل(ة)
+                  </label>
+                </div>
+              </div>
+            </div>
 
-        name="maritalStatus"
-        className="mr-2 h-4 w-4 border-fake_black rounded-xl"
-      />
-      <label htmlFor="divorced" className="text-fake_black">
-        مطلق(ة)
-      </label>
-    </div>
-    <div className="flex items-center">
-      <input
-        type="radio"
-        id="widowed"
-        onChange={handleChangeSelect}
-        name="maritalStatus"
-        className="mr-2 h-4 w-4 border-fake_black rounded-xl"
-      />
-      <label htmlFor="widowed" className="text-fake_black">
-        ارمل(ة)
-      </label>
-    </div>
-  </div>
-</div>
-
-<div className="flex flex-col mt-2">
-  <p>الجنس:</p>
-  <div className="flex w-full mt-2">
-    <div className="flex items-center">
-      <input
-        type="radio"
-        id="female"
-        onChange={handleChangeSelect}
-
-        className="mr-2 h-4 w-4 border-fake_black rounded-xl"
-        name="gender"
-      />
-      <label htmlFor="female" className="text-fake_black">
-        أنثى
-      </label>
-    </div>
-    <div className="flex items-center">
-      <input
-        type="radio"
-        id="male"
-        onChange={handleChangeSelect}
-        className="mr-2 h-4 w-4 border-fake_black rounded-xl"
-        name="gender"
-      />
-      <label htmlFor="male" className="text-fake_black">
-        ذكر
-      </label>
-    </div>
-  </div>
-</div>
-
+            <div className="flex flex-col mt-2">
+              <p>الجنس:</p>
+              <div className="flex w-full mt-2">
+                <div className="flex items-center">
+                  <input
+                    type="radio"
+                    id="female"
+                    onChange={handleChangeSelect}
+                    className="mr-2 h-4 w-4 border-fake_black rounded-xl"
+                    name="genre"
+                  />
+                  <label htmlFor="female" className="text-fake_black">
+                    أنثى
+                  </label>
+                </div>
+                <div className="flex items-center">
+                  <input
+                    type="radio"
+                    id="male"
+                    onChange={handleChangeSelect}
+                    className="mr-2 h-4 w-4 border-fake_black rounded-xl"
+                    name="genre"
+                  />
+                  <label htmlFor="male" className="text-fake_black">
+                    ذكر
+                  </label>
+                </div>
+              </div>
+            </div>
 
             <div className="w-full flex flex-col ">
               <div className="w-full flex flex-col mt-2 ">
@@ -286,8 +453,8 @@ const navigateToMahramPage = () => {
                 <input
                   className="text-black p-2 border rounded-xl  border-fake_black  w-full"
                   type="text"
-                  name="passportNumber"
-                  onChange={(e) => setPassportNumber(e.target.value)}
+                  name="num_passeport"
+                  value={formCandidature.num_passeport} onChange={handleChangeValue}
                   placeholder="رقم جواز السفر :"
                   required
                 />
@@ -299,8 +466,8 @@ const navigateToMahramPage = () => {
                 <input
                   className="text-black p-2 border rounded-xl  border-fake_black  w-full"
                   type="text"
-                  name="phoneNumber"
-                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  name="telephone"
+                  value={formCandidature.telephone} onChange={handleChangeValue}
                   placeholder=" رقم الهاتف:"
                   required
                 />
@@ -313,7 +480,7 @@ const navigateToMahramPage = () => {
                   className="text-black p-2 border rounded-xl  border-fake_black  w-full"
                   type="text"
                   name="email"
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={formCandidature.email} onChange={handleChangeValue}
                   placeholder="  البريد الإلكتروني :"
                   required
                 />
@@ -331,9 +498,10 @@ const navigateToMahramPage = () => {
                   الولاية:{" "}
                 </label>
                 <Select
-                
+                  name="wilaya"
                   styles={customStyles}
-                
+                  onChange={handleChangeWilaya}
+                  options={wilayas}
                   placeholder=" الولاية:"
                   isRtl={true}
                 />
@@ -343,9 +511,10 @@ const navigateToMahramPage = () => {
                   الدائرة:{" "}
                 </label>
                 <Select
-                
+                  name="commune"
                   styles={customStyles}
-                  
+                  options={communes}
+                  onChange={handleChangeCommune}
                   placeholder=" الدائرة:"
                   isRtl={true}
                 />
@@ -361,7 +530,7 @@ const navigateToMahramPage = () => {
                   className="text-black p-2 border rounded-xl  border-fake_black  w-full"
                   type="text"
                   name="address"
-                  onChange={(e) => setAddress(e.target.value)}
+                  value={formCandidature.address} onChange={handleChangeValue}
                   placeholder="العنوان الكامل"
                   required
                 />
@@ -374,8 +543,8 @@ const navigateToMahramPage = () => {
                 <Select
                 
                   styles={customStyles}
-                  value={selectedOption}
-                  onChange={handleChangeSelect}
+                  //value={selectedOptionGroupage}
+                  onChange={handleChangeGroupage}
                   options={options}
                   placeholder="الزمرة الدموية"
                   isRtl={true}
@@ -390,7 +559,8 @@ const navigateToMahramPage = () => {
                   className="text-black p-2 border rounded-xl  border-fake_black  w-full"
                   type="text"
                   placeholder="رقم التأمين الصحي"
-                  //nssiteh oumbe3 nwelli 3endeh
+                  name="nss"
+                  value={formCandidature.nss} onChange={handleChangeValue}
                   required
                 />
               </div>
@@ -405,30 +575,36 @@ const navigateToMahramPage = () => {
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      id="myCheckbox"
+                      id="maladie_cronique_s"
+                      name="maladie_cronique_s"
+                      checked={formCandidature.maladie_cronique_s} onChange={handleChangeCheckbox}
                       className="mr-2 h-4 w-4  border-fake_black rounded-xl l"
                     />
-                    <label htmlFor="myCheckbox" className="text-fake_black">
+                    <label htmlFor="maladie_cronique_s" className="text-fake_black">
                       السكري
                     </label>
                   </div>
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      id="myCheckbox"
+                      id="maladie_cronique_r"
+                      name="maladie_cronique_r"
+                      checked={formCandidature.maladie_cronique_r} onChange={handleChangeCheckbox}
                       className="mr-2 h-4 w-4  border-fake_black rounded-xl l"
                     />
-                    <label htmlFor="myCheckbox" className="text-fake_black">
+                    <label htmlFor="maladie_cronique_r" className="text-fake_black">
                       الربو
                     </label>
                   </div>
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      id="myCheckbox"
+                      id="maladie_cronique_g"
+                      name="maladie_cronique_g"
+                      checked={formCandidature.maladie_cronique_g} onChange={handleChangeCheckbox}
                       className="mr-2 h-4 w-4  border-fake_black rounded-xl l"
                     />
-                    <label htmlFor="myCheckbox" className="text-fake_black">
+                    <label htmlFor="maladie_cronique_g" className="text-fake_black">
                       المناعة الذاتية
                     </label>
                   </div>
@@ -437,30 +613,36 @@ const navigateToMahramPage = () => {
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      id="myCheckbox"
+                      id="maladie_cronique_ds"
+                      name="maladie_cronique_ds"
+                      checked={formCandidature.maladie_cronique_ds} onChange={handleChangeCheckbox}
                       className="mr-2 h-4 w-4  border-fake_black rounded-xl l"
                     />
-                    <label htmlFor="myCheckbox" className="text-fake_black">
+                    <label htmlFor="maladie_cronique_ds" className="text-fake_black">
                       ضغط الدم
                     </label>
                   </div>
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      id="myCheckbox"
+                      id="maladie_cronique_ms"
+                      name="maladie_cronique_ms"
+                      checked={formCandidature.maladie_cronique_ms} onChange={handleChangeCheckbox}
                       className="mr-2 h-4 w-4  border-fake_black rounded-xl l"
                     />
-                    <label htmlFor="myCheckbox" className="text-fake_black">
+                    <label htmlFor="maladie_cronique_ms" className="text-fake_black">
                       أمراض الدم
                     </label>
                   </div>
                   <div className="flex items-center">
                     <input
                       type="checkbox"
-                      id="myCheckbox"
+                      id="maladie_cronique_n_m"
+                      name="maladie_cronique_n_m"
+                      checked={formCandidature.maladie_cronique_n_m} onChange={handleChangeCheckbox}
                       className="mr-2 h-4 w-4  border-fake_black rounded-xl l"
                     />
-                    <label htmlFor="myCheckbox" className="text-fake_black">
+                    <label htmlFor="maladie_cronique_n_m" className="text-fake_black">
                       لا يوجد
                     </label>
                   </div>
@@ -471,7 +653,7 @@ const navigateToMahramPage = () => {
             <div className="flex  justify-around w-full mt-8">
               <label
                 className="text-fake_black mb-2 mt-2"
-                htmlFor="nationalité"
+                htmlFor="maladie_cronique_au"
               >
                 مرض مزمن أخر:
               </label>
@@ -479,22 +661,35 @@ const navigateToMahramPage = () => {
                 className="text-black p-2 border   border-fake_black  rounded-xl  "
                 type="text"
                 placeholder="مرض مزمن أخر "
+                id="maladie_cronique_au"
+                name="maladie_cronique_au"
+                value={formCandidature.maladie_cronique_au} onChange={handleChangeValue}
                 required
               />
             </div>
      
-           
-            <Link to="/candidature_mahram" onClick={handleLinkClick}>
-  <div className="flex justify-center items-center w-full mt-10">
-    <img
-      src={add}
-      className="text-fake_black h-[40px] w-[40px] ml-2 transition-transform duration-500 ease-in-out transform hover:scale-110 hover:cursor-pointer"
-    />
-    <p className="text-xl text-fake_black">تسجيل المحرم للمرأة</p>
-  </div>
-</Link>
 
-
+            {isVisible && 
+            <div><Link to="/candidature_mahram">
+            <div className="flex justify-center items-center w-full mt-10">
+              <img
+                src={add}
+                className="text-fake_black h-[40px] w-[40px] ml-2 transition-transform duration-500 ease-in-out transform hover:scale-110 hover:cursor-pointer"
+                />
+            
+              <p className="text-xl text-fake_black">تسجيل المحرم للمرأة</p>
+            </div>
+            </Link>
+            <Select
+            
+              styles={customStyles}
+              options={condidatures}
+              placeholder="إختر محرم"
+              id="mahrem"
+              name="mahrem"
+              onChange={handleChangeCandidature}
+              isRtl={true}
+            /></div>}
 
           </div>
         </div>
@@ -503,14 +698,11 @@ const navigateToMahramPage = () => {
         onClick={openConfModal}>
           تأكيد{" "}
         </button>
-        {isConfModalOpen && <ConfModal onClose={closeConfModal} />}
+        {isConfModalOpen && <ConfModal onClose={closeConfModal} onConfirm={handleSubmit} />}
       </div>
       </CSSTransition>
     </div>
-  );
-     
-   
-    
+  ); 
 
 }
 

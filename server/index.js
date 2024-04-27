@@ -14,8 +14,16 @@ index.use(cors());
 //Route handler function 
 
 const authRouter=require('./routes/authRouter') 
+const wilayaRouter=require('./routes/wilaya') 
+const communeRouter=require('./routes/commune') 
+const candidatureRouter=require('./routes/candidature') 
+const sessionsRouter=require('./routes/sessions') 
 
 index.use("/api/users",authRouter) 
+index.use("/api/wilaya",wilayaRouter) 
+index.use("/api/commune",communeRouter) 
+index.use("/api/candidature",candidatureRouter) 
+index.use("/api/session",sessionsRouter) 
 
 //create server 
 

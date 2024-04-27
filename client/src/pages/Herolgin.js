@@ -3,18 +3,30 @@ import "moment/locale/ar";
 import "moment/locale/fr"; // Import French locale
 import "moment-hijri";
 import moment from "moment";
+import { useLogout } from "../hooks/useLogout";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 import heroBg from "../images/houdjadjes.jpeg";
-const hijriMonthNames = [
-  "محرّم", "صفر", "ربيع الأول", "ربيع الثاني", "جمادى الأولى", "جمادى الآخرة",
-  "رجب", "شعبان", "رمضان", "شوّال", "ذو القعدة", "ذو الحجة"
-];
+
 function Herolgin() {
+  const hijriMonthNames = [
+    "محرّم",
+    "صفر",
+    "ربيع الأول",
+    "ربيع الثاني",
+    "جمادى الأولى",
+    "جمادى الآخرة",
+    "رجب",
+    "شعبان",
+    "رمضان",
+    "شوّال",
+    "ذو القعدة",
+    "ذو الحجة",
+  ];
   const [currentGregorianDate, setCurrentGregorianDate] = useState(moment());
   const [currentHijriDate, setCurrentHijriDate] = useState(
     moment().format("iYYYY/iM/iD")
   );
-  
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -24,22 +36,23 @@ function Herolgin() {
     return () => clearInterval(intervalId);
   }, []);
 
-  // Set moment locale to Arabic for Gregorian and Hijri dates
+  // Set moment locale to Arabic for Hijri date
   moment.locale("ar");
-
-
-
-  // actually this is just showing the date in arabic not in hijri 
-  const hijriDayOfWeek = moment(currentHijriDate, "iYYYY/iM/iD").format("dddd");
-  const hijriDay = currentGregorianDate.format("D");
-  const hijriMonth = moment(currentHijriDate, "iYYYY/iM/iD").format("MMMM");
-  const hijriYear =currentGregorianDate.format("YYYY");
-
-  // Set moment locale to French for time
+// actually this is just showing the date in arabic not in hijri
+const hijriDayOfWeek = moment(currentHijriDate, "iYYYY/iM/iD").format("dddd");
+const hijriDay = currentGregorianDate.format("D");
+const hijriMonth = moment(currentHijriDate, "iYYYY/iM/iD").format("MMMM");
+const hijriYear = currentGregorianDate.format("YYYY");
+  // Set moment locale to French for Gregorian date
   moment.locale("fr");
-
-  // Format current time
   const currentTime = currentGregorianDate.format("HH:mm:ss");
+
+  const { logout } = useLogout();
+  const { user } = useAuthContext();
+
+  const handleClick = () => {
+    logout();
+  };
 
   return (
     <div
@@ -50,17 +63,20 @@ function Herolgin() {
       }}
     >
       <div className="flex flex-col justify-center items-center px-10 py-10 rounded-md gap-4">
-  <div className="bg-gray px-4 rounded-md">
-
-    <p className="text-4xl text-fake_black flex justify-center">{currentTime}</p>
- 
-    
-    <p className="text-2xl text-fake_black">{`${hijriDayOfWeek}, ${hijriDay} ${hijriMonth} ${hijriYear}`}</p>
-  </div>
-</div>
-
+        <div className="bg-gray px-4 rounded-md">
+          <p className="text-4xl text-fake_black flex justify-center">
+            {currentTime}
+          </p>
+          <p className="text-2xl text-fake_black">{`${hijriDayOfWeek}, ${hijriDay} ${hijriMonth} ${hijriYear}`}</p>
+        </div>
+        {user && (
+          <div>
+            <span>{user.email}</span>
+            <button onClick={handleClick}>Log out</button>
+          </div>
+        )}
       </div>
-   
+    </div>
   );
 }
 
