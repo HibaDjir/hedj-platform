@@ -3,6 +3,8 @@ import user from "../images/User.png";
 import log_out from "../images/log_out.png";
 import { Link } from 'react-router-dom';
 
+import axios from 'axios';
+
 export let idCandidat = 'szdzdzdz';
 
 const DropdownMenu = () => {
@@ -14,12 +16,28 @@ const DropdownMenu = () => {
   const [candidature, setCandidature] = useState([]);
 
   useEffect(() => {
-      fetchCandidature();
+    const cookies = document.cookie.split(';');
+    const tokenCookie = cookies.find(cookie => cookie.trim().startsWith('token='));
+    const token = tokenCookie ? tokenCookie.split('=')[1] : null;
+    axios.get('http://localhost:3000/TestLogin?fieldName=token&fieldValue='+token)
+            .then(response => {
+              axios.get('http://localhost:3000/api/users/'+response.data)
+                      .then(responseF => {
+                        fetchCandidature(response.data);
+                        //alert(responseF.data)
+                      })
+                      .catch(error => {
+                          console.error('Erreur lors de la récupération des options :', error);
+                      });
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des options :', error);
+            });
   }, []);
 
-  const fetchCandidature = async () => {
+  const fetchCandidature = async (id_user) => {
       try {
-          const response = await fetch('http://localhost:3000/api/candidature/');
+          const response = await fetch('http://localhost:3000/api/candidature/id_user/find?fieldName=id_user&fieldValue='+id_user);
           if (!response.ok) {
               throw new Error('Failed to fetch data');
           }
