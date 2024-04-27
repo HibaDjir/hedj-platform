@@ -87,6 +87,7 @@ function Candidature() {
   const [condidatures, setCondidature] = useState([]);
   const [id_session, setSession] = useState(null);
   const [annee, setAnnee] = useState(null);
+  const [id_user, setIdUser] = useState(null);
 
   useEffect(() => {
     axios.get('http://localhost:3000/api/wilaya/All')
@@ -110,6 +111,23 @@ function Candidature() {
     axios.get('http://localhost:3000/api/session/stateSession/find?fieldName=state&fieldValue=En cours')
             .then(response => {
               setSession(response.data._id);setAnnee(response.data.annee);
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des options :', error);
+            });
+    const cookies = document.cookie.split(';');
+    const tokenCookie = cookies.find(cookie => cookie.trim().startsWith('token='));
+    const token = tokenCookie ? tokenCookie.split('=')[1] : null;
+    axios.get('http://localhost:3000/TestLogin?fieldName=token&fieldValue='+token)
+            .then(response => {
+              axios.get('http://localhost:3000/api/users/'+response.data)
+                      .then(responseF => {
+                        setIdUser(response.data)
+                        //alert(responseF.data)
+                      })
+                      .catch(error => {
+                          console.error('Erreur lors de la récupération des options :', error);
+                      });
             })
             .catch(error => {
                 console.error('Erreur lors de la récupération des options :', error);
@@ -211,8 +229,8 @@ function Candidature() {
         var civilite = formCandidature.civilite;
         var genre = formCandidature.genre;
         var maladie_cronique = "[";
-        var id_mahrem = selectedOptionCandidature;
-        if(genre === 'ذكر') id_mahrem = null;
+        var mahrem_rslt = selectedOptionCandidature;
+        if(genre === 'ذكر') mahrem_rslt = null;
         
         if(formCandidature.maladie_cronique_s === true) maladie_cronique = maladie_cronique + ", السكري";
         if(formCandidature.maladie_cronique_ds === true) maladie_cronique = maladie_cronique + ", ضغط الدم";
@@ -228,10 +246,9 @@ function Candidature() {
         nom = formCandidature.nom, prenom = formCandidature.prenom, nationalite = formCandidature.nationalite,
         num_passeport = formCandidature.num_passeport, telephone = formCandidature.telephone, email = formCandidature.email,
         address = formCandidature.address, nss = formCandidature.nss;
-        if(genre === 'أنثى' && id_mahrem == null){
+        if(genre === 'أنثى' && mahrem_rslt == null){
           alert("Il est nécessaire de compléter El Mahrem pour un candidat féminin.");// le message de blocage pour un candidat féminin ne remplie pas el mahrem
         }else{
-          
           try {
                 const response = await fetch('http://localhost:3000/api/candidature/genre/find?fieldName=num_passeport&fieldValue='+num_passeport);
                 if (!response.ok) {
@@ -246,8 +263,11 @@ function Candidature() {
                   }
                 }
                 if(canAdd === false){
+                  var id_mahrem=''
+                  if(genre === 'ذكر') id_mahrem = null;
+                  else id_mahrem = mahrem_rslt.value;
                   const response = await axios.post('http://localhost:3000/api/candidature', { 
-                    nom, prenom, date_naissance, lieu_naissance, nationalite, civilite, genre, num_passeport, telephone, email, wilaya, commune, address, groupage, nss, maladie_cronique,id_mahrem,id_session
+                    nom, prenom, date_naissance, lieu_naissance, nationalite, civilite, genre, num_passeport, telephone, email, wilaya, commune, address, groupage, nss, maladie_cronique,id_mahrem,id_session,id_user
                   });
                   alert("Enregistrement avec succées");
                   navigate("/homelgin");

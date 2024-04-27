@@ -16,9 +16,10 @@ function Modal({ onClose }) {
       axios.post('http://localhost:3000/api/users/login', {email,password})
       .then(res=>{
         if(res.data.token){
-          localStorage.setItem('token',res.data.token)
+          document.cookie = `token=${res.data.token}; expires=2D; path=/`;
+          alert(document.cookie)
+          alert("logged in")
         }
-        alert("logged in")
         if(res.data.Role === 'admin'){
           navigate('/dashboard')
         }else{
@@ -39,7 +40,7 @@ function Modal({ onClose }) {
     onClose();};
   const modalRef = useRef();
   const closeModal = (e) => {
-    if (modalRef.current == e.target) {
+    if (modalRef.current === e.target) {
       onClose();
     }
   };
