@@ -81,9 +81,23 @@ exports.login=async (req, res) => {
 
 		const token = user.generateAuthToken();
 		//res.status(200).send({ data: token, message: "logged in successfully" });
+
+
+
+		//if(user.Role==="sousAdmin"){
+			//const id=user._id
+			//const sousAdmin=await souadmin.finbyid(id)
+			//const Wilaya=await Wilaya.finbyid(sousasmin.id_wilaya)
+			//const popwilaya=wilaya.pop
+			//const masteradmin=await user.findone() 
+			//cont nbplace=clc(popwilaya,poptotal,nbplacetotal)
+			
+
+		//}
 		res.json({
 			Role:user.Role,
 			token:token
+			//nbplace:nbplace
 		})
 	} catch (error) {
 		res.status(500).json({ message: "Internal Server Error" });console.log('error',error.message)

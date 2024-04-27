@@ -18,7 +18,7 @@ import React, { useEffect, useState } from 'react';
 async function checkAuthentication() {
   try {
       // Retrieve token from localStorage
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('user');
 
       // Return true if token exists, false otherwise
       return !!token;

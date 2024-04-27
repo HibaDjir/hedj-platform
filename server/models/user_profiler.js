@@ -31,6 +31,10 @@ user_profiler.methods.generateAuthToken = function () {
 	});
 	return token;
 };
+
+
+
+
 const User = mongoose.model("user", user_profiler);
 
 const validateSignup = (data) => {
@@ -45,6 +49,7 @@ const validateSignup = (data) => {
 const validateLog = (data) => {
     const schema = Joi.object({
       email: Joi.string().email().required().label("Email"),
+      
       password: Joi.string().required().label("Password"),
     });
     return schema.validate(data);
