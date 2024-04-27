@@ -52,7 +52,7 @@ function FAQ() {
         {initialContent.map((item, index) => (
           <div key={index} className="mx-auto mb-4 w-full md:w-5/12">
             <div className="rounded-3xl bg-taupe_palette">
-              <div className="p-4 text-xl relative font-medium">
+              <div className="p-4 text-xl relative font-medium ">
                 <div>{item.question}</div>
                 <button
                   className="text-xl absolute bottom-0 left-0 p-4"
