@@ -27,7 +27,7 @@ function Modal({ onClose }) {
       }).catch(err => {
         console.log(err)
         if (err.response && err.response.data && err.response.data.message) {
-          setErrorMessage(err.response.data.message);
+          setErrorMessage('البريد الإلكتروني أو كلمة المرور غير صحيحة.');
         } else {
           setErrorMessage('An error occurred. Please try again later.');
         }
@@ -94,7 +94,11 @@ function Modal({ onClose }) {
             >
               <Link to="/home">تأكيد</Link>
             </button>
-            {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
+            {errorMessage && (
+  <div className="bg-red-100 text-red-700 border border-red-400 rounded-md p-2 mt-2">
+    {errorMessage}
+  </div>
+)}
           </form>
          
         </div>

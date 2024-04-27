@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ar from "date-fns/locale/ar";
 import ConfModal from "../Popups/ConfimCandid";
+import { CSSTransition } from 'react-transition-group';
 
 
 import Cnd_bg from "../images/MOSQUE.jpg";
@@ -11,6 +12,13 @@ import add from "../images/add_khel.png";
 import { Link } from 'react-router-dom';
 
 function Candidature() {
+
+  const [isDivVisible, setIsDivVisible] = useState(true);
+
+  const handleLinkClick = () => {
+    // Hide the div when the link is clicked to trigger exit animation
+    setIsDivVisible(false);
+  };
   const [selectedDate, setSelectedDate] = useState(null);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -69,7 +77,13 @@ function Candidature() {
   };
 
   
+//la transition
+const [currentPage, setCurrentPage] = useState(1);
 
+// Function to navigate to the "mahram" candidature page (Page 2)
+const navigateToMahramPage = () => {
+  setCurrentPage(2);
+};
 
 
   const options = [
@@ -93,7 +107,13 @@ function Candidature() {
       className="w-full h-full mx-auto  text-right flex flex-col justify-center items-center bg-cover bg-center p-5"
       style={{ backgroundImage: `url(${Cnd_bg})` }}
     >
-      <div className=" flex flex-col justify-center items-center max-w-[1240px] mx-auto  bg-[#EAE1D1]  bg-opacity-90  rounded-xl shadow-2xl">
+        <CSSTransition
+        in={isDivVisible}
+        timeout={500}
+        classNames="page-exit page-exit-active " 
+        unmountOnExit
+      >
+      <div className="flex flex-col justify-center items-center max-w-[1240px] mx-auto  bg-[#EAE1D1]  bg-opacity-90  rounded-xl shadow-2xl">
         <h1 className="text-fake_black  text-3xl mt-4">إستمارة الحج</h1>
         <div className="max-w-[1240px] mx-auto  grid md:grid-cols-2 w-full  ">
         <div className="flex flex-col justify-items-center  p-5">
@@ -464,17 +484,16 @@ function Candidature() {
             </div>
      
            
-    <Link to="/candidature_mahram">
-    <div className="flex justify-center items-center w-full mt-10">
+            <Link to="/candidature_mahram" onClick={handleLinkClick}>
+  <div className="flex justify-center items-center w-full mt-10">
     <img
       src={add}
       className="text-fake_black h-[40px] w-[40px] ml-2 transition-transform duration-500 ease-in-out transform hover:scale-110 hover:cursor-pointer"
-      />
-   
+    />
     <p className="text-xl text-fake_black">تسجيل المحرم للمرأة</p>
-    </div>
-    </Link>
-  
+  </div>
+</Link>
+
 
 
           </div>
@@ -486,6 +505,7 @@ function Candidature() {
         </button>
         {isConfModalOpen && <ConfModal onClose={closeConfModal} />}
       </div>
+      </CSSTransition>
     </div>
   );
      

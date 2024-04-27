@@ -11,23 +11,32 @@ function Modal({ onClose }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-
-  const handleSubmit =  (e) => {
-    e.preventDefault();
-    axios.post('http://localhost:3000/api/users/signup', {firstName,lastName,email,password})
-    .then(res=>{
-      alert("created")
-      if(res.data.token){
-        localStorage.setItem('token',res.data.token)
-      }
-    }).catch(err => {
-      if (err.response && err.response.data && err.response.data.message) {
-        setErrorMessage(err.response.data.message);
-      } else {
-        setErrorMessage('An error occurred. Please try again later.');
-      }
-      console.log(err)})
+  const errorTranslations = {
+    'An error occurred. Please try again later.': 'حدث خطأ. يرجى المحاولة مرة أخرى في وقت لاحق.',
+    '"Password" should contain at least 1 lower-cased letter': 'يجب أن تحتوي كلمة المرور على حرف صغير على الأقل.',
+    '"Password" should be at least 8 characters long': 'يجب أن تكون كلمة المرور على الأقل ٨ أحرف.',
+    '"Password" should contain at least 1 number': 'يجب أن تحتوي كلمة المرور على رقم واحد على الأقل.',
+    '"Password" should contain at least 1 symbol': 'يجب أن تحتوي كلمة المرور على رمز واحد على الأقل.',
+    'User with given email already Exist!': 'عذرًا، يبدو أن هذا البريد الإلكتروني مُرتبط بحساب آخر.'
   };
+  
+  
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios.post('http://localhost:3000/api/users/signup', { firstName, lastName, email, password })
+      .then(res => {
+        alert("created")
+        if (res.data.token) {
+          localStorage.setItem('token', res.data.token)
+        }
+      }).catch(err => {
+        let translatedErrorMessage = errorTranslations[err.response.data.message] || 'حدث خطأ. يرجى المحاولة مرة أخرى في وقت لاحق.';
+        setErrorMessage(translatedErrorMessage);
+        console.log(err);
+      });
+  }
+  
   //
 
   const modalRef = useRef();
@@ -81,8 +90,7 @@ function Modal({ onClose }) {
             </div>
             <div className="mb-4">
               <label className="text-fake_black mb-2" htmlFor="email">
-                البريد اللإلكترون
-              </label>
+              البريد اللإلكتروني              </label>
               <input
                 className="text-black p-2 border rounded-2xl w-full"
                 type="email"
@@ -104,6 +112,19 @@ function Modal({ onClose }) {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              </div>
+              <div className="mb-4">
+              <label className="text-fake_black mb-2" htmlFor="password">
+          تأكيد كلمة السر 
+              </label>
+              <input
+                className="text-black p-2 border rounded-2xl w-full"
+                type="password"
+                placeholder="تأكيد كلمة السر"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
             </div>
             <button
               type="submit"
@@ -111,9 +132,12 @@ function Modal({ onClose }) {
             >
               <Link to="/home">تأكيد</Link>
             </button>
-            {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
-
-          </form>
+            {errorMessage && (
+  <div className="bg-red-100 text-red-700 border border-red-400 rounded-md p-2 mt-2">
+    {errorMessage}
+  </div>
+)}
+      </form>
         </div>
       </div>
     </div>
