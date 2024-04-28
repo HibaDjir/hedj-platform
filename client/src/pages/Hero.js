@@ -1,7 +1,7 @@
 import React from "react";
 import { ReactTyped } from "react-typed";
 import { useState } from "react";
-import heroBg from "../images/hero_bg.png";
+import heroBg from "../images/sunrise.jpeg";
 import ElHadj from "../images/ELHADJ.jpg";
 import Navbar from "../components/Navbar";
 import SignupModal from "../Popups/Signup";
@@ -17,7 +17,7 @@ function Hero() {
   return (
     <div
       dir="rtl "
-      className="w-full h-[87vh] mx-auto  text-right flex flex-col justify-center bg-cover bg-center"
+      className="w-full h-[87vh] mx-auto  text-right flex flex-col justify-center bg-cover bg-center cursor-pointer"
       style={{  backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${ElHadj})`}}
     >
       <div className="maw-w-[1240px] mx-auto grid md:grid-cols-2 w-full">

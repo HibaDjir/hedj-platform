@@ -1,7 +1,8 @@
 import React, { useRef } from "react";
 import { Link,useNavigate  } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
+import { useAuthContext } from '../hooks/useAuthContext'
+import axios from 'axios'
 
 
 function Modal({ onClose }) {
@@ -9,10 +10,16 @@ function Modal({ onClose }) {
   //
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState(null)
     const [errorMessage, setErrorMessage] = useState('');
+    const [isLoading, setIsLoading] = useState(false)
+    const { dispatch } = useAuthContext()
+    
     const navigate=useNavigate()
-    const handleSubmit = (e) =>{
+
+    const handleSubmit = async (e) =>{
       e.preventDefault();
+
       axios.post('http://localhost:3000/api/users/login', {email,password})
       .then(res=>{
         if(res.data.token){
@@ -28,13 +35,43 @@ function Modal({ onClose }) {
       }).catch(err => {
         console.log(err)
         if (err.response && err.response.data && err.response.data.message) {
-          setErrorMessage(err.response.data.message);
+          setErrorMessage('البريد الإلكتروني أو كلمة المرور غير صحيحة.');
         } else {
           setErrorMessage('An error occurred. Please try again later.');
         }
       })
+
+      setIsLoading(true);
+
+      const response = await fetch('http://localhost:3000/api/users/login', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ email, password })
+    })
+
+    const json = await response.json()
+
+    console.log(response)
+    console.log(json.message)
+
+
+    if (response.status !== 200) {
+      setError(json.message)
+    }else if( response.status===200 ){
+      // save the user to local storage
+      localStorage.setItem('user', JSON.stringify(json))
+      // update the auth context
+      dispatch({type: 'LOGIN', payload: json})
+      // Navigate only if there's no error
+      navigate('/homelgin',{replace: true})
+      setIsLoading(false);
     }
-  //
+
+   
+
+
+    }
+
  
   const handleResetPasswordClick = () => {
     onClose();};
@@ -93,10 +130,15 @@ function Modal({ onClose }) {
               type="submit"
               className="bg-[#D4A373] text-white hover:bg-[#AD7946] p-2 rounded-2xl w-full mt-2 "
             >
-              <Link to="/home">تأكيد</Link>
+              {isLoading ? 'جاري المعالجة...' : <Link to="/home">تأكيد</Link>}
             </button>
-            {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
-          </form>
+
+            {errorMessage && (
+  <div className="bg-red-100 text-red-700 border border-red-400 rounded-md p-2 mt-2">
+    {errorMessage}
+  </div>
+)}
+  </form>
          
         </div>
       </div>
@@ -105,3 +147,4 @@ function Modal({ onClose }) {
 }
 
 export default Modal;
+

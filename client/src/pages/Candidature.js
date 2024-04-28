@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ar from "date-fns/locale/ar";
 import ConfModal from "../Popups/ConfimCandid";
+import { CSSTransition } from 'react-transition-group';
 
 
 import Cnd_bg from "../images/MOSQUE.jpg";
@@ -14,6 +15,14 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
 function Candidature() {
+
+
+  const [isDivVisible, setIsDivVisible] = useState(true);
+
+  const handleLinkClick = () => {
+    // Hide the div when the link is clicked to trigger exit animation
+    setIsDivVisible(false);
+  };
 
   const navigate = useNavigate();
   const [formCandidature, setFormCandidature] = useState({
@@ -36,6 +45,7 @@ function Candidature() {
     maladie_cronique_ds: false,
     maladie_cronique_au: '',
   });
+
   const [selectedDate, setSelectedDate] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -293,7 +303,13 @@ function Candidature() {
       className="w-full h-full mx-auto  text-right flex flex-col justify-center items-center bg-cover bg-center p-5"
       style={{ backgroundImage: `url(${Cnd_bg})` }}
     >
-      <div className=" flex flex-col justify-center items-center max-w-[1240px] mx-auto  bg-[#EAE1D1]  bg-opacity-90  rounded-xl shadow-2xl">
+        <CSSTransition
+        in={isDivVisible}
+        timeout={500}
+        classNames="page-exit page-exit-active " 
+        unmountOnExit
+      >
+      <div className="flex flex-col justify-center items-center max-w-[1240px] mx-auto  bg-[#EAE1D1]  bg-opacity-90  rounded-xl shadow-2xl">
         <h1 className="text-fake_black  text-3xl mt-4">إستمارة الحج</h1>
         <div className="max-w-[1240px] mx-auto  grid md:grid-cols-2 w-full  ">
         <div className="flex flex-col justify-items-center  p-5">
@@ -677,6 +693,7 @@ function Candidature() {
               />
             </div>
      
+
             {isVisible && 
             <div><Link to="/candidature_mahram">
             <div className="flex justify-center items-center w-full mt-10">
@@ -698,6 +715,7 @@ function Candidature() {
               onChange={handleChangeCandidature}
               isRtl={true}
             /></div>}
+
           </div>
         </div>
 
@@ -707,6 +725,7 @@ function Candidature() {
         </button>
         {isConfModalOpen && <ConfModal onClose={closeConfModal} onConfirm={handleSubmit} />}
       </div>
+      </CSSTransition>
     </div>
   ); 
 

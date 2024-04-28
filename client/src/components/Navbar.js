@@ -59,14 +59,12 @@ function Navbar() {
       dir="rtl"
       className={`flex justify-between items-center h-20 max-w-1240 mx-auto px-4 navbar bg-gradient-to-b from-fake_black to-transparent `}
     >
-      <img style={{ width: "80px", height: "auto" }} src={Logo} alt="LOGO" />
+     <Link to="/home"> <img style={{ width: "80px", height: "auto" }} src={Logo} alt="LOGO" ></img></Link>
 
       <ul
         className={`text-white hidden md:flex ${desktopNav ? "flex-col" : ""}`}
       >
-        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-brown_palette text-brown_palette duration-300 ">
-          <Link to="/home">الصفحة الرإيسية</Link>
-        </li>
+        
         <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-brown_palette text-brown_palette duration-300">
           <Link to="/nussuki">مناسك</Link>
         </li>
