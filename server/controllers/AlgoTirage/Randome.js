@@ -49,7 +49,7 @@ function electionPelerinsAuHasard(pelerins, nombreAElire) {
         if (pelerinElu.genre === 'أنثى' && pelerinElu.id_mahrem) {
             let  pelerinF=pelerinElu
             console.log('female is ',pelerinF)
-            let malePelerinIndex = pelerinsRestants.findIndex(pelerin => pelerin._id.toString() === pelerinElu.id_mahrem);
+          
             console.log('index de mahrem ',malePelerinIndex)
             if (malePelerinIndex !== -1) {
                  pelerinElu = pelerinsRestants[malePelerinIndex];
