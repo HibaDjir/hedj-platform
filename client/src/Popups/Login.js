@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Link,useNavigate  } from "react-router-dom";
+import { Link,useNavigate,useLocation  } from "react-router-dom";
 import { useState } from "react";
 import { useAuthContext } from '../hooks/useAuthContext'
 
@@ -13,14 +13,16 @@ function Modal({ onClose }) {
     const [error, setError] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
     const { dispatch } = useAuthContext()
+    const location=useLocation()
+    const redirectPath=location.state?.path || "/homelgin"
     
     const navigate=useNavigate()
 
     const handleSubmit = async (e) =>{
       e.preventDefault();
-      setIsLoading(true);
 
       const response = await fetch('http://localhost:3000/api/users/login', {
+
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ email, password })
@@ -37,11 +39,14 @@ function Modal({ onClose }) {
     }else if( response.status===200 ){
       // save the user to local storage
       localStorage.setItem('user', JSON.stringify(json))
+      console.log(redirectPath)
+      navigate(redirectPath ,{replace:true}) 
       // update the auth context
       dispatch({type: 'LOGIN', payload: json})
+      // update loading state
+      setIsLoading(false)
       // Navigate only if there's no error
-      navigate('/homelgin',{replace: true})
-      setIsLoading(false);
+ 
     }
 
    

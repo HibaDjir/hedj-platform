@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import axios from 'axios'
+import { useNavigate } from "react-router-dom";
 
 function Modal({ onClose }) {
     
@@ -13,6 +14,7 @@ function Modal({ onClose }) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const navigate=useNavigate()
 
 
   const handleSubmit =  (e) => {
@@ -25,6 +27,7 @@ function Modal({ onClose }) {
     
     axios.post('http://localhost:3000/api/users/signup', {firstName,lastName,email,password})
     .then(res=>{
+
       setIsLoading(false);
       alert("تم إنشاء الحساب بنجاح! تفقد حسابك البريدي");
       onClose();
@@ -37,6 +40,7 @@ function Modal({ onClose }) {
         setConfirmPassword('');
         // Show success alert
       }
+
 
     }).catch(err => {
       if (err.response && err.response.data && err.response.data.message) {
