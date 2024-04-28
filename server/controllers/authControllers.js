@@ -134,6 +134,7 @@ exports.forgotPassword=async(req,res,next)=>{
 exports.resetPassord = async(req, res) =>{
 	const {id, token} = req.params
 	const {password} = req.body
+
 	const { error } = ValidateResetPassword(req.body);
 	if (error)
 		return res.status(400).send({ message: error.details[0].message });

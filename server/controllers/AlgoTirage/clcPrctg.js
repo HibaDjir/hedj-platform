@@ -1,7 +1,15 @@
 // const Wilaya =require('../../models/wilaya')
 // const Commune =require('../../models/Commune')
- 
- 
+function setStatus(pelerins,status){
+
+    for(let i=0;i<pelerins.length;i++){
+        pelerins[i].status=status
+
+    }
+    return pelerins
+}
+
+module.exports = {setStatus} 
  
  
  

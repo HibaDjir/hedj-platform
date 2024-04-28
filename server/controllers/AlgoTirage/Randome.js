@@ -1,7 +1,7 @@
 
 const Condidatures=require('../../models/Candidature')
 const Commune =require('../../models/Commune')
-const clc = require('./clcPrctg')
+const {setStatus} = require('./clcPrctg')
 
 // Function for electing a specific number of pilgrims randomly
 function electionPelerinsAuHasard(pelerins, nombreAElire) {
@@ -51,6 +51,7 @@ function electionPelerinsAuHasard(pelerins, nombreAElire) {
             console.log('female is ',pelerinF)
           
             console.log('index de mahrem ',malePelerinIndex)
+            //les cas ou le mahrem existe dans restants
             if (malePelerinIndex !== -1) {
                  pelerinElu = pelerinsRestants[malePelerinIndex];
                  pelerinsRestants.splice(malePelerinIndex , 1);
@@ -60,7 +61,7 @@ function electionPelerinsAuHasard(pelerins, nombreAElire) {
              
                  pelerinsElus.push(pelerinF);
 
-             
+                         //les cas ou le mahrem nexiste pas dans restants et existe plus de places'we didnt reach last place=
             }else if(pelerinsElus.length<=nombreAElire -2){
                
                  pelerinsElus.push(pelerinElu);
@@ -76,14 +77,7 @@ function electionPelerinsAuHasard(pelerins, nombreAElire) {
     return {pelerinsElus,pelerinsRestants}
 }
 
-function setStatus(pelerins,status){
 
-            for(let i=0;i<pelerins.length;i++){
-                pelerins[i].status=status
-
-            }
-            return pelerins
-}
 
 // Controller method to elect pilgrims randomly and save them to the database
 exports.electPilgrims = async (req, res) => {
