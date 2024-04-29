@@ -9,6 +9,8 @@ import Navbar from "./components/Navbar";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "./index";
 
+import RequireAuth from "./protectingRoutes/RequireAuth";
+
 import Manassik from "../src/pages/Manassik";
 import Candidature from "./pages/Candidature";
 import Candidature_mahram  from "./pages/AddMahram";
@@ -19,6 +21,7 @@ import Cansulter_cand from "./pages/Consulter_candidature";
 
 import Sidebar from "../src/components/Dash_components/shared/Sidebar"
 function App() {
+  const isLoggedIn=localStorage.getItem('loggedIn')
   return (
     <Router>
       <div className="App">
@@ -26,15 +29,15 @@ function App() {
         <Routes>
         <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/homelgin" element={<Home_owner_account />} />  
-          <Route path="/candidature" element={<Candidature />} />
-          <Route path="/candidature_mahram" element={<Candidature_mahram />} />
-          <Route path="/user_profile" element={<UserProfile/>} />
-          <Route path="/home_each_profile" element={<Home_each_profile />} /> 
-          <Route path="/consulter_cand" element={<Cansulter_cand />} /> 
+          <Route path="/homelgin" element={<RequireAuth><Home_owner_account /></RequireAuth>} />  
+          <Route path="/candidature" element={<RequireAuth><Candidature /></RequireAuth>} />
+          <Route path="/candidature_mahram" element={<RequireAuth><Candidature_mahram /></RequireAuth>} />
+          <Route path="/user_profile" element={<RequireAuth><UserProfile/></RequireAuth>} />
+          <Route path="/home_each_profile" element={<RequireAuth><Home_each_profile /></RequireAuth>} /> 
+          <Route path="/consulter_cand" element={<RequireAuth><Cansulter_cand /></RequireAuth>} /> 
           <Route path="/nussuki" element={<Manassik />} />
           <Route
-            path="/resetPassword/:id/:token"
+            path="/resetPassword/:token"
             element={<Resset_password />}
           />
           <Route path="/mail_conf" element={<EmailConfirmation />} />

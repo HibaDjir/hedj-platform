@@ -5,9 +5,13 @@ import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import Logo from "../images/LOGO.png";
 import NetflixModal from "../Popups/Netflix";
 import user from "../images/User.png";
+import { useAuthContext } from "../hooks/useAuthContext"
+import { useLogout } from '../hooks/useLogout'
+
 
 function Navbar_lgin() {
   const [isNetflixModalOpen, setIsNetflixModalOpen] = useState(false);
+
   const openNetflixModal = () => {
     setIsNetflixModalOpen(true);
   };
@@ -15,7 +19,7 @@ function Navbar_lgin() {
   const closeNetflixModal = () => {
     setIsNetflixModalOpen(false);
   };
-
+ 
   
 
   const [mobileNav, setMobileNav] = useState(false);
@@ -125,11 +129,15 @@ function Navbar_lgin() {
         <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300">
           <Link to="/nussuki">مناسك</Link>
         </li>
-          
         </ul>
       </div>
     </div>
+    
   );
 }
 
 export default Navbar_lgin;
+
+
+
+

@@ -41,14 +41,12 @@ function Navbar_for_each_profile() {
       dir="rtl"
       className={`flex justify-between items-center h-20 max-w-1240 mx-auto px-4 navbar text-fack_black  bg-gradient-to-b from-fake_black to-transparent `}
     >
-      <img style={{ width: "80px", height: "auto" }} src={Logo} alt="LOGO" />
+      <Link to="/home_each_profile"> <img style={{ width: "80px", height: "auto" }} src={Logo} alt="LOGO"  ></img></Link>
 
       <ul
         className={`text-white hidden md:flex ${desktopNav ? "flex-col" : ""}`}
       >
-        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent text-brown_palette duration-300 ">
-          <Link to="/home_each_profile">الصفحة الرإيسية</Link>
-        </li>
+        
         <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent text-brown_palette duration-300">
           <Link to="/nussuki">مناسك</Link>
         </li>

@@ -1,7 +1,7 @@
-
 const jwt=require('jsonwebtoken')
 const Joi = require("joi");
-const { User, validateLog, validateSignup,validatePassword} = require("../models/user_profiler");
+const { User, validateLog, validateSignup,ValidateResetPassword } = require("../models/user_profiler");
+
 const bcrypt = require("bcrypt");
 const sendEmail=require('../util/sendEmail')
 
@@ -67,7 +67,8 @@ exports.login=async (req, res) => {
 		const { error } = validateLog(req.body);
 		if (error)
 			return res.status(400).send({ message: error.details[0].message });
-
+	
+  
 		const user = await User.findOne({ email: req.body.email });
 		if (!user)
 			return res.status(401).send({ message: "Invalid Email or Password" });
@@ -78,15 +79,16 @@ exports.login=async (req, res) => {
 		);
 		if (!validPassword)
 			return res.status(401).send({ message: "Invalid Email or Password" });
+			
 
 		const token = user.generateAuthToken();
-		//res.status(200).send({ data: token, message: "logged in successfully" });
-		res.json({
+		res.status(200).json({
 			Role:user.Role,
-			token:token
+			token:token 
 		})
+		
 	} catch (error) {
-		res.status(500).json({ message: "Internal Server Error" });console.log('error',error.message)
+		res.status(500).json({message: 'internal server error'})	
 	}
 
 
@@ -101,8 +103,8 @@ exports.forgotPassword=async(req,res,next)=>{
 		if(!oldUser){
 			return res.status(401).send({message: "User does not exist"})
 		}
-		const secret = process.env.JWTPRIVATEKEY + oldUser.password
-		const token = jwt.sign({email: oldUser.email, id:oldUser._id}, secret, {expiresIn : '10m'})
+		const secret = process.env.JWTPRIVATEKEY
+		const token = jwt.sign({email: oldUser.email, id:oldUser._id}, secret, {expiresIn : '1d'})
 		const link=`http://localhost:3001/resetPassword/${oldUser._id}/${token}`
 		console.log(link)
 		await sendEmail({
@@ -120,16 +122,18 @@ exports.forgotPassword=async(req,res,next)=>{
 exports.resetPassord = async(req, res) =>{
 	const {id, token} = req.params
 	const {password} = req.body
-	const { error } = validatePassword(req.body);
+
+	const { error } = ValidateResetPassword(req.body);
 	if (error)
-	return res.status(400).send({ message: error.details[0].message });
+		return res.status(400).send({ message: error.details[0].message });
+
 	const oldUser=await User.findOne({_id: id})
 		if(!oldUser){
 			return res.status(401).send({message: "User does not exist"})
 		}
-	const secret = process.env.JWTPRIVATEKEY + oldUser.password
+	const secret = process.env.JWTPRIVATEKEY
 	try {
-		const verify = jwt.verify(token, secret)
+		const verify = jwt.verify(token, secret, )
 		const encryptedPassword = await bcrypt.hash(password, 10)
 		await User.updateOne(
 			{
@@ -140,15 +144,24 @@ exports.resetPassord = async(req, res) =>{
 				password: encryptedPassword
 			}}
 	)
-		res.json({status:"success"})
+		res.send({status:"success"})
 	} catch (error) {
 		console.log(error)
-		res.json("error while updating password")
+		res.send("error while updating password")
 	}
 
 
 }
 
+exports.getUser = async (req, res) => {
+    const { id } = req.params
+
+    const userRslt = await User.findById(id)
+    if(!userRslt){
+        return res.status(404).json({error: "vide"})
+    }
+    res.status(200).json(userRslt)
+}
 
 //role ----------------------------------------------
 

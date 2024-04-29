@@ -4,7 +4,7 @@ import Tawaf_lng from "../images/NussukiPic/tawaf.jpg";
 import Tawaf_el_qoudoum from "../images/NussukiPic/hudjadj_qadimouuun.jpg";
 import sa3y_safa_marwa_01 from "../images/NussukiPic/sa3y_safa_marwa.jpg";
 import sa3y_safa_marwa_02 from "../images/NussukiPic/sa3y_safa_marwa_02.jpg";
-import djabal_aarafa from "../images/NussukiPic/djabal_aarafa.jpeg";
+import djabal_aarafa from "../images/NussukiPic/aarafa_by_akila.jpg";
 import djabal from "../images/NussukiPic/djabal.jpg";
 import bold_guy from "../images/NussukiPic/bold-guy.jpg";
 import Tawaf from "../images/NussukiPic/tawaf_01.jpg";
@@ -18,7 +18,7 @@ import React, { useEffect, useState } from 'react';
 async function checkAuthentication() {
   try {
       // Retrieve token from localStorage
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('user');
 
       // Return true if token exists, false otherwise
       return !!token;

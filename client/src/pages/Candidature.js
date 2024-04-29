@@ -4,8 +4,9 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ar from "date-fns/locale/ar";
 import ConfModal from "../Popups/ConfimCandid";
+import { CSSTransition } from 'react-transition-group';
 
-
+import back from "../images/back_icon.png";
 import Cnd_bg from "../images/MOSQUE.jpg";
 import add from "../images/add_khel.png";
 import { Link } from 'react-router-dom';
@@ -14,6 +15,14 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
 function Candidature() {
+
+
+  const [isDivVisible, setIsDivVisible] = useState(true);
+
+  const handleLinkClick = () => {
+    // Hide the div when the link is clicked to trigger exit animation
+    setIsDivVisible(false);
+  };
 
   const navigate = useNavigate();
   const [formCandidature, setFormCandidature] = useState({
@@ -36,6 +45,7 @@ function Candidature() {
     maladie_cronique_ds: false,
     maladie_cronique_au: '',
   });
+
   const [selectedDate, setSelectedDate] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -87,6 +97,7 @@ function Candidature() {
   const [condidatures, setCondidature] = useState([]);
   const [id_session, setSession] = useState(null);
   const [annee, setAnnee] = useState(null);
+  const [id_user, setIdUser] = useState(null);
 
   useEffect(() => {
     axios.get('http://localhost:3000/api/wilaya/All')
@@ -110,6 +121,23 @@ function Candidature() {
     axios.get('http://localhost:3000/api/session/stateSession/find?fieldName=state&fieldValue=En cours')
             .then(response => {
               setSession(response.data._id);setAnnee(response.data.annee);
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des options :', error);
+            });
+    const cookies = document.cookie.split(';');
+    const tokenCookie = cookies.find(cookie => cookie.trim().startsWith('token='));
+    const token = tokenCookie ? tokenCookie.split('=')[1] : null;
+    axios.get('http://localhost:3000/TestLogin?fieldName=token&fieldValue='+token)
+            .then(response => {
+              axios.get('http://localhost:3000/api/users/'+response.data)
+                      .then(responseF => {
+                        setIdUser(response.data)
+                        //alert(responseF.data)
+                      })
+                      .catch(error => {
+                          console.error('Erreur lors de la récupération des options :', error);
+                      });
             })
             .catch(error => {
                 console.error('Erreur lors de la récupération des options :', error);
@@ -211,8 +239,10 @@ function Candidature() {
         var civilite = formCandidature.civilite;
         var genre = formCandidature.genre;
         var maladie_cronique = "[";
-        var id_mahrem = selectedOptionCandidature;
-        if(genre === 'ذكر') id_mahrem = null;
+
+        var mahrem_rslt = selectedOptionCandidature;
+        if(genre === 'ذكر') mahrem_rslt = null;
+
         
         if(formCandidature.maladie_cronique_s === true) maladie_cronique = maladie_cronique + ", السكري";
         if(formCandidature.maladie_cronique_ds === true) maladie_cronique = maladie_cronique + ", ضغط الدم";
@@ -228,10 +258,10 @@ function Candidature() {
         nom = formCandidature.nom, prenom = formCandidature.prenom, nationalite = formCandidature.nationalite,
         num_passeport = formCandidature.num_passeport, telephone = formCandidature.telephone, email = formCandidature.email,
         address = formCandidature.address, nss = formCandidature.nss;
-        if(genre === 'أنثى' && id_mahrem == null){
+
+        if(genre === 'أنثى' && mahrem_rslt == null){
           alert("Il est nécessaire de compléter El Mahrem pour un candidat féminin.");// le message de blocage pour un candidat féminin ne remplie pas el mahrem
         }else{
-          
           try {
                 const response = await fetch('http://localhost:3000/api/candidature/genre/find?fieldName=num_passeport&fieldValue='+num_passeport);
                 if (!response.ok) {
@@ -246,8 +276,13 @@ function Candidature() {
                   }
                 }
                 if(canAdd === false){
+
+                  var id_mahrem=''
+                  if(genre === 'ذكر') id_mahrem = null;
+                  else id_mahrem = mahrem_rslt.value;
+
                   const response = await axios.post('http://localhost:3000/api/candidature', { 
-                    nom, prenom, date_naissance, lieu_naissance, nationalite, civilite, genre, num_passeport, telephone, email, wilaya, commune, address, groupage, nss, maladie_cronique,id_mahrem,id_session
+                    nom, prenom, date_naissance, lieu_naissance, nationalite, civilite, genre, num_passeport, telephone, email, wilaya, commune, address, groupage, nss, maladie_cronique,id_mahrem,id_session,id_user
                   });
                   alert("Enregistrement avec succées");
                   navigate("/homelgin");
@@ -268,8 +303,21 @@ function Candidature() {
       className="w-full h-full mx-auto  text-right flex flex-col justify-center items-center bg-cover bg-center p-5"
       style={{ backgroundImage: `url(${Cnd_bg})` }}
     >
-      <div className=" flex flex-col justify-center items-center max-w-[1240px] mx-auto  bg-[#EAE1D1]  bg-opacity-90  rounded-xl shadow-2xl">
-        <h1 className="text-fake_black  text-3xl mt-4">إستمارة الحج</h1>
+        <CSSTransition
+        in={isDivVisible}
+        timeout={500}
+        classNames="page-exit page-exit-active " 
+        unmountOnExit
+      >
+      <div className="flex flex-col justify-center items-center max-w-[1240px] mx-auto  bg-[#EAE1D1]  bg-opacity-90  rounded-xl shadow-2xl">
+      <div className='flex justify-center items-center'>
+  <div className="flex justify-item ">
+   
+    <h1 className="text-fake_black text-3xl mt-4 ml-2">إستمارة الحج</h1>
+    <img src={back} style={{ width: '50px', height: '50px' }}/>
+  </div>
+</div>
+
         <div className="max-w-[1240px] mx-auto  grid md:grid-cols-2 w-full  ">
         <div className="flex flex-col justify-items-center  p-5">
             <div className=" w-full flex justify-center items-center">
@@ -439,7 +487,7 @@ function Candidature() {
                   type="text"
                   name="num_passeport"
                   value={formCandidature.num_passeport} onChange={handleChangeValue}
-                  placeholder="رقم جواز السفر :"
+                  placeholder="رقم جواز السفر "
                   required
                 />
               </div>
@@ -452,7 +500,7 @@ function Candidature() {
                   type="text"
                   name="telephone"
                   value={formCandidature.telephone} onChange={handleChangeValue}
-                  placeholder=" رقم الهاتف:"
+                  placeholder=" رقم الهاتف"
                   required
                 />
               </div>
@@ -465,7 +513,7 @@ function Candidature() {
                   type="text"
                   name="email"
                   value={formCandidature.email} onChange={handleChangeValue}
-                  placeholder="  البريد الإلكتروني :"
+                  placeholder="  البريد الإلكتروني "
                   required
                 />
               </div>
@@ -492,14 +540,16 @@ function Candidature() {
               </div>
               <div className="flex flex-col w-full  mx-2">
                 <label className="text-fake_black mb-2" htmlFor="lastName">
-                  الدائرة:{" "}
+              البلدية:
+              {" "}
                 </label>
                 <Select
                   name="commune"
                   styles={customStyles}
                   options={communes}
                   onChange={handleChangeCommune}
-                  placeholder=" الدائرة:"
+                  placeholder=" البلدية
+             "
                   isRtl={true}
                 />
               </div>
@@ -652,6 +702,7 @@ function Candidature() {
               />
             </div>
      
+
             {isVisible && 
             <div><Link to="/candidature_mahram">
             <div className="flex justify-center items-center w-full mt-10">
@@ -673,6 +724,7 @@ function Candidature() {
               onChange={handleChangeCandidature}
               isRtl={true}
             /></div>}
+
           </div>
         </div>
 
@@ -682,6 +734,7 @@ function Candidature() {
         </button>
         {isConfModalOpen && <ConfModal onClose={closeConfModal} onConfirm={handleSubmit} />}
       </div>
+      </CSSTransition>
     </div>
   ); 
 

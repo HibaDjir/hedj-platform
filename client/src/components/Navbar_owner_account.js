@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "tailwindcss/tailwind.css";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
@@ -7,8 +7,6 @@ import NetflixModal from "../Popups/Netflix";
 import user from "../images/User.png";
 
 function Navbar_owner_account() {
-
-
 
   
   const [isNetflixModalOpen, setIsNetflixModalOpen] = useState(false);
@@ -54,28 +52,26 @@ function Navbar_owner_account() {
       dir="rtl"
       className={`flex justify-between items-center h-20 max-w-1240 mx-auto px-4 navbar text-fack_black  bg-gradient-to-b from-fake_black to-transparent `}
     >
-      <img style={{ width: "80px", height: "auto" }} src={Logo} alt="LOGO" />
+      <Link to="/homelgin"><img style={{ width: "80px", height: "auto" }} src={Logo} alt="LOGO" /></Link>
 
       <ul
         className={`text-white hidden md:flex ${desktopNav ? "flex-col" : ""}`}
       >
-        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent text-brown_palette duration-300 ">
-          <Link to="/homelgin">الصفحة الرإيسية</Link>
-        </li>
-        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent text-brown_palette duration-300">
+      
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-brown_palette text-brown_palette duration-200">
           <Link to="/nussuki">مناسك</Link>
         </li>
-        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-brown_palette text-brown_palette duration-300">
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-brown_palette text-brown_palette duration-200">
           <a href="/homelgin#FAQ">اللأسئلة المتداولة</a>
         </li>
-        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-brown_palette text-brown_palette duration-300">
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-brown_palette text-brown_palette duration-200">
           <a href="/homelgin#about_us">من نحن</a>
         </li>
-        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-brown_palette text-brown_palette duration-300">
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-brown_palette text-brown_palette duration-200">
           <Link to="/hajj">إتصل بنا</Link>
         </li>
      
-        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent text-brown_palette duration-300">
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent  hover:border-brown_palette text-brown_palette duration-300">
           <Link 
            onClick={openNetflixModal}
            >التسجيل للحج</Link>
@@ -132,6 +128,7 @@ function Navbar_owner_account() {
         </ul>
       </div>
     </div>
+
   );
 }
 

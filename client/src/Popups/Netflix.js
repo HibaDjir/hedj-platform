@@ -1,8 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import user from "../images/User.png";
+import log_out from "../images/log_out.png";
 import user_out from "../images/User_outlined.png";
 import Add from "../images/Untitled.png";
+import edit from "../images/edit-3.png";
+import axios from 'axios';
 
 function Netflix({ onClose }) {
   const modalRef = useRef();
@@ -17,16 +20,35 @@ function Netflix({ onClose }) {
   };
 
   
-
+  var id_user_n='';
   const [candidature, setCandidature] = useState([]);
+  //const [id_user_n, setIdUser] = useState(null);
 
   useEffect(() => {
-      fetchCandidature();
+    const cookies = document.cookie.split(';');
+    const tokenCookie = cookies.find(cookie => cookie.trim().startsWith('token='));
+    const token = tokenCookie ? tokenCookie.split('=')[1] : null;
+    axios.get('http://localhost:3000/TestLogin?fieldName=token&fieldValue='+token)
+            .then(response => {
+              axios.get('http://localhost:3000/api/users/'+response.data)
+                      .then(responseF => {
+                        id_user_n = response.data;
+                        fetchCandidature(id_user_n);
+                        //alert(responseF.data)
+                      })
+                      .catch(error => {
+                          console.error('Erreur lors de la récupération des options :', error);
+                      });
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des options :', error);
+            });
+    
   }, []);
 
-  const fetchCandidature = async () => {
+  const fetchCandidature = async (id_user) => {
       try {
-          const response = await fetch('http://localhost:3000/api/candidature/');
+          const response = await fetch('http://localhost:3000/api/candidature/id_user/find?fieldName=id_user&fieldValue='+id_user);
           if (!response.ok) {
               throw new Error('Failed to fetch data');
           }
@@ -50,12 +72,20 @@ function Netflix({ onClose }) {
      
         <div className="flex justify-between mb-6">
           <div className="flex items-center">
-            <img src={user} className="h-8 mr-2" alt="User" />
-            <p className="text-lg font-bold text-brown_palette">اسم المستخدم</p>
+            <img src={log_out} className="h-8 mr-2" alt="خروج" />
+            <p className="text-lg font-bold text-brown_palette">تسجيل الخروج</p>
           </div>
-          <button onClick={onClose} className="text-brown_palette">
-            تسجيل الخروج
-          </button>
+          <div className="flex justify-around">
+            <div className="flex flex-col">
+              <p className=" text-fake_black">إسم المستخدم</p> 
+              <div className="flex justify-center">
+               <img src={edit} alt="edit" style={{ width: '20px', height: '20px' }}/>
+               <p>معلومات الحساب</p>
+              </div>
+            </div>
+            <img src={user} alt="مستخدم" style={{ width: '70px', height: '70px' }} />
+
+          </div>
         </div>
         <div className="flex justify-center items-center">
           {candidature.map(candidat => (

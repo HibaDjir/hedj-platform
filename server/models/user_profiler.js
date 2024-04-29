@@ -31,6 +31,10 @@ user_profiler.methods.generateAuthToken = function () {
 	});
 	return token;
 };
+
+
+
+
 const User = mongoose.model("user", user_profiler);
 
 const validateSignup = (data) => {
@@ -45,32 +49,19 @@ const validateSignup = (data) => {
 const validateLog = (data) => {
     const schema = Joi.object({
       email: Joi.string().email().required().label("Email"),
+
       password: Joi.string().required().label("Password"),
     });
     return schema.validate(data);
   };
-  // const validatePassword = (data) => {
-  //   const schema = Joi.object({
-  //     password: Joi.string().required().label("Password")
-  //   });
-  //   return schema.validate(data);
-  // };
-  const validatePassword = (data) => {
-    const schema = Joi.object({
-        password: Joi.string()
-            .min(8)
-            .max(64)
-            .required()
-            .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
-            .label("Password")
-            .messages({
-                'string.pattern.base': 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character.',
-                'string.min': 'Password must be at least 8 characters long',
-                'string.max': 'Password cannot be longer than 64 characters',
-                'any.required': 'Password is required'
-            })
-    });
-    return schema.validate(data);
-};
 
-module.exports = { User, validateSignup ,validateLog ,validatePassword};
+  const ValidateResetPassword=(data)=>{
+    const schema = Joi.object({
+    password: passwordComplexity().required().label("Password"),
+  });
+	return schema.validate(data);
+  }
+
+ 
+
+module.exports = { User, validateSignup ,validateLog, ValidateResetPassword };
