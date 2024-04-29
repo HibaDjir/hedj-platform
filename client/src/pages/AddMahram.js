@@ -242,7 +242,8 @@ function  AddMahram() {
       style={{ backgroundImage: `url(${Cnd_bg})` }}
     >
       <div className=" flex flex-col justify-center items-center max-w-[1240px] mx-auto  bg-[#EAE1D1]  bg-opacity-90  rounded-xl shadow-2xl">
-        <h1 className="text-fake_black  text-3xl mt-4">إستمارة الحج</h1>
+        <h1 className="text-fake_black  text-3xl mt-4"  >   إستمارة الحج
+        (محرم)</h1>
         <div className="max-w-[1240px] mx-auto  grid md:grid-cols-2 w-full  ">
         <div className="flex flex-col justify-items-center  p-5">
             <div className=" w-full flex justify-center items-center">
@@ -401,7 +402,7 @@ function  AddMahram() {
                   type="text"
                   name="num_passeport"
                   value={formCandidature.num_passeport} onChange={handleChangeValue}
-                  placeholder="رقم جواز السفر :"
+                  placeholder="رقم جواز السفر "
                   required
                 />
               </div>
@@ -414,7 +415,7 @@ function  AddMahram() {
                   type="text"
                   name="telephone"
                   value={formCandidature.telephone} onChange={handleChangeValue}
-                  placeholder=" رقم الهاتف:"
+                  placeholder=" رقم الهاتف"
                   required
                 />
               </div>
@@ -427,7 +428,7 @@ function  AddMahram() {
                   type="text"
                   name="email"
                   value={formCandidature.email} onChange={handleChangeValue}
-                  placeholder="  البريد الإلكتروني :"
+                  placeholder="  البريد الإلكتروني "
                   required
                 />
               </div>
@@ -448,20 +449,22 @@ function  AddMahram() {
                   styles={customStyles}
                   onChange={handleChangeWilaya}
                   options={wilayas}
-                  placeholder=" الولاية:"
+                  placeholder=" الولاية"
                   isRtl={true}
                 />
               </div>
               <div className="flex flex-col w-full  mx-2">
                 <label className="text-fake_black mb-2" htmlFor="lastName">
-                  الدائرة:{" "}
+              البلدية:
+              {" "}
                 </label>
                 <Select
                   name="commune"
                   styles={customStyles}
                   options={communes}
                   onChange={handleChangeCommune}
-                  placeholder=" الدائرة:"
+                  placeholder=" البلدية
+             "
                   isRtl={true}
                 />
               </div>

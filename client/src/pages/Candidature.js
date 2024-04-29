@@ -6,7 +6,7 @@ import ar from "date-fns/locale/ar";
 import ConfModal from "../Popups/ConfimCandid";
 import { CSSTransition } from 'react-transition-group';
 
-
+import back from "../images/back_icon.png";
 import Cnd_bg from "../images/MOSQUE.jpg";
 import add from "../images/add_khel.png";
 import { Link } from 'react-router-dom';
@@ -308,7 +308,14 @@ function Candidature() {
         unmountOnExit
       >
       <div className="flex flex-col justify-center items-center max-w-[1240px] mx-auto  bg-[#EAE1D1]  bg-opacity-90  rounded-xl shadow-2xl">
-        <h1 className="text-fake_black  text-3xl mt-4">إستمارة الحج</h1>
+      <div className='flex justify-center items-center'>
+  <div className="flex justify-item ">
+   
+    <h1 className="text-fake_black text-3xl mt-4 ml-2">إستمارة الحج</h1>
+    <img src={back} style={{ width: '50px', height: '50px' }}/>
+  </div>
+</div>
+
         <div className="max-w-[1240px] mx-auto  grid md:grid-cols-2 w-full  ">
         <div className="flex flex-col justify-items-center  p-5">
             <div className=" w-full flex justify-center items-center">
@@ -478,7 +485,7 @@ function Candidature() {
                   type="text"
                   name="num_passeport"
                   value={formCandidature.num_passeport} onChange={handleChangeValue}
-                  placeholder="رقم جواز السفر :"
+                  placeholder="رقم جواز السفر "
                   required
                 />
               </div>
@@ -491,7 +498,7 @@ function Candidature() {
                   type="text"
                   name="telephone"
                   value={formCandidature.telephone} onChange={handleChangeValue}
-                  placeholder=" رقم الهاتف:"
+                  placeholder=" رقم الهاتف"
                   required
                 />
               </div>
@@ -504,7 +511,7 @@ function Candidature() {
                   type="text"
                   name="email"
                   value={formCandidature.email} onChange={handleChangeValue}
-                  placeholder="  البريد الإلكتروني :"
+                  placeholder="  البريد الإلكتروني "
                   required
                 />
               </div>
@@ -531,14 +538,16 @@ function Candidature() {
               </div>
               <div className="flex flex-col w-full  mx-2">
                 <label className="text-fake_black mb-2" htmlFor="lastName">
-                  الدائرة:{" "}
+              البلدية:
+              {" "}
                 </label>
                 <Select
                   name="commune"
                   styles={customStyles}
                   options={communes}
                   onChange={handleChangeCommune}
-                  placeholder=" الدائرة:"
+                  placeholder=" البلدية
+             "
                   isRtl={true}
                 />
               </div>
