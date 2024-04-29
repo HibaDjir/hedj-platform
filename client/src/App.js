@@ -18,6 +18,8 @@ import Candidature_mahram  from "./pages/AddMahram";
 import UserProfile from "./pages/UserProfile";
 import Home_each_profile from "./pages/Home_each_profile";
 import Cansulter_cand from "./pages/Consulter_candidature";
+
+import Sidebar from "../src/components/Dash_components/shared/Sidebar"
 function App() {
   const isLoggedIn=localStorage.getItem('loggedIn')
   return (
@@ -39,6 +41,7 @@ function App() {
             element={<Resset_password />}
           />
           <Route path="/mail_conf" element={<EmailConfirmation />} />
+          <Route path="/dash" element={<Sidebar/>}></Route>
         </Routes>
       </div>
     </Router>
