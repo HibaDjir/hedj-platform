@@ -7,6 +7,9 @@ import { useLogout } from "../hooks/useLogout";
 import { useAuthContext } from "../hooks/useAuthContext";
 
 import heroBg from "../images/houdjadjes.jpeg";
+import heroBg_01 from "../images/serqa_nussuki_01.jpg";
+import heroBg_02 from "../images/serqa_nussuki_02.jpg";
+
 
 function Herolgin() {
   const hijriMonthNames = [
@@ -59,15 +62,15 @@ const hijriYear = currentGregorianDate.format("YYYY");
       dir="rtl"
       className="w-full h-[87vh] mx-auto text-right flex flex-col justify-center bg-cover bg-center cursor-pointer"
       style={{
-        backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${heroBg})`,
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${heroBg_01})`,
       }}
     >
       <div className="flex flex-col justify-center items-center px-10 py-10 rounded-md gap-4">
         <div className="bg-gray px-4 rounded-md">
-          <p className="text-4xl text-fake_black flex justify-center">
+          <h1 className="text-4xl text-white flex justify-center">
             {currentTime}
-          </p>
-          <p className="text-2xl text-fake_black">{`${hijriDayOfWeek}, ${hijriDay} ${hijriMonth} ${hijriYear}`}</p>
+          </h1>
+          <p className="text-2xl text-white">{`${hijriDayOfWeek}, ${hijriDay} ${hijriMonth} ${hijriYear}`}</p>
         </div>
         {user && (
           <div>

@@ -1,9 +1,10 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import user from "../images/User.png";
+import log_out from "../images/log_out.png";
 import user_out from "../images/User_outlined.png";
 import Add from "../images/Untitled.png";
-
+import edit from "../images/edit-3.png";
 import axios from 'axios';
 
 function Netflix({ onClose }) {
@@ -71,12 +72,20 @@ function Netflix({ onClose }) {
      
         <div className="flex justify-between mb-6">
           <div className="flex items-center">
-            <img src={user} className="h-8 mr-2" alt="User" />
-            <p className="text-lg font-bold text-brown_palette">اسم المستخدم</p>
+            <img src={log_out} className="h-8 mr-2" alt="خروج" />
+            <p className="text-lg font-bold text-brown_palette">تسجيل الخروج</p>
           </div>
-          <button onClick={onClose} className="text-brown_palette">
-            تسجيل الخروج  
-          </button>
+          <div className="flex justify-around">
+            <div className="flex flex-col">
+              <p className=" text-fake_black">إسم المستخدم</p> 
+              <div className="flex justify-center">
+               <img src={edit} alt="edit" style={{ width: '20px', height: '20px' }}/>
+               <p>معلومات الحساب</p>
+              </div>
+            </div>
+            <img src={user} alt="مستخدم" style={{ width: '70px', height: '70px' }} />
+
+          </div>
         </div>
         <div className="flex justify-center items-center">
           {candidature.map(candidat => (
