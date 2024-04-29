@@ -24,7 +24,6 @@ function Modal({ onClose }) {
       .then(res=>{
         if(res.data.token){
           document.cookie = `token=${res.data.token}; expires=2D; path=/`;
-          alert(document.cookie)
           alert("logged in")
         }
         if(res.data.Role === 'admin'){

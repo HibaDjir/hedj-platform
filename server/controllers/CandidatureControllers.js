@@ -41,6 +41,23 @@ const getCandidatureUser = async (req, res) => {
     res.status(200).json(candidats)
 }
 
+const getCandidatureUserMale = async (req, res) => {
+    //const { code } = req.params
+    const id_user = req.query.fieldName; 
+    const fieldValue = req.query.fieldValue;
+
+    const query = { 
+        [id_user]: fieldValue,
+        ['genre']: 'ذكر'
+    };
+
+    const candidats = await candidature.find(query)
+    if(!candidats){
+        return res.status(404).json({error: "vide"})
+    }
+    res.status(200).json(candidats)
+}
+
 const getFirstCandidature = async (req, res) => {
     const { id } = req.params
 
@@ -105,6 +122,7 @@ module.exports = {
     getFirstCandidature,
     getCandidature,
     getCandidatureUser,
+    getCandidatureUserMale,
     deleteCandidature,
     updateCandidature,
 }

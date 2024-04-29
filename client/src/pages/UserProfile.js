@@ -1,7 +1,49 @@
-import React from 'react';
+import React , { useEffect, useState } from 'react';
 import user from "../images/User.png";
 
+import axios from 'axios';
+
 function UserProfile() {
+
+  const [nom, setNom] = useState(null);
+  const [prenom, setPrenom] = useState(null);
+  const [adrmail, setAdrmail] = useState(null);
+  //var nom='', prenom='', adrmail='';
+  //const [id_user_n, setIdUser] = useState(null);
+
+  useEffect(() => {
+    const cookies = document.cookie.split(';');
+    const tokenCookie = cookies.find(cookie => cookie.trim().startsWith('token='));
+    const token = tokenCookie ? tokenCookie.split('=')[1] : null;
+    axios.get('http://localhost:3000/TestLogin?fieldName=token&fieldValue='+token)
+            .then(response => {
+              axios.get('http://localhost:3000/api/users/'+response.data)
+                      .then(responseF => {
+                        getUserConn(response.data);
+                        //alert(responseF.data)
+                      })
+                      .catch(error => {
+                          console.error('Erreur lors de la récupération des options :', error);
+                      });
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des options :', error);
+            });
+    
+  }, []);
+  const getUserConn = async (id_user) => {
+    try {
+        const response = await fetch('http://localhost:3000/api/users/'+id_user);
+        if (!response.ok) {
+            throw new Error('Failed to fetch data');
+        }
+        const jsonData = await response.json();
+        alert(jsonData.email)
+        setNom(jsonData.lastName);setPrenom(jsonData.firstName);setAdrmail(jsonData.email)
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+};
   return (
     <div dir='rtl' className='w-full h-screen flex justify-center items-center bg-white_palette'>
       <div className='max-w-[1240px] w-full px-4'>
@@ -15,7 +57,7 @@ function UserProfile() {
                 id="firstName"
                 className="text-black p-2 border rounded-xl border-fake_black w-full cursor-pointer"
                 type="text"
-                placeholder="الإسم"
+                value={prenom}
                 readOnly
                 required
               />
@@ -27,7 +69,7 @@ function UserProfile() {
                 id="lastName"
                 className="text-black p-2 border rounded-xl border-fake_black w-full cursor-pointer"
                 type="text"
-                placeholder="اللقب"
+                value={nom}
                 readOnly
                 required
               />
@@ -39,7 +81,7 @@ function UserProfile() {
                 id="email"
                 className="text-black p-2 border rounded-xl border-fake_black w-full cursor-pointer"
                 type="email"
-                placeholder="البريد اللإلكتروني"
+                value={adrmail}
                 readOnly
                 required
               />
