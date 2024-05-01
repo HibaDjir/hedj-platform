@@ -23,7 +23,7 @@ function Modal({ onClose }) {
       axios.post('http://localhost:3000/api/users/login', {email,password})
       .then(res=>{
         if(res.data.token){
-          localStorage.setItem('token',res.data.token)
+          localStorage.setItem('user',res.data.token)
         }
         alert("logged in")
         if(res.data.Role === 'admin'){
