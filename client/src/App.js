@@ -15,7 +15,7 @@ import Candidature_mahram  from "./pages/AddMahram";
 import UserProfile from "./pages/UserProfile";
 import Home_each_profile from "./pages/Home_each_profile";
 import Cansulter_cand from "./pages/Consulter_candidature";
-
+import Dash from "../src/pages/Dash_pages/Dashboard"
 
 function App() {
   const isLoggedIn=localStorage.getItem('loggedIn')
@@ -34,10 +34,11 @@ function App() {
           <Route path="/consulter_cand" element={<RequireAuth><Cansulter_cand /></RequireAuth>} /> 
           <Route path="/nussuki" element={<Manassik />} />
           <Route
-            path="/resetPassword/:id/:token"
+            path="/resetPassword/:token"
             element={<Resset_password />}
           />
           <Route path="/mail_conf" element={<EmailConfirmation />} />
+          <Route path="/dash" element={<Dash/>}></Route>
         </Routes>
       </div>
     </Router>

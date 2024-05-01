@@ -1,4 +1,3 @@
-
 const jwt=require('jsonwebtoken')
 const Joi = require("joi");
 const { User, validateLog, validateSignup,ValidateResetPassword } = require("../models/user_profiler");
@@ -103,8 +102,8 @@ exports.forgotPassword=async(req,res,next)=>{
 		if(!oldUser){
 			return res.status(401).send({message: "User does not exist"})
 		}
-		const secret = process.env.JWTPRIVATEKEY + oldUser.password
-		const token = jwt.sign({email: oldUser.email, id:oldUser._id}, secret, {expiresIn : '10m'})
+		const secret = process.env.JWTPRIVATEKEY
+		const token = jwt.sign({email: oldUser.email, id:oldUser._id}, secret, {expiresIn : '1d'})
 		const link=`http://localhost:3001/resetPassword/${oldUser._id}/${token}`
 		console.log(link)
 		await sendEmail({
@@ -130,9 +129,9 @@ exports.resetPassord = async(req, res) =>{
 		if(!oldUser){
 			return res.status(401).send({message: "User does not exist"})
 		}
-	const secret = process.env.JWTPRIVATEKEY + oldUser.password
+	const secret = process.env.JWTPRIVATEKEY
 	try {
-		const verify = jwt.verify(token, secret)
+		const verify = jwt.verify(token, secret, )
 		const encryptedPassword = await bcrypt.hash(password, 10)
 		await User.updateOne(
 			{
@@ -152,6 +151,15 @@ exports.resetPassord = async(req, res) =>{
 
 }
 
+exports.getUser = async (req, res) => {
+    const { id } = req.params
+
+    const userRslt = await User.findById(id)
+    if(!userRslt){
+        return res.status(404).json({error: "vide"})
+    }
+    res.status(200).json(userRslt)
+}
 
 //role ----------------------------------------------
 
