@@ -22,7 +22,6 @@ function Modal({ onClose }) {
       e.preventDefault();
 
       const response = await fetch('http://localhost:3000/api/users/login', {
-
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ email, password })
@@ -46,10 +45,7 @@ function Modal({ onClose }) {
       // update loading state
       setIsLoading(false)
       // Navigate only if there's no error
- 
     }
-
-   
 
     }
   //
