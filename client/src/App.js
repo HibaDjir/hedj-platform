@@ -2,6 +2,7 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Resset_password from "./pages/Resset_password";
 import Home from "./pages/Home";
+import AddAdmin from "./pages/AdminPages/RecentAdmin"
 import Home_owner_account  from "./pages/Home_owner_of_account";
 import About_us from "./pages/AboutUs";
 import EmailConfirmation from "./pages/Email_confirmation";
@@ -20,6 +21,7 @@ import Home_each_profile from "./pages/Home_each_profile";
 import Cansulter_cand from "./pages/Consulter_candidature";
 
 import Sidebar from "../src/components/Dash_components/shared/Sidebar"
+import Medecins from "./pages/Medecins";
 function App() {
   const isLoggedIn=localStorage.getItem('loggedIn')
   return (
@@ -28,7 +30,9 @@ function App() {
         
         <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/AddAdmin" element={<AddAdmin />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/medecin" element={<Medecins/>} />
           <Route path="/homelgin" element={<RequireAuth><Home_owner_account /></RequireAuth>} />  
           <Route path="/candidature" element={<RequireAuth><Candidature /></RequireAuth>} />
           <Route path="/candidature_mahram" element={<RequireAuth><Candidature_mahram /></RequireAuth>} />

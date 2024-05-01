@@ -4,12 +4,12 @@ import "tailwindcss/tailwind.css";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import Logo from "../images/LOGO.png";
 import LoginModal from "../Popups/Login";
-import SignupModal from "../Popups/Signup";
+import AddAdminModal from "../Popups/AddAdmin";
 import Home from "../pages/Home";
 
 function Navbar() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
+ 
 
   const openLoginModal = () => {
     setIsLoginModalOpen(true);
@@ -19,13 +19,7 @@ function Navbar() {
     setIsLoginModalOpen(false);
   };
 
-  const openSignupModal = () => {
-    setIsSignupModalOpen(true);
-  };
-
-  const closeSignupModal = () => {
-    setIsSignupModalOpen(false);
-  };
+ 
 
   const [mobileNav, setMobileNav] = useState(false);
   const [desktopNav, setDesktopNav] = useState(false);
@@ -86,7 +80,10 @@ function Navbar() {
           </button>
           {isLoginModalOpen && <LoginModal onClose={closeLoginModal} />}
         </li>
-
+        
+        <li className="p-4 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-dorée duration-300">
+            <Link to="/AddAdmin">ADMINISTRATEUR </Link>
+          </li>
      
       </ul>
 
@@ -129,7 +126,7 @@ function Navbar() {
           </button>
           {isLoginModalOpen && <LoginModal onClose={closeLoginModal} />}
         </li>
-
+        
         </ul>
       </div>
     </div>
