@@ -1,4 +1,5 @@
 import { Doughnut } from 'react-chartjs-2';
+import LineChart from './LineChart';
 
 export default function DoughnutChart() {
 const data = {
@@ -7,7 +8,7 @@ const data = {
       'Homme'
     ],
     datasets: [{
-      label: 'En 2023',
+     
       data: [300, 50],
       backgroundColor: [
         'rgb(0,0,0)',
@@ -43,8 +44,35 @@ const data = {
     }
   };
 
-  return ( <div className="bg-[#FAF8F5] shadow-xl p-5 rounded-2xl" >
-  <Doughnut data={data} options={options} />
-</div>)
+  return ( 
+  
+  
+    <div className="flex">
+    <div className="flex-1">
+      <div className="bg-[#FAF8F5] shadow-xl rounded-2xl h-full">
+        <Doughnut data={data} options={options} />
+      </div>
+    </div>
+    <div className="flex-1">
+  </div>
+  </div>
+
+
+
+
+
+
+
+
+
+  
+//   <div className="bg-[#FAF8F5] shadow-xl w-50 h-30 rounded-2xl" >
+//   <Doughnut data={data} options={options} />
+// </div>
+
+
+
+
+)
 
 };
