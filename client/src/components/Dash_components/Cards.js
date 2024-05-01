@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-  import { getCustomers, getInventory, getOrders, getRevenue } from "../../pages/Dash_pages/API";
+  import { getCustomers, getInventory, getOrders} from "../../pages/Dash_pages/API";
   import { GoPeople } from "react-icons/go";
   import { FaUserDoctor, FaPeopleGroup  } from "react-icons/fa6";
   import { SlUserFollowing } from "react-icons/sl";

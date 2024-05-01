@@ -14,12 +14,11 @@ import RequireAuth from "./protectingRoutes/RequireAuth";
 import Manassik from "../src/pages/Manassik";
 import Candidature from "./pages/Candidature";
 import Candidature_mahram  from "./pages/AddMahram";
-
 import UserProfile from "./pages/UserProfile";
 import Home_each_profile from "./pages/Home_each_profile";
 import Cansulter_cand from "./pages/Consulter_candidature";
-
-import Dash from "../src/pages/Dash_pages/Dashboard"
+import Sous_Dash from "./pages/Dash_pages/Dashboard_sous"
+import Dash from "../src/pages/Dash_pages/Dashboard_Main"
 function App() {
   const isLoggedIn=localStorage.getItem('loggedIn')
   return (
@@ -42,6 +41,8 @@ function App() {
           />
           <Route path="/mail_conf" element={<EmailConfirmation />} />
           <Route path="/dash" element={<Dash/>}></Route>
+          <Route path="/sousdash" element={< Sous_Dash/>}></Route>
+         
         </Routes>
       </div>
     </Router>
