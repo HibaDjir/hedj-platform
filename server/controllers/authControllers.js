@@ -4,6 +4,9 @@ const Joi = require("joi");
 const { User, validateLog, validateSignup,ValidateResetPassword } = require("../models/user_profiler");
 const bcrypt = require("bcrypt");
 const sendEmail=require('../util/sendEmail')
+const sousAdmin = require('../models/sousAdmin');
+const wilaya = require('../models/wilaya');
+
 
 
 // authControllers.js
@@ -80,25 +83,20 @@ exports.login=async (req, res) => {
 			return res.status(401).send({ message: "Invalid Email or Password" });
 
 		const token = user.generateAuthToken();
-		//res.status(200).send({ data: token, message: "logged in successfully" });
-
-
-
-		//if(user.Role==="sousAdmin"){
-			//const id=user._id
-			//const sousAdmin=await souadmin.finbyid(id)
-			//const Wilaya=await Wilaya.finbyid(sousasmin.id_wilaya)
-			//const popwilaya=wilaya.pop
-			//const masteradmin=await user.findone() 
-			//cont nbplace=clc(popwilaya,poptotal,nbplacetotal)
-			
-
-		//}
-		res.json({
+		if(user.Role==="sousAdmin"){
+		// const leSousAdmin = await sousAdmin.findOne({ user: user._id }).populate({ path: "user", select: ["_id"] });
+		const leSousAdminAvecWilaya = await sousAdmin.findOne({ user: user._id }).populate({ path: "Wilaya", select: ["_id", "name"] });
+		let wilaya = leSousAdminAvecWilaya.Wilaya.name
+		  res.status(200).json({
+			Role:user.Role,
+			token:token,
+			wilaya: wilaya
+		})
+		}else{
+		res.status(200).json({
 			Role:user.Role,
 			token:token
-			//nbplace:nbplace
-		})
+		}) }
 	} catch (error) {
 		res.status(500).json({ message: "Internal Server Error" });console.log('error',error.message)
 	}

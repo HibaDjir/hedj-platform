@@ -1,7 +1,10 @@
 
 const Condidatures=require('../../models/Candidature')
+
 const Commune =require('../../models/Commune')
-const {setStatus} = require('./clcPrctg')
+const {setStatus} = require('./clcPrctg');
+const pelerin = require('../../models/pelerin');
+const { all } = require('../../routes/pelerinRoute');
 
 // Function for electing a specific number of pilgrims randomly
 function electionPelerinsAuHasard(pelerins, nombreAElire) {
@@ -49,7 +52,7 @@ function electionPelerinsAuHasard(pelerins, nombreAElire) {
         if (pelerinElu.genre === 'أنثى' && pelerinElu.id_mahrem) {
             let  pelerinF=pelerinElu
             console.log('female is ',pelerinF)
-          
+            let malePelerinIndex = pelerinsRestants.findIndex(pelerin => pelerin._id.toString() === pelerinElu.id_mahrem);
             console.log('index de mahrem ',malePelerinIndex)
             //les cas ou le mahrem existe dans restants
             if (malePelerinIndex !== -1) {
@@ -58,8 +61,9 @@ function electionPelerinsAuHasard(pelerins, nombreAElire) {
                  console.log("mahrem de " +pelerinF+" est : ",pelerinElu)
                 
                  pelerinsElus.push(pelerinElu);
-             
+
                  pelerinsElus.push(pelerinF);
+
 
                          //les cas ou le mahrem nexiste pas dans restants et existe plus de places'we didnt reach last place=
             }else if(pelerinsElus.length<=nombreAElire -2){
@@ -87,15 +91,24 @@ exports.electPilgrims = async (req, res) => {
         const   pelerins = await Condidatures.find(); // Fetch all pilgrims from the database
         let  {pelerinsElus,pelerinsRestants}= await electionPelerinsAuHasard(pelerins,nombreAElire)
         console.log("pelerin elu ",pelerinsElus) 
-        const pelerinfinal=setStatus(pelerinsElus,'is_elected')  
-        
+        const pelerinfinal=setStatus(pelerinsElus,'is_elected')          
         
         let { pelerinsElus: pelerinsEnAttente, pelerinsRestants: pelerinsRestantsApresEnAttente } = await electionPelerinsAuHasard(pelerinsRestants, nbraelireenattente);
    
         console.log('Pèlerins en attente :', pelerinsEnAttente);
         const pelerinEnAttentFinale=setStatus(pelerinsEnAttente,'is_enAttent')
+        let allPelerins = []
+         allPelerins.push(pelerinfinal)
+         allPelerins.push(pelerinEnAttentFinale)
 
+        console.log("TOUSSSSSS LES PELERINS", allPelerins)
 
+        allPelerins.forEach(async (_id) => {
+
+        const newPelerin = await pelerin.create({ Candidature: _id });
+        console.log('New pelerin created:', newPelerin);
+        
+        });
 
 
         res.json({ message:`pelerin elected : ${pelerinsElus}  le nbr elu ${pelerinsElus.length} ,pelerinListDattente ${pelerinsEnAttente}` });

@@ -13,7 +13,7 @@ const user_profiler = new mongoose.Schema({
     resetToken: { type: String },
     resetTokenExpiration: { type: Date },
     active: { type: Boolean, default: true },
-    Role: { type:String , enum:["admin","med","user"], default:"user"},
+    Role: { type:String , enum:["masterAdmin","sousAdmin","med","user"], default:"user"},
     Pesonne:  { type: String},
     verified:{
       type:Boolean,
