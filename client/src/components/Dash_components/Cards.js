@@ -26,48 +26,48 @@ import { useEffect, useState } from "react";
 
 
 return (
-  <div className="gap-5  flex-col">
-  <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl dark:text-black">Tableau de Bord</h2>
-    <div className="flex items-end space-x-2 ">
-      
-      <div className="flex space-x-14 ">
-        <div></div>
-        <DashboardCard
-          icon={<GoPeople className="h-6 w-6"/>}
-          title={"Tous les Administrateurs" }
-          value={orders}
-        />
-        <DashboardCard
-          icon={<FaUserDoctor className="h-5 w-5"/>}
-          title={"Tous les médecins"}
-          value={inventory}
-        />
-        <DashboardCard
-          icon={<FaPeopleGroup className="h-5 w-5"/>}
-          title={"Tous les candidats"}
-          value={customers}
-        />
-        <DashboardCard
-          icon={<SlUserFollowing className="h-5 w-5"/>}
-          title={"Tout les pèlerins"}
-          value={revenue}
-        />
-      </div>
-    </div>
-    </div>
-  );
-}
-
-function DashboardCard({ title, value, icon }) {
-    return (
-      <div className="bg-[#FAF8F5] rounded-lg shadow-lg p-4">
-        <div className="flex items-center px-4 py-5 sm:p-6 transfrom transition duration-500 hover:scale-125  hover:rounded-2xl">
-          <div className="mr-5 ">{icon}</div>
-          <div>
-            <h3 className=" font-semibold">{title}</h3>
-            <p className="text-base align-middle">{value}</p>
-          </div>
+  <div>
+    <div >
+<div class="grid grid-cols-1 gap-4 px-4 mt-8 sm:grid-cols-4 sm:px-8">
+  
+    <div class="flex items-center bg-white rounded-2xl overflow-hidden shadow   transfrom transition duration-500 hover:scale-105  hover:rounded-2xl">
+        <div class="p-4 bg-[#FAF8F5]"><div class="p-4 bg-[#FAF8F5] flex items-center justify-center">
+    <GoPeople className="h-12 w-12 text-black" />
+</div></div>
+        <div class="px-2 text-gray-700">
+            <h3 class="text-sm font-bold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Tous les Administrateurs</h3>
+            <p class="text-3xl">{orders}</p>
         </div>
+    </div>
+    <div class="flex items-center bg- rounded-2xl overflow-hidden shadow  transfrom transition duration-500 hover:scale-105  hover:rounded-2xl">
+        <div class="p-4 bg-[#FAF8F5]"><div class="p-4 bg-[#FAF8F5] flex items-center justify-center">
+    <FaUserDoctor className="h-12 w-12 text-black" />
+</div></div>
+        <div class="px-4 text-gray-700">
+            <h3 class="text-sm font-bold text-[#C09455] tracking-wider">Tous les Médecins</h3>
+            <p class="text-3xl">{inventory}</p>
+        </div>
+    </div>
+    <div class="flex items-center bg-white rounded-2xl overflow-hidden shadow  transfrom transition duration-500 hover:scale-105  hover:rounded-2xl">
+        <div class="p-4 bg-[#FAF8F5]"><div class="p-4 bg-[#FAF8F5] flex items-center justify-center">
+    <FaPeopleGroup className="h-12 w-12 text-black" />
+</div></div>
+        <div class="px-4 text-gray-700">
+            <h3 class="text-sm tracking-wider font-bold text-[#C09455]">Tous les candidats</h3>
+            <p class="text-3xl">{customers}</p>
+        </div>
+    </div>
+    <div class="flex items-center bg-white rounded-2xl overflow-hidden shadow  transfrom transition duration-500 hover:scale-105  hover:rounded-2xl">
+        <div class="p-4 bg-[#FAF8F5]"><div class="p-4 bg-[#FAF8F5] flex items-center justify-center">
+    <SlUserFollowing className="h-12 w-12 text-black" />
+</div></div>
+        <div class="px-4 text-gray-700">
+            <h3 class="text-sm flex tracking-wider font-bold text-[#C09455]">Tous les pèlerins</h3>
+            <p class="text-3xl">{revenue}</p>
+        </div>
+    </div>
+</div>
+</div>
       </div>
     );
   }

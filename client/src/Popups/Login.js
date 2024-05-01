@@ -133,7 +133,7 @@ function Modal({ onClose }) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-               <p className="mt-4 text-black mb-2   p-2 ">
+               <p className="mt-4 text-black mb-2 p-2 ">
               {' '} هل نسيت كلمة المرور؟{' '}
               <Link 
               to="/mail_conf" onClick={handleResetPasswordClick}  className="text-brown_palette hover:text-taupe_palette">
