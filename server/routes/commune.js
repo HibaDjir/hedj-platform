@@ -6,9 +6,12 @@ const {
     getCodeCommune,
     deleteCommune,
     updateCommune,
-    ajouterCotatCommune
+    ajouterCotatCommune,
+    getCommuneById
 } = require('../controllers/CommuneControllers')
 router.get('/All',getAllCommune)
+
+router.get('/:id',getCommuneById)
 
 router.get('/find', getCommune)
 
