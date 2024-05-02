@@ -4,20 +4,25 @@ const {User, validateMedecin} = require('../models/user_profiler')
 const bcrypt = require("bcrypt")
 const sendEmail=require('../util/sendEmail')
 
-
+//Afficher tous les medecins
 exports.getAllMedecins = async(req, res)=>{
     try {
         const medecins = await Medecin.find()
-        console.log("Les medecins sont: ",medecins)
+        .populate('user')
+        .populate('Wilaya')
+        .exec();
+
         if(!medecins){
             return res.status(404).json("Medecins not found"); // Handle missing commune
         }
+        console.log("Les medecins sont: ",medecins)
         res.status(200).json(medecins);
     } catch (error) {
-        res.status(500).json({ message: 'Internal server error' }, {error});
+        res.status(500).json({ message: 'Internal server error' }, {error: error.message});
     }
 }
 
+//Creer un medecin et l'enregistrer dans les tables user_profiler et medecin en envoyant un Email
 exports.createMedecin = async(req, res)=>{
     try {
         //validate informations
@@ -53,9 +58,10 @@ exports.createMedecin = async(req, res)=>{
         //saving the medecin
         const savedMedecin = await medecin.save();
         //envoie d'une reponse json contenant doc medecin
-        const populatedMedecin = await Medecin.findById(savedMedecin._id).populate('user')
+        const populatedMedecin = await Medecin.findById(savedMedecin._id)
+        .populate('user')
         .populate('Wilaya')
-         .exec();
+        .exec();
 
         console.log(populatedMedecin)
         res.status(201).json(populatedMedecin)
@@ -65,8 +71,8 @@ exports.createMedecin = async(req, res)=>{
         await sendEmail({
              email: user.email,
              subject:'Welcome to Labayka!',
-             message:`
-             Hi Doctor ${user.lastName}!\n\n
+             message:
+             `Hi Doctor ${user.lastName}!\n\n
              Here you can find the Email-address and Password to login to our WebSite.\n
              **Your Login Credentials:**\n\n
              Email :${user.email}\n\n
@@ -79,4 +85,97 @@ exports.createMedecin = async(req, res)=>{
     } catch (error) {
         console.error("Error:", error);
         res.status(500).json({ message: 'Internal server error', error: error.message });    }
+}
+
+
+//Afficher un medecin avec son ID passée comme parametre
+exports.getMedecinById = async (req, res) =>{
+    try {
+        const medecinId = req.params.id
+        const medecin = await Medecin.findById({_id: medecinId})
+        if(!medecin){
+            return res.status(409).send({ message: "Medecin with given ID does not exist" }); 
+        }
+        const populatedMedecin = await Medecin.findById(medecin._id)
+        .populate('user')
+        .populate('Wilaya')
+         .exec();
+         console.log(populatedMedecin)
+
+         res.status(201).json(populatedMedecin)
+    } catch (error) {
+        res.status(500).json({message: 'Internal server error', error: error.message });
+    }
+}
+
+
+//supprimer tous les medecins SOYER PRUDENT LORS DE SON UTILISATION
+exports.deleteAllMedecins = async (req, res)=>{
+    try {
+        const deletedUserMedecin = await User.deleteMany({Role: "medecin"})
+        const deletedMedecins = await Medecin.deleteMany();
+
+        console.log("Delete de la table users:", deletedUserMedecin)
+        console.log("Delete de la table medecins:",deletedMedecins)
+
+        res.status(200).json({ message: 'All medecins deleted successfully' });
+    } catch (error) {
+        res.status(500).json({message: 'Internal server error', error: error.message });
+    }
+}
+
+
+//supprimer Un medecin selon l'Id passée comme parametre SOYER PRUDENT LORS DE SON UTILISATION
+exports.deleteMedecinById = async (req, res) => {
+    const medecinId  = req.params.id
+    try {
+        // Find medecin by id and get the linked user's id
+        const medecin = await Medecin.findById(medecinId);
+        if (!medecin) {
+            return res.status(404).json({ message: 'Medecin not found' });
+        }
+
+        const userId = medecin.user; 
+        // Delete medecin from User collection
+        const deletedUserMedecin = await User.deleteMany({Role: "medecin", _id: userId });
+        // Delete medecin from Medecin collection
+        const deletedMedecin = await Medecin.findByIdAndDelete(medecinId);
+ 
+        console.log("Deleted medecin from Medecin collection:", deletedMedecin);
+        console.log("Deleted medecin from User collection:", deletedUserMedecin);
+
+        res.status(200).json({ message: 'Medecin and associated user deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error', error: error.message });
+    }
+}
+
+
+exports.updateMedecin = async(req, res)=>{
+    try {
+        const idMedecin = req.params.id
+        const updatedMedecin = await Medecin.findByIdAndUpdate(
+            idMedecin,
+            {
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                email: req.body.email,
+                password: req.body.password,
+                name: req.body.wilaya,
+                NumeroTelephone: req.body.NumeroTelephone,
+                etat: req.body.etat,
+                adr_pro: req.body.adr_pro
+            }
+        ).populate('user')
+        .populate('Wilaya')
+        .exec();
+
+        if (!updatedMedecin) {
+            return res.status(404).json({ message: 'Medecin with given ID not found' });
+        }
+
+        res.status(200).json({ message: 'Medecin with given ID updated successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error', error: error.message });
+    }
 }
