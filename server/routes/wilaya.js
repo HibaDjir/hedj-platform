@@ -6,6 +6,7 @@ const {
     getCodeWilaya,
     deleteWilaya,
     updateWilaya,
+    ajouterCotatWilaya,
 } = require('../controllers/wilayaControllers')
 
 router.get('/All',getAllWilaya)
@@ -19,5 +20,7 @@ router.post('/', createWilaya)
 router.delete('/:id', deleteWilaya)
 
 router.patch('/:id', updateWilaya)
+
+router.post('/ajouterCotat', ajouterCotatWilaya)
 
 module.exports=router;

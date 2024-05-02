@@ -73,6 +73,29 @@ const updateWilaya = async (req, res) => {
     res.status(200).json(wil)
 }
 
+const ajouterCotatWilaya = async(req, res) =>{
+    try {
+                const { nom_wilaya, nb_places } = req.body;
+                if (typeof nb_places !== 'number') {
+                    return res.status(400).json("Invalid nb_places: Must be a number");
+                }
+                const lawilaya = await wilaya.findOneAndUpdate(
+                    { name: nom_wilaya },
+                    { $set: { nb_places } }, 
+                    { new: true } // Return the updated document
+                );
+        
+                if (!lawilaya) {
+                    return res.status(404).json("Wilaya not found"); // Handle missing commune
+                }
+                res.status(200).json(lawilaya)
+        
+    } catch (error) {
+        res.status(500).json({ message: "Server Error", error: error.message })
+    }
+}
+
+
 module.exports = {
     createWilaya,
     getAllWilaya,
@@ -80,4 +103,5 @@ module.exports = {
     getCodeWilaya,
     deleteWilaya,
     updateWilaya,
+    ajouterCotatWilaya
 }
