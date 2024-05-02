@@ -5,4 +5,5 @@ router.route("/deleteAllPelerin").delete(pelerinController.deleteAllPelerin);
 router.route("/getPelerinByWilaya/:name").get(pelerinController.getPelerinByWilaya);
 
 
+
 module.exports=router;

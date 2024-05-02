@@ -1,6 +1,8 @@
 const Pelerin=require('../models/pelerin')
 const Wilaya=require('../models/wilaya')
 
+
+
  exports.getAllPelerins=async(req,res)=>{
     try{
        const pelerins = await Pelerin.find().populate({ path: "Candidature", select: ["nom", "prenom", "genre", "telephone", "email"], options: { strictPopulate: false } });
@@ -53,3 +55,4 @@ const Wilaya=require('../models/wilaya')
     }
 
  }
+

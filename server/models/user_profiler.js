@@ -62,6 +62,19 @@ const validateLog = (data) => {
 	return schema.validate(data);
   }
 
- 
+  const validateAddSousAdmin = (data) => {
+    const schema = Joi.object({
+      firstName: Joi.string().required().label("First Name"),
+      lastName: Joi.string().required().label("Last Name"),
+      email: Joi.string().email().required().label("Email"),
+      NumeroTelephone: Joi.string(),
+      password: passwordComplexity().required().label("Password"),
+      etat: Joi.string().required(),
+      name: Joi.string().required(),
+      
 
-module.exports = { User, validateSignup ,validateLog, ValidateResetPassword };
+    });
+    return schema.validate(data);
+  };
+
+module.exports = { User, validateSignup ,validateLog, ValidateResetPassword , validateAddSousAdmin};

@@ -20,6 +20,7 @@ const candidatureRouter=require('./routes/candidature')
 const sessionsRouter=require('./routes/sessions') 
 const tirageRouter=require('./routes/tirageRoute')
 const pelerinRouter=require('./routes/pelerinRoute')
+const masterAdminRoute=require('./routes/masterAdminRoute')
 index.use("/api/users",authRouter) 
 index.use("/api/wilaya",wilayaRouter) 
 index.use("/api/commune",communeRouter) 
@@ -27,6 +28,7 @@ index.use("/api/candidature",candidatureRouter)
 index.use("/api/session",sessionsRouter) 
 index.use("/api/methodeTirage",tirageRouter) 
 index.use("/api",pelerinRouter) 
+index.use("/api/masterAdmin",masterAdminRoute) 
 
 
 //create server 
