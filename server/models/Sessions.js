@@ -12,9 +12,7 @@ const SessionSchema = new schema({
         type: Number,
         require: true,
     },
-    total_candidats_inscri: {
-        type: Number,
-    },
+    
     state:{
         type: String,
         enum:["En cours", "Candidature", "Tirage", "Medecin","Paiement","Elhadj", "Cloture"],
