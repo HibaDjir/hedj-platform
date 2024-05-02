@@ -10,7 +10,17 @@ const SousAdminSchema = new schema({
     user:{
          type:mongoose.Schema.Types.ObjectId,
          ref:"user",
+    },
+    NumeroTelephone:{
+        type:String,
+        require:true
+    },
+    etat:{
+        type:String,
+        enum:["Active",'Desactive'],
+        require:true
     }
+
 
 })
 

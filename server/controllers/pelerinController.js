@@ -2,11 +2,12 @@ const Pelerin=require('../models/pelerin')
 const Wilaya=require('../models/wilaya')
 const Commune=require('../models/Commune')
 
+
+
  exports.getAllPelerins=async(req,res)=>{
     try{
        const pelerins = await Pelerin.find().populate({ path: "Candidature", select: ["nom", "prenom", "genre", "telephone", "email"], options: { strictPopulate: false } });
        console.log('pelerin in pelerin controller ',pelerins)
-
         if(!pelerins){
             res.status(400).json({message:'the table is empty'})
         }
@@ -44,6 +45,7 @@ const Commune=require('../models/Commune')
     const pelerinDuCode = await Pelerin.find().populate({path: "Candidature", select: ["wilaya", "nom","prenom"], options: { strictPopulate: false }})
     const pelerin = pelerinDuCode.filter(pelerin => pelerin.Candidature.wilaya === wilaya.code)
     console.log("pelerinDuCodeeeeee", pelerinDuCode)
+
     console.log("les pelerins de la wilaya", pelerin)
     res.status(200).json(pelerin);
     } catch (error) {

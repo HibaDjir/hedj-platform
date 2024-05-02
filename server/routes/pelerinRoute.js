@@ -11,4 +11,5 @@ router.route("/getPelerinByWilaya/:name").get(pelerinController.getPelerinByWila
 router.route("/getPelerinByCommune/:name", ).get(pelerinController.getPelerinByCommune)
 
 
+
 module.exports=router;
