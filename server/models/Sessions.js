@@ -17,9 +17,13 @@ const SessionSchema = new schema({
     },
     state:{
         type: String,
-        enum:["En cours", "Candidature", "Tirage", "El hadj", "Cloturer"],
+        enum:["En cours", "Candidature", "Tirage", "Medecin","Paiement","Elhadj", "Cloture"],
         default:"En cours"
-    }
+    },
+    cotat:{
+        type: Number,
+        require: true,
+    },
 })
 
 module.exports = mongoose.model('sessions', SessionSchema)
