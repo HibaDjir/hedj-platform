@@ -1,3 +1,4 @@
+const { boolean } = require('joi');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema
 
@@ -24,6 +25,10 @@ const MedecinSchema = new Schema({
         type: String,
         require: true
     },
+    is_deleted:{
+        type: Boolean,
+        default: false
+    }
 })
 
 module.exports = mongoose.model('Medecin', MedecinSchema)

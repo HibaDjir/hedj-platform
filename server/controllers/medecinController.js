@@ -7,7 +7,7 @@ const sendEmail=require('../util/sendEmail')
 //Afficher tous les medecins
 exports.getAllMedecins = async(req, res)=>{
     try {
-        const medecins = await Medecin.find()
+        const medecins = await Medecin.find({is_deleted: false})
         .populate('user')
         .populate('Wilaya')
         .exec();
@@ -92,7 +92,7 @@ exports.createMedecin = async(req, res)=>{
 exports.getMedecinById = async (req, res) =>{
     try {
         const medecinId = req.params.id
-        const medecin = await Medecin.findById({_id: medecinId})
+        const medecin = await Medecin.findOne({_id: medecinId,  is_deleted: false})
         if(!medecin){
             return res.status(409).send({ message: "Medecin with given ID does not exist" }); 
         }
@@ -110,7 +110,7 @@ exports.getMedecinById = async (req, res) =>{
 
 
 //supprimer tous les medecins SOYER PRUDENT LORS DE SON UTILISATION
-exports.deleteAllMedecins = async (req, res)=>{
+exports.deleteAllMedecinsFromDb = async (req, res)=>{
     try {
         const deletedUserMedecin = await User.deleteMany({Role: "medecin"})
         const deletedMedecins = await Medecin.deleteMany();
@@ -126,7 +126,7 @@ exports.deleteAllMedecins = async (req, res)=>{
 
 
 //supprimer Un medecin selon l'Id passée comme parametre SOYER PRUDENT LORS DE SON UTILISATION
-exports.deleteMedecinById = async (req, res) => {
+exports.deleteMedecinByIdFromDb = async (req, res) => {
     const medecinId  = req.params.id
     try {
         // Find medecin by id and get the linked user's id
@@ -137,7 +137,7 @@ exports.deleteMedecinById = async (req, res) => {
 
         const userId = medecin.user; 
         // Delete medecin from User collection
-        const deletedUserMedecin = await User.deleteMany({Role: "medecin", _id: userId });
+        const deletedUserMedecin = await User.findByIdAndDelete({ _id: userId });
         // Delete medecin from Medecin collection
         const deletedMedecin = await Medecin.findByIdAndDelete(medecinId);
  
@@ -149,6 +149,81 @@ exports.deleteMedecinById = async (req, res) => {
         res.status(500).json({ message: 'Internal server error', error: error.message });
     }
 }
+
+
+
+//supprimer les medecins logiquement avec l'attribut is deleted
+exports.deleteAllMedecins = async (req, res)=>{
+    try {
+        const deletedMedecins = await Medecin.updateMany({},  {$set: {is_deleted: true}});
+
+        console.log("Delete de la table medecins LOGICALLY:",deletedMedecins)
+
+        res.status(200).json({ message: 'All medecins deleted successfully' });
+    } catch (error) {
+        res.status(500).json({message: 'Internal server error', error: error.message });
+    }
+}
+
+
+//retrieve les medecins logiquement 
+exports.retrieveAllMedecins = async (req, res)=>{
+    try {
+        const retrievedMedecins = await Medecin.updateMany({},  {$set: {is_deleted: false}});
+
+        console.log("retrieve de la table medecins LOGICALLY:",retrievedMedecins)
+
+
+        res.status(200).json({ message: 'All medecins retrieved successfully' });
+    } catch (error) {
+        res.status(500).json({message: 'Internal server error', error: error.message });
+    }
+}
+
+
+//deleting a medecin by id logiquement, setting is_deleted to true
+exports.deleteMedecinById = async (req, res) => {
+    const medecinId  = req.params.id
+    try {
+        // Find medecin by id and get the linked user's id
+        const medecin = await Medecin.findById(medecinId);
+        if (!medecin) {
+            return res.status(404).json({ message: 'Medecin not found' });
+        }
+
+        // Delete medecin from Medecin collection
+        const deletedMedecin = await Medecin.findOneAndUpdate({_id: medecinId}, {$set: {is_deleted: true}});
+ 
+        console.log("Deleted medecin from Medecin collection:", deletedMedecin);
+
+        res.status(200).json({ message: 'Medecin deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error', error: error.message });
+    }
+}
+
+
+//retreive medecin by id 
+exports.retrieveMedecinById = async (req, res) => {
+    const medecinId  = req.params.id
+    try {
+        // Find medecin by id and get the linked user's id
+        const medecin = await Medecin.findById(medecinId);
+        if (!medecin) {
+            return res.status(404).json({ message: 'Medecin not found' });
+        }
+
+        // Delete medecin from Medecin collection
+        const retrievedMedecin = await Medecin.findOneAndUpdate({_id: medecinId}, {$set: {is_deleted: false}});
+ 
+        console.log("Retrieved medecin from Medecin collection:", retrievedMedecin);
+
+        res.status(200).json({ message: 'Medecin retrieved successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error', error: error.message });
+    }
+}
+
 
 
 exports.updateMedecin = async(req, res)=>{
