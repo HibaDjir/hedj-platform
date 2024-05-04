@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Link,useNavigate , useLocation } from "react-router-dom";
+import { Link,useNavigate,useLocation  } from "react-router-dom";
 import { useState } from "react";
 import { useAuthContext } from '../hooks/useAuthContext'
 import axios from 'axios'
@@ -102,9 +102,11 @@ function Modal({ onClose }) {
       // update loading state
       setIsLoading(false)
       // Navigate only if there's no error
+
     }
      
     }
+
 
  
   const handleResetPasswordClick = () => {

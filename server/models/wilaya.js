@@ -14,6 +14,9 @@ const WilayaSchema = new schema({
     name:{
         type: String,
         require: true,
+    },
+    nb_places:{
+        type: String,
     }
 }, { timeseries: true})
 

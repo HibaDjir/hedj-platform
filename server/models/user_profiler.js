@@ -13,7 +13,7 @@ const user_profiler = new mongoose.Schema({
     resetToken: { type: String },
     resetTokenExpiration: { type: Date },
     active: { type: Boolean, default: true },
-    Role: { type:String , enum:["admin","med","user"], default:"user"},
+    Role: { type:String , enum:["masterAdmin","sousAdmin","med","user", "medecin"], default:"user"},
     Pesonne:  { type: String},
     verified:{
       type:Boolean,
@@ -62,6 +62,31 @@ const validateLog = (data) => {
 	return schema.validate(data);
   }
 
- 
+  const validateAddSousAdmin = (data) => {
+    const schema = Joi.object({
+      firstName: Joi.string().required().label("First Name"),
+      lastName: Joi.string().required().label("Last Name"),
+      email: Joi.string().email().required().label("Email"),
+      NumeroTelephone: Joi.string(),
+      password: passwordComplexity().required().label("Password"),
+      etat: Joi.string().required(),
+      name: Joi.string().required(),
+    });
+    return schema.validate(data);
+  };
 
-module.exports = { User, validateSignup ,validateLog, ValidateResetPassword };
+  const validateMedecin = (data) => {
+    const schema = Joi.object({
+      firstName: Joi.string().required().label("First Name"),
+      lastName: Joi.string().required().label("Last Name"),
+      email: Joi.string().email().required().label("Email"),
+      NumeroTelephone: Joi.string().label("Numero du Telephone"),
+      password: passwordComplexity().required().label("Password"),
+      etat: Joi.string().required().label("L'etat"),
+      wilaya: Joi.string().required().label("Wilaya"),
+      adr_pro: Joi.string().required().label("Adresse professionel")
+    });
+    return schema.validate(data);
+  };
+
+module.exports = { User, validateSignup ,validateLog, ValidateResetPassword , validateAddSousAdmin, validateMedecin};

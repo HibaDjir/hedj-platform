@@ -1,9 +1,11 @@
 const jwt=require('jsonwebtoken')
 const Joi = require("joi");
 const { User, validateLog, validateSignup,ValidateResetPassword } = require("../models/user_profiler");
-
 const bcrypt = require("bcrypt");
 const sendEmail=require('../util/sendEmail')
+const sousAdmin = require('../models/sousAdmin');
+const wilaya = require('../models/wilaya');
+
 
 
 // authControllers.js
@@ -67,8 +69,7 @@ exports.login=async (req, res) => {
 		const { error } = validateLog(req.body);
 		if (error)
 			return res.status(400).send({ message: error.details[0].message });
-	
-  
+
 		const user = await User.findOne({ email: req.body.email });
 		if (!user)
 			return res.status(401).send({ message: "Invalid Email or Password" });
@@ -79,20 +80,28 @@ exports.login=async (req, res) => {
 		);
 		if (!validPassword)
 			return res.status(401).send({ message: "Invalid Email or Password" });
-			
 
 		const token = user.generateAuthToken();
+
+		if(user.Role==="sousAdmin"){
+		// const leSousAdmin = await sousAdmin.findOne({ user: user._id }).populate({ path: "user", select: ["_id"] });
+		const leSousAdminAvecWilaya = await sousAdmin.findOne({ user: user._id }).populate({ path: "Wilaya", select: ["_id", "name"] });
+		let wilaya = leSousAdminAvecWilaya.Wilaya.name
+		  res.status(200).json({
+			Role:user.Role,
+			token:token,
+			wilaya: wilaya
+		})
+		}else{
 		res.status(200).json({
 			Role:user.Role,
-			token:token 
-		})
-		
+			token:token
+		}) }
 	} catch (error) {
-		res.status(500).json({message: 'internal server error'})	
+		res.status(500).json({ message: "Internal Server Error" });console.log('error',error.message)
 	}
-
-
 };
+
 
 //Forgotte password ---------------------------------------------------
 exports.forgotPassword=async(req,res,next)=>{
@@ -126,7 +135,6 @@ exports.resetPassord = async(req, res) =>{
 	const { error } = ValidateResetPassword(req.body);
 	if (error)
 		return res.status(400).send({ message: error.details[0].message });
-
 	const oldUser=await User.findOne({_id: id})
 		if(!oldUser){
 			return res.status(401).send({message: "User does not exist"})
@@ -144,10 +152,10 @@ exports.resetPassord = async(req, res) =>{
 				password: encryptedPassword
 			}}
 	)
-		res.send({status:"success"})
+		res.json({status:"success"})
 	} catch (error) {
 		console.log(error)
-		res.send("error while updating password")
+		res.json("error while updating password")
 	}
 
 

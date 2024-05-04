@@ -11,7 +11,6 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "./index";
 import SousSession from "./pages/SousSession"
 import RequireAuth from "./protectingRoutes/RequireAuth";
-
 import Manassik from "../src/pages/Manassik";
 import Candidature from "./pages/Candidature";
 import Candidature_mahram  from "./pages/AddMahram";
@@ -28,6 +27,7 @@ import Pelerin from "./pages/Pelerin"
 import SousTirage from "./pages/SousTirage"
 import SousPelerin from "./pages/SousPelerin"
 import SousCandidat from "./pages/SousCandidat"
+import Dash from "../src/pages/Dash_pages/Dashboard"
 function App() {
   const isLoggedIn=localStorage.getItem('loggedIn')
   return (

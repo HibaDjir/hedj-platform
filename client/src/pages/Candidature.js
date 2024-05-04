@@ -257,9 +257,11 @@ function Candidature() {
         num_passeport = formCandidature.num_passeport, telephone = formCandidature.telephone, email = formCandidature.email,
         address = formCandidature.address, nss = formCandidature.nss;
 
+
         if(genre === 'أنثى' && mahrem_rslt == null){
           alert("Il est nécessaire de compléter El Mahrem pour un candidat féminin.");// le message de blocage pour un candidat féminin ne remplie pas el mahrem
         }else{
+
           try {
                 const response = await fetch('http://localhost:3000/api/candidature/genre/find?fieldName=num_passeport&fieldValue='+num_passeport);
                 if (!response.ok) {
@@ -291,7 +293,7 @@ function Candidature() {
                 console.error('Error fetching data:', error);
             }
         }
-    } catch (error) {
+      }catch (error) { //khassek 9awss }
       alert("Erreur d'enregistrement :\n"+error);
     }
   };
