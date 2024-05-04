@@ -9,7 +9,7 @@ import EmailConfirmation from "./pages/Email_confirmation";
 import Navbar from "./components/Navbar";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "./index";
-
+import SousSession from "./pages/SousSession"
 import RequireAuth from "./protectingRoutes/RequireAuth";
 
 import Manassik from "../src/pages/Manassik";
@@ -40,6 +40,9 @@ function App() {
           <Route path="/Session" element={<Session/>} />
           <Route path="/Candidat" element={<Candidat/>} />
           <Route path="/Pelerin" element={<Pelerin/>} />
+
+
+          <Route path="/SousSession" element={<SousSession/>} />
 
 
           <Route path="/homelgin" element={<RequireAuth><Home_owner_account /></RequireAuth>} />  
