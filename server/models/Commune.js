@@ -10,6 +10,9 @@ const CommuneSchema = new schema({
     ar_name:{
         type: String,
         require: true,
+    },
+    nb_places:{
+        type: String
     }
 }, { timeseries: true})
 

@@ -69,21 +69,26 @@ const CandidatureSchema = new schema({
     },
     id_mahrem:{
         type: String,
-        require: true,
     },
     id_session:{
         type: String,
         require: true,
     },
-    
     status:{
         type:String,
         enum:["is_elected","is_enAttent"]
     
     },
-}, { timeseries: true}
+    id_user:{
+        type: String,
+        require: true,
+    },
+    nbr_enregistrement:{
+        type: Number,
+        require: true,
+        default:0
+    }
 
-
-)
+},{ timeseries: true})
 
 module.exports = mongoose.model('Candidature', CandidatureSchema)

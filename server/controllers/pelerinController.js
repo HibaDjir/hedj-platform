@@ -1,5 +1,6 @@
 const Pelerin=require('../models/pelerin')
 const Wilaya=require('../models/wilaya')
+const Commune=require('../models/Commune')
 
 
 
@@ -7,7 +8,6 @@ const Wilaya=require('../models/wilaya')
     try{
        const pelerins = await Pelerin.find().populate({ path: "Candidature", select: ["nom", "prenom", "genre", "telephone", "email"], options: { strictPopulate: false } });
        console.log('pelerin in pelerin controller ',pelerins)
-
         if(!pelerins){
             res.status(400).json({message:'the table is empty'})
         }
@@ -28,8 +28,6 @@ const Wilaya=require('../models/wilaya')
         if (result.deletedCount === 0) {
             return res.status(404).json({ message: 'No documents found to delete.' });
         }
-
-        
 
     } catch (err) {
         // Handle errors
@@ -56,3 +54,14 @@ const Wilaya=require('../models/wilaya')
 
  }
 
+ exports.getPelerinByCommune = async(req, res)=>{
+    try {
+        const commune = await Commune.findOne({ar_name: req.params.name})
+        const pelerinDuCode = await Pelerin.find().populate({path: "Candidature", selec:["wilaya", "nom","prenom", "Comune"], options: { strictPopulate: false} })
+        const pelerin = pelerinDuCode.filter(pelerin => pelerin.Candidature.commune === commune.code)
+        console.log("les pelerins de la commune sont", pelerin)
+        res.status(200).json(pelerin);
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error' });
+    }
+ }

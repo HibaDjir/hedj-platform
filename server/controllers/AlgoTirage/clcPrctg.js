@@ -4,7 +4,6 @@ function setStatus(pelerins,status){
 
     for(let i=0;i<pelerins.length;i++){
         pelerins[i].status=status
-
     }
     return pelerins
 }
