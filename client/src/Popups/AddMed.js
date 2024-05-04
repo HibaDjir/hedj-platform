@@ -102,13 +102,14 @@ function AddMed({ onClose }) {
               isRtl={true}
             />
           </div>
-
-          
           <div className="flex flex-col w-full  mx-2">
             <label className="text-fake_black mb-2">Etat :</label>
             <Select styles={customStyles} placeholder=" Etat " isRtl={true} />
           </div>
         </div>
+
+
+
         <div className="w-full flex flex-col mt-2">
           <label className="text-fake_black mb-2">Addresse professionnelle</label>
           <input

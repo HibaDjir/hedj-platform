@@ -10,6 +10,8 @@ import { TiTime } from "react-icons/ti";
 import add from "../images/mini_add.png";
 import MUIDataTable from "mui-datatables";
 import TirageAge from "../Popups/TirageAge"
+import AddWilayaModal from "../Popups/AddWilaya";
+
 export default function Session() {
 
   
@@ -168,6 +170,23 @@ valeur.setAttribute('type', 'text');
       },
     ];
     
+
+
+
+    const [isAddWilayaModalOpen, setIsAddWilayaModalOpen] = useState(false);
+    const openADDWilayaModal = () => {
+        setIsAddWilayaModalOpen(true);
+      };
+    
+      const closeAddWilayaModal = () => {
+        setIsAddWilayaModalOpen(false);
+      };
+
+
+
+
+
+
 
 
 
@@ -366,16 +385,21 @@ valeur.setAttribute('type', 'text');
 <button
   className="text-[#1D1D1B] text-md font-medium flex justify-between  border-[#D8A353] rounded-md bg-[#D8A353]
 border p-2"
+onClick={openADDWilayaModal}
+
 >
   <img className="h-3 w-3  mt-2 mx-2  " src={add} />
   Ajouter Wilaya
 </button>
 
+{isAddWilayaModalOpen && (
+  <AddWilayaModal onClose={closeAddWilayaModal} />
+)}
 
 
 </div>
 <MUIDataTable
-title={"Medecins"}
+title={""}
 data={recentAdminData}
 columns={columns}
 options={options}
