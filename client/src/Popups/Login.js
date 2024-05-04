@@ -57,8 +57,6 @@ function Modal({ onClose }) {
 
     const handleSubmit = async (e) =>{
       e.preventDefault();
-
-<<<<<<< HEAD
       axios.post('http://localhost:3000/api/users/login', {email,password})
       .then(res=>{
         if(res.data.token){
@@ -80,9 +78,6 @@ function Modal({ onClose }) {
       })
 
       setIsLoading(true);
-
-=======
->>>>>>> origin/nari
       const response = await fetch('http://localhost:3000/api/users/login', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
