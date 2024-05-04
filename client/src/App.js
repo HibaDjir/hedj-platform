@@ -18,7 +18,7 @@ import UserProfile from "./pages/UserProfile";
 import Home_each_profile from "./pages/Home_each_profile";
 import Cansulter_cand from "./pages/Consulter_candidature";
 import Sous_Dash from "./pages/Dash_pages/Dashboard_sous";
-import Dash from "../src/pages/Dash_pages/Dashboard_Main";
+import Dash from "../src/pages/Dash_pages/Dashboard_Main";// "../src/pages/Dash_pages/Dashboard";
 import Medecins from "./pages/Medecins";
 import RecentAdmin from "./pages/AdminPages/RecentAdmin";
 import Session from "./pages/Session"
@@ -27,7 +27,6 @@ import Pelerin from "./pages/Pelerin"
 import SousTirage from "./pages/SousTirage"
 import SousPelerin from "./pages/SousPelerin"
 import SousCandidat from "./pages/SousCandidat"
-import Dash from "../src/pages/Dash_pages/Dashboard"
 function App() {
   const isLoggedIn=localStorage.getItem('loggedIn')
   return (
