@@ -26,14 +26,14 @@ export default function Dashboard() {
           <Header />
   
           {/* Cards */}
-          <div className="p-10 flex flex-col items-start">
-          <h2 class="text-3xl font-extrabold p-7 tracking-tight text-gray-900 sm:text-4xl dark:text-black">Tableau de bord</h2>
+          <div className="p-5 flex flex-col items-start">
+          <h2 class="text-3xl p-3 font-extrabold tracking-tight text-gray-900 sm:text-4xl dark:text-black">Tableau de bord</h2>
 
             <Cards />
           </div>
   
           {/* Charts */}
-          <div className="charts-container p-10">
+          <div className="charts-container p-2">
             <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl dark:text-black mb-4 p-10">Les dernières statistique de Elhadj</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
               <div className="p-7">

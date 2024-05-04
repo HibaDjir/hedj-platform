@@ -80,11 +80,11 @@ const validateLog = (data) => {
       firstName: Joi.string().required().label("First Name"),
       lastName: Joi.string().required().label("Last Name"),
       email: Joi.string().email().required().label("Email"),
-      NumeroTelephone: Joi.string().label("Numero du Telephone"),
+      NumeroTelephone: Joi.string(),
       password: passwordComplexity().required().label("Password"),
-      etat: Joi.string().required().label("L'etat"),
-      wilaya: Joi.string().required().label("Wilaya"),
-      adr_pro: Joi.string().required().label("Adresse professionel")
+      etat: Joi.string().required(),
+      wilaya: Joi.string().required(),
+      adr_pro: Joi.string().required()
     });
     return schema.validate(data);
   };
