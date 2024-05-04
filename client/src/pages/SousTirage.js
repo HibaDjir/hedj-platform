@@ -274,63 +274,6 @@ export default function SousTirage() {
   
           {/* Cards */}
           
-          {/* <div class="grid grid-cols-1 gap-4 px-4 mt-8 sm:grid-cols-4 sm:px-8">
-  
-  <div class="relative flex justify-center items-center border bg-[#FAF8F5] rounded-2xl overflow-hidden shadow transform transition duration-500 hover:scale-105 hover:rounded-2xl  h-40 w-50">
-    <div class="absolute top-4 px-2 text-gray-700"> 
-    <div class="top-0 px-2 text-gray-700 flex items-center ">
-      <h3 class="ml-2 text-sm  font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Tirage par</h3>
-      
-  </div>    
-  </div>
-  
-      <p class="text-2xl text-center font-semibold  text-gray-600"> Tranche d'age
-</p>
-   
-  </div>
-  
-
-  <div class="relative flex justify-center items-center border bg-[#FAF8F5] rounded-2xl overflow-hidden shadow transform transition duration-500 hover:scale-105 hover:rounded-2xl  h-40 w-50">
-    <div class="absolute top-4 px-2 text-gray-700"> 
-    <div class="top-0 px-2 text-gray-700 flex items-center ">
-      <h3 class="ml-2 text-sm  font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Tirage par</h3>
-      
-  </div>    
-  </div>
-  
-      <p class="text-2xl text-center font-semibold  text-gray-600"> Nombre d'inscription
-</p>
-   
-  </div>
-
-
-  <div class="relative flex justify-center items-center border bg-[#FAF8F5] rounded-2xl overflow-hidden shadow transform transition duration-500 hover:scale-105 hover:rounded-2xl  h-40 w-50">
-    <div class="absolute top-4 px-2 text-gray-700"> 
-    <div class="top-0 px-2 text-gray-700 flex items-center ">
-      <h3 class="ml-2 text-sm  font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Tirage </h3>
-      
-  </div>    
-  </div>
-  
-      <p class="text-2xl text-center font-semibold  text-gray-600"> Aléatoire
-</p>
-   
-  </div>
-
-  <div class="relative flex justify-center items-center border bg-[#FAF8F5] rounded-2xl overflow-hidden shadow transform transition duration-500 hover:scale-105 hover:rounded-2xl  h-40 w-50">
-    <div class="absolute top-4 px-2 text-gray-700"> 
-    <div class="top-0 px-2 text-gray-700 flex items-center ">
-      <h3 class="ml-2 text-sm  font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Tirage par</h3>
-      
-  </div>    
-  </div>
-  
-      <p class="text-2xl  text-center font-semibold text-gray-600">Tous les Performances
-</p>
-   
-  </div>  
-      </div> */}
-
 <div className="grid grid-cols-1 gap-4 px-4 mt-8 sm:grid-cols-4 sm:px-8">
       <div
         id="tranche-age"
@@ -420,7 +363,7 @@ export default function SousTirage() {
 
 
 <MUIDataTable
-title={"Medecins"}
+title={""}
 data={recentAdminData}
 columns={columns}
 options={options}
