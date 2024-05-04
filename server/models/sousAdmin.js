@@ -19,6 +19,11 @@ const SousAdminSchema = new schema({
         type:String,
         enum:["Active",'Desactive'],
         require:true
+      
+    },
+    is_deleted:{
+        type:Boolean,
+        default:false
     }
 
 
