@@ -25,6 +25,7 @@ import RecentAdmin from "./pages/AdminPages/RecentAdmin";
 import Session from "./pages/Session"
 import Candidat from "./pages/Candidat"
 import Pelerin from "./pages/Pelerin"
+import SousTirage from "./pages/SousTirage"
 function App() {
   const isLoggedIn=localStorage.getItem('loggedIn')
   return (
@@ -43,6 +44,7 @@ function App() {
 
 
           <Route path="/SousSession" element={<SousSession/>} />
+          <Route path="/SousTirage" element={<SousTirage/>} />
 
 
           <Route path="/homelgin" element={<RequireAuth><Home_owner_account /></RequireAuth>} />  

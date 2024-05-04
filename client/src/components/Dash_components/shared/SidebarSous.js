@@ -11,6 +11,7 @@ import { SlUserFollowing } from "react-icons/sl";
 import img from "../../../images/img.jpeg";
 import { getCustomers, getInventory, getComments} from "../../../pages/Dash_pages/API";
 import SessionSous from "../../../pages/SousSession"
+import SousTirage from '../../../pages/SousTirage';
 const linkClass = 'flex flex-col items-center gap-2 font-light px-3 py-2 hover:bg-white  hover:underline rounded-sm text-base';
 
 
@@ -77,7 +78,7 @@ export default function Sidebar() {
                     </li>
                    
                     <li>
-                        <a href="#" className="flex items-center p-5 text-gray-900 rounded-lg dark:text-black hover:text-[#D8A353]  group">
+                        <a href="SousTirage" className="flex items-center p-5 text-gray-900 rounded-lg dark:text-black hover:text-[#D8A353]  group">
                             <svg className="h-7 w-7 text-gray-500 transition duration-75 dark:text-black group-hover:text-[#D8A353] dark:group-hover:text-[#D8A353]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
                             <IoShuffleSharp />
                             </svg>

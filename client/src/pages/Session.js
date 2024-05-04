@@ -396,11 +396,6 @@ options={options}
      </div>
 </div>
 
-
-
-
-
-
 {isAddAdminModalOpen && selectedAlgo && selectedAlgo.name === "Par age" && (
           <TirageAge onClose={closeAddAdminModal} />
         )}
