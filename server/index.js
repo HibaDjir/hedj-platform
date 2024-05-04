@@ -39,37 +39,37 @@ index.use("/api/dashboardStats", dashboardRoute)
 
 
 
-const verifiyUser = (req, res, next)=>{
-    /*const cookies = document.cookie.split(';');
-    const tokenCookie = cookies.find(cookie => cookie.trim().startsWith('token='));
-    const token = tokenCookie ? tokenCookie.split('=')[1] : null;
-    const token = localStorage.getItem('token');*/
-    const token = req.query.fieldName; 
-    const fieldValue = req.query.fieldValue;
+// const verifiyUser = (req, res, next)=>{
+//     /*const cookies = document.cookie.split(';');
+//     const tokenCookie = cookies.find(cookie => cookie.trim().startsWith('token='));
+//     const token = tokenCookie ? tokenCookie.split('=')[1] : null;
+//     const token = localStorage.getItem('token');*/
+//     const token = req.query.fieldName; 
+//     const fieldValue = req.query.fieldValue;
 
-    const query = { 
-        [token]: fieldValue
-    };
-    if(!query.token){
-        return res.json("err token");
-    }else{
-        const decodedPayload = decodeToken(query.token);
+//     const query = { 
+//         [token]: fieldValue
+//     };
+//     if(!query.token){
+//         return res.json("err token");
+//     }else{
+//         const decodedPayload = decodeToken(query.token);
 
-        return res.json(decodedPayload._id);
-    }
-}
+//         return res.json(decodedPayload._id);
+//     }
+// }
 
-function decodeToken(token) {
-    try {
-        const decoded = jwt.verify(token, process.env.JWTPRIVATEKEY);
-        return decoded;
-    } catch (error) {
-        console.error('Error decoding token:', error.message);
-        return null; 
-    }
-}
+// function decodeToken(token) {
+//     try {
+//         const decoded = jwt.verify(token, process.env.JWTPRIVATEKEY);
+//         return decoded;
+//     } catch (error) {
+//         console.error('Error decoding token:', error.message);
+//         return null; 
+//     }
+// }
 
-index.get('/TestLogin', verifiyUser)
+// index.get('/TestLogin', verifiyUser)
 
 //create server 
 
