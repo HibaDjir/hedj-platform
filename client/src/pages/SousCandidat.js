@@ -1,8 +1,10 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect,useContext} from 'react'
 import MUIDataTable from "mui-datatables";
 import AddAdminModal from "../Popups/AddCommune";
 import add from "../images/mini_add.png";
 import Logo from "../images/LOGO.png";
+import jwtDecode from 'jwt-decode';
+import { AuthContext } from '../context/authContext'; // Assuming your context file path
 
 import Sidebar from '../components/Dash_components/shared/SidebarSous'
 import Header from '../components/Dash_components/shared/HeaderSous'
@@ -16,14 +18,44 @@ export default function Dashboard() {
 
     const [isAddAdminModalOpen, setIsAddAdminModalOpen] = useState(false);
     const [candidats, setCandidats] = useState([])
+    const [daata, setDaata] = useState([]);
 
+    
     useEffect(() => {
-      fetchCandidats();
-    }, [candidats]);
+      const token = localStorage.getItem('user');
+      // if (token) {
+      //   try {
+      //     const decodedToken = jwtDecode(token);
+      //     const adminId = decodedToken.adminId; // Assuming "adminId" is the key in the token
+      //     fetchWilaya(adminId);
+      //   } catch (error) {
+      //     console.error('Error decoding token:', error);
+      //   }
+      // } else {
+      //       return      }
+      fetchWilaya("6633e0b320bb4b1fc14f2188");
+      if (daata.wilaya) { // Check if daata.wilaya has a value to avoid errors
+        fetchCandidats(daata.wilaya);
+      }    }, [ daata]);
+
   
+      const fetchWilaya = async(id)=>{
+        try {
+            const response = await fetch(`http://localhost:3000/api/masterAdmin/getSousAdminWilaya/${id}`);
+            if (!response.ok) {
+              throw new Error('Failed to fetch Candidats');
+            }
+            const data = await response.json();
+            setDaata(data);
+          } catch (error) {
+            console.error('Error fetching candidats:', error);
+          }
+      }
+
+
     const fetchCandidats = async (wilaya) => {
       try {
-        const response = await fetch(`http://localhost:3000/api/getCandByWilaya${wilaya}`);
+        const response = await fetch(`http://localhost:3000/api/candidature/${wilaya}`);
         if (!response.ok) {
           throw new Error('Failed to fetch Candidats');
         }
@@ -77,14 +109,7 @@ export default function Dashboard() {
         sort: false,
        }
       },
-      {
-       name: "name",
-       label: "wilaya",
-       options: {
-        filter: true,
-        sort: false,
-       }
-      },
+ 
       {
           name: "NumeroTelephone",
           label: "Numéro De teléphone",
@@ -136,22 +161,6 @@ export default function Dashboard() {
     </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
           {/* Cards */}
           <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl dark:text-black mb-4 p-5">Candidats</h2>
 
@@ -166,7 +175,7 @@ export default function Dashboard() {
   </div>    
   </div>
   
-      <p class="text-2xl text-center font-semibold text-gray-600"> {candidats}
+      <p class="text-2xl text-center font-semibold text-gray-600"> {candidats.length}
 </p>
    
   </div> 

@@ -8,6 +8,7 @@ import About_us from "./pages/AboutUs";
 import EmailConfirmation from "./pages/Email_confirmation";
 import Navbar from "./components/Navbar";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { AuthContextProvider } from './context/authContext'; // Assuming your context file path
 import "./index";
 
 import SousSession from "./pages/SousSession"
@@ -66,7 +67,7 @@ function App() {
           />
           <Route path="/mail_conf" element={<EmailConfirmation />} />
           <Route path="/dash" element={<Dash/>}></Route>
-          <Route path="/sousdash" element={< Sous_Dash/>}></Route>
+          <Route path="/sousdash" element={<AuthContextProvider>< Sous_Dash/></AuthContextProvider>}></Route>
           
         </Routes>
       </div>
