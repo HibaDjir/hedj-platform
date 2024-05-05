@@ -9,10 +9,45 @@ import add from "../images/mini_add.png";
 import down from "../images/chevron_down.png";
 import Sidebar from "../components/Dash_components/shared/Sidebar";
 import AddAdminModal from "../Popups/AddMed";
-// import img from "../images/img.jpeg"
 import Header from "../components/Dash_components/shared/Header";
-export default function Medecins() {
 
+export default function Medecins() {
+    const [medecins, setMedecins] = useState([])
+    
+    useEffect(() => {
+      fetchMedecins();
+    }, [medecins]);
+
+
+    const fetchMedecins = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/medecin/getAllMedecins');
+        if (!response.ok) {
+          throw new Error('Failed tomedecins fetch Medecins');
+        }
+        const data = await response.json();
+        setMedecins(data);
+      } catch (error) {
+        console.error('Error fetching Medecins:', error);
+      }
+    };
+
+    const handleDelete = async (id) => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/medecin/deleteMedecinById/${id}`, {
+          method: 'DELETE',
+        });
+        if (!response.ok) {
+          throw new Error('Failed to delete Medecin');
+        }
+        // Update the table data after deletion
+        fetchMedecins();
+        console.log('Medecin deleted successfully');
+      } catch (error) {
+        console.error('Error deleting Medecin:', error);
+      }
+    };
+    
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
   const toggleSidebar = () => {
@@ -31,7 +66,7 @@ export default function Medecins() {
 
   const columns = [
     {
-     name: "Admin_name",
+     name: "firstName",
      label: "Nom",
      options: {
       filter: true,
@@ -39,7 +74,15 @@ export default function Medecins() {
      }
     },
     {
-     name: " Admin_e_mail",
+      name: "lastName",
+      label: "Prenom",
+      options: {
+       filter: true,
+       sort: true,
+      }
+     },
+    {
+     name: "email",
      label: "E-mail",
      options: {
       filter: true,
@@ -47,7 +90,7 @@ export default function Medecins() {
      }
     },
     {
-     name: "current_Admin_status",
+     name: "etat",
      label: "Etat",
      options: {
       filter: true,
@@ -55,7 +98,7 @@ export default function Medecins() {
      }
     },
     {
-     name: "Admin_wilaya",
+     name: "name",
      label: "wilaya",
      options: {
       filter: true,
@@ -63,128 +106,40 @@ export default function Medecins() {
      }
     },
     {
-        name: "Admin_numero_de_telephone",
+        name: "NumeroTelephone",
         label: "Numéro De teléphone",
         options: {
          filter: true,
          sort: false,
         }
        },
+       {
+        name: "delete",
+        label: "Supprimer",
+          options: {
+          customBodyRender: (value, tableMeta, updateValue) => {
+            const medecinId = recentMedecinData[tableMeta.rowIndex]._id;
+            return (
+              <button onClick={() => handleDelete(medecinId)}>Delete</button>
+            );
+          },
+          sort: false,
+        }
+      }
+     
    ];
 const options = {
     filterType: 'checkbox',
   };
-const recentAdminData = [
-  {
-
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-    Admin_name: "kechar djamal",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-    Admin_name: "kechar djamal",
-    Admin_e_mail: "kechar@gmail.com",
-    current_Admin_status: "innactif",
-    Admin_wilaya: "Bejaia",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-    Admin_name: "mohammed djamal",
-    Admin_e_mail: "kechar@gmail.com",
-    current_Admin_status: "innactif",
-    Admin_wilaya: "Bejaia",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-    Admin_name: "djamila kechar",
-    Admin_e_mail: "djamila.kechar@gmail.com",
-    current_Admin_status: "innactif",
-    Admin_wilaya: "Bejaia",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-];
+  const recentMedecinData = medecins.map(medecin => ({
+    firstName: medecin.user.firstName,
+    lastName: medecin.user.lastName,
+    email: medecin.user.email,
+    NumeroTelephone: medecin.NumeroTelephone,
+    etat: medecin.etat,
+    name: medecin.Wilaya.name,
+    _id: medecin._id 
+  }));      
 
 
 
@@ -226,7 +181,7 @@ const recentAdminData = [
     </div>
         <MUIDataTable
   title={"Medecins"}
-  data={recentAdminData}
+  data={recentMedecinData}
   columns={columns}
   options={options}
 />

@@ -19,9 +19,9 @@ exports.getAllMedecins = async(req, res)=>{
         console.log("Les medecins sont: ",medecins)
         res.status(200).json(medecins);
     } catch (error) {
-        res.status(500).json({ message: 'Internal server error' }, {error: error.message});
+        res.status(500).json({ message: 'Internal server error' ,error: error.message});
     }
-}
+}       
 
 //Creer un medecin et l'enregistrer dans les tables user_profiler et medecin en envoyant un Email
 exports.createMedecin = async(req, res)=>{
@@ -299,57 +299,3 @@ exports.updateMedecin = async(req, res)=>{
     }
 }
 
-// exports.updateMedecin = async (req, res) => {
-//     try {
-//         const idMedecin = req.params.id;
-//         const leMedecin = await Medecin.findById(idMedecin);
-
-//         // Update Medecin fields
-//         if (req.body.NumeroTelephone || req.body.etat || req.body.adr_pro) {
-//             const updatedMedecinChamps = await Medecin.findByIdAndUpdate(
-//                 idMedecin,
-//                 {
-//                     NumeroTelephone: req.body.NumeroTelephone || leMedecin.NumeroTelephone,
-//                     etat: req.body.etat || leMedecin.etat,
-//                     adr_pro: req.body.adr_pro || leMedecin.adr_pro
-//                 },
-//                 { new: true }
-//             );
-//             if (!updatedMedecinChamps) {
-//                 return res.status(404).json({ message: 'Medecin with given ID not found or can\'t be updated.' });
-//             }
-//         }
-
-//         // Update Wilaya field
-//         if (req.body.wilaya) {
-//             const lawilaya = await Wilaya.findOne({ name: req.body.wilaya });
-//             if (!lawilaya) {
-//                 return res.status(404).json({ message: 'Wilaya not found.' });
-//             }
-//             const updatedWilayaChamp = await Medecin.findByIdAndUpdate(idMedecin, { Wilaya: lawilaya._id }, { new: true });
-//             if (!updatedWilayaChamp) {
-//                 return res.status(404).json({ message: 'Wilaya can\'t be updated for Medecin with given ID.' });
-//             }
-//         }
-
-//         // Update associated User fields
-//         if (req.body.firstName || req.body.lastName || req.body.email) {
-//             const updatedUser = await User.findByIdAndUpdate(
-//                 leMedecin.user,
-//                 {
-//                     firstName: req.body.firstName || leMedecin.user.firstName,
-//                     lastName: req.body.lastName || leMedecin.user.lastName,
-//                     email: req.body.email || leMedecin.user.email
-//                 },
-//                 { new: true }
-//             );
-//             if (!updatedUser) {
-//                 return res.status(404).json({ message: 'Medecin with given ID can\'t be updated in Users.' });
-//             }
-//         }
-
-//         res.status(200).json({ message: 'Medecin with given ID updated successfully' });
-//     } catch (error) {
-//         res.status(500).json({ message: 'Internal server error', error: error.message });
-//     }
-// };

@@ -12,14 +12,35 @@ import AddAdminModal from "../Popups/AddMed";
 // import img from "../images/img.jpeg"
 import Header from "../components/Dash_components/shared/Header";
 export default function Medecins() {
-
+  const [candidats, setCandidats] = useState([])
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+      
+  useEffect(() => {
+    fetchCandidats();
+  }, [candidats]);
+
+  const fetchCandidats = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/candidature/');
+      if (!response.ok) {
+        throw new Error('Failed to fetch Candidats');
+      }
+      const data = await response.json();
+      setCandidats(data);
+    } catch (error) {
+      console.error('Error fetching candidats:', error);
+    }
+  };
+
+
+
   
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
 
   }
-
+ 
   const [isAddAdminModalOpen, setIsAddAdminModalOpen] = useState(false);
   const openAddAdminModal = () => {
     setIsAddAdminModalOpen(true);
@@ -31,7 +52,7 @@ export default function Medecins() {
 
   const columns = [
     {
-     name: "Admin_name",
+     name: "firstName",
      label: "Nom",
      options: {
       filter: true,
@@ -39,7 +60,15 @@ export default function Medecins() {
      }
     },
     {
-     name: " Admin_e_mail",
+      name: "lastName",
+      label: "Prenom",
+      options: {
+       filter: true,
+       sort: true,
+      }
+     },
+    {
+     name: "email",
      label: "E-mail",
      options: {
       filter: true,
@@ -47,7 +76,7 @@ export default function Medecins() {
      }
     },
     {
-     name: "current_Admin_status",
+     name: "etat",
      label: "Etat",
      options: {
       filter: true,
@@ -55,7 +84,7 @@ export default function Medecins() {
      }
     },
     {
-     name: "Admin_wilaya",
+     name: "name",
      label: "wilaya",
      options: {
       filter: true,
@@ -63,7 +92,7 @@ export default function Medecins() {
      }
     },
     {
-        name: "Admin_numero_de_telephone",
+        name: "NumeroTelephone",
         label: "Numéro De teléphone",
         options: {
          filter: true,
@@ -71,120 +100,19 @@ export default function Medecins() {
         }
        },
    ];
-const options = {
+   const options = {
     filterType: 'checkbox',
   };
-const recentAdminData = [
-  {
+  const recentMedecinData = candidats.map(candidat => ({
+    firstName: candidat.nom,
+    lastName: candidat.prenom,
+    email: candidat.email,
+    NumeroTelephone: candidat.NumeroTelephone,
+    etat: candidat.status,
+    name: candidat.wilayaName,
+    _id: candidat._id 
+  }));      
 
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-    Admin_name: "kechar djamal",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-    Admin_name: "kechar djamal",
-    Admin_e_mail: "kechar@gmail.com",
-    current_Admin_status: "innactif",
-    Admin_wilaya: "Bejaia",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-    Admin_name: "mohammed djamal",
-    Admin_e_mail: "kechar@gmail.com",
-    current_Admin_status: "innactif",
-    Admin_wilaya: "Bejaia",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-    Admin_name: "djamila kechar",
-    Admin_e_mail: "djamila.kechar@gmail.com",
-    current_Admin_status: "innactif",
-    Admin_wilaya: "Bejaia",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-];
 
 
 
@@ -221,7 +149,7 @@ const recentAdminData = [
     </div>
         <MUIDataTable
   title={"Candidats"}
-  data={recentAdminData}
+  data={recentMedecinData}
   columns={columns}
   options={options}
 />

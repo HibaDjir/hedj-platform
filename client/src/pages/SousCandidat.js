@@ -1,8 +1,10 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect,useContext} from 'react'
 import MUIDataTable from "mui-datatables";
 import AddAdminModal from "../Popups/AddCommune";
 import add from "../images/mini_add.png";
 import Logo from "../images/LOGO.png";
+import jwtDecode from 'jwt-decode';
+import { AuthContext } from '../context/authContext'; // Assuming your context file path
 
 import Sidebar from '../components/Dash_components/shared/SidebarSous'
 import Header from '../components/Dash_components/shared/HeaderSous'
@@ -15,6 +17,56 @@ import { TiTime } from "react-icons/ti";
 export default function Dashboard() {
 
     const [isAddAdminModalOpen, setIsAddAdminModalOpen] = useState(false);
+    const [candidats, setCandidats] = useState([])
+    const [daata, setDaata] = useState([]);
+
+    
+    useEffect(() => {
+      const token = localStorage.getItem('user');
+      // if (token) {
+      //   try {
+      //     const decodedToken = jwtDecode(token);
+      //     const adminId = decodedToken.adminId; // Assuming "adminId" is the key in the token
+      //     fetchWilaya(adminId);
+      //   } catch (error) {
+      //     console.error('Error decoding token:', error);
+      //   }
+      // } else {
+      //       return      }
+      fetchWilaya("6633e0b320bb4b1fc14f2188");
+      if (daata.wilaya) { // Check if daata.wilaya has a value to avoid errors
+        fetchCandidats(daata.wilaya);
+      }    }, [ daata]);
+
+  
+      const fetchWilaya = async(id)=>{
+        try {
+            const response = await fetch(`http://localhost:3000/api/masterAdmin/getSousAdminWilaya/${id}`);
+            if (!response.ok) {
+              throw new Error('Failed to fetch Candidats');
+            }
+            const data = await response.json();
+            setDaata(data);
+          } catch (error) {
+            console.error('Error fetching candidats:', error);
+          }
+      }
+
+
+    const fetchCandidats = async (wilaya) => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/candidature/${wilaya}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch Candidats');
+        }
+        const data = await response.json();
+        setCandidats(data);
+      } catch (error) {
+        console.error('Error fetching candidats:', error);
+      }
+    };
+  
+
     const openAddAdminModal = () => {
       setIsAddAdminModalOpen(true);
     };
@@ -22,10 +74,11 @@ export default function Dashboard() {
     const closeAddAdminModal = () => {
       setIsAddAdminModalOpen(false);
     };
+
   
     const columns = [
       {
-       name: "Admin_name",
+       name: "firstName",
        label: "Nom",
        options: {
         filter: true,
@@ -33,7 +86,15 @@ export default function Dashboard() {
        }
       },
       {
-       name: " Admin_e_mail",
+        name: "lastName",
+        label: "Prenom",
+        options: {
+         filter: true,
+         sort: true,
+        }
+       },
+      {
+       name: "email",
        label: "E-mail",
        options: {
         filter: true,
@@ -41,23 +102,16 @@ export default function Dashboard() {
        }
       },
       {
-       name: "current_Admin_status",
+       name: "etat",
        label: "Etat",
        options: {
         filter: true,
         sort: false,
        }
       },
+ 
       {
-       name: "Admin_wilaya",
-       label: "wilaya",
-       options: {
-        filter: true,
-        sort: false,
-       }
-      },
-      {
-          name: "Admin_numero_de_telephone",
+          name: "NumeroTelephone",
           label: "Numéro De teléphone",
           options: {
            filter: true,
@@ -68,126 +122,17 @@ export default function Dashboard() {
   const options = {
       filterType: 'checkbox',
     };
-  const recentAdminData = [
-    {
+    const recentCanData = candidats.map(candidat => ({
+      firstName: candidat.nom,
+      lastName: candidat.prenom,
+      email: candidat.email,
+      NumeroTelephone: candidat.NumeroTelephone,
+      name: candidat.wilayaName,
+      _id: candidat._id 
+    }));      
   
   
-      Admin_name: "Harrath Bouchra",
-      Admin_e_mail: "bouchra.harrath5@gmail.com",
-      current_Admin_status: "Active",
-      Admin_wilaya: "Chlef",
-      Admin_numero_de_telephone: "06 54 32 55 78",
-    },
-    {
-  
-  
-      Admin_name: "Harrath Bouchra",
-      Admin_e_mail: "bouchra.harrath5@gmail.com",
-      current_Admin_status: "Active",
-      Admin_wilaya: "Chlef",
-      Admin_numero_de_telephone: "06 54 32 55 78",
-    },
-    {
-  
-  
-      Admin_name: "Harrath Bouchra",
-      Admin_e_mail: "bouchra.harrath5@gmail.com",
-      current_Admin_status: "Active",
-      Admin_wilaya: "Chlef",
-      Admin_numero_de_telephone: "06 54 32 55 78",
-    },
-    {
-  
-  
-      Admin_name: "Harrath Bouchra",
-      Admin_e_mail: "bouchra.harrath5@gmail.com",
-      current_Admin_status: "Active",
-      Admin_wilaya: "Chlef",
-      Admin_numero_de_telephone: "06 54 32 55 78",
-    },
-    {
-  
-  
-      Admin_name: "Harrath Bouchra",
-      Admin_e_mail: "bouchra.harrath5@gmail.com",
-      current_Admin_status: "Active",
-      Admin_wilaya: "Chlef",
-      Admin_numero_de_telephone: "06 54 32 55 78",
-    },
-    {
-  
-  
-      Admin_name: "Harrath Bouchra",
-      Admin_e_mail: "bouchra.harrath5@gmail.com",
-      current_Admin_status: "Active",
-      Admin_wilaya: "Chlef",
-      Admin_numero_de_telephone: "06 54 32 55 78",
-    },
-    {
-  
-  
-      Admin_name: "Harrath Bouchra",
-      Admin_e_mail: "bouchra.harrath5@gmail.com",
-      current_Admin_status: "Active",
-      Admin_wilaya: "Chlef",
-      Admin_numero_de_telephone: "06 54 32 55 78",
-    },
-    {
-  
-  
-      Admin_name: "Harrath Bouchra",
-      Admin_e_mail: "bouchra.harrath5@gmail.com",
-      current_Admin_status: "Active",
-      Admin_wilaya: "Chlef",
-      Admin_numero_de_telephone: "06 54 32 55 78",
-    },
-    {
-  
-  
-      Admin_name: "Harrath Bouchra",
-      Admin_e_mail: "bouchra.harrath5@gmail.com",
-      current_Admin_status: "Active",
-      Admin_wilaya: "Chlef",
-      Admin_numero_de_telephone: "06 54 32 55 78",
-    },
-    {
-      Admin_name: "kechar djamal",
-      Admin_e_mail: "bouchra.harrath5@gmail.com",
-      current_Admin_status: "Active",
-      Admin_wilaya: "Chlef",
-      Admin_numero_de_telephone: "06 54 32 55 78",
-    },
-    {
-      Admin_name: "kechar djamal",
-      Admin_e_mail: "kechar@gmail.com",
-      current_Admin_status: "innactif",
-      Admin_wilaya: "Bejaia",
-      Admin_numero_de_telephone: "06 54 32 55 78",
-    },
-    {
-      Admin_name: "mohammed djamal",
-      Admin_e_mail: "kechar@gmail.com",
-      current_Admin_status: "innactif",
-      Admin_wilaya: "Bejaia",
-      Admin_numero_de_telephone: "06 54 32 55 78",
-    },
-    {
-      Admin_name: "djamila kechar",
-      Admin_e_mail: "djamila.kechar@gmail.com",
-      current_Admin_status: "innactif",
-      Admin_wilaya: "Bejaia",
-      Admin_numero_de_telephone: "06 54 32 55 78",
-    },
-  ];
 
-
-
-    const [candidat, setCandidat] = useState();
-
-
-    useEffect(() => {  
-        setCandidat('1234567')  
-    }, []);
 
 
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -216,22 +161,6 @@ export default function Dashboard() {
     </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
           {/* Cards */}
           <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl dark:text-black mb-4 p-5">Candidats</h2>
 
@@ -246,7 +175,7 @@ export default function Dashboard() {
   </div>    
   </div>
   
-      <p class="text-2xl text-center font-semibold text-gray-600"> {candidat}
+      <p class="text-2xl text-center font-semibold text-gray-600"> {candidats.length}
 </p>
    
   </div> 
@@ -270,7 +199,7 @@ export default function Dashboard() {
 </div>
 <MUIDataTable
 title={"Candidats"}
-data={recentAdminData}
+data={recentCanData}
 columns={columns}
 options={options}
 />

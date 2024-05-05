@@ -8,7 +8,10 @@ const pelerinController = require('../controllers/pelerinController');
 router.route("/getAllPelerins").get(pelerinController.getAllPelerins);
 router.route("/deleteAllPelerin").delete(pelerinController.deleteAllPelerin);
 router.route("/getPelerinByWilaya/:name").get(pelerinController.getPelerinByWilaya);
-router.route("/getPelerinByCommune/:name", ).get(pelerinController.getPelerinByCommune)
+router.route("/getPelerinByCommune/:name", ).get(pelerinController.getPelerinByCommune);
+router.route("/deleteAllPelerins", ).delete(pelerinController.deleteAllPelerinsFromDb);
+
+
 
 
 

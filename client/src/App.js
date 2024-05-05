@@ -8,6 +8,7 @@ import About_us from "./pages/AboutUs";
 import EmailConfirmation from "./pages/Email_confirmation";
 import Navbar from "./components/Navbar";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { AuthContextProvider } from './context/authContext'; // Assuming your context file path
 import "./index";
 import SousSession from "./pages/SousSession"
 import RequireAuth from "./protectingRoutes/RequireAuth";
@@ -24,9 +25,11 @@ import RecentAdmin from "./pages/AdminPages/RecentAdmin";
 import Session from "./pages/Session"
 import Candidat from "./pages/Candidat"
 import Pelerin from "./pages/Pelerin"
+
 import SousTirage from "./pages/SousTirage"
 import SousPelerin from "./pages/SousPelerin"
 import SousCandidat from "./pages/SousCandidat"
+
 function App() {
   const isLoggedIn=localStorage.getItem('loggedIn')
   return (
@@ -60,8 +63,8 @@ function App() {
             element={<Resset_password />}
           />
           <Route path="/mail_conf" element={<EmailConfirmation />} />
-          <Route path="/dash" element={<RequireAuth><Dash/></RequireAuth>}></Route>
-          <Route path="/sousdash" element={<RequireAuth><Sous_Dash/></RequireAuth>}></Route>
+          <Route path="/dash" element={<Dash/>}></Route>
+          <Route path="/sousdash" element={<AuthContextProvider>< Sous_Dash/></AuthContextProvider>}></Route>
           
         </Routes>
       </div>

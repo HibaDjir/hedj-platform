@@ -23,7 +23,7 @@ const pelerinRouter=require('./routes/pelerinRoute')
 const masterAdminRoute=require('./routes/masterAdminRoute')
 const medecinRoute=require('./routes/medecinRoute')
 const dashboardRoute=require('./routes/dashboardRoute')
-
+ 
 index.use("/api/users",authRouter) 
 index.use("/api/wilaya",wilayaRouter) 
 index.use("/api/commune",communeRouter) 
