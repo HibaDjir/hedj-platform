@@ -1,6 +1,7 @@
 
 const Candidature = require("../../models/Candidature");
 const { setStatus } = require('./clcPrctg');
+const pelerin = require('../../models/pelerin');
 
 function mappingUsers(ageBrackets, users) {
     const currentDate = new Date();
@@ -140,11 +141,25 @@ exports.elecPilgrimsCumDist = async (req, res) => {
         //the winners
         console.log("winners are: ", winners)
         const { winners: attente, weightedUsers: weightedUsersEnAtt } = await performLottery(nbEnAttente, weightedRestants)
-       
+        
         //set status of attente
         const pelerinEnAttente = setStatus(attente, "is_enAttent")
         //the attente
         console.log("en attente are: ", attente)
+
+        //into pelerin db
+        let allPelerins = [...pelerinsElu, ...pelerinEnAttente];
+        for (let  pelerinData of allPelerins) { 
+            try { 
+                // Create a new Pelerin document 
+                const newPelerin = await pelerin.create({ Candidature: pelerinData._id }); 
+                console.log('New pelerin created:', newPelerin); 
+            } catch (error) { 
+                console.error('Error creating pelerin:', error); 
+            } 
+        }
+
+  
 
         res.status(200).json(winners)
     } catch (error) {

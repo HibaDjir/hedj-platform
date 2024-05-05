@@ -9,6 +9,8 @@ import EmailConfirmation from "./pages/Email_confirmation";
 import Navbar from "./components/Navbar";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "./index";
+
+import SousSession from "./pages/SousSession"
 import RequireAuth from "./protectingRoutes/RequireAuth";
 import Manassik from "../src/pages/Manassik";
 import Candidature from "./pages/Candidature";
@@ -23,6 +25,10 @@ import RecentAdmin from "./pages/AdminPages/RecentAdmin";
 import Session from "./pages/Session"
 import Candidat from "./pages/Candidat"
 import Pelerin from "./pages/Pelerin"
+
+import SousTirage from "./pages/SousTirage"
+import SousPelerin from "./pages/SousPelerin"
+import SousCandidat from "./pages/SousCandidat"
 
 function App() {
   const isLoggedIn=localStorage.getItem('loggedIn')
@@ -39,6 +45,12 @@ function App() {
           <Route path="/Session" element={<Session/>} />
           <Route path="/Candidat" element={<Candidat/>} />
           <Route path="/Pelerin" element={<Pelerin/>} />
+
+
+          <Route path="/SousSession" element={<SousSession/>} />
+          <Route path="/SousTirage" element={<SousTirage/>} />
+          <Route path="/SousPelerin" element={<SousPelerin/>} />
+          <Route path="/SousCandidat" element={<SousCandidat/>} />
 
 
           <Route path="/homelgin" element={<RequireAuth><Home_owner_account /></RequireAuth>} />  

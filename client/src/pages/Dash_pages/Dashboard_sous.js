@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import BarChart from '../../components/Dash_components/BarChart'
 import DoughnutChart from '../../components/Dash_components/DoughnutChart'
 import LineChart from '../../components/Dash_components/LineChart'
@@ -8,10 +8,13 @@ import Header from '../../components/Dash_components/shared/HeaderSous'
 
 export default function Dashboard() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  
+
+
     const toggleSidebar = () => {
       setIsSidebarOpen(!isSidebarOpen);
     };
+  
+
   
     return (
         <div className="flex h-screen">

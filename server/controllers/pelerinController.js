@@ -3,6 +3,15 @@ const Wilaya=require('../models/wilaya')
 const Commune=require('../models/Commune')
 
 
+exports.deleteAllPelerinsFromDb = async (req, res)=>{
+    try {
+        const deletedPelerins = await Pelerin.deleteMany()
+        res.status(200).json({ message: 'All pelerins deleted successfully' });
+    } catch (error) {
+        res.status(500).json({message: 'Internal server error', error: error.message });
+    }
+}
+
 
  exports.getAllPelerins=async(req,res)=>{
     try{

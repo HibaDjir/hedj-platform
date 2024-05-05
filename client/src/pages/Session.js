@@ -8,10 +8,11 @@ import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
 import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
 import { TiTime } from "react-icons/ti";
 import add from "../images/mini_add.png";
-import AddAdminModal from "../Popups/AddWilaya";
 import MUIDataTable from "mui-datatables";
+import TirageAge from "../Popups/TirageAge"
+import AddWilayaModal from "../Popups/AddWilaya";
 
-export default function Dashboard() {
+export default function Session() {
 
   
 
@@ -172,10 +173,38 @@ valeur.setAttribute('type', 'text');
 
 
 
+    const [isAddWilayaModalOpen, setIsAddWilayaModalOpen] = useState(false);
+    const openADDWilayaModal = () => {
+        setIsAddWilayaModalOpen(true);
+      };
+    
+      const closeAddWilayaModal = () => {
+        setIsAddWilayaModalOpen(false);
+      };
 
 
 
 
+
+
+
+
+
+    const openAddAdminModal = (algo) => {
+      setSelectedAlgo(algo);
+      if (algo.name === "Par age") {
+        setIsAddAdminModalOpen(true);
+      }
+    }
+  
+    const closeAddAdminModal = () => {
+      setIsAddAdminModalOpen(false);
+      setSelectedAlgo(null); // Reset selected algo
+    };
+
+
+    const [isAddAdminModalOpen, setIsAddAdminModalOpen] = useState(false);
+    const [selectedAlgo, setSelectedAlgo] = useState(null);
 
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
@@ -205,6 +234,9 @@ valeur.setAttribute('type', 'text');
             {/* <Cards /> */}
             <div>
     <div >
+
+
+
 <div class="grid grid-cols-1 gap-4 px-4 mt-8 sm:grid-cols-4 sm:px-8">
   
 <div class="relative flex justify-center items-center border bg-[#FAF8F5] rounded-2xl overflow-hidden shadow transform transition duration-500 hover:scale-105 hover:rounded-2xl  h-40 w-50">
@@ -230,9 +262,9 @@ valeur.setAttribute('type', 'text');
     <h3 class="ml-2 text-sm font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Période d'inscription</h3>
 </div>
     <div class="relative mb-6 mt-10">
-      <Combobox className="z-0" style={{ width: 'calc(100% - 4px)' }} /> 
+      <Combobox className="z-0" style={{ width: 'calc(100% - 4px)' }} openAddAdminModal={openAddAdminModal} /> 
     </div>
-
+ 
     <p class="text-3xl"></p>
   </div>
 </div>
@@ -332,6 +364,17 @@ valeur.setAttribute('type', 'text');
         </div>
     </div>
     </div>
+
+
+
+
+
+
+
+
+
+
+
     <div className="bg-white px-4 pt-3 pb-4 rounded-sm  border-gray-200 flex-1 flex-col max-w-[1420px]   ">
 
        
@@ -342,16 +385,21 @@ valeur.setAttribute('type', 'text');
 <button
   className="text-[#1D1D1B] text-md font-medium flex justify-between  border-[#D8A353] rounded-md bg-[#D8A353]
 border p-2"
+onClick={openADDWilayaModal}
+
 >
   <img className="h-3 w-3  mt-2 mx-2  " src={add} />
   Ajouter Wilaya
 </button>
 
+{isAddWilayaModalOpen && (
+  <AddWilayaModal onClose={closeAddWilayaModal} />
+)}
 
 
 </div>
 <MUIDataTable
-title={"Medecins"}
+title={""}
 data={recentAdminData}
 columns={columns}
 options={options}
@@ -372,12 +420,9 @@ options={options}
      </div>
 </div>
 
-
-
-
-
-
-
+{isAddAdminModalOpen && selectedAlgo && selectedAlgo.name === "Par age" && (
+          <TirageAge onClose={closeAddAdminModal} />
+        )}
 
 
      {/* Sidebar Toggle Button */}

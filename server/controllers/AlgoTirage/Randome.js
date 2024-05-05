@@ -97,19 +97,17 @@ exports.electPilgrims = async (req, res) => {
    
         console.log('Pèlerins en attente :', pelerinsEnAttente);
         const pelerinEnAttentFinale=setStatus(pelerinsEnAttente,'is_enAttent')
-        let allPelerins = []
-         allPelerins.push(pelerinfinal)
-         allPelerins.push(pelerinEnAttentFinale)
+        let allPelerins = [...pelerinfinal, ...pelerinEnAttentFinale];
 
-        console.log("TOUSSSSSS LES PELERINS", allPelerins)
-
-        allPelerins.forEach(async (_id) => {
-
-        const newPelerin = await pelerin.create({ Candidature: _id });
-        console.log('New pelerin created:', newPelerin);
-        
-        });
-
+        for (let  pelerinData of allPelerins) { 
+            try { 
+                // Create a new Pelerin document 
+                const newPelerin = await pelerin.create({ Candidature: pelerinData._id }); 
+                console.log('New pelerin created:', newPelerin); 
+            } catch (error) { 
+                console.error('Error creating pelerin:', error); 
+            } 
+        }
 
         res.json({ message:`pelerin elected : ${pelerinsElus}  le nbr elu ${pelerinsElus.length} ,pelerinListDattente ${pelerinsEnAttente}` });
     } catch (err) {
