@@ -3,6 +3,7 @@ const Wilaya = require('../models/wilaya')
 const {User, validateMedecin} = require('../models/user_profiler')
 const bcrypt = require("bcrypt")
 const sendEmail=require('../util/sendEmail')
+const { findOneAndUpdate } = require('../models/Candidature')
 
 //Afficher tous les medecins
 exports.getAllMedecins = async(req, res)=>{
@@ -18,9 +19,9 @@ exports.getAllMedecins = async(req, res)=>{
         console.log("Les medecins sont: ",medecins)
         res.status(200).json(medecins);
     } catch (error) {
-        res.status(500).json({ message: 'Internal server error' }, {error: error.message});
+        res.status(500).json({ message: 'Internal server error' ,error: error.message});
     }
-}
+}       
 
 //Creer un medecin et l'enregistrer dans les tables user_profiler et medecin en envoyant un Email
 exports.createMedecin = async(req, res)=>{
@@ -228,29 +229,73 @@ exports.retrieveMedecinById = async (req, res) => {
 
 exports.updateMedecin = async(req, res)=>{
     try {
+        console.log(req.body.firstName)
         const idMedecin = req.params.id
-        const updatedMedecin = await Medecin.findByIdAndUpdate(
+        const leMedecin = await Medecin.findById({_id:idMedecin })
+
+        if(req.body.NumeroTelephone || req.body.etat ||req.body.adr_pro){
+        const updatedMedecinChamps = await Medecin.findByIdAndUpdate(
             idMedecin,
             {
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                email: req.body.email,
-                password: req.body.password,
-                name: req.body.wilaya,
-                NumeroTelephone: req.body.NumeroTelephone,
-                etat: req.body.etat,
-                adr_pro: req.body.adr_pro
+                NumeroTelephone: req.body.NumeroTelephone || leMedecin.NumeroTelephone,
+                etat: req.body.etat || leMedecin.etat,
+                adr_pro: req.body.adr_pro || leMedecin.adr_pro
             }
         ).populate('user')
         .populate('Wilaya')
         .exec();
-
-        if (!updatedMedecin) {
-            return res.status(404).json({ message: 'Medecin with given ID not found' });
+        if(!updatedMedecinChamps){
+            return res.status(404).json({ message: 'Medecin with given ID not found or can\t be updated.' });
         }
+    }
+
+        if(req.body.wilaya){
+            const lawilaya = await Wilaya.findOne({name: req.body.wilaya})
+            if (!lawilaya) {
+                return res.status(404).json({ message: 'Wilaya not found.' });
+            }
+            const updatedWilayaChamp = await Medecin.findByIdAndUpdate(idMedecin, {Wilaya: lawilaya._id})
+            if(!updatedWilayaChamp){
+                return res.status(404).json({ message: 'Wilaya can\'t be updated for Medecin with given ID  ' });
+            }
+        }
+
+
+        if(req.body.firstName || req.body.lastName  ){
+            const updatedUser = await User.findByIdAndUpdate(
+                leMedecin.user,
+                {
+                    firstName: req.body.firstName || leMedecin.user.firstName,
+                    lastName: req.body.lastName || leMedecin.user.lastName
+                }
+            )
+            if(!updatedUser){
+                return res.status(404).json({ message: 'Medecin with given ID Can\'t be updated in Users' });
+            }
+        }
+
+        if(req.body.email){
+            //check if email already exists
+                const emailUser = await User.findOne({email: req.body.email})
+                if(emailUser){
+                    return res.status(409).json({ message: "User with given email already Exist!" });
+                }
+                const updatedUserEmail = await User.findByIdAndUpdate(
+                    leMedecin.user,
+                    {
+                        email: req.body.email || leMedecin.user.email
+                    }
+                )
+                if(!updatedUserEmail){
+                    return res.status(404).json({ message: 'can\'t update Email of Medecin with given' });
+                }
+
+        }
+
 
         res.status(200).json({ message: 'Medecin with given ID updated successfully' });
     } catch (error) {
         res.status(500).json({ message: 'Internal server error', error: error.message });
     }
 }
+

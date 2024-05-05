@@ -1,12 +1,15 @@
 import { Navigate ,useLocation} from "react-router-dom";
 import {useAuthContext} from '../hooks/useAuthContext'
+import { useContext } from "react";
+import { AuthContext } from "../context/authContext";
 
 
 const RequireAuth=({children})=>{
     const location=useLocation()
-const {user}=useAuthContext()
+    const context=useContext(AuthContext)
+
 //const user = localStorage.getItem('user')
-if(!user){
+if(!context.user){
     return <Navigate to="/home" replace state={{path:location.pathname}}/>;
 
 }

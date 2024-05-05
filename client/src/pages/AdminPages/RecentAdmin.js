@@ -28,6 +28,7 @@ export default function RecentAdmin() {
     setSousAdmin(data);
    }
 
+
  
 };
 
@@ -47,6 +48,7 @@ export default function RecentAdmin() {
     }
   };
  
+
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
   const toggleSidebar = () => {

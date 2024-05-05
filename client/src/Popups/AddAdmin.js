@@ -102,7 +102,7 @@ const options = {
 
   const modalRef = useRef(null);
   const closeModal = (e) => {
-    if (modalRef.current === e.target) {
+    if (modalRef.current === e.target) {      
       onClose();
     }
   };

@@ -12,14 +12,17 @@ import img from "../../../images/img.jpeg";
 import { getCustomers, getInventory, getComments} from "../../../pages/Dash_pages/API";
 import { useLogout } from "../../../hooks/useLogout"
 import { useAuthContext } from "../../../hooks/useAuthContext";
-const linkClass = 'flex flex-col items-center gap-2 font-light px-3 py-2 hover:bg-white  hover:underline rounded-sm text-base';
+import SessionSous from "../../../pages/SousSession"
+import SousTirage from '../../../pages/SousTirage';
 
+
+const linkClass = 'flex flex-col items-center gap-2 font-light px-3 py-2 hover:bg-white  hover:underline rounded-sm text-base';
+ 
 
 
 export default function Sidebar() {
-    const [nom, setNom] = useState();
-	const [prenom, setPrenom] = useState();
-    const [wilaya, setWilaya] = useState();
+
+    const [daata, setDaata] = useState({});
 
     const { logout } = useLogout();
   const { user } = useAuthContext();
@@ -28,21 +31,21 @@ export default function Sidebar() {
   };
 
     useEffect(() => {
-        setNom('Charles')
-        setPrenom('leclerc')
-        setWilaya("Oran")
-
-    //   getNom().then((res) => {
-	// 	setInventory(res.total);
-	//   });
-    //   getPrenom().then((res) => {
-	// 	setCustomers(res.total);
-	//   });
-
-    //   getWilaya().then((res) => {
-	// 	setComments(res.total);
-	//   });
-    }, []);
+        fetchWilaya("6633e0b320bb4b1fc14f2188");
+      }, [daata]);
+    
+      const fetchWilaya = async(id)=>{
+        try {
+            const response = await fetch(`http://localhost:3000/api/masterAdmin/getSousAdminWilaya/${id}`);
+            if (!response.ok) {
+              throw new Error('Failed to fetch Candidats');
+            }
+            const data = await response.json();
+            setDaata(data);
+          } catch (error) {
+            console.error('Error fetching candidats:', error);
+          }
+      }
 
     return (
         <aside
@@ -58,8 +61,8 @@ export default function Sidebar() {
         <div className="rounded-full overflow-hidden border border-gray-300">
             <img className="w-20 h-20 object-cover" src={img} alt="Profile" />
         </div>
-        <p className="mt-6 font-bold text-xl text-center">{nom} {prenom}</p>
-        <p className="mt-2 font-bold text-xl text-center">Wilaya: {wilaya}</p>
+        <p className="mt-6 font-bold text-xl text-center">{daata.nom} {daata.prenom}</p>
+        <p className="mt-2 font-bold text-xl text-center">Wilaya: {daata.wilaya}</p>
 
     </div>
 </li>
@@ -75,7 +78,7 @@ export default function Sidebar() {
                     </li>
 
                     <li>
-                        <a href="#" className="flex items-center p-5 text-gray-900 rounded-lg dark:text-black hover:text-[#D8A353]  group">
+                        <a href="SousSession" className="flex items-center p-5 text-gray-900 rounded-lg dark:text-black hover:text-[#D8A353]  group">
                             <svg className="h-8 w-8 text-gray-500 transition duration-75 dark:text-black group-hover:text-[#D8A353] dark:group-hover:text-[#D8A353]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
                                 <CiTimer />
                             </svg>
@@ -84,7 +87,7 @@ export default function Sidebar() {
                     </li>
                    
                     <li>
-                        <a href="#" className="flex items-center p-5 text-gray-900 rounded-lg dark:text-black hover:text-[#D8A353]  group">
+                        <a href="SousTirage" className="flex items-center p-5 text-gray-900 rounded-lg dark:text-black hover:text-[#D8A353]  group">
                             <svg className="h-7 w-7 text-gray-500 transition duration-75 dark:text-black group-hover:text-[#D8A353] dark:group-hover:text-[#D8A353]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
                             <IoShuffleSharp />
                             </svg>
@@ -92,7 +95,7 @@ export default function Sidebar() {
                         </a>
                     </li>
                     <li>
-                        <a href="#" className="flex items-center p-5 text-gray-900 rounded-lg dark:text-black hover:text-[#D8A353]  group">
+                        <a href="SousCandidat" className="flex items-center p-5 text-gray-900 rounded-lg dark:text-black hover:text-[#D8A353]  group">
                             <svg className="h-7 w-7 text-gray-500 transition duration-75 dark:text-black group-hover:text-[#D8A353] dark:group-hover:text-[#D8A353]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
                                 <FaPeopleGroup />
                             </svg>
@@ -100,7 +103,7 @@ export default function Sidebar() {
                         </a>
                     </li>
                     <li>
-                        <a href="#" className="flex items-center p-5 text-gray-900 rounded-lg dark:text-black hover:text-[#D8A353]  group">
+                        <a href="SousPelerin" className="flex items-center p-5 text-gray-900 rounded-lg dark:text-black hover:text-[#D8A353]  group">
                             <svg className="h-7 w-7 text-gray-500 transition duration-75 dark:text-black group-hover:text-[#D8A353] dark:group-hover:text-[#D8A353]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
                                 <SlUserFollowing />
                             </svg>

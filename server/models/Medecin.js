@@ -17,7 +17,6 @@ const MedecinSchema = new Schema({
     },
     etat:{
         type:String,
-        enum:["Active",'Desactive'],
         require:true,
         default: "Desactive"
     },

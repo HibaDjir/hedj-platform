@@ -97,8 +97,12 @@ exports.electPilgrims = async (req, res) => {
    
         console.log('Pèlerins en attente :', pelerinsEnAttente);
         const pelerinEnAttentFinale=setStatus(pelerinsEnAttente,'is_enAttent')
+       
+       
+       
         let allPelerins = [...pelerinfinal, ...pelerinEnAttentFinale]
         console.log("TOUSSSSSS LES PELERINS", allPelerins)
+     
         for (let  pelerinData of allPelerins) {
             try {
                 // Create a new Pelerin document
@@ -110,6 +114,8 @@ exports.electPilgrims = async (req, res) => {
         }
 
         res.json(allPelerins);
+      
+
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');

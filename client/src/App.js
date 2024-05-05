@@ -8,7 +8,9 @@ import About_us from "./pages/AboutUs";
 import EmailConfirmation from "./pages/Email_confirmation";
 import Navbar from "./components/Navbar";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { AuthContextProvider } from './context/authContext'; // Assuming your context file path
 import "./index";
+import SousSession from "./pages/SousSession"
 import RequireAuth from "./protectingRoutes/RequireAuth";
 import Manassik from "../src/pages/Manassik";
 import Candidature from "./pages/Candidature";
@@ -16,13 +18,17 @@ import Candidature_mahram  from "./pages/AddMahram";
 import UserProfile from "./pages/UserProfile";
 import Home_each_profile from "./pages/Home_each_profile";
 import Cansulter_cand from "./pages/Consulter_candidature";
+import Dash from "../src/pages/Dash_pages/Dashboard_Main"
 import Sous_Dash from "./pages/Dash_pages/Dashboard_sous";
-import Dash from "../src/pages/Dash_pages/Dashboard_Main";
 import Medecins from "./pages/Medecins";
 import RecentAdmin from "./pages/AdminPages/RecentAdmin";
 import Session from "./pages/Session"
 import Candidat from "./pages/Candidat"
 import Pelerin from "./pages/Pelerin"
+import SousTirage from "./pages/SousTirage"
+import SousPelerin from "./pages/SousPelerin"
+import SousCandidat from "./pages/SousCandidat"
+
 
 function App() {
   const isLoggedIn=localStorage.getItem('loggedIn')
@@ -34,11 +40,13 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/AddAdmin" element={<RequireAuth><AddAdmin /></RequireAuth>} />
           <Route path="/home" element={<Home />} />
+
           <Route path="/medecin" element={<RequireAuth><Medecins/></RequireAuth>} />
           <Route path="/RecentAdmin" element={<RequireAuth><RecentAdmin/></RequireAuth>} />
           <Route path="/Session" element={<RequireAuth><Session/></RequireAuth>} />
           <Route path="/Candidat" element={<RequireAuth><Candidat/></RequireAuth>} />
           <Route path="/Pelerin" element={<RequireAuth><Pelerin/></RequireAuth>} />
+
           <Route path="/homelgin" element={<RequireAuth><Home_owner_account /></RequireAuth>} />  
           <Route path="/candidature" element={<RequireAuth><Candidature /></RequireAuth>} />
           <Route path="/candidature_mahram" element={<RequireAuth><Candidature_mahram /></RequireAuth>} />
@@ -51,8 +59,10 @@ function App() {
             element={<Resset_password />}
           />
           <Route path="/mail_conf" element={<EmailConfirmation />} />
+
           <Route path="/dash" element={<RequireAuth><Dash/></RequireAuth>}></Route>
           <Route path="/sousdash" element={<RequireAuth><Sous_Dash/></RequireAuth>}></Route>
+
           
         </Routes>
       </div>
