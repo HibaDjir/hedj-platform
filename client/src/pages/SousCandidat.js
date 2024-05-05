@@ -3,7 +3,7 @@ import MUIDataTable from "mui-datatables";
 import AddAdminModal from "../Popups/AddCommune";
 import add from "../images/mini_add.png";
 import Logo from "../images/LOGO.png";
-import jwtDecode from 'jwt-decode';
+//import jwtDecode from 'jwt-decode';
 import { AuthContext } from '../context/authContext'; // Assuming your context file path
 
 import Sidebar from '../components/Dash_components/shared/SidebarSous'

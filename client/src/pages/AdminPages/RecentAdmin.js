@@ -18,9 +18,9 @@ export default function RecentAdmin() {
     if (!response.ok) {
       throw new Error('Failed to fetch wilayas');
     }else{
-    const data = await response.json();
-    console.log("data before set",data)
-    setSousAdmin(data);
+      const data = await response.json();
+      console.log("data before set",data)
+      setSousAdmin(data);
    }
 };
 
@@ -113,7 +113,7 @@ export default function RecentAdmin() {
       };
       const recentSousAdminData = sousAdmins.map(sousAdmin => ({
         firstName: sousAdmin.user.firstName,
-        lastName: sousAdmin.user.lastName,
+        //lastName: sousAdmin.user.lastName,
         email: sousAdmin.user.email,
         NumeroTelephone: sousAdmin.NumeroTelephone,
         etat: sousAdmin.etat,
