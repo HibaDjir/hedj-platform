@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState,useEffect } from "react";
 import Select from "react-select";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -13,6 +13,14 @@ function AddMed({ onClose }) {
       width: "100%",
     }),
   };
+
+
+  const [nbrcan, setNbrcan] = useState();
+
+  useEffect(() => {
+    setNbrcan('12345')
+    
+}, []);
 
   const modalRef = useRef(null);
   const closeModal = (e) => {
@@ -50,32 +58,27 @@ function AddMed({ onClose }) {
         
         
 
-        <div className=" w-full p-4 flex justify-center items-center ">
-        <div className="w-full flex flex-col mt-2 ">
+        <div className="w-full flex justify-center items-center">
+        <div className="flex flex-col w-full mx-2 ">
           <label className="text-fake_black mb-2" htmlFor="nationalité">
-          Nombre de places :
+            Numéro de Places:
           </label>
           <input
             className="text-black p-2 border rounded-md  border-fake_black  w-full"
             type="number"
             name="number"
-            placeholder=" Nombre "
+            placeholder=" Numéro "
             required
           />
         </div>
-
-        <div className="w-full flex flex-col mt-2  ">
-          <label className="text-fake_black mb-2" htmlFor="nationalité">
-          Nombres de candidats :
-                    </label>
-          <input
-            className="text-black p-2 border rounded-md  border-fake_black  w-full"
-            type="number"
-            name="number"
-            placeholder=" Npmbre "
-            required
-          />
-        </div>
+          <div className="flex flex-col w-full mx-2">
+            <label className="text-fake_black mb-2" htmlFor="lastName">
+              Nombre de Candidats :
+            </label>
+            <div className="bg-white text-black p-2 border rounded-md  border-fake_black  w-full">
+            {nbrcan}
+            </div>
+          </div>
         </div>
 
 

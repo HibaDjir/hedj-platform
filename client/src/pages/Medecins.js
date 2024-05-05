@@ -74,15 +74,7 @@ export default function Medecins() {
      }
     },
     {
-      name: "lastName",
-      label: "Prenom",
-      options: {
-       filter: true,
-       sort: true,
-      }
-     },
-    {
-     name: "email",
+     name: "Admin_e_mail",
      label: "E-mail",
      options: {
       filter: true,
@@ -190,8 +182,6 @@ const options = {
        
         </div>
       </div>
-
-      
     </div>
 
 

@@ -12,6 +12,7 @@ import { AuthContextProvider } from './context/authContext'; // Assuming your co
 import "./index";
 import SousSession from "./pages/SousSession"
 import RequireAuth from "./protectingRoutes/RequireAuth";
+import AttentePelerin from "./pages/AttentePelerin"
 import Manassik from "../src/pages/Manassik";
 import Candidature from "./pages/Candidature";
 import Candidature_mahram  from "./pages/AddMahram";
@@ -45,6 +46,7 @@ function App() {
           <Route path="/Session" element={<Session/>} />
           <Route path="/Candidat" element={<Candidat/>} />
           <Route path="/Pelerin" element={<Pelerin/>} />
+          <Route path="/AttentePelerin" element={<AttentePelerin/>} />
 
 
           <Route path="/SousSession" element={<SousSession/>} />
@@ -65,6 +67,7 @@ function App() {
           <Route path="/mail_conf" element={<EmailConfirmation />} />
           <Route path="/dash" element={<Dash/>}></Route>
           <Route path="/sousdash" element={<AuthContextProvider>< Sous_Dash/></AuthContextProvider>}></Route>
+
           
         </Routes>
       </div>

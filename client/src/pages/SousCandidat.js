@@ -78,46 +78,117 @@ export default function Dashboard() {
   
     const columns = [
       {
-       name: "firstName",
-       label: "Nom",
-       options: {
-        filter: true,
-        sort: true,
-       }
-      },
-      {
-        name: "lastName",
-        label: "Prenom",
+        name: "Admin_name",
+        label: "Nom du Candidat",
         options: {
          filter: true,
          sort: true,
         }
        },
-      {
-       name: "email",
-       label: "E-mail",
-       options: {
-        filter: true,
-        sort: false,
-       }
-      },
-      {
-       name: "etat",
-       label: "Etat",
-       options: {
-        filter: true,
-        sort: false,
-       }
-      },
- 
-      {
-          name: "NumeroTelephone",
-          label: "Numéro De teléphone",
-          options: {
-           filter: true,
-           sort: false,
-          }
-         },
+       {
+         name: "Admin_wilaya",
+         label: "wilaya",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+        {
+         name: "Candidat_commune",
+         label: "Commune",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+       {
+        name: "Candidat_sexe",
+        label: "Sexe",
+        options: {
+         filter: true,
+         sort: false,
+        }
+       },
+       {
+         name: "Num_passport",
+         label: "Numéro De Passport",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+       {
+         name: "Admin_numero_de_telephone",
+         label: "Numéro De teléphone",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+        {
+         name: " Admin_e_mail",
+         label: "E-mail",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+       {
+        name: "Etat_civil",
+        label: "Etat Civil",
+        options: {
+         filter: true,
+         sort: false,
+        }
+       },
+       {
+         name: "Nat",
+         label: "Nationalité",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+        {
+         name: "Adresse_com",
+         label: "Adresse complete",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+        {
+         name: "Groupe_sang",
+         label: "Groupe sanguin",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+        {
+         name: "Numero_ass",
+         label: "Numéro d'assurance",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+        {
+         name: "Malad_chro",
+         label: "Maladie Chronique",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+        {
+         name: "Numero_ass",
+         label: "Numéro du passport de Elmahrem",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
      ];
   const options = {
       filterType: 'checkbox',
