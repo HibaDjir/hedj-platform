@@ -1,8 +1,5 @@
 import React, { useRef, useState } from "react";
 import Select from "react-select";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import AddAdmin from "../images/AddAdmin.png";
 
 function AddMed({ onClose }) {
   const customStyles = {
@@ -21,24 +18,13 @@ function AddMed({ onClose }) {
     }
   };
 
- 
-
-
   return (
     <div ref={modalRef}
       onClick={closeModal}
       className="fixed inset-0 z-[9999] bg-fixed  bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center"
     >
       <div className="flex flex-col justify-center py-16 px-7 mx-auto w-[400px] h-[300px] rounded-3xl bg-[#F7F6F3]">
-      
-
-        
-       
-
-
-        
-
-        <div className=" w-full flex justify-center items-center ">
+   <div className=" w-full flex justify-center items-center ">
           <div className="flex flex-col w-full mx-2 ">
             <label className="text-fake_black mb-2">Wilaya :</label>
             <Select

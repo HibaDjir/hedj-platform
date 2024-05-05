@@ -11,14 +11,14 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "./index";
 import SousSession from "./pages/SousSession"
 import RequireAuth from "./protectingRoutes/RequireAuth";
-
+import AttentePelerin from "./pages/AttentePelerin"
 import Manassik from "../src/pages/Manassik";
 import Candidature from "./pages/Candidature";
 import Candidature_mahram  from "./pages/AddMahram";
 import UserProfile from "./pages/UserProfile";
 import Home_each_profile from "./pages/Home_each_profile";
 import Cansulter_cand from "./pages/Consulter_candidature";
-import Sous_Dash from "./pages/Dash_pages/Dashboard_sous";
+import SousDash from "./pages/Dash_pages/Dashboard_sous";
 import Dash from "../src/pages/Dash_pages/Dashboard_Main";
 import Medecins from "./pages/Medecins";
 import RecentAdmin from "./pages/AdminPages/RecentAdmin";
@@ -43,6 +43,7 @@ function App() {
           <Route path="/Session" element={<Session/>} />
           <Route path="/Candidat" element={<Candidat/>} />
           <Route path="/Pelerin" element={<Pelerin/>} />
+          <Route path="/AttentePelerin" element={<AttentePelerin/>} />
 
 
           <Route path="/SousSession" element={<SousSession/>} />
@@ -64,7 +65,7 @@ function App() {
           />
           <Route path="/mail_conf" element={<EmailConfirmation />} />
           <Route path="/dash" element={<Dash/>}></Route>
-          <Route path="/sousdash" element={< Sous_Dash/>}></Route>
+          <Route path="/sousdash" element={< SousDash/>}></Route>
           
         </Routes>
       </div>

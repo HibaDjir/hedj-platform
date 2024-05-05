@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
-import { format } from 'date-fns';
-import { Link } from 'react-router-dom';
-import { getAdminStatus } from './lib/helpers';
 import user from '../../images/buchra.png';
-import filter from '../../images/filter.png';
 import add from '../../images/mini_add.png';
-import down from '../../images/chevron_down.png';
 import Sidebar from '../../components/Dash_components/shared/Sidebar';
 import AddAdminModal from "../../Popups/AddAdmin";
 import Header from "../../components/Dash_components/shared/Header";

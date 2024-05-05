@@ -5,6 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { MdLogout } from "react-icons/md";
 import { CiTimer } from "react-icons/ci";
 import { GoPeople } from "react-icons/go";
+import { GiSandsOfTime } from "react-icons/gi";
 import { FaUserDoctor, FaPeopleGroup } from "react-icons/fa6";
 import { SlUserFollowing } from "react-icons/sl";
 import medecin from "../../../pages/Medecins"
@@ -79,6 +80,15 @@ export default function Sidebar() {
                                 <SlUserFollowing />
                             </svg>
                             <span className="ms-3">Pèlerins</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="AttentePelerin" className="flex items-center p-5 text-gray-900 rounded-lg dark:text-black hover:text-[#D8A353]  group">
+                            <svg className="h-7 w-7 text-gray-500 transition duration-75 dark:text-black group-hover:text-[#D8A353] dark:group-hover:text-[#D8A353]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+                                <GiSandsOfTime />
+                            </svg>
+                            <span className="ms-3">Liste d'attente</span>
                         </a>
                     </li>
 

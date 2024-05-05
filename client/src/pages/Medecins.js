@@ -39,7 +39,7 @@ export default function Medecins() {
      }
     },
     {
-     name: " Admin_e_mail",
+     name: "Admin_e_mail",
      label: "E-mail",
      options: {
       filter: true,
@@ -235,8 +235,6 @@ const recentAdminData = [
        
         </div>
       </div>
-
-      
     </div>
 
 

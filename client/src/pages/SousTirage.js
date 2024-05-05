@@ -12,6 +12,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
 import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
 import { TiTime } from "react-icons/ti";
 import Select from "react-select";
+import { MdOutlineSlowMotionVideo } from "react-icons/md";
 
 export default function SousTirage() {
 
@@ -54,45 +55,38 @@ export default function SousTirage() {
 
     const columns = [
         {
-         name: "Admin_name",
-         label: "Nom",
+         name: "Comm_name",
+         label: "Commune",
          options: {
           filter: true,
           sort: true,
          }
         },
         {
-         name: " Admin_e_mail",
-         label: "E-mail",
+         name: " Nbr_places",
+         label: "Nombre de Places",
          options: {
           filter: true,
           sort: false,
          }
         },
         {
-         name: "current_Admin_status",
-         label: "Etat",
+         name: "Pop",
+         label: "Population",
          options: {
           filter: true,
           sort: false,
          }
         },
         {
-         name: "Admin_wilaya",
-         label: "wilaya",
+         name: "Nbr_candidats",
+         label: "Nombre de Candidats",
          options: {
           filter: true,
           sort: false,
          }
         },
-        {
-            name: "Admin_numero_de_telephone",
-            label: "Numéro De teléphone",
-            options: {
-             filter: true,
-             sort: false,
-            }
-           },
+        
        ];
     const options = {
         filterType: 'checkbox',
@@ -330,7 +324,7 @@ export default function SousTirage() {
 
 {/*Tableau*/}
 
-      <div className="bg-white px-4 pt-3 pb-4 rounded-sm  border-gray-200 flex-1 flex-col max-w-[1420px]   ">
+      <div className="bg-white px-4 pt-3 mr-4 rounded-sm  border-gray-200 flex-1 flex-col max-w-[1420px]   ">
 
        
 <div className="max-w-[1420px]">
@@ -339,7 +333,7 @@ export default function SousTirage() {
 
 <div className="flex justify-between mb-8 mt-6 p-3">
   <div className="flex items-stretch">
-    <div className="flex">
+    <div className="flex p-4 ">
     
 
     <div className="flex flex-col mx-2 h-12 w-auto">
@@ -352,10 +346,16 @@ export default function SousTirage() {
       />
     </div>
     <button
-      className="text-[#1D1D1B] text-md font-medium flex justify-between border-[#D8A353] rounded-md bg-[#D8A353] border items-center h-10 p-2"
+      className="text-[#1D1D1B] text-md font-medium flex justify-between border-[#D8A353] rounded-md bg-[#D8A353] border items-center h-10 p-2 mr-2"
     >
       <FaCirclePlay className="h-6 w-6 mt-2 mx-2  " src={add} />
       Commencer le tirage
+    </button>
+    <button
+      className="text-[#1D1D1B] font-medium flex justify-between border-[#D8A353] rounded-md bg-[#D8A353] border items-center h-10 p-2 mr-2"
+    >
+      <MdOutlineSlowMotionVideo className="h-6 w-6 mt-2 mx-2  " src={add} />
+      Affichage Séquentiel
     </button>
     </div>
   </div>
