@@ -39,6 +39,7 @@ exports.createSousAdmin=async(req,res)=>{
         NumeroTelephone:req.body.NumeroTelephone,
         etat:req.body.etat
 
+
     });
       // Save the SousAdmin
       const savedSousAdmin = await newSousAdmin.save();
@@ -48,6 +49,7 @@ exports.createSousAdmin=async(req,res)=>{
     .populate('Wilaya')
      .exec();
     res.status(201).json(populatedSousAdmin);
+   
     
 
     const url=`http://localhost:3001/`	
@@ -64,6 +66,7 @@ exports.createSousAdmin=async(req,res)=>{
     }catch(err){
         
         res.status(400).json({ error: err.message });
+        console.log(err.message)
     }
  }
 
@@ -71,7 +74,7 @@ exports.createSousAdmin=async(req,res)=>{
 exports.getAllSousAdmin =async(req,res)=>{
 
     try{
-        const sousAdmins = await sousAdmin.find({is_deleted:false}).populate({ path: "user", select: ["firstName", "lastName", "email"], options: { strictPopulate: false } }).
+        const sousAdmins = await sousAdmin.find({is_deleted:false}).populate({ path: "user", select: ["firstName","lastName", "email"], options: { strictPopulate: false } }).
         populate({path:'Wilaya',select:"name", options:{ strictPopulate: false }});
        
 
@@ -80,6 +83,7 @@ exports.getAllSousAdmin =async(req,res)=>{
         }
         else{
             res.status(200).json(sousAdmins)
+            
         }
 
     }catch(err){

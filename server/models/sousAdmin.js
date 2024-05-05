@@ -17,7 +17,7 @@ const SousAdminSchema = new schema({
     },
     etat:{
         type:String,
-        enum:["Active",'Desactive'],
+        //enum:["Active",'Desactive'],
         require:true
       
     },

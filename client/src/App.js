@@ -2,6 +2,7 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Resset_password from "./pages/Resset_password";
 import Home from "./pages/Home";
+import AddAdmin from "./pages/AdminPages/RecentAdmin"
 import Home_owner_account  from "./pages/Home_owner_of_account";
 import About_us from "./pages/AboutUs";
 import EmailConfirmation from "./pages/Email_confirmation";
@@ -15,7 +16,13 @@ import Candidature_mahram  from "./pages/AddMahram";
 import UserProfile from "./pages/UserProfile";
 import Home_each_profile from "./pages/Home_each_profile";
 import Cansulter_cand from "./pages/Consulter_candidature";
-import Dash from "../src/pages/Dash_pages/Dashboard"
+import Sous_Dash from "./pages/Dash_pages/Dashboard_sous";
+import Dash from "../src/pages/Dash_pages/Dashboard_Main";
+import Medecins from "./pages/Medecins";
+import RecentAdmin from "./pages/AdminPages/RecentAdmin";
+import Session from "./pages/Session"
+import Candidat from "./pages/Candidat"
+import Pelerin from "./pages/Pelerin"
 
 function App() {
   const isLoggedIn=localStorage.getItem('loggedIn')
@@ -25,7 +32,13 @@ function App() {
         
         <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/AddAdmin" element={<RequireAuth><AddAdmin /></RequireAuth>} />
           <Route path="/home" element={<Home />} />
+          <Route path="/medecin" element={<RequireAuth><Medecins/></RequireAuth>} />
+          <Route path="/RecentAdmin" element={<RequireAuth><RecentAdmin/></RequireAuth>} />
+          <Route path="/Session" element={<RequireAuth><Session/></RequireAuth>} />
+          <Route path="/Candidat" element={<RequireAuth><Candidat/></RequireAuth>} />
+          <Route path="/Pelerin" element={<RequireAuth><Pelerin/></RequireAuth>} />
           <Route path="/homelgin" element={<RequireAuth><Home_owner_account /></RequireAuth>} />  
           <Route path="/candidature" element={<RequireAuth><Candidature /></RequireAuth>} />
           <Route path="/candidature_mahram" element={<RequireAuth><Candidature_mahram /></RequireAuth>} />
@@ -38,7 +51,9 @@ function App() {
             element={<Resset_password />}
           />
           <Route path="/mail_conf" element={<EmailConfirmation />} />
-          <Route path="/dash" element={<Dash/>}></Route>
+          <Route path="/dash" element={<RequireAuth><Dash/></RequireAuth>}></Route>
+          <Route path="/sousdash" element={<RequireAuth><Sous_Dash/></RequireAuth>}></Route>
+          
         </Routes>
       </div>
     </Router>

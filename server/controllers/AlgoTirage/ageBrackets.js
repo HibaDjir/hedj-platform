@@ -145,6 +145,7 @@ exports.elecPilgrimsCumDist = async (req, res) => {
         const pelerinEnAttente = setStatus(attente, "is_enAttent")
         //the attente
         console.log("en attente are: ", attente)
+        
 
         res.status(200).json(winners)
     } catch (error) {

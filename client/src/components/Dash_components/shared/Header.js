@@ -1,39 +1,87 @@
-import React, { Fragment } from 'react'
+import React, { Fragment  } from 'react'
 import { Menu, Popover, Transition } from '@headlessui/react'
 import { HiOutlineBell, HiOutlineSearch, HiOutlineChatAlt } from 'react-icons/hi'
 import { useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
-
+import { useState } from 'react';
 export default function Header() {
 	const navigate = useNavigate()
+	const [isSearchOpen, setSearchOpen] = useState(false);
+
+    const toggleSearch = () => {
+        setSearchOpen(!isSearchOpen);}
 
 	return (
       <div>
 		
             <div className="bg-white h-16 px-4 flex items-center justify-between">
-			{/* <div className="relative">
-				<HiOutlineSearch fontSize={20} className="absolute top-1/2 left-3 -translate-y-1/2" />
-				<input
-					type="text"
-					placeholder="Search..."
-					className="text-sm focus:outline-none active:outline-none border w-[45rem] h-10 pl-11 pr-4 rounded-full"
-				/>
-			</div> */}
+			
 
-			<form class="max-w-md mx-auto">   
-    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-black">Search</label>
-    <div class="relative">
-        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-            </svg>
-        </div>
-        <input type="search" id="default-search" class="block p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-white focus:ring-black focus:border-[#D8A353] dark:bg-white dark:border-gray-600 dark:placeholder-gray-500 dark:text-black dark:focus:ring-[#D8A353] w-[40rem] h-10" placeholder="Search..." required />
-    </div>
-</form>
+			<form className={`max-w-md mx-auto lg:block ${isSearchOpen ? 'block' : 'hidden'}`}>
+                    <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-black">
+                        Search
+                    </label>
+                    <div className="relative">
+                        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                            <svg
+                                className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    stroke="currentColor"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                                />
+                            </svg>
+                        </div>
+                        <input
+                            type="search"
+                            id="default-search"
+                            className="block p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-white focus:ring-black focus:border-[#D8A353] dark:bg-white dark:border-gray-600 dark:placeholder-gray-500 dark:text-black dark:focus:ring-[#D8A353] w-[40rem] h-10"
+                            placeholder="Search..."
+                            required
+                        />
+                    </div>
+                </form>
 
 
-
+ {/* Icon to toggle search or search icon */}
+ <div className="block lg:hidden">
+                    <button
+                        onClick={toggleSearch}
+                        className="text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700"
+                        aria-label="Toggle search"
+                    >
+                        <svg
+                            className="w-6 h-6"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            {isSearchOpen ? (
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M6 18L18 6M6 6l12 12"
+                                />
+                            ) : (
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                                />
+                            )}
+                        </svg>
+                    </button>
+                </div>
 
 
 
@@ -167,28 +215,3 @@ export default function Header() {
 	)
 }
 
-// import React from 'react' ;
-// import { BiSearchAlt } from "react-icons/bi";
-// export default function Header() {
-
-// 	return (
-// <div>
-      
-
-
-{/* <form class="max-w-md mx-auto">   
-    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-black">Search</label>
-    <div class="relative">
-        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-            </svg>
-        </div>
-        <input type="search" id="default-search" class="block p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-white focus:ring-black focus:border-[#D8A353] dark:bg-white dark:border-gray-600 dark:placeholder-gray-500 dark:text-black dark:focus:ring-[#D8A353] w-[40rem] h-10" placeholder="Search..." required />
-    </div>
-</form> */}
-// </div>
-
-
-
-// 			 )}
