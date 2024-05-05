@@ -97,6 +97,7 @@ exports.electPilgrims = async (req, res) => {
    
         console.log('Pèlerins en attente :', pelerinsEnAttente);
         const pelerinEnAttentFinale=setStatus(pelerinsEnAttente,'is_enAttent')
+
         let allPelerins = [...pelerinfinal, ...pelerinEnAttentFinale];
 
         for (let  pelerinData of allPelerins) { 
@@ -110,6 +111,7 @@ exports.electPilgrims = async (req, res) => {
         }
 
         res.json({ message:`pelerin elected : ${pelerinsElus}  le nbr elu ${pelerinsElus.length} ,pelerinListDattente ${pelerinsEnAttente}` });
+
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');

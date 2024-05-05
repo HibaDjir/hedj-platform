@@ -7,43 +7,6 @@ import axios from 'axios'
 
 function Modal({ onClose }) {
 
-  //
-    // const [email, setEmail] = useState('');
-    // const [password, setPassword] = useState('');
-    // const [error, setError] = useState(null)
-    // const [errorMessage, setErrorMessage] = useState('');
-    // const [isLoading, setIsLoading] = useState(false)
-    // const { dispatch } = useAuthContext()
-    // const location=useLocation()
-    // const redirectPath=location.state?.path || "/homelgin"
-    
-    // const navigate=useNavigate()
-
-    // const handleSubmit = async (e) =>{
-    //   e.preventDefault();
-
-    //   // axios.post('http://localhost:3000/api/users/login', {email,password})
-    //   // .then(res=>{
-    //   // //   if(res.data.token){
-    //   //     document.cookie = `token=${res.data.token}; expires=2D; path=/`;
-    //   //     alert(document.cookie)
-    //   //     alert("logged in")
-    //   //   }
-    //   //   if(res.data.Role === 'admin'){
-    //   //     navigate('/dashboard')
-    //   //   }else{
-    //   //     navigate('/homelgin')
-    //   // }
-    //   // }).catch(err => {
-    //   //   console.log(err)
-    //   //   if (err.response && err.response.data && err.response.data.message) {
-    //   //     setErrorMessage('البريد الإلكتروني أو كلمة المرور غير صحيحة.');
-    //   //   } else {
-    //   //     setErrorMessage('An error occurred. Please try again later.');
-    //   //   }
-    //   // })
-
-    //   // setIsLoading(true);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -51,7 +14,7 @@ function Modal({ onClose }) {
     const [isLoading, setIsLoading] = useState(false)
     const { dispatch } = useAuthContext()
     const location=useLocation()
-    const redirectPath=location.state?.path || "/homelgin"
+
     
     const navigate=useNavigate()
 
@@ -75,20 +38,29 @@ function Modal({ onClose }) {
     }else if( response.status===200 ){
       // save the user to local storage
       localStorage.setItem('user', JSON.stringify(json))
-      console.log(redirectPath)
-      navigate(redirectPath ,{replace:true}) 
+        // Determine the redirect path based on the user's role
+        let redirectPath;
+        if (json.Role === 'user') {
+            redirectPath = location.state?.path || "/homelgin";
+        } else if (json.Role === 'sousAdmin') {
+            redirectPath = location.state?.path || "/sousdash";
+        }else if (json.Role === 'masterAdmin'){
+          redirectPath = location.state?.path || "/dash";
+        }
+        navigate(redirectPath ,{replace:true}) 
+
       // update the auth context
       dispatch({type: 'LOGIN', payload: json})
       // update loading state
       setIsLoading(false)
       // Navigate only if there's no error
+   
 
     }
      
     }
 
 
- 
   const handleResetPasswordClick = () => {
     onClose();};
   const modalRef = useRef();

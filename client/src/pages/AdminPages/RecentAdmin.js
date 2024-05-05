@@ -12,7 +12,42 @@ import AddAdminModal from "../../Popups/AddAdmin";
 import Header from "../../components/Dash_components/shared/Header";
 
 export default function RecentAdmin() {
+  const [sousAdmins,setSousAdmin]=useState([])
+  useEffect(() => {
+ 
+    fetchSousAdmin()
+  }, [sousAdmins]);
+  const fetchSousAdmin = async () => {
+      
+    const response = await fetch('http://localhost:3000/api/masterAdmin/getAllSaousAdmin');
+    if (!response.ok) {
+      throw new Error('Failed to fetch wilayas');
+    }else{
+    const data = await response.json();
+    console.log("data before set",data)
+    setSousAdmin(data);
+   }
 
+
+ 
+};
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/masterAdmin/deleteSousAdmin/${id}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete SousAdmin');
+      }
+      // Update the table data after deletion
+      fetchSousAdmin();
+      console.log('SousAdmin deleted successfully');
+    } catch (error) {
+      console.error('Error deleting SousAdmin:', error);
+    }
+  };
+ 
 
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
@@ -22,7 +57,7 @@ export default function RecentAdmin() {
   }
     const columns = [
         {
-         name: "Admin_name",
+         name: "firstName",
          label: "Nom",
          options: {
           filter: true,
@@ -30,7 +65,15 @@ export default function RecentAdmin() {
          }
         },
         {
-         name: " Admin_e_mail",
+          name: "lastName",
+          label: "Prenom",
+          options: {
+           filter: true,
+           sort: true,
+          }
+         },
+        {
+         name: "email",
          label: "E-mail",
          options: {
           filter: true,
@@ -38,7 +81,7 @@ export default function RecentAdmin() {
          }
         },
         {
-         name: "current_Admin_status",
+         name: "etat",
          label: "Etat",
          options: {
           filter: true,
@@ -46,7 +89,7 @@ export default function RecentAdmin() {
          }
         },
         {
-         name: "Admin_wilaya",
+         name: "name",
          label: "Wilaya",
          options: {
           filter: true,
@@ -54,108 +97,39 @@ export default function RecentAdmin() {
          }
         },
         {
-            name: "Admin_numero_de_telephone",
+            name: "NumeroTelephone",
             label: "Numero de télephone",
             options: {
              filter: true,
              sort: false,
             }
            },
+           {
+            name: "delete",
+            label: "Supprimer",
+              options: {
+              customBodyRender: (value, tableMeta, updateValue) => {
+                const sousAdminId = recentSousAdminData[tableMeta.rowIndex]._id;
+                return (
+                  <button onClick={() => handleDelete(sousAdminId)}>Delete</button>
+                );
+              },
+              sort: false,
+            }
+          }
        ];
     const options = {
         filterType: 'checkbox',
       };
-    const recentAdminData = [
-        {
-            id: '1',
-            Admin_pic : user,
-            Admin_name: 'Harrath Bouchra',
-            Admin_e_mail: 'bouchra.harrath5@gmail.com',
-            current_Admin_status: 'Active',
-            Admin_wilaya: 'Chlef',
-            Admin_numero_de_telephone: '06 54 32 55 78',
-        },  {
-            id: '2',
-            Admin_pic : user,
-            Admin_name: 'Harrath Bouchra',
-            Admin_e_mail: 'bouchra.harrath5@gmail.com',
-            current_Admin_status: 'Active',
-            Admin_wilaya: 'Chlef',
-            Admin_numero_de_telephone: '06 54 32 55 78',
-        },
-        {
-            id: '3',
-            Admin_pic : user,
-            Admin_name: 'Harrath Bouchra',
-            Admin_e_mail: 'bouchra.harrath5@gmail.com',
-            current_Admin_status: 'Active',
-            Admin_wilaya: 'Chlef',
-            Admin_numero_de_telephone: '06 54 32 55 78',
-        },
-        {
-            id: '4',
-            Admin_pic : user,
-            Admin_name: 'Harrath Bouchra',
-            Admin_e_mail: 'bouchra.harrath5@gmail.com',
-            current_Admin_status: 'Active',
-            Admin_wilaya: 'Chlef',
-            Admin_numero_de_telephone: '06 54 32 55 78',
-        },
-        {
-            id: '5',
-            Admin_pic : user,
-            Admin_name: 'Harrath Bouchra',
-            Admin_e_mail: 'bouchra.harrath5@gmail.com',
-            current_Admin_status: 'Active',
-            Admin_wilaya: 'Chlef',
-            Admin_numero_de_telephone: '06 54 32 55 78',
-        },
-        {
-            id: '6',
-            Admin_pic : user,
-            Admin_name: 'Harrath Bouchra',
-            Admin_e_mail: 'bouchra.harrath5@gmail.com',
-            current_Admin_status: 'Active',
-            Admin_wilaya: 'Chlef',
-            Admin_numero_de_telephone: '06 54 32 55 78',
-        },
-        {
-            id: '7',
-            Admin_pic : user,
-            Admin_name: 'Harrath Bouchra',
-            Admin_e_mail: 'bouchra.harrath5@gmail.com',
-            current_Admin_status: 'Active',
-            Admin_wilaya: 'Chlef',
-            Admin_numero_de_telephone: '06 54 32 55 78',
-        },
-        {
-            id: '8',
-            Admin_pic : user,
-            Admin_name: 'Harrath Bouchra',
-            Admin_e_mail: 'bouchra.harrath5@gmail.com',
-            current_Admin_status: 'Active',
-            Admin_wilaya: 'Chlef',
-            Admin_numero_de_telephone: '06 54 32 55 78',
-        },
-        {
-            id: '9',
-            Admin_pic : user,
-            Admin_name: 'Harrath Bouchra',
-            Admin_e_mail: 'bouchra.harrath5@gmail.com',
-            current_Admin_status: 'Active',
-            Admin_wilaya: 'Chlef',
-            Admin_numero_de_telephone: '06 54 32 55 78',
-        },
-        {
-            id: '10',
-            Admin_pic : user,
-            Admin_name: 'Harrath Bouchra',
-            Admin_e_mail: 'bouchra.harrath5@gmail.com',
-            current_Admin_status: 'Active',
-            Admin_wilaya: 'Chlef',
-            Admin_numero_de_telephone: '06 54 32 55 78',
-        },
-    ];
+      const recentSousAdminData = sousAdmins.map(sousAdmin => ({
+        firstName: sousAdmin.user.firstName,
+        lastName: sousAdmin.user.lastName,
+        email: sousAdmin.user.email,
+        NumeroTelephone: sousAdmin.NumeroTelephone,
+        etat: sousAdmin.etat,
+        name: sousAdmin.Wilaya.name,
+        _id:sousAdmin._id
+      }));
     const [isAddAdminModalOpen, setIsAddAdminModalOpen] = useState(false);
 const openAddAdminModal = () => {
     setIsAddAdminModalOpen(true);
@@ -203,7 +177,7 @@ border p-2"
 </div>
 <MUIDataTable
 title={"Administrateurs"}
-data={recentAdminData}
+data={recentSousAdminData}
 columns={columns}
 options={options}
 />

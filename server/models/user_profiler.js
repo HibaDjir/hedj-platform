@@ -70,7 +70,7 @@ const validateLog = (data) => {
       NumeroTelephone: Joi.string(),
       password: passwordComplexity().required().label("Password"),
       etat: Joi.string().required(),
-      name: Joi.string().required(),
+      name: Joi.string().required()
     });
     return schema.validate(data);
   };
