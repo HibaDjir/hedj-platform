@@ -83,20 +83,20 @@ exports.login=async (req, res) => {
 
 		const token = user.generateAuthToken();
 
-		if(user.Role==="sousAdmin"){
-		// const leSousAdmin = await sousAdmin.findOne({ user: user._id }).populate({ path: "user", select: ["_id"] });
-		const leSousAdminAvecWilaya = await sousAdmin.findOne({ user: user._id }).populate({ path: "Wilaya", select: ["_id", "name"] });
-		let wilaya = leSousAdminAvecWilaya.Wilaya.name
-		  res.status(200).json({
-			Role:user.Role,
-			token:token,
-			wilaya: wilaya
-		})
-		}else{
+		// if(user.Role==="sousAdmin"){
+		// // const leSousAdmin = await sousAdmin.findOne({ user: user._id }).populate({ path: "user", select: ["_id"] });
+		// const leSousAdminAvecWilaya = await sousAdmin.findOne({ user: user._id }).populate({ path: "Wilaya", select: ["_id", "name"] });
+		// let wilaya = leSousAdminAvecWilaya.Wilaya.name
+		//   res.status(200).json({
+		// 	Role:user.Role,
+		// 	token:token,
+		// 	wilaya: wilaya
+		// })
+	//	 }else{
 		res.status(200).json({
-			Role:user.Role,
-			token:token
-		}) }
+		Role:user.Role,
+		token:token
+	}) 
 	} catch (error) {
 		res.status(500).json({ message: "Internal Server Error" });console.log('error',error.message)
 	}
