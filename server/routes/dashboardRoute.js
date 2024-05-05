@@ -5,6 +5,6 @@ router.route('/getCounts').get(dashboardController.getCounts)
 router.route('/getFMCandCount').get(dashboardController.getFMCandCount)
 router.route('/getFMPelCount').get(dashboardController.getFMPelCount)
 router.route('/getPelerinParAge').get(dashboardController.getPelerinParAge);
-router.route('/getPelerinParYear').get(dashboardController.getPelerinByYear);
+router.route('/getPelerinParYear').get(dashboardController.countPelerinsByYear);
 
 module.exports=router;

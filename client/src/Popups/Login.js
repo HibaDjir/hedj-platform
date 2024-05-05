@@ -51,7 +51,7 @@ function Modal({ onClose }) {
     const [isLoading, setIsLoading] = useState(false)
     const { dispatch } = useAuthContext()
     const location=useLocation()
-    const redirectPath=location.state?.path || "/homelgin"
+
     
     const navigate=useNavigate()
 
@@ -95,13 +95,28 @@ function Modal({ onClose }) {
     }else if( response.status===200 ){
       // save the user to local storage
       localStorage.setItem('user', JSON.stringify(json))
-      console.log(redirectPath)
-      navigate(redirectPath ,{replace:true}) 
+        // Determine the redirect path based on the user's role
+        let redirectPath;
+        if (json.Role === 'user') {
+            redirectPath = location.state?.path || "/homelgin";
+            navigate(redirectPath ,{replace:true}) 
+        } else if (json.Role === 'sousAdmin') {
+            redirectPath = location.state?.path || "/sousdash";
+            navigate(redirectPath ,{replace:true}) 
+        }else if (json.Role === 'masterAdmin'){
+          redirectPath = location.state?.path || "/dash";
+          navigate(redirectPath ,{replace:true}) 
+        }
+      
+      
+     
       // update the auth context
       dispatch({type: 'LOGIN', payload: json})
       // update loading state
       setIsLoading(false)
       // Navigate only if there's no error
+   
+      
 
     }
      

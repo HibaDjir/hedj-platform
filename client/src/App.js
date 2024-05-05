@@ -35,7 +35,7 @@ function App() {
         
         <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/AddAdmin" element={<AddAdmin />} />
+        <Route path="/AddAdmin" element={<RequireAuth><AddAdmin /></RequireAuth>} />
           <Route path="/home" element={<Home />} />
           <Route path="/medecin" element={<Medecins/>} />
           <Route path="/RecentAdmin" element={<RecentAdmin/>} />
@@ -48,8 +48,6 @@ function App() {
           <Route path="/SousTirage" element={<SousTirage/>} />
           <Route path="/SousPelerin" element={<SousPelerin/>} />
           <Route path="/SousCandidat" element={<SousCandidat/>} />
-
-
           <Route path="/homelgin" element={<RequireAuth><Home_owner_account /></RequireAuth>} />  
           <Route path="/candidature" element={<RequireAuth><Candidature /></RequireAuth>} />
           <Route path="/candidature_mahram" element={<RequireAuth><Candidature_mahram /></RequireAuth>} />
@@ -62,8 +60,8 @@ function App() {
             element={<Resset_password />}
           />
           <Route path="/mail_conf" element={<EmailConfirmation />} />
-          <Route path="/dash" element={<Dash/>}></Route>
-          <Route path="/sousdash" element={< Sous_Dash/>}></Route>
+          <Route path="/dash" element={<RequireAuth><Dash/></RequireAuth>}></Route>
+          <Route path="/sousdash" element={<RequireAuth><Sous_Dash/></RequireAuth>}></Route>
           
         </Routes>
       </div>

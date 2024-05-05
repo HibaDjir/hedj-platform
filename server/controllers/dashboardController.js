@@ -151,28 +151,42 @@ exports.getPelerinParAge=async(req,res)=>{
 }
 
 
-exports.getPelerinByYear=async(req,res)=>{
 
-    try{
-  // Get all sessions
-  const sessions = await Session.find({});
-// Initialize an array to store the result
-const result = [];
-  // Iterate over each session and update the total_candidats_inscri field
-  for (const session of sessions) {
-      const { annee } = session;
-      
-        
-      // Get the count of "Pelerins" with elected candidatures for the current session year
-      const pelerinCount = await Candidatures.countDocuments({ id_session: annee, status: 'is_elected' });
-      result.push({ year: annee, count: pelerinCount });
+
+exports.countPelerinsByYear=async(req,res) =>{
+  try {
+    const candidatures = await Candidatures.find({ status: 'is_elected' });
+
+    // Create an object to store the count of candidatures by year
+    const candidaturesByYear = {};
     
+    // Iterate through the candidatures
+    for (const candidature of candidatures) {
+        // Find the associated session by id
+        const session = await Session.findById(candidature.id_session);
+    
+        // If session is found, extract the year
+        if (session) {
+            const year = session.annee;
+    
+            // Increment the count for the year in the candidaturesByYear object
+            if (candidaturesByYear[year]) {
+                candidaturesByYear[year]++;
+            } else {
+                candidaturesByYear[year] = 1;
+            }
+        }
     }
-    return result;
-     res.json(result)
-}
-    catch(err){
+    
+    // Convert the candidaturesByYear object to an array of objects
+    const candidaturesArray = Object.entries(candidaturesByYear).map(([year, count]) => ({ year, count }));
+    req.json(candidaturesArray)
+    
 
 
-    }
+      
+  } catch (error) {
+      console.error('Error counting pelerins by year:', error);
+      throw error;
+  }
 }

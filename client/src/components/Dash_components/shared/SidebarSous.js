@@ -12,7 +12,8 @@ import img from "../../../images/img.jpeg";
 import { getCustomers, getInventory, getComments} from "../../../pages/Dash_pages/API";
 import SessionSous from "../../../pages/SousSession"
 import SousTirage from '../../../pages/SousTirage';
-
+import { useLogout } from "../../../hooks/useLogout"
+import { useAuthContext } from "../../../hooks/useAuthContext";
 const linkClass = 'flex flex-col items-center gap-2 font-light px-3 py-2 hover:bg-white  hover:underline rounded-sm text-base';
 
 
@@ -21,6 +22,12 @@ export default function Sidebar() {
     const [nom, setNom] = useState();
 	const [prenom, setPrenom] = useState();
     const [wilaya, setWilaya] = useState();
+
+    const { logout } = useLogout();
+  const { user } = useAuthContext();
+  const handleClick = () => {
+    logout();
+  };
 
     useEffect(() => {
         setNom('Charles')
@@ -109,7 +116,12 @@ export default function Sidebar() {
                                 <svg className="h-8 w-8 text-gray-500 transition duration-75 dark:text-black group-hover:text-[#D8A353] dark:group-hover:text-red-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
                                     <MdLogout />
                                 </svg>
-                                <span className="ms-3">Se deconnecter</span>
+                                {user && (
+                                    <div>
+                                    
+                                <button  onClick={handleClick} className="ms-3">Se deconnecter</button>
+                                </div>
+                            )}
                             </a>
                         </li>
                     </div>

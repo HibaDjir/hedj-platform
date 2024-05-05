@@ -1,5 +1,6 @@
-import React, { useRef, useState } from "react";
-//import MUIDataTable from "mui-datatables";
+
+import React, { useRef, useState,useEffect } from "react";
+import MUIDataTable from "mui-datatables";
 import Select from "react-select";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -7,7 +8,87 @@ import AddAdmin from "../images/AddAdmin.png";
 
 function AddADmin({ onClose }) {
 
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [NumeroTelephone, setNumeroTelephone] = useState('');
+  const [password, setPassword] = useState('');
+  const [WilayaName, setwilaya] = useState(null);
+  const [Etat, setetat] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [wilayas, setWilayas] = useState([]);
+  const etatOptions = [
+    { value: "active", label: "Active" },
+    { value: "Desactive", label: "Desactive" }
+  ];
+  useEffect(() => {
+    const fetchWilayas = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/wilaya/All');
+        if (!response.ok) {
+          throw new Error('Failed to fetch wilayas');
+        }
+        const data = await response.json();
+        const formattedWilayas = data.map(wilaya => ({
+          value: wilaya.name,
+          label: wilaya.name
+        }));
+        setWilayas(formattedWilayas);
+      } catch (error) {
+        console.error('Error fetching wilayas:', error);
+      }
+    };
+    fetchWilayas();
+  }, []);
+  const handleWilayaChange = (selectedOption) => {
+    setwilaya(selectedOption);
+     
  
+  };
+  /////////////////:
+  const handleEtatChange = (selectedOption) => {
+    setetat(selectedOption);
+ 
+  };
+  const handelClick = (e) => {
+    e.preventDefault();
+    
+    
+   
+ console.log("name is ",WilayaName.value)
+
+
+
+  axios.post('http://127.0.0.1:3000/api/masterAdmin/createSousAdmin', {firstName,lastName,email,password,NumeroTelephone,
+  name:WilayaName.value,etat:Etat.value
+  })
+  .then(res=>{
+    onClose()
+    alert('count created')
+    if (res.ok) {
+      // Clear form fields
+      setFirstName('');
+      setLastName('');
+      setEmail('');
+      setPassword('');
+      setwilaya(null);
+      setetat(null);
+      setErrorMessage(null);
+      
+    }
+  }).catch(err => {
+    if (err.response && err.response.data && err.response.data.message) {
+      setErrorMessage(err.response.data.message);
+    } else {
+      setErrorMessage('An error occurred. Please try again later.');
+    }
+    console.log(err)
+    
+  })
+      
+  
+}
+
 const options = {
     filterType: 'checkbox',
   };
@@ -47,7 +128,9 @@ const options = {
               type="text"
               placeholder="Prenom"
               name="prenom"
-              required
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                required
             />
           </div>
           <div className="flex flex-col w-full mx-2">
@@ -59,6 +142,8 @@ const options = {
               type="text"
               placeholder="Nom"
               name="nom"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
               required
             />
           </div>
@@ -70,6 +155,8 @@ const options = {
             type="text"
             name="email"
             placeholder=" E-mail"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
@@ -83,6 +170,8 @@ const options = {
             type="number"
             name="number"
             placeholder=" Numéro de téléphone  "
+            value={NumeroTelephone}
+            onChange={(e) => setNumeroTelephone(e.target.value)}
             required
           />
         </div>
@@ -94,6 +183,8 @@ const options = {
             type="password"
             name="password"
             placeholder="Mot de passe  "
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
@@ -104,21 +195,35 @@ const options = {
             <Select
               name="wilaya"
               styles={customStyles}
-              placeholder="Wilaya "
+              placeholder="Wilaya"
+              options={wilayas}
               isRtl={true}
-            />
+              onChange={handleWilayaChange}
+              value={WilayaName}
+              
+              />
+
           </div>
           <div className="flex flex-col w-full  mx-2">
             <label className="text-fake_black mb-2">Etat :</label>
-            <Select styles={customStyles} placeholder=" Etat " isRtl={true} />
+            <Select styles={customStyles} placeholder=" Etat " isRtl={true}
+            options={etatOptions}
+            onChange={handleEtatChange}
+            value={Etat}
+            />
           </div>
         </div>
         
-        <button className='  text-[#1D1D1B] text-md font-medium flex justify-center border-[#D8A353] rounded-md bg-[#D8A353]
+        <button onClick={handelClick} className='  text-[#1D1D1B] text-md font-medium flex justify-center border-[#D8A353] rounded-md bg-[#D8A353]
 border p-2  mt-6 x-auto w-[200px]  h-[100px] mx-auto hover:bg-[#AD7946]'>
 
           Ajouter
         </button>
+        {errorMessage && (
+          <div className="bg-red-100 text-red-700 border border-red-400 rounded-md p-2 mt-2">
+            {errorMessage}
+          </div>
+        )}
       </div>
     </div>
   );
