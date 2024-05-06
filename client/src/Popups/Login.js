@@ -29,10 +29,13 @@ function Modal({ onClose }) {
 
     const json = await response.json()
 
-    console.log(response)
-    console.log(json.message)
+    console.log("THEEE RESPONSE",response)
+    const res = JSON.stringify(json)
+    const resData = JSON.parse(res);
 
-
+    if(resData.token){
+      document.cookie = `token=${resData.token}; expires=2D; path=/`;
+    }
     if (response.status !== 200) {
       setError(json.message)
     }else if( response.status===200 ){

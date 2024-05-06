@@ -25,7 +25,16 @@
             }
         setIsLoading(false); // Update loading state after check
         if (!storedUser || !allowedRoles.includes(userRole)) { // Check user existence and role
-            return <Navigate to="/home" replace state={{ path: location.pathname }} />; // Redirect if not authenticated or role not allowed
+            // return <Navigate to="/home" replace state={{ path: location.pathname }} />; 
+            if (userRole === 'sousAdmin') {
+                redirectPath = '/sousdash';
+            }else if(userRole === 'masterAdmin'){
+                redirectPath = '/dash';
+            }else if(userRole === 'medecin'){
+                redirectPath = '/medecin';
+            }
+
+              return <Navigate to={redirectPath} replace state={{ path: location.pathname }} />;
         }
 
         };
@@ -38,7 +47,7 @@
     return isLoading ? (
         <p>Loading...</p>
     // Display loading indicator while checking auth
-    ) : user && userRole ? (
+    ) : user && userRole === 'user' ? (
         children 
         // Render children if user exists and loading is complete
     ) : (
