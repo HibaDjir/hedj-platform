@@ -33,7 +33,14 @@ function Modal({ onClose }) {
     const json = await response.json()
 
 
+    console.log("THEEE RESPONSE",response)
+    const res = JSON.stringify(json)
+    const resData = JSON.parse(res);
 
+
+    if(resData.token){
+      document.cookie = `token=${resData.token}; expires=2D; path=/`;
+    }
     if (response.status !== 200) {
       setError(json.message)
     }else if( response.status===200 ){
@@ -41,10 +48,8 @@ function Modal({ onClose }) {
       localStorage.setItem('user', JSON.stringify(json))
         // Determine the redirect path based on the user's role
         let redirectPath;
-        if (_.isEqual(json.Role, 'user')) {
-      
+        if (_.isEqual(json.Role, 'user')) {     
             redirectPath = location.state?.path || "/homelgin";
-
         } else if (json.Role === 'sousAdmin') {
             redirectPath = location.state?.path || "/sousdash";
         }else if (json.Role === 'masterAdmin'){

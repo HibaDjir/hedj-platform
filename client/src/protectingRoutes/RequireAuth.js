@@ -44,7 +44,6 @@ import { Navigate, useLocation } from "react-router-dom";
 
     return isLoading ? (
         <p>Loading...</p>
-    // Display loading indicator while checking authcd 
     ) : user && userRole === 'user' ? (
         children 
         // Render children if user exists and loading is complete

@@ -14,6 +14,7 @@ import SousSession from "./pages/SousSession"
 import RequireAuth from "./protectingRoutes/RequireAuth";
 import RequireNotAuth from "./protectingRoutes/RequireNotAuth";
 import RequireAuthSsA from "./protectingRoutes/RequireAuthSsAdmin";
+import RequireMasterAdmin from "./protectingRoutes/RequireMasterAdmin"
 import Manassik from "../src/pages/Manassik";
 import Candidature from "./pages/Candidature";
 import Candidature_mahram  from "./pages/AddMahram";
@@ -44,11 +45,11 @@ function App() {
 
           <Route path="/home" element={<RequireNotAuth><Home /></RequireNotAuth>} />
 
-          <Route path="/medecin" element={<Medecins/>} />
-          <Route path="/RecentAdmin" element={<RecentAdmin/>} />
-          <Route path="/Session" element={<Session/>} />
-          <Route path="/Candidat" element={<Candidat/>} />
-          <Route path="/Pelerin" element={<Pelerin/>} />
+          <Route path="/medecin" element={<RequireMasterAdmin><Medecins/></RequireMasterAdmin>} />
+          <Route path="/RecentAdmin" element={<RequireMasterAdmin><RecentAdmin/></RequireMasterAdmin>} />
+          <Route path="/Session" element={<RequireMasterAdmin><Session/></RequireMasterAdmin>} />
+          <Route path="/Candidat" element={<RequireMasterAdmin><Candidat/></RequireMasterAdmin>} />
+          <Route path="/Pelerin" element={<RequireMasterAdmin><Pelerin/></RequireMasterAdmin>} />
           <Route path="/homelgin" element={<RequireAuth><Home_owner_account /></RequireAuth>} />  
           <Route path="/candidature" element={<RequireAuth><Candidature /></RequireAuth>} />
           <Route path="/candidature_mahram" element={<RequireAuth><Candidature_mahram /></RequireAuth>} />
@@ -62,8 +63,11 @@ function App() {
           />
           <Route path="/mail_conf" element={<EmailConfirmation />} />
 
-          <Route path="/dash" element={<Dash/>}></Route>
+
+     
           <Route path="/sousdash" element={<RequireAuthSsA><Sous_Dash/></RequireAuthSsA>}></Route>
+          <Route path="/dash" element={<RequireMasterAdmin><Dash/></RequireMasterAdmin>}></Route>
+        
 
 
           
