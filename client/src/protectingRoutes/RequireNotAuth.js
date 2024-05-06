@@ -1,10 +1,11 @@
 import { Navigate, useLocation } from "react-router-dom";
-import { useContext } from 'react';
+import { useContext ,useState} from 'react';
 import { AuthContext } from "../context/authContext"; // Replace with actual path
 
 const OnlyPublic = ({ children }) => {
   const { user } = useContext(AuthContext); // Destructure directly
   const storedUser = localStorage.getItem('user'); // Retrieve user data from localStorage
+
 
   if(storedUser){
   const userData = JSON.parse(storedUser); // Parse the stored user data (replace if not JSON)
@@ -21,5 +22,6 @@ const OnlyPublic = ({ children }) => {
 return children
 
 };
+
 
 export default OnlyPublic;

@@ -3,9 +3,12 @@ import { Link,useNavigate,useLocation  } from "react-router-dom";
 import { useState } from "react";
 import { useAuthContext } from '../hooks/useAuthContext'
 import axios from 'axios'
+import _ from 'lodash';
 
 
 function Modal({ onClose }) {
+
+
 
 
     const [email, setEmail] = useState('');
@@ -33,6 +36,7 @@ function Modal({ onClose }) {
     const res = JSON.stringify(json)
     const resData = JSON.parse(res);
 
+
     if(resData.token){
       document.cookie = `token=${resData.token}; expires=2D; path=/`;
     }
@@ -43,8 +47,10 @@ function Modal({ onClose }) {
       localStorage.setItem('user', JSON.stringify(json))
         // Determine the redirect path based on the user's role
         let redirectPath;
-        if (json.Role === 'user') {
+        if (_.isEqual(json.Role, 'user')) {
+      
             redirectPath = location.state?.path || "/homelgin";
+
         } else if (json.Role === 'sousAdmin') {
             redirectPath = location.state?.path || "/sousdash";
         }else if (json.Role === 'masterAdmin'){
