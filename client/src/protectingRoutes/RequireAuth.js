@@ -1,5 +1,4 @@
-
-    import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
     import { useNavigate } from "react-router-dom"; // Import useNavigate
     import { useContext, useEffect, useState } from 'react';
     import { AuthContext } from "../context/authContext";
@@ -25,7 +24,15 @@
             }
         setIsLoading(false); // Update loading state after check
         if (!storedUser || !allowedRoles.includes(userRole)) { // Check user existence and role
-            return <Navigate to="/home" replace state={{ path: location.pathname }} />; // Redirect if not authenticated or role not allowed
+            if (userRole === 'sousAdmin') {
+                redirectPath = '/sousdash';
+            }else if(userRole === 'masterAdmin'){
+                redirectPath = '/dash';
+            }else if(userRole === 'medecin'){
+                redirectPath = '/medecin';
+            }
+
+              return <Navigate to={redirectPath} replace state={{ path: location.pathname }} />;
         }
 
         };
@@ -37,14 +44,13 @@
 
     return isLoading ? (
         <p>Loading...</p>
-    // Display loading indicator while checking auth
-    ) : user && userRole  ? (
+    // Display loading indicator while checking authcd 
+    ) : user && userRole === 'user' ? (
         children 
         // Render children if user exists and loading is complete
     ) : (
         <Navigate to="/home" replace state={{ path: location.pathname }} /> // Redirect if not authenticated
     );
     };
-
 
     export default RequireAuth;
