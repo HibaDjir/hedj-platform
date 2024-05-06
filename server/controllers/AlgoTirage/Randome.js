@@ -96,10 +96,7 @@ exports.electPilgrims = async (req, res) => {
         let { pelerinsElus: pelerinsEnAttente, pelerinsRestants: pelerinsRestantsApresEnAttente } = await electionPelerinsAuHasard(pelerinsRestants, nbraelireenattente);
    
         console.log('Pèlerins en attente :', pelerinsEnAttente);
-        const pelerinEnAttentFinale=setStatus(pelerinsEnAttente,'is_enAttent')
-       
-       
-       
+        const pelerinEnAttentFinale=setStatus(pelerinsEnAttente,'is_enAttent')       
         let allPelerins = [...pelerinfinal, ...pelerinEnAttentFinale]
         console.log("TOUSSSSSS LES PELERINS", allPelerins)
      

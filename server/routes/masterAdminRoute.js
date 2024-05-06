@@ -10,4 +10,5 @@ router.route("/getSousAdminWilaya/:id").get(masterAdminController.getAdminsWilay
 
 
 
+
 module.exports=router;

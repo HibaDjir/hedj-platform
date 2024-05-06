@@ -12,6 +12,8 @@ import { AuthContextProvider } from './context/authContext'; // Assuming your co
 import "./index";
 import SousSession from "./pages/SousSession"
 import RequireAuth from "./protectingRoutes/RequireAuth";
+import RequireNotAuth from "./protectingRoutes/RequireNotAuth";
+import RequireAuthSsA from "./protectingRoutes/RequireAuthSsAdmin";
 import Manassik from "../src/pages/Manassik";
 import Candidature from "./pages/Candidature";
 import Candidature_mahram  from "./pages/AddMahram";
@@ -37,16 +39,16 @@ function App() {
       <div className="App">
         
         <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/AddAdmin" element={<RequireAuth><AddAdmin /></RequireAuth>} />
-          <Route path="/home" element={<Home />} />
+        <Route path="/" element={<RequireNotAuth><Home /></RequireNotAuth>} />
+        <Route path="/AddAdmin" element={<AddAdmin />} />
 
-          <Route path="/medecin" element={<RequireAuth><Medecins/></RequireAuth>} />
-          <Route path="/RecentAdmin" element={<RequireAuth><RecentAdmin/></RequireAuth>} />
-          <Route path="/Session" element={<RequireAuth><Session/></RequireAuth>} />
-          <Route path="/Candidat" element={<RequireAuth><Candidat/></RequireAuth>} />
-          <Route path="/Pelerin" element={<RequireAuth><Pelerin/></RequireAuth>} />
+          <Route path="/home" element={<RequireNotAuth><Home /></RequireNotAuth>} />
 
+          <Route path="/medecin" element={<Medecins/>} />
+          <Route path="/RecentAdmin" element={<RecentAdmin/>} />
+          <Route path="/Session" element={<Session/>} />
+          <Route path="/Candidat" element={<Candidat/>} />
+          <Route path="/Pelerin" element={<Pelerin/>} />
           <Route path="/homelgin" element={<RequireAuth><Home_owner_account /></RequireAuth>} />  
           <Route path="/candidature" element={<RequireAuth><Candidature /></RequireAuth>} />
           <Route path="/candidature_mahram" element={<RequireAuth><Candidature_mahram /></RequireAuth>} />
@@ -60,8 +62,9 @@ function App() {
           />
           <Route path="/mail_conf" element={<EmailConfirmation />} />
 
-          <Route path="/dash" element={<RequireAuth><Dash/></RequireAuth>}></Route>
-          <Route path="/sousdash" element={<RequireAuth><Sous_Dash/></RequireAuth>}></Route>
+          <Route path="/dash" element={<Dash/>}></Route>
+          <Route path="/sousdash" element={<RequireAuthSsA><Sous_Dash/></RequireAuthSsA>}></Route>
+
 
           
         </Routes>

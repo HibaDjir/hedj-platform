@@ -8,6 +8,9 @@ import _ from 'lodash';
 
 function Modal({ onClose }) {
 
+
+
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null)
@@ -41,32 +44,26 @@ function Modal({ onClose }) {
         if (_.isEqual(json.Role, 'user')) {
       
             redirectPath = location.state?.path || "/homelgin";
-            console.log('role is :::::::::::::::::::',json.Role)
-             
-        } else if (_.isEqual(json.Role, 'sousAdmin')) {
+
+        } else if (json.Role === 'sousAdmin') {
             redirectPath = location.state?.path || "/sousdash";
-          
-        }else if (_.isEqual(json.Role, 'masterAdmin')){
+        }else if (json.Role === 'masterAdmin'){
           redirectPath = location.state?.path || "/dash";
-          
         }
-      
         navigate(redirectPath ,{replace:true}) 
-     
+
       // update the auth context
       dispatch({type: 'LOGIN', payload: json})
       // update loading state
       setIsLoading(false)
       // Navigate only if there's no error
    
-      
 
     }
      
     }
 
 
- 
   const handleResetPasswordClick = () => {
     onClose();};
   const modalRef = useRef();
