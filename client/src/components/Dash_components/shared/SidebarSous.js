@@ -14,7 +14,8 @@ import SessionSous from "../../../pages/SousSession"
 import SousTirage from '../../../pages/SousTirage';
 import { useLogout } from "../../../hooks/useLogout"
 import { useAuthContext } from "../../../hooks/useAuthContext";
-import { GiSandsOfTime } from "react-icons/gi";
+
+
 const linkClass = 'flex flex-col items-center gap-2 font-light px-3 py-2 hover:bg-white  hover:underline rounded-sm text-base';
  
 

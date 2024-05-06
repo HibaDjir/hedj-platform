@@ -13,12 +13,16 @@ import "./index";
 import SousSession from "./pages/SousSession"
 import RequireAuth from "./protectingRoutes/RequireAuth";
 import AttentePelerin from "./pages/AttentePelerin"
+import RequireNotAuth from "./protectingRoutes/RequireNotAuth";
+import RequireMasterAdmin from "./protectingRoutes/RequireMasterAdmin"
+import RequireAuthSsA from "./protectingRoutes/RequireAuthSsAdmin";
 import Manassik from "../src/pages/Manassik";
 import Candidature from "./pages/Candidature";
 import Candidature_mahram  from "./pages/AddMahram";
 import UserProfile from "./pages/UserProfile";
 import Home_each_profile from "./pages/Home_each_profile";
 import Cansulter_cand from "./pages/Consulter_candidature";
+import Dash from "../src/pages/Dash_pages/Dashboard_Main"
 import Sous_Dash from "./pages/Dash_pages/Dashboard_sous";
 import Dash from "../src/pages/Dash_pages/Dashboard_Main";// "../src/pages/Dash_pages/Dashboard";
 import Medecins from "./pages/Medecins";
@@ -26,7 +30,6 @@ import RecentAdmin from "./pages/AdminPages/RecentAdmin";
 import Session from "./pages/Session"
 import Candidat from "./pages/Candidat"
 import Pelerin from "./pages/Pelerin"
-
 import SousTirage from "./pages/SousTirage"
 import SousPelerin from "./pages/SousPelerin"
 import SousCandidat from "./pages/SousCandidat"
@@ -48,11 +51,16 @@ function App() {
           <Route path="/Pelerin" element={<Pelerin/>} />
           <Route path="/AttentePelerin" element={<AttentePelerin/>} />
 
-
+          <Route path="/home" element={<RequireNotAuth><Home /></RequireNotAuth>} />
           <Route path="/SousSession" element={<SousSession/>} />
           <Route path="/SousTirage" element={<SousTirage/>} />
           <Route path="/SousPelerin" element={<SousPelerin/>} />
           <Route path="/SousCandidat" element={<SousCandidat/>} />
+          <Route path="/medecin" element={<RequireMasterAdmin><Medecins/></RequireMasterAdmin>} />
+          <Route path="/RecentAdmin" element={<RequireMasterAdmin><RecentAdmin/></RequireMasterAdmin>} />
+          <Route path="/Session" element={<RequireMasterAdmin><Session/></RequireMasterAdmin>} />
+          <Route path="/Candidat" element={<RequireMasterAdmin><Candidat/></RequireMasterAdmin>} />
+          <Route path="/Pelerin" element={<RequireMasterAdmin><Pelerin/></RequireMasterAdmin>} />
           <Route path="/homelgin" element={<RequireAuth><Home_owner_account /></RequireAuth>} />  
           <Route path="/candidature" element={<RequireAuth><Candidature /></RequireAuth>} />
           <Route path="/candidature_mahram" element={<RequireAuth><Candidature_mahram /></RequireAuth>} />
@@ -65,8 +73,10 @@ function App() {
             element={<Resset_password />}
           />
           <Route path="/mail_conf" element={<EmailConfirmation />} />
-          <Route path="/dash" element={<Dash/>}></Route>
-          <Route path="/sousdash" element={<AuthContextProvider>< Sous_Dash/></AuthContextProvider>}></Route>
+
+          <Route path="/dash" element={<RequireMasterAdmin><Dash/></RequireMasterAdmin>}></Route>
+          <Route path="/sousdash" element={<RequireAuthSsA><Sous_Dash/></RequireAuthSsA>}></Route>
+
 
           
         </Routes>
