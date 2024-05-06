@@ -105,20 +105,28 @@ const deleteCommune = async (req, res) => {
 }
 
 const updateCommune = async (req, res) => {
-    const { id } = req.params
+    try {
+        // Define the criteria for identifying the documents to update
+        const { code, nb_places } = req.body;
+        const criteria = { 'code': code };
 
-    if(!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(404).json({error: "Erreur de parametre"})
+        // Define the update operation
+        const update = {
+            $set: {
+                // Specify the fields to update and their new values
+                nb_places: nb_places
+                // You can add more fields as needed
+            }
+        };
+
+        // Update the documents that match the criteria
+        const result = await commune.updateOne(criteria, update, {upsert: true});
+
+        return res.status(200).json({ message: `${result.nModified} records updated successfully` });
+    } catch (error) {
+        console.error('Error:', error);
+        return res.status(500).json({ message: 'Internal server error' });
     }
-
-    const wil = await commune.findOneAndUpdate({_id: id}, {
-        ...req.body
-    })
-
-    if(!wil){
-        return res.status(404).json({error: "vide"})
-    }
-    res.status(200).json(wil)
 }
 
 const ajouterCotatCommune = async(req, res) =>{

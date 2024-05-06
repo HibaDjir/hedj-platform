@@ -56,7 +56,6 @@ const getStateSession = async (req, res) => {
 
 const deleteSession = async (req, res) => {
     const { id } = req.params
-
     if(!mongoose.Types.ObjectId.isValid(id)){
         return res.status(404).json({error: "Erreur de parametre"})
     }
@@ -74,9 +73,10 @@ const updateSession = async (req, res) => {
     if(!mongoose.Types.ObjectId.isValid(id)){
         return res.status(404).json({error: "Erreur de parametre"})
     }
+    const updatedData = req.body;
 
     const Session = await session.findOneAndUpdate({_id: id}, {
-        ...req.body
+        updatedData
     })
 
     if(!Session){

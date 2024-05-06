@@ -19,7 +19,9 @@ router.post('/', createWilaya)
 
 router.delete('/:id', deleteWilaya)
 
-router.patch('/:id', updateWilaya)
+//router.patch('/:id', updateWilaya)
+
+router.put('/update', updateWilaya)
 
 router.post('/ajouterCotat', ajouterCotatWilaya)
 

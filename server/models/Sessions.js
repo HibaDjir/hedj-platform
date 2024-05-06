@@ -19,6 +19,36 @@ const SessionSchema = new schema({
         type: String,
         enum:["En cours", "Candidature", "Tirage", "El hadj", "Cloturer"],
         default:"En cours"
+    },
+    inscription_d:{
+        type: String,
+    },
+    inscription_f:{
+        type: String,
+    },
+    tirage_d:{
+        type: String,
+    },
+    tirage_f:{
+        type: String,
+    },
+    consultaion_m_d:{
+        type: String,
+    },
+    consultaion_m_f:{
+        type: String,
+    },
+    paiement_d:{
+        type: String,
+    },
+    paiement_f:{
+        type: String,
+    },
+    hadj_d:{
+        type: String,
+    },
+    hadj_f:{
+        type: String,
     }
 })
 
