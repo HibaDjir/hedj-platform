@@ -17,6 +17,7 @@ function Modal({ onClose }) {
     const [isLoading, setIsLoading] = useState(false)
     const { dispatch } = useAuthContext()
     const location=useLocation()
+    const [errorMessage, setErrorMessage] = useState('');
 
     
     const navigate=useNavigate()
