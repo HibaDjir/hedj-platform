@@ -25,45 +25,117 @@ export default function Dashboard() {
   
     const columns = [
       {
-       name: "Admin_name",
-       label: "Nom",
-       options: {
-        filter: true,
-        sort: true,
-       }
-      },
-      {
-       name: " Admin_e_mail",
-       label: "E-mail",
-       options: {
-        filter: true,
-        sort: false,
-       }
-      },
-      {
-       name: "current_Admin_status",
-       label: "Etat",
-       options: {
-        filter: true,
-        sort: false,
-       }
-      },
-      {
-       name: "Admin_wilaya",
-       label: "wilaya",
-       options: {
-        filter: true,
-        sort: false,
-       }
-      },
-      {
-          name: "Admin_numero_de_telephone",
-          label: "Numéro De teléphone",
-          options: {
-           filter: true,
-           sort: false,
-          }
-         },
+        name: "Admin_name",
+        label: "Nom du Candidat",
+        options: {
+         filter: true,
+         sort: true,
+        }
+       },
+       {
+         name: "Admin_wilaya",
+         label: "wilaya",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+        {
+         name: "Candidat_commune",
+         label: "Commune",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+       {
+        name: "Candidat_sexe",
+        label: "Sexe",
+        options: {
+         filter: true,
+         sort: false,
+        }
+       },
+       {
+         name: "Num_passport",
+         label: "Numéro De Passport",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+       {
+         name: "Admin_numero_de_telephone",
+         label: "Numéro De teléphone",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+        {
+         name: " Admin_e_mail",
+         label: "E-mail",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+       {
+        name: "Etat_civil",
+        label: "Etat Civil",
+        options: {
+         filter: true,
+         sort: false,
+        }
+       },
+       {
+         name: "Nat",
+         label: "Nationalité",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+        {
+         name: "Adresse_com",
+         label: "Adresse complete",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+        {
+         name: "Groupe_sang",
+         label: "Groupe sanguin",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+        {
+         name: "Numero_ass",
+         label: "Numéro d'assurance",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+        {
+         name: "Malad_chro",
+         label: "Maladie Chronique",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+        {
+         name: "Numero_pass",
+         label: "Numéro du passport de Elmahrem",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
      ];
   const options = {
       filterType: 'checkbox',
@@ -214,27 +286,9 @@ export default function Dashboard() {
             <img className="w-20 h-auto" src={Logo} alt="LOGO" style={{ alignSelf: 'flex-start' }} />
         </div>
     </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
+</div> 
           {/* Cards */}
           <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl dark:text-black mb-4 p-5">Pélerins</h2>
-
           <div class="grid grid-cols-1 gap-4 px-4 mt-8 sm:grid-cols-4 sm:px-8">
 
   <div class="relative flex justify-center items-center border bg-[#FAF8F5] rounded-2xl overflow-hidden shadow transform transition duration-500 hover:scale-105 hover:rounded-2xl  h-40 w-50">
@@ -251,17 +305,10 @@ export default function Dashboard() {
    
   </div> 
       
-      </div>
-
-
-      <div className="bg-white px-4 pt-3 pb-4 rounded-sm  border-gray-200 flex-1 flex-col max-w-[1420px]   ">
-
-       
+          </div>
+     <div className="bg-white px-4 pt-3 pb-4 rounded-sm  border-gray-200 flex-1 flex-col max-w-[1420px]   ">
 <div className="max-w-[1420px]">
-
-
 <div className="flex justify-between mb-8 mt-6 ">
-
 {isAddAdminModalOpen && (
   <AddAdminModal onClose={closeAddAdminModal} />
 )}

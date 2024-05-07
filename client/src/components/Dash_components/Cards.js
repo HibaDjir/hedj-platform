@@ -5,25 +5,38 @@ import { useEffect, useState } from "react";
   import { SlUserFollowing } from "react-icons/sl";
 
   export default function Dashboard() {
-	const [orders, setOrders] = useState(0);
-	const [inventory, setInventory] = useState(0);
-	const [customers, setCustomers] = useState(0);
-	const [revenue, setRevenue] = useState(0);
-  
-	useEffect(() => {
-	  getOrders().then((res) => {
-		setOrders(res.total);
-		setRevenue(res.discountedTotal);
-	  });
-	  getInventory().then((res) => {
-		setInventory(res.total);
-	  });
-	  getCustomers().then((res) => {
-		setCustomers(res.total);
-	  });
-	}, []);
-  
 
+      const [nbPelerins, setNbPelerins] = useState(0); 
+      const [nbcandidats, setNbcandidats] = useState(0); 
+      const [nbAdmins, setNbAdmins] = useState(0); 
+      const [nbDoc, setNbDoc] = useState();
+
+      const [daata, setDaata] = useState([]); 
+      const [userId, setUserId] = useState(null);
+	
+
+  useEffect(() => { 
+    if(daata){ 
+      fetchCardsInfo()
+    } 
+
+    }, [daata]);
+  
+    const fetchCardsInfo = async()=>{ 
+      try { 
+          const response = await fetch(`http://localhost:3000/api/dashboardStats/getCounts`); 
+          if (!response.ok) { 
+            throw new Error('Failed to fetch Cards Info'); 
+          } 
+          const data = await response.json(); 
+          setNbcandidats(data.candidatures) 
+          setNbAdmins(data.admins) 
+          setNbDoc(data.medecins) 
+          setNbPelerins(data.pelerins) 
+        } catch (error) { 
+          console.error('Error fetching Cards:', error); 
+        } 
+    }
 
 return (
   <div>
@@ -36,7 +49,7 @@ return (
 </div></div>
         <div class="px-2 text-gray-700">
             <h3 class="text-sm font-bold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Tous les Administrateurs</h3>
-            <p class="text-3xl">{orders}</p>
+            <p class="text-3xl">{nbAdmins}</p>
         </div>
     </div>
     <div class="flex items-center bg- rounded-2xl overflow-hidden shadow  transfrom transition duration-500 hover:scale-105  hover:rounded-2xl">
@@ -45,7 +58,7 @@ return (
 </div></div>
         <div class="px-4 text-gray-700">
             <h3 class="text-sm font-bold text-[#C09455] tracking-wider">Tous les Médecins</h3>
-            <p class="text-3xl">{inventory}</p>
+            <p class="text-3xl">{nbDoc}</p>
         </div>
     </div>
     <div class="flex items-center bg-white rounded-2xl overflow-hidden shadow  transfrom transition duration-500 hover:scale-105  hover:rounded-2xl">
@@ -54,7 +67,7 @@ return (
 </div></div>
         <div class="px-4 text-gray-700">
             <h3 class="text-sm tracking-wider font-bold text-[#C09455]">Tous les candidats</h3>
-            <p class="text-3xl">{customers}</p>
+            <p class="text-3xl">{nbcandidats}</p>
         </div>
     </div>
     <div class="flex items-center bg-white rounded-2xl overflow-hidden shadow  transfrom transition duration-500 hover:scale-105  hover:rounded-2xl">
@@ -63,7 +76,7 @@ return (
 </div></div>
         <div class="px-4 text-gray-700">
             <h3 class="text-sm flex tracking-wider font-bold text-[#C09455]">Tous les pèlerins</h3>
-            <p class="text-3xl">{revenue}</p>
+            <p class="text-3xl">{nbPelerins}</p>
         </div>
     </div>
 </div>

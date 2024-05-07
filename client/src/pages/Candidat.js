@@ -67,9 +67,17 @@ export default function Medecins() {
        sort: true,
       }
      },
+     {
+      name: "Candidat_commune",
+      label: "Commune",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
     {
-     name: "email",
-     label: "E-mail",
+     name: "Candidat_sexe",
+     label: "Sexe",
      options: {
       filter: true,
       sort: false,
@@ -83,7 +91,32 @@ export default function Medecins() {
       sort: false,
      }
     },
+  {
+      name: "Num_passport",
+      label: "Numéro De Passport",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+     {
+      name: "email",
+      label: "E-mail",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
     {
+     name: "Etat_civil",
+     label: "Etat Civil",
+     options: {
+      filter: true,
+      sort: false,
+     }
+    },
+    {
+
      name: "name",
      label: "wilaya",
      options: {
@@ -99,6 +132,56 @@ export default function Medecins() {
          sort: false,
         }
        },
+   {
+      name: "Nat",
+      label: "Nationalité",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+     {
+      name: "Adresse_com",
+      label: "Adresse complete",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+     {
+      name: "Groupe_sang",
+      label: "Groupe sanguin",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+     {
+      name: "Numero_ass",
+      label: "Numéro d'assurance",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+     {
+      name: "Malad_chro",
+      label: "Maladie Chronique",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+     {
+      name: "Numero_passMahrem",
+      label: "Numéro du passport de Elmahrem",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+    
+   
    ];
    const options = {
     filterType: 'checkbox',

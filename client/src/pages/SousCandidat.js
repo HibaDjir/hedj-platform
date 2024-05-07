@@ -23,16 +23,6 @@ export default function Dashboard() {
     
     useEffect(() => {
       const token = localStorage.getItem('user');
-      // if (token) {
-      //   try {
-      //     const decodedToken = jwtDecode(token);
-      //     const adminId = decodedToken.adminId; // Assuming "adminId" is the key in the token
-      //     fetchWilaya(adminId);
-      //   } catch (error) {
-      //     console.error('Error decoding token:', error);
-      //   }
-      // } else {
-      //       return      }
       fetchWilaya("6633e0b320bb4b1fc14f2188");
       if (daata.wilaya) { // Check if daata.wilaya has a value to avoid errors
         fetchCandidats(daata.wilaya);
@@ -78,6 +68,7 @@ export default function Dashboard() {
   
     const columns = [
       {
+
        name: "firstName",
        label: "Nom",
        options: {
@@ -93,6 +84,7 @@ export default function Dashboard() {
          sort: true,
         }
        },
+
       {
        name: "email",
        label: "E-mail",
@@ -118,6 +110,105 @@ export default function Dashboard() {
            sort: false,
           }
          },
+
+       {
+         name: "name",
+         label: "wilaya",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+        {
+         name: "Candidat_commune",
+         label: "Commune",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+       {
+        name: "Candidat_sexe",
+        label: "Sexe",
+        options: {
+         filter: true,
+         sort: false,
+        }
+       },
+       {
+         name: "Num_passport",
+         label: "Numéro De Passport",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+       {
+         name: "Admin_numero_de_telephone",
+         label: "Numéro De teléphone",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+
+       {
+        name: "Etat_civil",
+        label: "Etat Civil",
+        options: {
+         filter: true,
+         sort: false,
+        }
+       },
+       {
+         name: "Nat",
+         label: "Nationalité",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+        {
+         name: "Adresse_com",
+         label: "Adresse complete",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+        {
+         name: "Groupe_sang",
+         label: "Groupe sanguin",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+        {
+         name: "Numero_ass",
+         label: "Numéro d'assurance",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+        {
+         name: "Malad_chro",
+         label: "Maladie Chronique",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+        {
+         name: "Numero_ass",
+         label: "Numéro du passport de Elmahrem",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+
      ];
   const options = {
       filterType: 'checkbox',

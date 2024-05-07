@@ -74,6 +74,7 @@ export default function Medecins() {
      }
     },
     {
+
       name: "lastName",
       label: "Prenom",
       options: {
@@ -83,6 +84,7 @@ export default function Medecins() {
      },
     {
      name: "email",
+
      label: "E-mail",
      options: {
       filter: true,
@@ -190,8 +192,6 @@ const options = {
        
         </div>
       </div>
-
-      
     </div>
 
 

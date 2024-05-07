@@ -24,45 +24,32 @@ export default function Dashboard() {
   
     const columns = [
       {
-       name: "Admin_name",
-       label: "Nom",
+       name: "Commune_name",
+       label: "Commune",
        options: {
         filter: true,
         sort: true,
        }
       },
       {
-       name: " Admin_e_mail",
-       label: "E-mail",
-       options: {
-        filter: true,
-        sort: false,
-       }
-      },
-      {
-       name: "current_Admin_status",
-       label: "Etat",
-       options: {
-        filter: true,
-        sort: false,
-       }
-      },
-      {
-       name: "Admin_wilaya",
-       label: "wilaya",
-       options: {
-        filter: true,
-        sort: false,
-       }
-      },
-      {
-          name: "Admin_numero_de_telephone",
-          label: "Numéro De teléphone",
-          options: {
-           filter: true,
-           sort: false,
-          }
-         },
+        name: "Nbr_places",
+        label: "Nombre de Places",
+        options: {
+         filter: true,
+         sort: true,
+        }
+       },
+       {
+        name: "Nbr_candidats",
+        label: "Nombre de Candidats",
+        options: {
+         filter: true,
+         sort: true,
+        }
+       },
+      
+      
+     
      ];
   const options = {
       filterType: 'checkbox',

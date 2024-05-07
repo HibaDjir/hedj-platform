@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
-import { format } from "date-fns";
-import { Link } from "react-router-dom";
-import { getAdminStatus } from "./AdminPages/lib/helpers";
-import user from "../images/buchra.png";
-import filter from "../images/filter.png";
-import add from "../images/mini_add.png";
-import down from "../images/chevron_down.png";
 import Sidebar from "../components/Dash_components/shared/Sidebar";
 import AddAdminModal from "../Popups/AddMed";
-// import img from "../images/img.jpeg"
 import Header from "../components/Dash_components/shared/Header";
 export default function Medecins() {
 
@@ -31,45 +23,118 @@ export default function Medecins() {
 
   const columns = [
     {
-     name: "Admin_name",
-     label: "Nom",
-     options: {
-      filter: true,
-      sort: true,
-     }
-    },
-    {
-     name: " Admin_e_mail",
-     label: "E-mail",
-     options: {
-      filter: true,
-      sort: false,
-     }
-    },
-    {
-     name: "current_Admin_status",
-     label: "Etat",
-     options: {
-      filter: true,
-      sort: false,
-     }
-    },
-    {
-     name: "Admin_wilaya",
-     label: "wilaya",
-     options: {
-      filter: true,
-      sort: false,
-     }
-    },
-    {
-        name: "Admin_numero_de_telephone",
-        label: "Numéro De teléphone",
-        options: {
-         filter: true,
-         sort: false,
-        }
-       },
+      name: "Admin_name",
+      label: "Nom du Candidat",
+      options: {
+       filter: true,
+       sort: true,
+      }
+     },
+     {
+       name: "Admin_wilaya",
+       label: "wilaya",
+       options: {
+        filter: true,
+        sort: false,
+       }
+      },
+      {
+       name: "Candidat_commune",
+       label: "Commune",
+       options: {
+        filter: true,
+        sort: false,
+       }
+      },
+     {
+      name: "Candidat_sexe",
+      label: "Sexe",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+     {
+       name: "Num_passport",
+       label: "Numéro De Passport",
+       options: {
+        filter: true,
+        sort: false,
+       }
+      },
+     {
+       name: "Admin_numero_de_telephone",
+       label: "Numéro De teléphone",
+       options: {
+        filter: true,
+        sort: false,
+       }
+      },
+      {
+       name: " Admin_e_mail",
+       label: "E-mail",
+       options: {
+        filter: true,
+        sort: false,
+       }
+      },
+     {
+      name: "Etat_civil",
+      label: "Etat Civil",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+     {
+       name: "Nat",
+       label: "Nationalité",
+       options: {
+        filter: true,
+        sort: false,
+       }
+      },
+      {
+       name: "Adresse_com",
+       label: "Adresse complete",
+       options: {
+        filter: true,
+        sort: false,
+       }
+      },
+      {
+       name: "Groupe_sang",
+       label: "Groupe sanguin",
+       options: {
+        filter: true,
+        sort: false,
+       }
+      },
+      {
+       name: "Numero_ass",
+       label: "Numéro d'assurance",
+       options: {
+        filter: true,
+        sort: false,
+       }
+      },
+      {
+       name: "Malad_chro",
+       label: "Maladie Chronique",
+       options: {
+        filter: true,
+        sort: false,
+       }
+      },
+      {
+       name: "Numero_ass",
+       label: "Numéro du passport de Elmahrem",
+       options: {
+        filter: true,
+        sort: false,
+       }
+      },
+     
    ];
 const options = {
     filterType: 'checkbox',

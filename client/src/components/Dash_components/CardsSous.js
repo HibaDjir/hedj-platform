@@ -8,15 +8,14 @@ import { useEffect, useState } from "react";
 	const [nbcommunes, setNbcommunes] = useState(0);
 	const [nbcandidat, setNbcandidats] = useState(0);
 	const [nomdoc, setNomdoc] = useState();
-    const [prenomdoc, setPrenomdoc] = useState();
+    const [nbDoc, setNbDoc] = useState();
 
 	useEffect(() => {
-	 
         setNomdoc('Charles')
         setNbcandidats("123")
         setNbcommunes("234")
         setNbplaces("66")
-        setPrenomdoc("leclerc")
+        setNbDoc("leclerc")
 	}, []);
   
 
@@ -59,7 +58,7 @@ return (
 </div></div>
         <div class="px-4 text-gray-700">
             <h3 class="text-sm flex tracking-wider font-bold text-[#C09455]">Le médecin</h3>
-            <p class="text-xl">{nomdoc} {prenomdoc}</p>
+            <p class="text-xl"></p>
         </div>
     </div>
 </div>

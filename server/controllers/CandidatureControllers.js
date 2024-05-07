@@ -1,18 +1,19 @@
 const { default: mongoose } = require('mongoose')
 const candidature = require('../models/Candidature')
 const wilaya = require('../models/wilaya')
+const commune = require('../models/Commune')
 const sesstion = require('../models/Sessions')
 
-// const getAllCandidatureAllFields = async (req, res) => {
-//     try {
-//         const userId = req.user;
-//         const candidats = await candidature.find({}).sort({createAt: -1})
-//         res.status(200).json(candidats)
-//     } catch (error) {
-//         res.status(500).json({ message: 'Internal server error',error: error.message});
-//     }
+const getAllCandidatureAllFields = async (req, res) => {
+    try {
+        const userId = req.user;
+        const candidats = await candidature.find({}).sort({createAt: -1})
+        res.status(200).json(candidats)
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error',error: error.message});
+    }
 
-// }
+}
 
 const getAllCandidature = async (req, res) => {
     try {
@@ -25,6 +26,7 @@ const getAllCandidature = async (req, res) => {
         const simpleCandidats = await Promise.all(candidats.map(async (candidat) => {
             try {
                 const lawilaya = await wilaya.findOne({ code: candidat.wilaya });
+                const lacommune = await commune.findOne({code: candidat.commune})
                 // Return the desired structure with wilayaName as a string
                 return {                                                                                        
                     _id: candidat._id,
@@ -34,6 +36,14 @@ const getAllCandidature = async (req, res) => {
                     NumeroTelephone: candidat.telephone,
                     etat: candidat.status,
                     wilayaName: lawilaya ? lawilaya.name : null, // String: wilaya name or null
+                    commune: lacommune.name,
+                    Candidat_sexe: candidat.genre,
+                    Numero_ass: candidat.nss,
+                    Num_passport: candidat.num_passeport,
+                    Etat_civil: candidat.civilite,
+                    Nat: candidat.nationalite,
+                    Groupe_sang: candidat.groupage,
+                    Malad_chro: candidat.maladie_cronique,     
                 };
             } catch (error) {
                 console.error('Error fetching wilaya for candidat:', candidat, error);
@@ -160,6 +170,8 @@ const getCandByWilaya = async(req, res)=>{
         const simpleCandidats = await Promise.all(candid.map(async (candidat) => {
             try {
                 const lawilaya = await wilaya.findOne({ code: candidat.wilaya });
+                const lacommune = await commune.findOne({code: candidat.commune})
+
                 // Return the desired structure with wilayaName as a string
                 return {                                                                                        
                     _id: candidat._id,
@@ -169,6 +181,15 @@ const getCandByWilaya = async(req, res)=>{
                     NumeroTelephone: candidat.telephone,
                     etat: candidat.status,
                     wilayaName: lawilaya ? lawilaya.name : null, // String: wilaya name or null
+                    Candidat_commune: lacommune.ar_name,
+                    Candidat_sexe: candidat.genre,
+                    Numero_ass: candidat.nss,
+                    Num_passport: candidat.num_passeport,
+                    Etat_civil: candidat.civilite,
+                    Nat: candidat.nationalite,
+                    Groupe_sang: candidat.groupage,
+                    Malad_chro: candidat.maladie_cronique,
+                    Adresse_com: candidat.address
                 };
             } catch (error) {
                 console.error('Error fetching wilaya for candidat:', candidat, error);
