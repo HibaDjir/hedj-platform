@@ -3,8 +3,8 @@ const Pelerins = require('../models/pelerin')
 const Medecins = require('../models/Medecin')
 const Admins = require('../models/sousAdmin')
 const Commune = require('../models/Commune')
-const Wilaya = require('../models/wilaya')
 const Session = require('../models/Sessions');
+const Wilaya=require('../models/wilaya')
 
 
 const getCandidatsCountForWilaya = async (wilaya) => {
@@ -92,9 +92,9 @@ exports.getFMPelCount=async(req, res)=>{
         for (const pelerin of pelerins) {
             const candidature = await Candidatures.findOne({ _id: pelerin.Candidature });
             if (candidature) {
-                if (candidature.genre === "أنثى") {
+                if (candidature.genre === "أنثى" ) {//&& candidature.status === "is_elected"
                     femaleCount++;
-                } else if (candidature.genre === "ذكر") {
+                } else if (candidature.genre === "ذكر" ) {//&& candidature.status === "is_elected"
                     maleCount++;
                 }
             }
@@ -171,6 +171,7 @@ exports.getPelerinParAge=async(req,res)=>{
         ]);
     
         // Send the result as JSON response
+        console.log(result)
         res.json(result);
       } catch (error) {
         // If an error occurs, send an error response
@@ -224,3 +225,27 @@ exports.countPelerinsByYear=async(req,res) =>{
       throw error;
   }
 }
+
+
+exports.getCountsWilaya = async(req, res)=>{
+  try {
+     const wilayaName = req.params.name
+     const lawilaya = await Wilaya.findOne({name:wilayaName})
+     const nbPlaces = lawilaya.nb_places
+     const candidatureCount = await Candidatures.find({wilaya: lawilaya.code}).countDocuments();
+     const medecinCount = await Medecins.find({
+      Wilaya:lawilaya._id
+    }).countDocuments();
+ 
+     const counts = {
+         candidaturesCount: candidatureCount,
+         medecinsCount: medecinCount,
+         nbPlaces: nbPlaces
+       };
+ 
+     console.log("les counts des tables", counts)
+     res.status(201).json(counts)
+  } catch (error) {
+     res.status(500).json({ error: 'Internal Server Error' });
+  }
+ }

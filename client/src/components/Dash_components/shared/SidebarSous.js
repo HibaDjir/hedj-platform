@@ -46,6 +46,7 @@ export default function Sidebar() {
             fetchWilaya(userId);
           }
       }, [daata, userId]);
+
     
       const fetchWilaya = async(id)=>{
         try {

@@ -167,6 +167,7 @@ const getCandByWilaya = async(req, res)=>{
         const lawilaya = await wilaya.findOne({name})
         const candid = await candidature.find({wilaya: lawilaya.code})
 
+
         const simpleCandidats = await Promise.all(candid.map(async (candidat) => {
             try {
                 const lawilaya = await wilaya.findOne({ code: candidat.wilaya });

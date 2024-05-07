@@ -67,6 +67,8 @@ export default function Medecins() {
        sort: true,
       }
      },
+    
+     
      {
       name: "Candidat_commune",
       label: "Commune",
@@ -83,6 +85,7 @@ export default function Medecins() {
       sort: false,
      }
     },
+
     {
      name: "etat",
      label: "Etat",
@@ -132,6 +135,7 @@ export default function Medecins() {
          sort: false,
         }
        },
+
    {
       name: "Nat",
       label: "Nationalité",
@@ -172,16 +176,7 @@ export default function Medecins() {
        sort: false,
       }
      },
-     {
-      name: "Numero_passMahrem",
-      label: "Numéro du passport de Elmahrem",
-      options: {
-       filter: true,
-       sort: false,
-      }
-     },
-    
-   
+
    ];
    const options = {
     filterType: 'checkbox',
@@ -191,9 +186,24 @@ export default function Medecins() {
     lastName: candidat.prenom,
     email: candidat.email,
     NumeroTelephone: candidat.NumeroTelephone,
-    etat: candidat.status,
+    etat: candidat.etat,
     name: candidat.wilayaName,
-    _id: candidat._id 
+    _id: candidat._id ,
+    Nat:candidat.Nat,
+    Adresse_com:candidat.Adresse_com,
+    Groupe_sang:candidat.Groupe_sang,
+    Numero_ass:candidat.Numero_ass,
+    Malad_chro:candidat.Malad_chro,
+    Adresse_com: candidat.address,
+    Candidat_sexe:candidat.Candidat_sexe,
+    Etat_civil:candidat.Etat_civil,
+    Candidat_commune:candidat.Candidat_commune,
+    Num_passport:candidat.Num_passport
+
+
+    
+
+    
   }));      
 
 

@@ -84,7 +84,6 @@ export default function Medecins() {
      },
     {
      name: "email",
-
      label: "E-mail",
      options: {
       filter: true,

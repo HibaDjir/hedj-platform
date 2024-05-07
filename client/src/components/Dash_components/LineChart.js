@@ -1,16 +1,42 @@
 import {Line} from 'react-chartjs-2'
 import React from 'react';
 import Utils from "./shared/Utils";
+import { useEffect, useState } from 'react';
+
 
 export default function LineChart(){
+
+  const [counts, setCounts] = useState(0)
+
+  useEffect(() => {
+    fetchCounts()
+        },[]);
+        const fetchCounts = async()=>{
+          try {
+              const response = await fetch(`http://localhost:3000/api/dashboardStats/getPelerinParAge`);
+              if (!response.ok) {
+                throw new Error('Failed to fetch counts');
+              }
+              const data = await response.json();
+              setCounts(data);
+            } catch (error) {
+              console.error('Error fetching counts:', error);
+            }
+        } 
+  
+
+
+
+
+
     const data = {
-      labels: ['2019', '2020', '2021','2022', '2023', '2024'],
+      labels: [counts.age],
       datasets: [{
         label: 'Nombre de Pèlerins selon leurs Age',
-        data: [65, 59, 80, 81, 56, 55, 40],
+        data: [counts.ageRange],
         fill: false,
         borderColor: 'rgb(216,163,83)',
-        tension: 0.1
+        tension: 10
       }]
     };
 
