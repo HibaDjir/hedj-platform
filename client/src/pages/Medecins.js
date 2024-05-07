@@ -74,6 +74,7 @@ export default function Medecins() {
      }
     },
     {
+
       name: "lastName",
       label: "Prenom",
       options: {
@@ -190,8 +191,6 @@ const options = {
        
         </div>
       </div>
-
-      
     </div>
 
 

@@ -126,7 +126,8 @@ exports.getSousAdminByUser=async(req,res)=>{
             wilaya: lawilaya,
             nom: sousadminPop.user.firstName,
             prenom: sousadminPop.user.lastName,
-            _id: sousadminPop._id
+            _id: sousadminPop._id,
+            nb_places:lawilaya.nb_place
         });
 
 
@@ -214,7 +215,8 @@ exports.getAdminsWilaya = async(req, res)=>{
             wilaya: lawilaya,
             nom: sousadmin.user.firstName,
             prenom: sousadmin.user.lastName,
-            _id: sousadmin._id
+            _id: sousadmin._id,
+         
         });
     } catch (err) {
         res.status(400).json(err.message)

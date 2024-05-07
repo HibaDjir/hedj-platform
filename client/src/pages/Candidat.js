@@ -52,6 +52,7 @@ export default function Medecins() {
 
   const columns = [
     {
+
      name: "firstName",
      label: "Nom",
      options: {
@@ -60,6 +61,7 @@ export default function Medecins() {
      }
     },
     {
+
       name: "lastName",
       label: "Prenom",
       options: {
@@ -67,23 +69,57 @@ export default function Medecins() {
        sort: true,
       }
      },
+    
+     
+     {
+      name: "Candidat_commune",
+      label: "Commune",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
     {
-     name: "email",
-     label: "E-mail",
+     name: "Candidat_sexe",
+     label: "Sexe",
+
      options: {
       filter: true,
       sort: false,
      }
     },
-    {
-     name: "etat",
+    
+
+    { name: "etat",
      label: "Etat",
+    },
+{
+      name: "Num_passport",
+      label: "Numéro De Passport",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+     {
+      name: "email",
+     label: "E-mail",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+    {
+     name: "Etat_civil",
+     label: "Etat Civil",
+
      options: {
       filter: true,
       sort: false,
      }
     },
     {
+
      name: "name",
      label: "wilaya",
      options: {
@@ -99,6 +135,50 @@ export default function Medecins() {
          sort: false,
         }
        },
+{
+      name: "Nat",
+      label: "Nationalité",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+     {
+      name: "Adresse_com",
+      label: "Adresse complete",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+     {
+      name: "Groupe_sang",
+      label: "Groupe sanguin",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+     {
+      name: "Numero_ass",
+      label: "Numéro d'assurance",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+     {
+      name: "Malad_chro",
+      label: "Maladie Chronique",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+    
+    
+   
+
    ];
    const options = {
     filterType: 'checkbox',
@@ -108,9 +188,24 @@ export default function Medecins() {
     lastName: candidat.prenom,
     email: candidat.email,
     NumeroTelephone: candidat.NumeroTelephone,
-    etat: candidat.status,
+    etat: candidat.etat,
     name: candidat.wilayaName,
-    _id: candidat._id 
+    _id: candidat._id ,
+    Nat:candidat.Nat,
+    Adresse_com:candidat.Adresse_com,
+    Groupe_sang:candidat.Groupe_sang,
+    Numero_ass:candidat.Numero_ass,
+    Malad_chro:candidat.Malad_chro,
+    Adresse_com: candidat.address,
+    Candidat_sexe:candidat.Candidat_sexe,
+    Etat_civil:candidat.Etat_civil,
+    Candidat_commune:candidat.Candidat_commune,
+    Num_passport:candidat.Num_passport
+
+
+    
+
+    
   }));      
 
 

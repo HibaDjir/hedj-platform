@@ -53,7 +53,29 @@ function TirageAge({ onClose }) {
         <div className="grid grid-cols-1 gap-y-2">
           {criterias.map((criteria, index) => (
             <div key={index}>
-              <div className="w-full flex flex-col">
+              
+
+              
+
+
+
+
+
+
+
+              <div className="w-full flex justify-center items-center ">
+       
+          
+
+
+
+
+
+
+
+
+
+              <div className="w-full flex flex-col mr-5 mt-0">
                 <label className="text-fake_black mb-1" htmlFor={`max-age-${index}`}>
                   Age maximum:
                 </label>
@@ -68,7 +90,9 @@ function TirageAge({ onClose }) {
                 />
               </div>
 
-              <div className="w-full flex flex-col mt-2">
+
+
+              <div className="w-full flex flex-col ">
                 <label className="text-fake_black mb-1" htmlFor={`min-age-${index}`}>
                   Age minimum:
                 </label>
@@ -82,6 +106,30 @@ function TirageAge({ onClose }) {
                   required
                 />
               </div>
+        </div>
+
+
+
+
+
+
+
+
+
+              <div className="w-full flex flex-col mt-2">
+                <label className="text-fake_black mb-1" htmlFor={`min-age-${index}`}>
+                  Chance:
+                </label>
+                <input
+                  id={`min-age-${index}`}
+                  className="text-black p-1 border rounded-md border-fake_black w-full"
+                  type="number"
+                  placeholder="chance "
+                  value={criteria.min}
+                  onChange={(e) => handleAgeChange(index, "min", e.target.value)}
+                  required
+                />
+              </div>
 
               {index === 1 && <hr className="my-2 border-t border-gray-300" />}
             </div>
@@ -90,7 +138,7 @@ function TirageAge({ onClose }) {
 
         <button
           className="text-[#1D1D1B] text-sm font-medium flex justify-center border-[#D8A353] rounded-md bg-[#D8A353] border p-2 mt-4 items-center x-auto w-[120px] h-[40px] mx-auto hover:bg-[#AD7946]"
-          onClick={handleAddCriteria}
+          
           
         >
           Ajouter

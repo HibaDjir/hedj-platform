@@ -5,18 +5,27 @@ import { Link, useLocation } from 'react-router-dom';
 import { MdLogout } from "react-icons/md";
 import { CiTimer } from "react-icons/ci";
 import { GoPeople } from "react-icons/go";
+import { GiSandsOfTime } from "react-icons/gi";
 import { FaUserDoctor, FaPeopleGroup } from "react-icons/fa6";
 import { SlUserFollowing } from "react-icons/sl";
 import medecin from "../../../pages/Medecins"
 import RecentAdmin from '../../../pages/AdminPages/RecentAdmin';
 import Session from '../../../pages/Session'
 import Candidat from '../../../pages/Candidat'
+import { useLogout } from "../../../hooks/useLogout"
+import { useAuthContext } from "../../../hooks/useAuthContext";
 const linkClass = 'flex flex-col items-center gap-2 font-light px-3 py-2 hover:bg-white  hover:underline rounded-sm text-base';
 
 
 
 
 export default function Sidebar() {
+    const [daata, setDaata] = useState({});
+    const { logout } = useLogout();
+    const { user } = useAuthContext();
+    const handleClick = () => {
+      logout();
+    };
     return (
         <aside
             className="top-0 left-0 z-40 w-64 h-screen transition-transform"
@@ -82,13 +91,27 @@ export default function Sidebar() {
                         </a>
                     </li>
 
+                    <li>
+                        <a href="AttentePelerin" className="flex items-center p-5 text-gray-900 rounded-lg dark:text-black hover:text-[#D8A353]  group">
+                            <svg className="h-7 w-7 text-gray-500 transition duration-75 dark:text-black group-hover:text-[#D8A353] dark:group-hover:text-[#D8A353]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+                                <GiSandsOfTime />
+                            </svg>
+                            <span className="ms-3">Liste d'attente</span>
+                        </a>
+                    </li>
+
                     <div className="flex flex-col gap-0.5 pt-5 border-t border-neutral-400">
                         <li>
                             <a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-black hover:text-red-500  group">
                                 <svg className="h-8 w-8 text-gray-500 transition duration-75 dark:text-black group-hover:text-[#D8A353] dark:group-hover:text-red-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
                                     <MdLogout />
                                 </svg>
-                                <span className="ms-3">Se deconnecter</span>
+                                {user && (
+                                    <div>
+                                    
+                                <button  onClick={handleClick} className="ms-3">Se deconnecter</button>
+                                </div>
+                            )}
                             </a>
                         </li>
                     </div>

@@ -3,6 +3,11 @@ import { useEffect, useState } from "react";
   import { FaUserDoctor, FaPeopleGroup  } from "react-icons/fa6";
   import { SlUserFollowing } from "react-icons/sl";
   import { FaUsersBetweenLines } from "react-icons/fa6";
+  import {jwtDecode} from 'jwt-decode';
+
+
+
+
   export default function Dashboard() {
 	const [nbplaces, setNbplaces] = useState(0);
 	const [nbcommunes, setNbcommunes] = useState(0);
@@ -10,14 +15,55 @@ import { useEffect, useState } from "react";
 	const [nomdoc, setNomdoc] = useState();
     const [prenomdoc, setPrenomdoc] = useState();
 
-	useEffect(() => {
-	 
-        setNomdoc('Charles')
-        setNbcandidats("123")
-        setNbcommunes("234")
-        setNbplaces("66")
-        setPrenomdoc("leclerc")
-	}, []);
+    const [daata, setDaata] = useState([]);
+    const [userId, setUserId] = useState(null);
+
+    const response = localStorage.getItem('user');
+    const parsedRes = JSON.parse(response);
+    const token = parsedRes.token
+    const decodedToken = jwtDecode(token);
+    useEffect(() => {
+        if (decodedToken && decodedToken._id) {
+          setUserId(decodedToken._id); // Store ID if found in decoded token
+          fetchWilaya(userId);
+          if(daata.wilaya){
+          fetchCardsInfo (daata.wilaya)
+          }
+        }
+       
+          }, [userId,daata]);
+
+
+
+          const fetchWilaya = async(id)=>{
+            try {
+                const response = await fetch(`http://localhost:3000/api/masterAdmin/getSaousAdminByuserId/${id}`);
+                if (!response.ok) {
+                  throw new Error('Failed to fetch Candidats');
+                }
+                const data = await response.json();
+                setDaata(data);
+              } catch (error) {
+                console.error('Error fetching candidats:', error);
+              }
+          } 
+
+          const fetchCardsInfo = async(wilaya)=>{
+            try {
+                const response = await fetch(`http://localhost:3000/api/dashboardStats/getCountsWilaya/${wilaya}`);
+                if (!response.ok) {
+                  throw new Error('Failed to fetch Cards Info');
+                }
+                const data = await response.json(); 
+                setNbcandidats(data.candidaturesCount)
+                setNbplaces(data.nbPlaces)
+                setPrenomdoc(data.medecinsCount)
+                setNbcommunes('26')
+              } catch (error) {
+                console.error('Error fetching Cards:', error);
+              }
+          } 
+
   
 
 

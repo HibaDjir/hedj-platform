@@ -40,7 +40,7 @@ valeur.setAttribute('type', 'text');
            },
        
         {
-         name: "current_Admin_status",
+         name: "nbr_places",
          label: "Nombre de Places",
          options: {
           filter: true,
@@ -56,9 +56,17 @@ valeur.setAttribute('type', 'text');
          }
         }
         },
+        {
+          name: "Nbr_commune",
+          label: "Nombre de Communes",
+          options: {
+           filter: true,
+           sort: false,
+          }
+         },
        
         {
-            name: "Admin_numero_de_telephone",
+            name: "Nbr_candidats",
             label: "Nombre de Candidats",
             options: {
              filter: true,
@@ -242,8 +250,8 @@ valeur.setAttribute('type', 'text');
 <div class="relative flex justify-center items-center border bg-[#FAF8F5] rounded-2xl overflow-hidden shadow transform transition duration-500 hover:scale-105 hover:rounded-2xl  h-40 w-50">
   <div class="absolute top-4 px-2 text-gray-700"> 
   <div class="absolute top-0 px-2 text-gray-700 flex items-center ">
-    <TiTime className='font-bold '/>  
-    <h3 class="ml-2 text-sm font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Période d'inscription</h3>
+    <TiTime className='h-7 w-7 '/>  
+    <h3 class="ml-2 text-sm font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Nombre de places Total</h3>
 </div>    
     <div class="mb-6 mt-10 shadow-xl">
     <input type="text" id="default-input" class="bg-gray-50  border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-50 h-10 p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"></input>
@@ -258,8 +266,8 @@ valeur.setAttribute('type', 'text');
 <div class="relative flex justify-center items-center border bg-[#FAF8F5] rounded-2xl overflow-hidden shadow transfrom transition duration-500 hover:scale-105 hover:rounded-2xl h-40 w-50">
   <div class="absolute top-4 px-2 text-gray-700">
   <div class="absolute top-0 px-2 text-gray-700 flex items-center ">
-    <TiTime className='font-bold '/>  
-    <h3 class="ml-2 text-sm font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Période d'inscription</h3>
+    <TiTime className='h-7 w-7 '/>  
+    <h3 class="ml-2 text-sm font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Mode de tirage </h3>
 </div>
     <div class="relative mb-6 mt-10">
       <Combobox className="z-0" style={{ width: 'calc(100% - 4px)' }} openAddAdminModal={openAddAdminModal} /> 
@@ -273,7 +281,7 @@ valeur.setAttribute('type', 'text');
         <div class="absolute top-4 px-2 text-gray-700 ">
             
         <div class="absolute top-0 px-2 text-gray-700 flex items-center ">
-    <TiTime className='font-bold '/>  
+    <TiTime className='h-7 w-7 '/>  
     <h3 class="ml-2 text-sm font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Période d'inscription</h3>
 </div>
             <div class="relative mb-6 mt-10">
@@ -289,8 +297,8 @@ valeur.setAttribute('type', 'text');
 <div class="relative  flex justify-center items-center border bg-[#FAF8F5] rounded-2xl overflow-hidden shadow   transfrom transition duration-500 hover:scale-105  hover:rounded-2xl h-40 w-50"> 
         <div class="absolute top-4 px-2 text-gray-700">
         <div class="absolute top-0 px-2 text-gray-700 flex items-center ">
-    <TiTime className='font-bold '/>  
-    <h3 class="ml-2 text-sm font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Période d'inscription</h3>
+    <TiTime className='h-7 w-7 '/>  
+    <h3 class="ml-2 text-sm font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Péride de tirage</h3>
 </div>
             <div class="relative  mb-6 mt-10 ">
 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -304,9 +312,9 @@ valeur.setAttribute('type', 'text');
 
 <div class="relative flex justify-center items-center border bg-[#FAF8F5] rounded-2xl overflow-hidden shadow   transfrom transition duration-500 hover:scale-105  hover:rounded-2xl h-40 w-50">
         <div class="absolute top-4 px-2 text-gray-700 p-1">
-        <div class="absolute top-0 px-2 text-gray-700 flex items-center ">
-    <TiTime className='font-bold '/>  
-    <h3 class="ml-2 text-sm font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Période d'inscription</h3>
+        <div class="absolute flex top-0 px-2 text-gray-700 items-center ">
+    <TiTime className='h-7 w-7  '/>  
+    <h3 class="ml-2 flex-auto text-sm font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Consultation du médecin</h3>
 </div>
             <div class="relative mb-6 mt-10">
 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -321,8 +329,8 @@ valeur.setAttribute('type', 'text');
 <div class="relative flex justify-center items-center border bg-[#FAF8F5] rounded-2xl overflow-hidden shadow   transfrom transition duration-500 hover:scale-105  hover:rounded-2xl h-40 w-50">
         <div class=" absolute top-4 px-4 text-gray-700">
         <div class="absolute top-0 px-2 text-gray-700 flex items-center ">
-    <TiTime className='font-bold '/>  
-    <h3 class="ml-2 text-sm font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Période d'inscription</h3>
+    <TiTime className='h-7 w-7 '/>  
+    <h3 class="ml-2 text-sm font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Péride du paiment</h3>
 </div>            <div class="relative mb-6 mt-10">
 <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['DateRangePicker']}>
@@ -336,8 +344,8 @@ valeur.setAttribute('type', 'text');
 <div class="relative flex justify-center items-center border bg-[#FAF8F5] rounded-2xl overflow-hidden shadow   transfrom transition duration-500 hover:scale-105  hover:rounded-2xl h-40 w-50"> 
         <div class="absolute top-4 px-4 text-gray-700 ">
         <div class="absolute top-0 px-2 text-gray-700 flex items-center ">
-    <TiTime className='font-bold '/>  
-    <h3 class="ml-2 text-sm font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Période d'inscription</h3>
+    <TiTime className='h-7 w-7  '/>  
+    <h3 class="ml-2 text-sm font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Péride de confirmation des vols</h3>
 </div>            <div class="relative mb-6 mt-10 ">
 <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['DateRangePicker']}>
@@ -351,8 +359,8 @@ valeur.setAttribute('type', 'text');
 <div class="relative flex justify-center items-center border bg-[#FAF8F5] rounded-2xl overflow-hidden shadow   transfrom transition duration-500 hover:scale-105  hover:rounded-2xl h-40 w-50"> 
         <div class="px-4 text-gray-700">
         <div class="absolute top-0 px-2 text-gray-700 flex items-center ">
-    <TiTime className='font-bold '/>  
-    <h3 class="ml-2 text-sm font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Période d'inscription</h3>
+    <TiTime className='h-7 w-7 '/>  
+    <h3 class="ml-2 text-sm font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Péride de Elhadj</h3>
 </div>
             <div class="relative mb-6 mt-10">
 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -395,37 +403,26 @@ onClick={openADDWilayaModal}
 {isAddWilayaModalOpen && (
   <AddWilayaModal onClose={closeAddWilayaModal} />
 )}
-
-
 </div>
+
+
 <MUIDataTable
 title={""}
 data={recentAdminData}
 columns={columns}
 options={options}
 />
-
-
-
-
-
 </div>  
-
-
 </div>
-
-
-
-      </div>
-     </div>
+</div>
+</div>
 </div>
 
 {isAddAdminModalOpen && selectedAlgo && selectedAlgo.name === "Par age" && (
           <TirageAge onClose={closeAddAdminModal} />
         )}
 
-
-     {/* Sidebar Toggle Button */}
+                                             {/* Sidebar Toggle Button */}
         <button onClick={toggleSidebar} aria-label="Toggle Sidebar" className="fixed top-5 left-5 z-50 p-3 bg-[#FAF8F5] rounded-full text-gray-600 sm:hidden">
           {isSidebarOpen ? (
             <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -437,8 +434,7 @@ options={options}
             </svg>
           )}
         </button>
-          </div>
-          
+          </div>       
           </div>
           </div>
     )

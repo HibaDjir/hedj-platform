@@ -3,6 +3,7 @@ const Pelerins = require('../models/pelerin')
 const Medecins = require('../models/Medecin')
 const Admins = require('../models/sousAdmin')
 const Session = require('../models/Sessions');
+const Wilaya=require('../models/wilaya')
 
 
 
@@ -190,3 +191,27 @@ exports.countPelerinsByYear=async(req,res) =>{
       throw error;
   }
 }
+
+
+exports.getCountsWilaya = async(req, res)=>{
+  try {
+     const wilayaName = req.params.name
+     const lawilaya = await Wilaya.findOne({name:wilayaName})
+     const nbPlaces = lawilaya.nb_places
+     const candidatureCount = await Candidatures.find({wilaya: lawilaya.code}).countDocuments();
+     const medecinCount = await Medecins.find({
+      Wilaya:lawilaya._id
+    }).countDocuments();
+ 
+     const counts = {
+         candidaturesCount: candidatureCount,
+         medecinsCount: medecinCount,
+         nbPlaces: nbPlaces
+       };
+ 
+     console.log("les counts des tables", counts)
+     res.status(201).json(counts)
+  } catch (error) {
+     res.status(500).json({ error: 'Internal Server Error' });
+  }
+ }
