@@ -14,7 +14,11 @@ const CommuneSchema = new schema({
     fr_name: {
         type: String,
         required: true
-    }
-}, { timeseries: true})
+    },
+    nb_places:{
+        type: String
+
+    
+}}, { timeseries: true})
 
 module.exports = mongoose.model('Commune', CommuneSchema)

@@ -6,7 +6,10 @@ import FAQ from './FAQ';
 import ManassikSlider from './ManassikSlider';
 import HotelSlider from './HotelSlider';
 import Herolgin from './Herolgin';
+
 function Homelgin() {
+  
+
   return (
   <div className=' bg-white_palette'>
     <Navbar_lgin/>

@@ -1,3 +1,4 @@
+
 const express = require('express');
 const router = express.Router();
 const Candidature = require('../models/Candidature');
@@ -57,7 +58,11 @@ router.post('/elect', async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
+const randometirage=require('../controllers/AlgoTirage/Randome')
+const ageBracketsTirage = require('../controllers/AlgoTirage/ageBrackets')
 
-module.exports = router;
 
+router.route("/random").post(randometirage.electPilgrims);
+router.route("/ageBrackets").post(ageBracketsTirage.elecPilgrimsCumDist);
 
+module.exports=router;

@@ -11,7 +11,7 @@ function Modal({ onClose }) {
     // const [email, setEmail] = useState('');
     // const [password, setPassword] = useState('');
     // const [error, setError] = useState(null)
-    // const [errorMessage, setErrorMessage] = useState('');
+     const [errorMessage, setErrorMessage] = useState('');
     // const [isLoading, setIsLoading] = useState(false)
     // const { dispatch } = useAuthContext()
     // const location=useLocation()
@@ -57,8 +57,6 @@ function Modal({ onClose }) {
 
     const handleSubmit = async (e) =>{
       e.preventDefault();
-
-
       axios.post('http://localhost:3000/api/users/login', {email,password})
       .then(res=>{
         if(res.data.token){
@@ -80,8 +78,6 @@ function Modal({ onClose }) {
       })
 
       setIsLoading(true);
-
-
       const response = await fetch('http://localhost:3000/api/users/login', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -99,16 +95,33 @@ function Modal({ onClose }) {
     }else if( response.status===200 ){
       // save the user to local storage
       localStorage.setItem('user', JSON.stringify(json))
-      console.log(redirectPath)
-      navigate(redirectPath ,{replace:true}) 
+        // Determine the redirect path based on the user's role
+        let redirectPath;
+        if (json.Role === 'user') {
+            redirectPath = location.state?.path || "/homelgin";
+            navigate(redirectPath ,{replace:true}) 
+        } else if (json.Role === 'sousAdmin') {
+            redirectPath = location.state?.path || "/sousdash";
+            navigate(redirectPath ,{replace:true}) 
+        }else if (json.Role === 'masterAdmin'){
+          redirectPath = location.state?.path || "/dash";
+          navigate(redirectPath ,{replace:true}) 
+        }
+      
+      
+     
       // update the auth context
       dispatch({type: 'LOGIN', payload: json})
       // update loading state
       setIsLoading(false)
       // Navigate only if there's no error
+   
+      
+
     }
      
     }
+
 
  
   const handleResetPasswordClick = () => {

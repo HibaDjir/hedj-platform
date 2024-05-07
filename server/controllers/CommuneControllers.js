@@ -1,9 +1,52 @@
 const { default: mongoose } = require('mongoose')
 const commune = require('../models/Commune')
+const Candidature = require('../models/Candidature')
+
+
+const getCandidatsCountForCommune = async (commune) => {
+    try {
+      const candidatsCount = await Candidature.countDocuments({ commune: commune.code });
+      return candidatsCount;
+    } catch (error) {
+      console.error('Error fetching candidats count for communes:', error);
+      throw new Error('Error fetching candidats count for communes');
+    }
+  };
 
 const getAllCommune = async (req, res) => {
-    const Communes = await commune.find({}).sort({createAt: -1})
-    res.status(200).json(Communes)
+    try {
+        const Communes = await commune.find({}).sort({createAt: -1})
+        const communeData = await Promise.all(Communes.map(async(commune)=>{
+            const candidatsCount =await getCandidatsCountForCommune(commune)
+            return {...commune.toObject(), candidatsCount}
+        }))
+        res.status(200).json(communeData)
+    } catch (error) {
+        res.status(500).json({ message: "Server Error", error: error.message })
+    }
+
+}
+
+const getCommuneById = async(req, res)=>{
+    try {
+        const { id } = req.params
+
+        if(!mongoose.Types.ObjectId.isValid(id)){
+            return res.status(404).json({error: "Erreur de parametre 12121212"})
+        }
+    
+        const Lacommune = await commune.findById(id)
+        if(!Lacommune){
+            return res.status(404).json({error: "Commune with given Id does not exist"})
+        }
+        const candidatsCount = await getCandidatsCountForCommune(Lacommune)
+        const communeData = {...Lacommune.toObject(), candidatsCount}
+
+        res.status(200).json(communeData)
+    } catch (error) {
+        res.status(500).json({ message: "Server Error", error: error.message })
+    }
+
 }
 
 const getCommune = async (req, res) => {
@@ -78,6 +121,32 @@ const updateCommune = async (req, res) => {
     res.status(200).json(wil)
 }
 
+const ajouterCotatCommune = async(req, res) =>{
+    try {
+                const { nomCommune, nb_places } = req.body;
+                if (typeof nb_places !== 'number') {
+                    return res.status(400).json("Invalid nb_places: Must be a number");
+                }
+                const Lacommune = await commune.findOneAndUpdate(
+                    { ar_name: nomCommune},
+                    { $set: { nb_places } }, 
+                    { new: true } // Return the updated document
+                );
+        
+                if (!Lacommune) {
+                    return res.status(404).json("Commune not found"); // Handle missing commune
+                }
+                res.status(200).json(Lacommune)
+        
+    } catch (error) {
+        res.status(500).json({ message: "Server Error", error: error.message })
+    }
+}
+
+const getNbCandidats = async(req, res)=>{
+
+}
+
 module.exports = {
     createCommune,
     getAllCommune,
@@ -85,4 +154,6 @@ module.exports = {
     getCodeCommune,
     deleteCommune,
     updateCommune,
+    ajouterCotatCommune, 
+    getCommuneById
 }

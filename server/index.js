@@ -18,12 +18,26 @@ const wilayaRouter=require('./routes/wilaya')
 const communeRouter=require('./routes/commune') 
 const candidatureRouter=require('./routes/candidature') 
 const sessionsRouter=require('./routes/sessions') 
-
+const tirageRouter=require('./routes/tirageRoute')
+const pelerinRouter=require('./routes/pelerinRoute')
+const masterAdminRoute=require('./routes/masterAdminRoute')
+const medecinRoute=require('./routes/medecinRoute')
+const dashboardRoute=require('./routes/dashboardRoute')
+ 
 index.use("/api/users",authRouter) 
 index.use("/api/wilaya",wilayaRouter) 
 index.use("/api/commune",communeRouter) 
 index.use("/api/candidature",candidatureRouter) 
 index.use("/api/session",sessionsRouter) 
+index.use("/api/methodeTirage",tirageRouter) 
+index.use("/api",pelerinRouter) 
+index.use("/api/commune",communeRouter) 
+index.use("/api/masterAdmin",masterAdminRoute)
+index.use("/api/medecin",medecinRoute) 
+index.use("/api/dashboardStats", dashboardRoute)
+
+
+
 
 const verifiyUser = (req, res, next)=>{
     /*const cookies = document.cookie.split(';');

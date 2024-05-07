@@ -1,6 +1,9 @@
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from 'axios';
+import axios from 'axios'
+import { useNavigate } from "react-router-dom";
+
+
 
 function Modal({ onClose }) {
   const [firstName, setFirstName] = useState('');
@@ -10,6 +13,7 @@ function Modal({ onClose }) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const navigate=useNavigate()
 
   const errorTranslations = {
     'An error occurred. Please try again later.': 'حدث خطأ. يرجى المحاولة مرة أخرى في وقت لاحق.',
@@ -28,34 +32,63 @@ function Modal({ onClose }) {
     }
     setIsLoading(true);
 
-    axios.post('http://localhost:3000/api/users/signup', { firstName, lastName, email, password })
-      .then(res => {
-        setIsLoading(false);
+    axios.post('http://localhost:3000/api/users/signup', {firstName,lastName,email,password})
+    .then(res=>{
+
+      setIsLoading(false);
+      alert("تم إنشاء الحساب بنجاح! تفقد حسابك البريدي");
+      onClose();
         if (res.ok) {
-          alert("تم إنشاء الحساب بنجاح! تفقد حسابك البريدي");
-          onClose();
-          // Clear form fields
-          setFirstName('');
-          setLastName('');
-          setEmail('');
-          setPassword('');
-          setConfirmPassword('');
-          // Show success alert
-        } else {
-          alert("created");
-          if (res.data.token) {
-            localStorage.setItem('token', res.data.token)
-          }
-        }
-      }).catch(err => {
-        if (err.response && err.response.data && err.response.data.message) {
-          let translatedErrorMessage = errorTranslations[err.response.data.message] || 'حدث خطأ. يرجى المحاولة مرة أخرى في وقت لاحق.';
-          setErrorMessage(translatedErrorMessage);
-        } else {
-          setErrorMessage('حدث خطأ. يرجى المحاولة مرة أخرى في وقت لاحق');
-        }
-        console.log(err);
-      });
+        // Clear form fields
+        setFirstName('');
+        setLastName('');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+        // Show success alert
+      }
+
+
+    }).catch(err => {
+      if (err.response && err.response.data && err.response.data.message) {
+        setErrorMessage(err.response.data.message);
+      } else {
+        setErrorMessage('An error occurred. Please try again later.');
+      }
+      console.log(err)
+      
+    })
+
+
+    // axios.post('http://localhost:3000/api/users/signup', { firstName, lastName, email, password })
+    //   .then(res => {
+    //     setIsLoading(false);
+    //     if (res.ok) {
+    //       alert("تم إنشاء الحساب بنجاح! تفقد حسابك البريدي");
+    //       onClose();
+    //       // Clear form fields
+    //       setFirstName('');
+    //       setLastName('');
+    //       setEmail('');
+    //       setPassword('');
+    //       setConfirmPassword('');
+    //       // Show success alert
+    //     } else {
+    //       alert("created");
+    //       if (res.data.token) {
+    //         localStorage.setItem('token', res.data.token)
+    //       }
+    //     }
+    //   }).catch(err => {
+    //     if (err.response && err.response.data && err.response.data.message) {
+    //       let translatedErrorMessage = errorTranslations[err.response.data.message] || 'حدث خطأ. يرجى المحاولة مرة أخرى في وقت لاحق.';
+    //       setErrorMessage(translatedErrorMessage);
+    //     } else {
+    //       setErrorMessage('حدث خطأ. يرجى المحاولة مرة أخرى في وقت لاحق');
+    //     }
+    //     console.log(err);
+    //   });
+
   };
 
   const modalRef = useRef();

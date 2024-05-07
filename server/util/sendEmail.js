@@ -3,7 +3,7 @@ const sendEmail=async (option)=>{
     //create a transporter
     const transporter=nodemailer.createTransport({
     host:'smtp.gmail.com',
-       port:Number(578),
+        port:Number(578),
         service:'gmail',
         secure:Boolean(process.env.secure),
         auth:{
@@ -15,9 +15,8 @@ const sendEmail=async (option)=>{
     const email_option={
         from:process.env.Email_User,
         to:option.email,
-
-     subject:option.subject,
-     text:option.message
+        subject:option.subject,
+        text:option.message
     }
     await transporter.sendMail(email_option)
 }

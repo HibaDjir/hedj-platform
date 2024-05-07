@@ -8,9 +8,12 @@ const {
     getCandidatureUserMale,
     deleteCandidature,
     updateCandidature,
+    getCandByWilaya
 } = require('../controllers/CandidatureControllers')
 
 router.get('/', getAllCandidature)
+
+router.get('/name/:name', getCandByWilaya) //////nommer les route 
 
 router.get('/:id', getFirstCandidature)
 

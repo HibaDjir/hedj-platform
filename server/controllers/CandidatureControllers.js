@@ -1,13 +1,64 @@
 const { default: mongoose } = require('mongoose')
 const candidature = require('../models/Candidature')
+const wilaya = require('../models/wilaya')
 const sesstion = require('../models/Sessions')
 
+// const getAllCandidatureAllFields = async (req, res) => {
+//     try {
+//         const userId = req.user;
+//         const candidats = await candidature.find({}).sort({createAt: -1})
+//         res.status(200).json(candidats)
+//     } catch (error) {
+//         res.status(500).json({ message: 'Internal server error',error: error.message});
+//     }
+
+// }
+
 const getAllCandidature = async (req, res) => {
-    const userId = req.user;
-    console.log(userId);
-    const candidats = await candidature.find({}).sort({createAt: -1})
-    res.status(200).json(candidats)
-}
+    try {
+        const userId = req.user;
+
+        // Fetch all candidats sorted by creation date (descending)
+        const candidats = await candidature.find({}).sort({ createAt: -1 });
+
+        // Map over candidats and perform asynchronous operations concurrently
+        const simpleCandidats = await Promise.all(candidats.map(async (candidat) => {
+            try {
+                const lawilaya = await wilaya.findOne({ code: candidat.wilaya });
+                // Return the desired structure with wilayaName as a string
+                return {                                                                                        
+                    _id: candidat._id,
+                    nom: candidat.nom,
+                    prenom: candidat.prenom,
+                    email: candidat.email,
+                    NumeroTelephone: candidat.telephone,
+                    etat: candidat.status,
+                    wilayaName: lawilaya ? lawilaya.name : null, // String: wilaya name or null
+                };
+            } catch (error) {
+                console.error('Error fetching wilaya for candidat:', candidat, error);
+                // You can optionally return a default value or handle the error differently here
+                return {
+                    nbr_enregistrement: candidat.nbr_enregistrement,
+                    _id: candidat._id,
+                    nom: candidat.nom,
+                    prenom: candidat.prenom,
+                    // ... include other relevant fields from candidat
+                    wilayaName: null, // String: null if wilaya not found
+                };
+            }
+        }));
+
+        res.status(200).json(simpleCandidats);
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error' ,error: error.message });
+    }
+};
+
+
+
+
+
 
 const getCandidature = async (req, res) => {
     //const { code } = req.params
@@ -116,6 +167,47 @@ const updateCandidature = async (req, res) => {
     res.status(200).json(candidat)
 }
 
+
+const getCandByWilaya = async(req, res)=>{
+        try{
+        const {name} = req.params
+        const lawilaya = await wilaya.findOne({name})
+        const candid = await candidature.find({wilaya: lawilaya.code})
+
+        const simpleCandidats = await Promise.all(candid.map(async (candidat) => {
+            try {
+                const lawilaya = await wilaya.findOne({ code: candidat.wilaya });
+                // Return the desired structure with wilayaName as a string
+                return {                                                                                        
+                    _id: candidat._id,
+                    nom: candidat.nom,
+                    prenom: candidat.prenom,
+                    email: candidat.email,
+                    NumeroTelephone: candidat.telephone,
+                    etat: candidat.status,
+                    wilayaName: lawilaya ? lawilaya.name : null, // String: wilaya name or null
+                };
+            } catch (error) {
+                console.error('Error fetching wilaya for candidat:', candidat, error);
+                // You can optionally return a default value or handle the error differently here
+                return {
+                    nbr_enregistrement: candidat.nbr_enregistrement,
+                    _id: candidat._id,
+                    nom: candidat.nom,
+                    prenom: candidat.prenom,
+                    // ... include other relevant fields from candidat
+                    wilayaName: null, // String: null if wilaya not found
+                };
+            }
+        }));
+
+        res.status(200).json(simpleCandidats);
+        } catch (error) {
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    
+}
+
 module.exports = {
     createCandidature,
     getAllCandidature,
@@ -125,4 +217,5 @@ module.exports = {
     getCandidatureUserMale,
     deleteCandidature,
     updateCandidature,
+    getCandByWilaya
 }
