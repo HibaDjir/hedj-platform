@@ -77,7 +77,7 @@ export default function Dashboard() {
        }
       },
       {
-        name: "nbr_places",
+        name: "nb_places",
         label: "Nombre de Places",
         options: {
          filter: true,
@@ -148,10 +148,9 @@ export default function Dashboard() {
 
     useEffect(() => {
       
-        /*axios.get('http://localhost:3000/api/wilaya/65ff830ed96578ad80742c2f')
+        axios.get('http://localhost:3000/api/wilaya/65ff830ed96578ad80742c2f')
           .then(response => {
             const additionalOptions = response.data;//.map(wilaya => ({value: wilaya.code, label: wilaya.ar_name}));
-            alert(additionalOptions.code)
             //alert('http://localhost:3000/api/commune/find?fieldName=code&minValue='+additionalOptions.code+'00&maxValue='+additionalOptions.code+'99');
             axios.get('http://localhost:3000/api/commune/find?fieldName=code&minValue='+additionalOptions.code+'00&maxValue='+additionalOptions.code+'99')
               .then(responseC => {
@@ -169,11 +168,16 @@ export default function Dashboard() {
         axios.get('http://localhost:3000/api/session/stateSession/find?fieldName=state&fieldValue=En cours')
           .then(response => {
             setSession(response.data._id);setAnnee(response.data.annee);
+            setDebutinsc(response.data.inscription_d);setFininsc(response.data.inscription_f);
+            setDebuttirage(response.data.tirage_d);setFintirage(response.data.tirage_f);
+            setDebutmed(response.data.consultaion_m_d);setFinmed(response.data.consultaion_m_f);
+            setDebutpaiment(response.data.paiement_d);setFinpaiment(response.data.paiement_f);
+            setDebutedj(response.data.hadj_d);setFinhedj(response.data.hadj_f);
           })
           .catch(error => {
               console.error('Erreur lors de la récupération des options :', error);
           });
-*/
+
         setDebutinsc('Charles');
         setMode('Par age');
         setDebutpaiment("Oran");
@@ -329,7 +333,7 @@ export default function Dashboard() {
 </div>
   <MUIDataTable
     title={""}
-    data={[]}
+    data={recentCommuneData}
     columns={columns}
     options={options}
   />

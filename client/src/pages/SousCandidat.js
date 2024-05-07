@@ -14,6 +14,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers-pro';
 import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
 import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
 import { TiTime } from "react-icons/ti";
+
 export default function Dashboard() {
 
     const [isAddAdminModalOpen, setIsAddAdminModalOpen] = useState(false);
@@ -36,7 +37,8 @@ export default function Dashboard() {
       fetchWilaya("6633e0b320bb4b1fc14f2188");
       if (daata.wilaya) { // Check if daata.wilaya has a value to avoid errors
         fetchCandidats(daata.wilaya);
-      }    }, [ daata]);
+      }    
+    }, [ daata]);
 
   
       const fetchWilaya = async(id)=>{
@@ -78,130 +80,127 @@ export default function Dashboard() {
   
     const columns = [
       {
-        name: "Admin_name",
-        label: "Nom du Candidat",
-        options: {
-         filter: true,
-         sort: true,
-        }
-       },
-       {
-         name: "Admin_wilaya",
-         label: "wilaya",
-         options: {
-          filter: true,
-          sort: false,
-         }
-        },
-        {
-         name: "Candidat_commune",
-         label: "Commune",
-         options: {
-          filter: true,
-          sort: false,
-         }
-        },
-       {
-        name: "Candidat_sexe",
-        label: "Sexe",
+       name: "nom",
+       label: "Nom",
+       options: {
+        filter: true,
+        sort: true,
+       }
+      },
+      {
+        name: "prenom",
+        label: "Prenom",
         options: {
          filter: true,
          sort: false,
         }
        },
        {
-         name: "Num_passport",
-         label: "Numéro De Passport",
-         options: {
-          filter: true,
-          sort: false,
-         }
-        },
-       {
-         name: "Admin_numero_de_telephone",
-         label: "Numéro De teléphone",
-         options: {
-          filter: true,
-          sort: false,
-         }
-        },
-        {
-         name: " Admin_e_mail",
-         label: "E-mail",
-         options: {
-          filter: true,
-          sort: false,
-         }
-        },
-       {
-        name: "Etat_civil",
-        label: "Etat Civil",
+        name: "date_naissance",
+        label: "Date de naissance",
+        options: {
+         filter: true,
+         sort: false,
+        }
+       },
+      {
+       name: "lieu_naissance",
+       label: "Lieu de naissance",
+       options: {
+        filter: true,
+        sort: false,
+       }
+      },
+      {
+        name: "nationalite",
+        label: "Nationalite",
+        options: {
+         filter: true,
+         sort: false,
+        }
+       },
+      {
+        name: "civilite",
+        label: "Civilite",
         options: {
          filter: true,
          sort: false,
         }
        },
        {
-         name: "Nat",
-         label: "Nationalité",
-         options: {
-          filter: true,
-          sort: false,
-         }
-        },
-        {
-         name: "Adresse_com",
-         label: "Adresse complete",
-         options: {
-          filter: true,
-          sort: false,
-         }
-        },
-        {
-         name: "Groupe_sang",
-         label: "Groupe sanguin",
-         options: {
-          filter: true,
-          sort: false,
-         }
-        },
-        {
-         name: "Numero_ass",
-         label: "Numéro d'assurance",
-         options: {
-          filter: true,
-          sort: false,
-         }
-        },
-        {
-         name: "Malad_chro",
-         label: "Maladie Chronique",
-         options: {
-          filter: true,
-          sort: false,
-         }
-        },
-        {
-         name: "Numero_ass",
-         label: "Numéro du passport de Elmahrem",
-         options: {
-          filter: true,
-          sort: false,
-         }
-        },
+        name: "genre",
+        label: "Genre",
+        options: {
+         filter: true,
+         sort: false,
+        }
+       },
+      {
+       name: "num_passeport",
+       label: "Num passeport",
+       options: {
+        filter: true,
+        sort: false,
+       }
+      },
+      {
+        name: "telephone",
+        label: "Telephone",
+        options: {
+         filter: true,
+         sort: false,
+        }
+       },
+       {
+        name: "email",
+        label: "Adresse email",
+        options: {
+         filter: true,
+         sort: false,
+        }
+       },
+       {
+        name: "address",
+        label: "Address",
+        options: {
+         filter: true,
+         sort: false,
+        }
+       },
+       {
+        name: "groupage",
+        label: "Groupage",
+        options: {
+         filter: true,
+         sort: false,
+        }
+       },
+       {
+        name: "nss",
+        label: "Numéro de sécurité sociel",
+        options: {
+         filter: true,
+         sort: false,
+        }
+       }
      ];
-  const options = {
+    const options = {
       filterType: 'checkbox',
     };
     const recentCanData = candidats.map(candidat => ({
-      firstName: candidat.nom,
-      lastName: candidat.prenom,
+      nom: candidat.nom,
+      prenom: candidat.prenom,
+      date_naissance: candidat.date_naissance,
+      lieu_naissance: candidat.lieu_naissance,
+      civilite: candidat.civilite,
+      genre: candidat.genre,
+      num_passeport: candidat.nom,
+      telephone: candidat.prenom,
       email: candidat.email,
-      NumeroTelephone: candidat.NumeroTelephone,
-      name: candidat.wilayaName,
-      _id: candidat._id 
-    }));      
-  
+      address: candidat.address,
+      groupage: candidat.groupage,
+      nss: candidat.nss 
+    }));  
   
 
 

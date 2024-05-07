@@ -8,7 +8,10 @@ const {
     getCandidatureUserMale,
     deleteCandidature,
     updateCandidature,
-    getCandByWilaya
+    getCandByWilaya,
+    getCandidatureCodeWilaya,
+    getCandidatureCodeWilayaPrise,
+    getCandidatureCodeWilayaAttente
 } = require('../controllers/CandidatureControllers')
 
 router.get('/', getAllCandidature)
@@ -18,6 +21,12 @@ router.get('/:name', getCandByWilaya)
 router.get('/:id', getFirstCandidature)
 
 router.get('/genre/find', getCandidature)
+
+router.get('/wilaya/find', getCandidatureCodeWilaya)
+
+router.get('/wilaya/prise/find', getCandidatureCodeWilayaPrise)
+
+router.get('/wilaya/attente/find', getCandidatureCodeWilayaAttente)
 
 router.get('/genreMale/find', getCandidatureUserMale)
 

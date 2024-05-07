@@ -33,7 +33,12 @@ export default function Session() {
 
     axios.get('http://localhost:3000/api/session/stateSession/find?fieldName=state&fieldValue=En cours')
             .then(response => {
-              setSession(response.data._id);setAnnee(response.data.annee);
+              setSession(response.data._id);setAnnee(response.data.annee);setNbr_Candidats(response.data.nbr_candidats)
+              setInscription_d(response.data.inscription_d);setInscription_f(response.data.inscription_f);
+              setTirage_d(response.data.tirage_d);setTirage_f(response.data.tirage_f);
+              setConsultaion_m_d(response.data.consultaion_m_d);setConsultaion_m_f(response.data.consultaion_m_f);
+              setPaiement_d(response.data.paiement_d);setPaiement_f(response.data.paiement_f);
+              sethadj_d(response.data.hadj_d);setHadj_f(response.data.hadj_f);
             })
             .catch(error => {
                 console.error('Erreur lors de la récupération des options :', error);
@@ -210,17 +215,18 @@ export default function Session() {
         const [start, end] = dates;
         sethadj_d(start ? moment(start).format('YYYY-MM-DD') : null);
         setHadj_f(end ? moment(end).format('YYYY-MM-DD') : null);
-        alert(inscription_d +' '+ inscription_f +' '+tirage_d +' '+ tirage_f +' '+ consultaion_m_d +' '+ consultaion_m_f+' '+ paiement_d +' '+ paiement_f)
     };
 
 
     const UpdateSession = async () => {
       try {
-        const response = await axios.post('http://localhost:3000/api/session/'+id_session, { 
+        alert(id_session)
+        const response = await axios.put('http://localhost:3000/api/session/'+id_session, { 
           annee, nbr_candidats, inscription_d, inscription_f, tirage_d, tirage_f, consultaion_m_d, consultaion_m_f, paiement_d, paiement_f, hadj_d, hadj_f
         });
         alert("Enregistrement avec succées");
       } catch (error) {
+        alert(error);
           console.error('Error fetching data:', error);
       }
     };
@@ -316,7 +322,7 @@ export default function Session() {
         <div class="relative mb-6 mt-10">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={['DateRangePicker']}>
-              <DateRangePicker onChange={handleDateInsciption} localeText={{ start: 'Date debut', end: 'Date fin' }} />
+              <DateRangePicker onChange={handleDateInsciption} localeText={{ start: inscription_d, end: inscription_f }} />
             </DemoContainer>
           </LocalizationProvider>
         </div>
@@ -332,7 +338,7 @@ export default function Session() {
             <div class="relative  mb-6 mt-10 ">
 <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['DateRangePicker']}>
-        <DateRangePicker onChange={handleDateTirage} localeText={{ start: 'Date debut', end: 'Date fin' }} />
+        <DateRangePicker onChange={handleDateTirage} localeText={{ start: tirage_d, end: tirage_f }} />
       </DemoContainer>
     </LocalizationProvider>
     </div>
@@ -348,7 +354,7 @@ export default function Session() {
             <div class="relative mb-6 mt-10">
 <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['DateRangePicker']}>
-        <DateRangePicker onChange={handleDateConsultaion_m} localeText={{ start: 'Date debut', end: 'Date fin' }} />
+        <DateRangePicker onChange={handleDateConsultaion_m} localeText={{ start: consultaion_m_d, end: consultaion_m_f }} />
       </DemoContainer>
     </LocalizationProvider>
     </div>
@@ -363,7 +369,7 @@ export default function Session() {
 </div>            <div class="relative mb-6 mt-10">
 <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['DateRangePicker']}>
-        <DateRangePicker onChange={handleDatePaiement} localeText={{ start: 'Date debut', end: 'Date fin' }} />
+        <DateRangePicker onChange={handleDatePaiement} localeText={{ start: paiement_d, end: paiement_f }} />
       </DemoContainer>
     </LocalizationProvider>
     </div>
@@ -394,7 +400,7 @@ export default function Session() {
             <div class="relative mb-6 mt-10">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DemoContainer components={['DateRangePicker']}>
-                  <DateRangePicker onChange={handleDateHadj} localeText={{ start: 'Date debut', end: 'Date fin' }} />
+                  <DateRangePicker onChange={handleDateHadj} localeText={{ start: hadj_d, end: hadj_f }} />
                 </DemoContainer>
               </LocalizationProvider>
             </div>

@@ -11,29 +11,32 @@ import Sidebar from "../components/Dash_components/shared/Sidebar";
 import AddAdminModal from "../Popups/AddMed";
 // import img from "../images/img.jpeg"
 import Header from "../components/Dash_components/shared/Header";
+
+import axios from 'axios';
+
 export default function Medecins() {
   const [candidats, setCandidats] = useState([])
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-      
   useEffect(() => {
-    fetchCandidats();
-  }, [candidats]);
-
-  const fetchCandidats = async () => {
-    try {
-      const response = await fetch('http://localhost:3000/api/candidature/');
-      if (!response.ok) {
-        throw new Error('Failed to fetch Candidats');
-      }
-      const data = await response.json();
-      setCandidats(data);
-    } catch (error) {
-      console.error('Error fetching candidats:', error);
-    }
-  };
-
-
+      
+      axios.get('http://localhost:3000/api/wilaya/65ff830ed96578ad80742c2f')
+        .then(response => {
+          const additionalOptions = response.data;//.map(wilaya => ({value: wilaya.code, label: wilaya.ar_name}));
+          //alert('http://localhost:3000/api/commune/find?fieldName=code&minValue='+additionalOptions.code+'00&maxValue='+additionalOptions.code+'99');
+          axios.get('http://localhost:3000/api/candidature/genreMale/find?fieldName=wilaya&fieldValue='+additionalOptions.code)
+            .then(responseC => {
+              alert(responseC.data)
+              setCandidats(responseC.data);
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des options :', error);
+            });
+        })
+        .catch(error => {
+            console.error('Erreur lors de la récupération des options :', error);
+        });
+  }, []);
 
   
   const toggleSidebar = () => {
@@ -52,131 +55,129 @@ export default function Medecins() {
 
   const columns = [
     {
-     name: "Admin_name",
-     label: "Nom du Candidat",
+     name: "nom",
+     label: "Nom",
      options: {
       filter: true,
       sort: true,
      }
     },
     {
-      name: "Admin_wilaya",
-      label: "wilaya",
+      name: "prenom",
+      label: "Prenom",
       options: {
        filter: true,
        sort: false,
       }
      },
      {
-      name: "Candidat_commune",
-      label: "Commune",
+      name: "date_naissance",
+      label: "Date de naissance",
       options: {
        filter: true,
        sort: false,
       }
      },
     {
-     name: "Candidat_sexe",
-     label: "Sexe",
+     name: "lieu_naissance",
+     label: "Lieu de naissance",
      options: {
       filter: true,
       sort: false,
      }
     },
     {
-      name: "Num_passport",
-      label: "Numéro De Passport",
+      name: "nationalite",
+      label: "Nationalite",
       options: {
        filter: true,
        sort: false,
       }
      },
     {
-      name: "Admin_numero_de_telephone",
-      label: "Numéro De teléphone",
+      name: "civilite",
+      label: "Civilite",
       options: {
        filter: true,
        sort: false,
       }
      },
      {
-      name: " Admin_e_mail",
-      label: "E-mail",
+      name: "genre",
+      label: "Genre",
       options: {
        filter: true,
        sort: false,
       }
      },
     {
-     name: "Etat_civil",
-     label: "Etat Civil",
+     name: "num_passeport",
+     label: "Num passeport",
      options: {
       filter: true,
       sort: false,
      }
     },
     {
-      name: "Nat",
-      label: "Nationalité",
+      name: "telephone",
+      label: "Telephone",
       options: {
        filter: true,
        sort: false,
       }
      },
      {
-      name: "Adresse_com",
-      label: "Adresse complete",
+      name: "email",
+      label: "Adresse email",
       options: {
        filter: true,
        sort: false,
       }
      },
      {
-      name: "Groupe_sang",
-      label: "Groupe sanguin",
+      name: "address",
+      label: "Address",
       options: {
        filter: true,
        sort: false,
       }
      },
      {
-      name: "Numero_ass",
-      label: "Numéro d'assurance",
+      name: "groupage",
+      label: "Groupage",
       options: {
        filter: true,
        sort: false,
       }
      },
      {
-      name: "Malad_chro",
-      label: "Maladie Chronique",
+      name: "nss",
+      label: "Numéro de sécurité sociel",
       options: {
        filter: true,
        sort: false,
       }
-     },
-     {
-      name: "Numero_ass",
-      label: "Numéro du passport de Elmahrem",
-      options: {
-       filter: true,
-       sort: false,
-      }
-     },
-    
-   
+     }
    ];
    const options = {
     filterType: 'checkbox',
   };
   const recentMedecinData = candidats.map(candidat => ({
-    firstName: candidat.nom,
-    lastName: candidat.prenom,
+    nom: candidat.nom,
+    prenom: candidat.prenom,
+    date_naissance: candidat.date_naissance,
+    prenom: candidat.prenom,
+    nom: candidat.nom,
+    lieu_naissance: candidat.lieu_naissance,
+    civilite: candidat.civilite,
+    genre: candidat.genre,
+    num_passeport: candidat.nom,
+    telephone: candidat.prenom,
     email: candidat.email,
     NumeroTelephone: candidat.NumeroTelephone,
-    etat: candidat.status,
-    name: candidat.wilayaName,
-    _id: candidat._id 
+    address: candidat.address,
+    groupage: candidat.groupage,
+    nss: candidat.nss 
   }));      
 
 

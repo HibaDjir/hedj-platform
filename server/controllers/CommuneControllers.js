@@ -61,11 +61,11 @@ const getCommune = async (req, res) => {
         }
     };
 
-    const wil = await commune.find(query)
-    if(!wil){
+    const com = await commune.find(query)
+    if(!com){
         return res.status(404).json({error: "vide"})
     }
-    res.status(200).json(wil)
+    res.status(200).json(com)
 }
 
 const getCodeCommune = async (req, res) => {

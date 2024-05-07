@@ -30,10 +30,10 @@ export default function Sidebar() {
   const handleClick = () => {
     logout();
   };
-
+  
     useEffect(() => {
         fetchWilaya("6633e0b320bb4b1fc14f2188");
-      }, [daata]);
+      }, []);
     
       const fetchWilaya = async(id)=>{
         try {
