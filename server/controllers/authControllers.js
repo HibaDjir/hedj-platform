@@ -46,7 +46,7 @@ exports.signup = async (req, res) =>
 exports.verifyEmail=async(req,res,next)=>{
     try {
         const token = req.params.token;
-		console.log(token)
+		//console.log(token)
         if (!token) return res.status(400).send({ message: "no token" });
 		const id =req.params.id
         const user = await User.findOne({ _id:id});
@@ -98,7 +98,7 @@ exports.login=async (req, res) => {
 		token:token
 	}) 
 	} catch (error) {
-		res.status(500).json({ message: "Internal Server Error" });console.log('error',error.message)
+		res.status(500).json({ message: "Internal Server Error" });//console.log('error',error.message)
 	}
 };
 

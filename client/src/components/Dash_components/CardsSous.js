@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
   import { FaUserDoctor, FaPeopleGroup  } from "react-icons/fa6";
   import { SlUserFollowing } from "react-icons/sl";
   import { FaUsersBetweenLines } from "react-icons/fa6";
-  import {jwtDecode} from 'jwt-decode';
-
+  import { jwtDecode } from 'jwt-decode';
 
 
 

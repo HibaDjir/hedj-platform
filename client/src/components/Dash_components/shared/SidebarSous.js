@@ -13,10 +13,7 @@ import SessionSous from "../../../pages/SousSession"
 import SousTirage from '../../../pages/SousTirage';
 import { useLogout } from "../../../hooks/useLogout"
 import { useAuthContext } from "../../../hooks/useAuthContext";
-<<<<<<< HEAD
-=======
 import { jwtDecode } from 'jwt-decode';
->>>>>>> origin/Merieme
 import { GiSandsOfTime } from "react-icons/gi";
 
 
@@ -42,17 +39,12 @@ export default function Sidebar() {
   };
   
     useEffect(() => {
-<<<<<<< HEAD
-        fetchWilaya("6633e0b320bb4b1fc14f2188");
-      }, []);
-=======
         if (decodedToken && decodedToken._id) {
             setUserId(decodedToken._id); // Store ID if found in decoded token
             fetchWilaya(userId);
           }
       }, [daata, userId]);
 
->>>>>>> origin/Merieme
     
       const fetchWilaya = async(id)=>{
         try {
