@@ -154,16 +154,6 @@ export default function Dashboard() {
         },
 
        {
-         name: "Admin_numero_de_telephone",
-         label: "Numéro De teléphone",
-         options: {
-          filter: true,
-          sort: false,
-         }
-        },
-
-
-       {
         name: "Etat_civil",
         label: "Etat Civil",
         options: {
@@ -206,15 +196,6 @@ export default function Dashboard() {
         {
          name: "Malad_chro",
          label: "Maladie Chronique",
-         options: {
-          filter: true,
-          sort: false,
-         }
-        },
-
-        {
-         name: "Numero_ass",
-         label: "Numéro du passport de Elmahrem",
          options: {
           filter: true,
           sort: false,

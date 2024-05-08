@@ -31,6 +31,7 @@ function Modal({ onClose }) {
     })
 
     const json = await response.json()
+
     console.log("THEEE RESPONSE",response)
     const res = JSON.stringify(json)
     const resData = JSON.parse(res);
@@ -52,6 +53,9 @@ function Modal({ onClose }) {
             redirectPath = location.state?.path || "/sousdash";
         }else if (json.Role === 'masterAdmin'){
           redirectPath = location.state?.path || "/dash";
+        }
+        else if (json.Role === 'medecin'){
+          redirectPath = location.state?.path || "/medecin ";
         }
         navigate(redirectPath ,{replace:true}) 
 

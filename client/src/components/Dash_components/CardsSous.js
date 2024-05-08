@@ -12,8 +12,6 @@ import { useEffect, useState } from "react";
 	const [nbplaces, setNbplaces] = useState(0);
 	const [nbcommunes, setNbcommunes] = useState(0);
 	const [nbcandidat, setNbcandidats] = useState(0);
-	const [nomdoc, setNomdoc] = useState();
-    const [nbDoc, setNbDoc] = useState();
 
 
     const [daata, setDaata] = useState([]);
@@ -65,7 +63,7 @@ import { useEffect, useState } from "react";
           } 
 
 
-  
+
 
 
 return (

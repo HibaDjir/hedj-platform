@@ -3,8 +3,8 @@ const Pelerins = require('../models/pelerin')
 const Medecins = require('../models/Medecin')
 const Admins = require('../models/sousAdmin')
 const Commune = require('../models/Commune')
-const Wilaya = require('../models/wilaya')
 const Session = require('../models/Sessions');
+const Wilaya=require("../models/wilaya")
 
 
 
@@ -93,9 +93,9 @@ exports.getFMPelCount=async(req, res)=>{
         for (const pelerin of pelerins) {
             const candidature = await Candidatures.findOne({ _id: pelerin.Candidature });
             if (candidature) {
-                if (candidature.genre === "أنثى") {
+                if (candidature.genre === "أنثى" ) {//&& candidature.status === "is_elected"
                     femaleCount++;
-                } else if (candidature.genre === "ذكر") {
+                } else if (candidature.genre === "ذكر" ) {//&& candidature.status === "is_elected"
                     maleCount++;
                 }
             }
@@ -172,6 +172,7 @@ exports.getPelerinParAge=async(req,res)=>{
         ]);
     
         // Send the result as JSON response
+        console.log(result)
         res.json(result);
       } catch (error) {
         // If an error occurs, send an error response
@@ -249,3 +250,85 @@ exports.getCountsWilaya = async(req, res)=>{
      res.status(500).json({ error: 'Internal Server Error' });
   }
  }
+
+
+
+ ///get count of pelerin by age of specidied wilaya
+
+
+
+
+
+
+
+
+exports.getPelerinParAgeAndWilaya = async (req, res) => {
+  try {
+    const  wilaya  = req.params.name;
+let wilayFound= await Wilaya.findOne({name:wilaya})
+let code=wilayFound.code
+    // Execute the aggregation pipeline
+    const result = await Pelerins.aggregate([
+      // Lookup candidatures based on pelerin's Candidature ID
+      {
+        $lookup: {
+          from: 'candidatures',
+          localField: 'Candidature',
+          foreignField: '_id',
+          as: 'candidature'
+        }
+      },
+      // Unwind the array of candidatures
+      { $unwind: "$candidature" },
+      // Filter documents by wilaya
+      { $match: { "candidature.wilaya": parseInt(code) } },
+      // Calculate age from date of birth in candidature
+      {
+        $addFields: {
+          age: {
+            $floor: {
+              $divide: [
+                { $subtract: [new Date(), "$candidature.date_naissance"] },
+                31536000000 // Milliseconds in a year
+              ]
+            }
+          }
+        }
+      },
+      // Group by age range and count documents
+      {
+        $group: {
+          _id: {
+            $multiply: [
+              { $trunc: { $divide: ["$age", 10] } }, // Calculate the start of age range
+              10
+            ]
+          },
+          count: { $sum: 1 }
+        }
+      },
+      // Project the result with age range and count
+      {
+        $project: {
+          _id: 0,
+          ageRange: "$_id",
+          count: 1
+        }
+      },
+      // Sort by age range
+      {
+        $sort: {
+          ageRange: 1
+        }
+      }
+    ]);
+
+    // Send the result as JSON response
+    res.json(result);
+  } catch (error) {
+    // If an error occurs, send an error response
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+

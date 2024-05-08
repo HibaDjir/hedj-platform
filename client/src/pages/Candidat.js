@@ -61,7 +61,6 @@ export default function Medecins() {
      }
     },
     {
-
       name: "lastName",
       label: "Prenom",
       options: {
@@ -88,6 +87,7 @@ export default function Medecins() {
       sort: false,
      }
     },
+
     {
      name: "etat",
      label: "Etat",
@@ -97,7 +97,6 @@ export default function Medecins() {
      }
     },
   {
-
       name: "Num_passport",
       label: "Numéro De Passport",
       options: {
@@ -118,7 +117,6 @@ export default function Medecins() {
     {
      name: "Etat_civil",
      label: "Etat Civil",
-
      options: {
       filter: true,
       sort: false,
@@ -182,9 +180,6 @@ export default function Medecins() {
       }
      },
 
-    
-    
-   
 
    ];
    const options = {

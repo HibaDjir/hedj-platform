@@ -208,7 +208,9 @@ exports.updateSousAdmin=async(req,res)=>{
 exports.getAdminsWilaya = async(req, res)=>{
     try {
 
-       const  idAdmin = req.params.id 
+
+        const  idAdmin = req.params.id
+
         const sousadmin = await sousAdmin.findById({_id: idAdmin}).populate('Wilaya').populate('user').exec();
         console.log(sousadmin)
         const lawilaya = sousadmin.Wilaya.name

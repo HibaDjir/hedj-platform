@@ -42,7 +42,6 @@ export default function Sidebar() {
 
     useEffect(() => {
 
-
         if (decodedToken && decodedToken._id) {
             setUserId(decodedToken._id); // Store ID if found in decoded token
             fetchWilaya(userId);

@@ -1,15 +1,37 @@
 import { Doughnut } from 'react-chartjs-2';
 import LineChart from './LineChart';
+import { useEffect, useState } from 'react';
 
 export default function DoughnutChart() {
+
+  const [counts, setCounts] = useState(0)
+
+  useEffect(() => {
+  fetchCounts()
+      },[]);
+      const fetchCounts = async()=>{
+        try {
+            const response = await fetch(`http://localhost:3000/api/dashboardStats/getFMPelCount`);
+            if (!response.ok) {
+              throw new Error('Failed to fetch counts');
+            }
+            const data = await response.json();
+            setCounts(data);
+          } catch (error) {
+            console.error('Error fetching counts:', error);
+          }
+      } 
+
+
 const data = {
     labels: [
+      'Homme',
       'Femme',
-      'Homme'
+
     ],
     datasets: [{
      
-      data: [300, 50],
+      data: [ counts.maleCount, counts.femaleCount],
       backgroundColor: [
         'rgb(0,0,0)',
         'rgb(216,163,83)',

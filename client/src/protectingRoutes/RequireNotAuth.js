@@ -17,7 +17,11 @@ const OnlyPublic = ({ children }) => {
     return <Navigate to="/sousdash" replace />; // Redirect to a specific page
   }else if(user && userRole ==="masterAdmin"){
     return <Navigate to="/dash" replace />; // Redirect to a specific page
+  }  
+  else if(user && userRole ==="medecin"){
+    return <Navigate to="/medecin" replace />; // Redirect to a specific page
   }
+  
   }
 return children
 
