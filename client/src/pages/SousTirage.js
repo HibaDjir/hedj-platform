@@ -14,8 +14,18 @@ import { TiTime } from "react-icons/ti";
 import Select from "react-select";
 import { MdOutlineSlowMotionVideo } from "react-icons/md";
 
+import axios from 'axios';
+
 export default function SousTirage() {
 
+
+  const [communes, setCommunes] = useState([]);
+  
+  const [id_session, setSession] = useState(null);
+  
+  const [nbrTotalPelerin, setNbrTotalPelerin] = useState(null);
+  
+  const [code_algo, setCode_algo] = useState(null);
 
     const [selectedAlgorithm, setSelectedAlgorithm] = useState(null);
     useEffect(() => {
@@ -31,16 +41,34 @@ export default function SousTirage() {
             div.style.borderColor = "";
           }
         });
-      }, [selectedAlgorithm]);
-
-
-
-
-
-
-
-
-
+        axios.get('http://localhost:3000/api/wilaya/65ff830ed96578ad80742c2f')
+          .then(response => {
+            const additionalOptions = response.data;//.map(wilaya => ({value: wilaya.code, label: wilaya.ar_name}));
+            //alert('http://localhost:3000/api/commune/find?fieldName=code&minValue='+additionalOptions.code+'00&maxValue='+additionalOptions.code+'99');
+            axios.get('http://localhost:3000/api/commune/find?fieldName=code&minValue='+additionalOptions.code+'00&maxValue='+additionalOptions.code+'99')
+              .then(responseC => {
+              const additionalOptions = responseC.data.map(commune => ({value: commune.code+"|"+commune.nb_places, label: commune.ar_name}));
+              setCommunes(additionalOptions);
+              })
+              .catch(error => {
+                  console.error('Erreur lors de la récupération des options :', error);
+              });
+          })
+          .catch(error => {
+              console.error('Erreur lors de la récupération des options :', error);
+          });
+          axios.get('http://localhost:3000/api/session/stateSession/find?fieldName=state&fieldValue=En cours')
+          .then(response => {
+            setSession(response.data._id);setCode_algo(response.data.algo_selected);
+          })
+          .catch(error => {
+              console.error('Erreur lors de la récupération des options :', error);
+          });
+          setDebutinsc('Charles')
+          setMode('Par age')
+          setDebutpaiment("Oran")
+          setFinpaiment("Oran")
+      }, []);
 
 
     const customStyles = {
@@ -237,16 +265,27 @@ export default function SousTirage() {
     const [finhedj, setFinhedj] = useState();
 
 
+    const [commune, setSelectedOptionCommune] = useState(null);
+    const handleChangeCommune = (event) => {
+      const selectedValue = (event.value).split("|");
+      setSelectedOptionCommune(parseInt(selectedValue[0]));setNbrTotalPelerin(selectedValue[1]);
 
+    };
 
+    const startTirage = async () => {
+      // Get the input value for the clicked row
+      try {
+          // Make a PUT request to the backend API to update the record
+          const response = await axios.put('http://localhost:3000/api/tirage/Tirage', { id_session, commune, nbrTotalPelerin, code_algo });
+          // Handle success (e.g., show a success message)
+          alert("Record updated successfully");
+      } catch (error) {
+          // Handle error (e.g., s
+          alert(error);
+          console.error("Error:", error);
+      }
 
-    useEffect(() => {
-        setDebutinsc('Charles')
-        setMode('Par age')
-        setDebutpaiment("Oran")
-        setFinpaiment("Oran")
-    }, []);
-
+  };
 
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
@@ -340,13 +379,15 @@ export default function SousTirage() {
       <Select
         name="commune"
         styles={customStyles}
-        placeholder="Commune"
+        options={communes}
+        onChange={handleChangeCommune}
         isRtl={true}
         
       />
     </div>
     <button
       className="text-[#1D1D1B] text-md font-medium flex justify-between border-[#D8A353] rounded-md bg-[#D8A353] border items-center h-10 p-2 mr-2"
+      onClick={startTirage}
     >
       <FaCirclePlay className="h-6 w-6 mt-2 mx-2  " src={add} />
       Commencer le tirage

@@ -3,10 +3,10 @@ import { Combobox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 
 const algos = [
-  { id: 1, name: 'Par age' },
-  { id: 2, name: 'Aléatoire' },
-  { id: 3, name: 'Nombre de candidature' },
-  { id: 4, name: 'Performant' },
+  { id: 'PA', name: 'Par age' },
+  { id: 'AL', name: 'Aléatoire' },
+  { id: 'NC', name: 'Nombre de candidature' },
+  { id: 'PF', name: 'Performant' },
 ]
 
 export default function CustomCombobox({ openAddAdminModal }) {

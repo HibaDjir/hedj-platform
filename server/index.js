@@ -23,6 +23,7 @@ const pelerinRouter=require('./routes/pelerinRoute')
 const masterAdminRoute=require('./routes/masterAdminRoute')
 const medecinRoute=require('./routes/medecinRoute')
 const dashboardRoute=require('./routes/dashboardRoute')
+const tirageTypeRoute=require('./routes/TirageType')
  
 index.use("/api/users",authRouter) 
 index.use("/api/wilaya",wilayaRouter) 
@@ -35,6 +36,7 @@ index.use("/api",pelerinRouter)
 index.use("/api/masterAdmin",masterAdminRoute)
 index.use("/api/medecin",medecinRoute) 
 index.use("/api/dashboardStats", dashboardRoute)
+index.use("/api/tirage", tirageTypeRoute)
 
 
 

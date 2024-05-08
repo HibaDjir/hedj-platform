@@ -142,10 +142,6 @@ export default function Dashboard() {
     const [debuthedj, setDebutedj] = useState();
     const [finhedj, setFinhedj] = useState();
 
-
-
-
-
     useEffect(() => {
       
         axios.get('http://localhost:3000/api/wilaya/65ff830ed96578ad80742c2f')
@@ -173,13 +169,19 @@ export default function Dashboard() {
             setDebutmed(response.data.consultaion_m_d);setFinmed(response.data.consultaion_m_f);
             setDebutpaiment(response.data.paiement_d);setFinpaiment(response.data.paiement_f);
             setDebutedj(response.data.hadj_d);setFinhedj(response.data.hadj_f);
+            axios.get('http://localhost:3000/api/tirage/find?fieldName=code&fieldValue='+response.data.algo_selected)
+              .then(responseType => {
+                setMode(responseType.data.name);
+              })
+              .catch(error => {
+                  console.error('Erreur lors de la récupération des options :', error);
+              });
           })
           .catch(error => {
               console.error('Erreur lors de la récupération des options :', error);
           });
 
         setDebutinsc('Charles');
-        setMode('Par age');
         setDebutpaiment("Oran");
         setFinpaiment("Oran");
     }, []);
@@ -209,15 +211,14 @@ export default function Dashboard() {
   
   <div class="relative flex justify-center items-center border bg-[#FAF8F5] rounded-2xl overflow-hidden shadow transform transition duration-500 hover:scale-105 hover:rounded-2xl  h-40 w-50">
     <div class="absolute top-4 px-2 text-gray-700"> 
-    <div class="top-0 px-2 text-gray-700 flex items-center ">
-      <TiTime className='h-6 w-6'/>  
-      <h3 class="ml-2 text-sm  font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Mode de Tirage</h3>
-      
-  </div>    
-  </div>
+      <div class="top-0 px-2 text-gray-700 flex items-center ">
+        <TiTime className='h-6 w-6'/>  
+        <h3 class="ml-2 text-sm  font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Mode de Tirage</h3>
+        
+      </div>    
+    </div>
   
-      <p class="text-2xl text-center  text-gray-600"> {mode}
-</p>
+      <p class="text-2xl text-center  text-gray-600"> {mode} </p>
    
   </div>
   
