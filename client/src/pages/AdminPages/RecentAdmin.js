@@ -99,7 +99,7 @@ export default function RecentAdmin() {
             label: "Supprimer",
               options: {
               customBodyRender: (value, tableMeta, updateValue) => {
-                const sousAdminId = recentSousAdminData[tableMeta.rowIndex]._id;
+                const sousAdminId = recentAdminData[tableMeta.rowIndex]._id;
                 return (
                   <button onClick={() => handleDelete(sousAdminId)}>Delete</button>
                 );
@@ -249,7 +249,7 @@ border p-2"
 </div>
 <MUIDataTable
 title={"Administrateurs"}
-data={recentSousAdminData}
+data={recentAdminData}
 columns={columns}
 options={options}
 />

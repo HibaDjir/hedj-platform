@@ -10,6 +10,8 @@ import { FaUserDoctor, FaPeopleGroup } from "react-icons/fa6";
 import { SlUserFollowing } from "react-icons/sl";
 import Paiment from '../../../pages/AdminPages/Paiment';
 import { FaCreditCard } from 'react-icons/fa';
+import { useLogout } from "../../../hooks/useLogout"
+import { useAuthContext } from "../../../hooks/useAuthContext";
 
 
 export default function Sidebar() {
