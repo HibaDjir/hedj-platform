@@ -2,51 +2,58 @@ const candidats=require('../../models/Candidature')
 const tirage_type=require('../../models/TirageType')
 
 async function updateCandidat(pelerinPrise){
-    for(let pelerin of pelerinPrise){
+    
         try {
-            const criteria = { '_id': pelerin._id };
-    
-            const update = {
-                $set: {
-                    is_elected: true,
-                    is_attente: false
-                }
-            };
-            
-            const result = await candidats.updateOne(criteria, update, {upsert: true});
-    
-            return res.status(200).json({ message: `${result.nModified} records updated successfully` });
+            for(let pelerin of pelerinPrise){
+                const criteria = { '_id': pelerin._id };
+        
+                const update = {
+                    $set: {
+                        is_elected: true,
+                        is_attente: false
+                    }
+                };
+                const result = await candidats.updateOne(criteria, update, {upsert: true});
+
+                return 'records updated successfully';
+            }
+            //return result.nModified;//res.status(200).json({ message: `${result.nModified} records updated successfully` });
         } catch (error) {
-            return res.status(500).json({ message: 'Internal server error' });
+            return 'Internal server error' ;
+           // return 'Internal server error';// res.status(500).json({ message: 'Internal server error' });
         }
-    }
 }
 
 async function tirageAliatoire(nbrTotalPelerin, commune_code, session_id){
     try {
         const candidatures = await candidats.find({id_session: session_id, commune: commune_code});
         let pelerinPrise = []; let nbr_en_cours = 0;let candidature_tirage = [...candidatures];
-        while (nbr_en_cours <= nbrTotalPelerin){
-            const rslt_random = Math.floor(Math.random() * nbr_en_cours);
+        
+        //console.error(rslt_random, candidature_tirage.length, nbr_en_cours);
+
+        while (nbr_en_cours < candidature_tirage.length){
+            const rslt_random = Math.floor(Math.random() * candidature_tirage.length);
             if(candidature_tirage[rslt_random].id_session === session_id && candidature_tirage[rslt_random].commune === commune_code){
                 if(candidature_tirage[rslt_random].genre==='ذكر'){
                     pelerinPrise.push(candidature_tirage[rslt_random])
-                    candidature_tirage.splice(rslt_random, 1);nbr_en_cours+=1;
+                    //candidature_tirage.splice(rslt_random, 1);
+                    nbr_en_cours+=1;
                 }else if (nbr_en_cours < nbrTotalPelerin && candidature_tirage[rslt_random].genre==='أنثى'){
                     let male_index = candidature_tirage.findIndex(pelerin => pelerin._id.toString() === candidature_tirage[rslt_random].id_mahrem);
                     pelerinPrise.push(candidature_tirage[rslt_random])
-                    candidature_tirage.splice(rslt_random, 1);nbr_en_cours+=1;
+                    //candidature_tirage.splice(rslt_random, 1);
+                    nbr_en_cours+=1;
                     if(male_index > -1 && (pelerinPrise.findIndex(pelerin => pelerin._id.toString() === candidature_tirage[rslt_random].id_mahrem)) === -1){
-                    }else {
                         pelerinPrise.push(candidature_tirage[male_index])
-                        candidature_tirage.splice(male_index, 1);nbr_en_cours+=1;
+                        //candidature_tirage.splice(male_index, 1);
+                        nbr_en_cours+=1;
                     }
                 }
             }
         }
         updateCandidat(pelerinPrise);
     } catch (error) {
-        throw new Error('Error selecting pilgrims');
+        throw error;
     }
 }
 
@@ -142,21 +149,25 @@ async function tirageAgeBrackets(nbrTotalPelerin, commune_code, session_id, ageB
         }
         i+=1;
     }
-    while(nbr_en_cours <= nbrTotalPelerin){
-        const rslt_random = Math.floor(Math.random() * nbr_en_cours);
+    const candidatures = await candidats.find({id_session: session_id, commune: commune_code});
+    let candidature_tirage = [...candidatures];
+    //console.error(rslt_random, candidature_tirage.length, nbr_en_cours);
+    while (nbr_en_cours < candidature_tirage.length){
+        const rslt_random = Math.floor(Math.random() * candidature_tirage.length);
         if(candidature_tirage[rslt_random].id_session === session_id && candidature_tirage[rslt_random].commune === commune_code){
             if(candidature_tirage[rslt_random].genre==='ذكر'){
                 pelerinPrise.push(candidature_tirage[rslt_random])
-                candidature_tirage.splice(rslt_random, 1);nbr_en_cours+=1;
+                //candidature_tirage.splice(rslt_random, 1);
+                nbr_en_cours+=1;
             }else if (nbr_en_cours < nbrTotalPelerin && candidature_tirage[rslt_random].genre==='أنثى'){
                 let male_index = candidature_tirage.findIndex(pelerin => pelerin._id.toString() === candidature_tirage[rslt_random].id_mahrem);
-                if(male_index===-1){
-                    pelerinPrise.push(candidature_tirage[rslt_random])
-                    candidature_tirage.splice(rslt_random, 1);nbr_en_cours+=1;
-                }else {
-                    pelerinPrise.push(candidature_tirage[rslt_random])
+                pelerinPrise.push(candidature_tirage[rslt_random])
+                //candidature_tirage.splice(rslt_random, 1);
+                nbr_en_cours+=1;
+                if(male_index > -1 && (pelerinPrise.findIndex(pelerin => pelerin._id.toString() === candidature_tirage[rslt_random].id_mahrem)) === -1){
                     pelerinPrise.push(candidature_tirage[male_index])
-                    candidature_tirage.splice(rslt_random, 1);candidature_tirage.splice(male_index, 1);nbr_en_cours+=2;
+                    //candidature_tirage.splice(male_index, 1);
+                    nbr_en_cours+=1;
                 }
             }
         }
@@ -214,21 +225,25 @@ async function tiragePerformant(nbrTotalPelerin, commune_code, session_id, ageBr
         }
         i+=1;
     }
-    while(nbr_en_cours <= nbrTotalPelerin){
-        const rslt_random = Math.floor(Math.random() * nbr_en_cours);
+    const candidatures = await candidats.find({id_session: session_id, commune: commune_code});
+    let candidature_tirage = [...candidatures];
+    //console.error(rslt_random, candidature_tirage.length, nbr_en_cours);
+    while (nbr_en_cours < candidature_tirage.length){
+        const rslt_random = Math.floor(Math.random() * candidature_tirage.length);
         if(candidature_tirage[rslt_random].id_session === session_id && candidature_tirage[rslt_random].commune === commune_code){
             if(candidature_tirage[rslt_random].genre==='ذكر'){
                 pelerinPrise.push(candidature_tirage[rslt_random])
-                candidature_tirage.splice(rslt_random, 1);nbr_en_cours+=1;
+                //candidature_tirage.splice(rslt_random, 1);
+                nbr_en_cours+=1;
             }else if (nbr_en_cours < nbrTotalPelerin && candidature_tirage[rslt_random].genre==='أنثى'){
                 let male_index = candidature_tirage.findIndex(pelerin => pelerin._id.toString() === candidature_tirage[rslt_random].id_mahrem);
-                if(male_index===-1){
-                    pelerinPrise.push(candidature_tirage[rslt_random])
-                    candidature_tirage.splice(rslt_random, 1);nbr_en_cours+=1;
-                }else {
-                    pelerinPrise.push(candidature_tirage[rslt_random])
+                pelerinPrise.push(candidature_tirage[rslt_random])
+                //candidature_tirage.splice(rslt_random, 1);
+                nbr_en_cours+=1;
+                if(male_index > -1 && (pelerinPrise.findIndex(pelerin => pelerin._id.toString() === candidature_tirage[rslt_random].id_mahrem)) === -1){
                     pelerinPrise.push(candidature_tirage[male_index])
-                    candidature_tirage.splice(rslt_random, 1);candidature_tirage.splice(male_index, 1);nbr_en_cours+=2;
+                    //candidature_tirage.splice(male_index, 1);
+                    nbr_en_cours+=1;
                 }
             }
         }
@@ -243,10 +258,13 @@ const calculeTirageType = async (req, res) => {
         if(code_algo === 'AL') tirageAliatoire(nbrTotalPelerin, commune, id_session);
         if(code_algo === 'NC') tirageNbrCandidat(nbrTotalPelerin, commune, id_session);
         if(code_algo === 'PA') tirageAgeBrackets(nbrTotalPelerin, commune, id_session, tir_type);
-        if(code_algo === 'PA') tiragePerformant(nbrTotalPelerin, commune, id_session, tir_type);
+        if(code_algo === 'PF') tiragePerformant(nbrTotalPelerin, commune, id_session, tir_type);
+
+        return res.status(200).json({ message: `${tir_type} records updated successfully` });
         
     } catch (error) {
-        res.status(400).json({error: error.message})
+
+        return res.status(400).json({ message: `${tir_type} records updated successfully` });
     }
 }
 

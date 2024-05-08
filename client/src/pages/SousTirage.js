@@ -27,6 +27,8 @@ export default function SousTirage() {
   
   const [code_algo, setCode_algo] = useState(null);
 
+  const [pelerins, setPelerins] = useState([]);
+
     const [selectedAlgorithm, setSelectedAlgorithm] = useState(null);
     useEffect(() => {
         const selectedDiv = document.getElementById(selectedAlgorithm);
@@ -63,7 +65,22 @@ export default function SousTirage() {
           })
           .catch(error => {
               console.error('Erreur lors de la récupération des options :', error);
-          });
+          });  
+          axios.get('http://localhost:3000/api/wilaya/65ff830ed96578ad80742c2f')
+            .then(response => {
+              const additionalOptions = response.data;//.map(wilaya => ({value: wilaya.code, label: wilaya.ar_name}));
+              //alert('http://localhost:3000/api/commune/find?fieldName=code&minValue='+additionalOptions.code+'00&maxValue='+additionalOptions.code+'99');
+              axios.get('http://localhost:3000/api/candidature/wilaya/prise/find?fieldName=wilaya&fieldValue='+additionalOptions.code)
+                .then(responseC => {
+                  setPelerins(responseC.data);
+                })
+                .catch(error => {
+                    console.error('Erreur lors de la récupération des options :', error);
+                });
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des options :', error);
+            }); 
           setDebutinsc('Charles')
           setMode('Par age')
           setDebutpaiment("Oran")
@@ -81,155 +98,131 @@ export default function SousTirage() {
         }),
       };
 
-    const columns = [
+  
+      const columns = [
         {
-         name: "Comm_name",
-         label: "Commune",
+         name: "nom",
+         label: "Nom",
          options: {
           filter: true,
           sort: true,
          }
         },
         {
-         name: " Nbr_places",
-         label: "Nombre de Places",
+          name: "prenom",
+          label: "Prenom",
+          options: {
+           filter: true,
+           sort: false,
+          }
+         },
+         {
+          name: "date_naissance",
+          label: "Date de naissance",
+          options: {
+           filter: true,
+           sort: false,
+          }
+         },
+        {
+         name: "lieu_naissance",
+         label: "Lieu de naissance",
          options: {
           filter: true,
           sort: false,
          }
         },
         {
-         name: "Pop",
-         label: "Population",
+          name: "nationalite",
+          label: "Nationalite",
+          options: {
+           filter: true,
+           sort: false,
+          }
+         },
+        {
+          name: "civilite",
+          label: "Civilite",
+          options: {
+           filter: true,
+           sort: false,
+          }
+         },
+         {
+          name: "genre",
+          label: "Genre",
+          options: {
+           filter: true,
+           sort: false,
+          }
+         },
+        {
+         name: "num_passeport",
+         label: "Num passeport",
          options: {
           filter: true,
           sort: false,
          }
         },
         {
-         name: "Nbr_candidats",
-         label: "Nombre de Candidats",
-         options: {
-          filter: true,
-          sort: false,
+          name: "telephone",
+          label: "Telephone",
+          options: {
+           filter: true,
+           sort: false,
+          }
+         },
+         {
+          name: "email",
+          label: "Adresse email",
+          options: {
+           filter: true,
+           sort: false,
+          }
+         },
+         {
+          name: "address",
+          label: "Address",
+          options: {
+           filter: true,
+           sort: false,
+          }
+         },
+         {
+          name: "groupage",
+          label: "Groupage",
+          options: {
+           filter: true,
+           sort: false,
+          }
+         },
+         {
+          name: "nss",
+          label: "Numéro de sécurité sociel",
+          options: {
+           filter: true,
+           sort: false,
+          }
          }
-        },
-        
        ];
-    const options = {
-        filterType: 'checkbox',
-      };
-    const recentAdminData = [
-      {
-    
-    
-        Admin_name: "Harrath Bouchra",
-        Admin_e_mail: "bouchra.harrath5@gmail.com",
-        current_Admin_status: "Active",
-        Admin_wilaya: "Chlef",
-        Admin_numero_de_telephone: "06 54 32 55 78",
-      },
-      {
-    
-    
-        Admin_name: "Harrath Bouchra",
-        Admin_e_mail: "bouchra.harrath5@gmail.com",
-        current_Admin_status: "Active",
-        Admin_wilaya: "Chlef",
-        Admin_numero_de_telephone: "06 54 32 55 78",
-      },
-      {
-    
-    
-        Admin_name: "Harrath Bouchra",
-        Admin_e_mail: "bouchra.harrath5@gmail.com",
-        current_Admin_status: "Active",
-        Admin_wilaya: "Chlef",
-        Admin_numero_de_telephone: "06 54 32 55 78",
-      },
-      {
-    
-    
-        Admin_name: "Harrath Bouchra",
-        Admin_e_mail: "bouchra.harrath5@gmail.com",
-        current_Admin_status: "Active",
-        Admin_wilaya: "Chlef",
-        Admin_numero_de_telephone: "06 54 32 55 78",
-      },
-      {
-    
-    
-        Admin_name: "Harrath Bouchra",
-        Admin_e_mail: "bouchra.harrath5@gmail.com",
-        current_Admin_status: "Active",
-        Admin_wilaya: "Chlef",
-        Admin_numero_de_telephone: "06 54 32 55 78",
-      },
-      {
-    
-    
-        Admin_name: "Harrath Bouchra",
-        Admin_e_mail: "bouchra.harrath5@gmail.com",
-        current_Admin_status: "Active",
-        Admin_wilaya: "Chlef",
-        Admin_numero_de_telephone: "06 54 32 55 78",
-      },
-      {
-    
-    
-        Admin_name: "Harrath Bouchra",
-        Admin_e_mail: "bouchra.harrath5@gmail.com",
-        current_Admin_status: "Active",
-        Admin_wilaya: "Chlef",
-        Admin_numero_de_telephone: "06 54 32 55 78",
-      },
-      {
-    
-    
-        Admin_name: "Harrath Bouchra",
-        Admin_e_mail: "bouchra.harrath5@gmail.com",
-        current_Admin_status: "Active",
-        Admin_wilaya: "Chlef",
-        Admin_numero_de_telephone: "06 54 32 55 78",
-      },
-      {
-    
-    
-        Admin_name: "Harrath Bouchra",
-        Admin_e_mail: "bouchra.harrath5@gmail.com",
-        current_Admin_status: "Active",
-        Admin_wilaya: "Chlef",
-        Admin_numero_de_telephone: "06 54 32 55 78",
-      },
-      {
-        Admin_name: "kechar djamal",
-        Admin_e_mail: "bouchra.harrath5@gmail.com",
-        current_Admin_status: "Active",
-        Admin_wilaya: "Chlef",
-        Admin_numero_de_telephone: "06 54 32 55 78",
-      },
-      {
-        Admin_name: "kechar djamal",
-        Admin_e_mail: "kechar@gmail.com",
-        current_Admin_status: "innactif",
-        Admin_wilaya: "Bejaia",
-        Admin_numero_de_telephone: "06 54 32 55 78",
-      },
-      {
-        Admin_name: "mohammed djamal",
-        Admin_e_mail: "kechar@gmail.com",
-        current_Admin_status: "innactif",
-        Admin_wilaya: "Bejaia",
-        Admin_numero_de_telephone: "06 54 32 55 78",
-      },
-      {
-        Admin_name: "djamila kechar",
-        Admin_e_mail: "djamila.kechar@gmail.com",
-        current_Admin_status: "innactif",
-        Admin_wilaya: "Bejaia",
-        Admin_numero_de_telephone: "06 54 32 55 78",
-      },
-    ];
+        const options = {
+          filterType: 'checkbox',
+        };
+        const recentPelerenData = pelerins.map(candidat => ({
+          nom: candidat.nom,
+          prenom: candidat.prenom,
+          date_naissance: candidat.date_naissance,
+          lieu_naissance: candidat.lieu_naissance,
+          civilite: candidat.civilite,
+          genre: candidat.genre,
+          num_passeport: candidat.num_passeport,
+          telephone: candidat.telephone,
+          email: candidat.email,
+          address: candidat.address,
+          groupage: candidat.groupage,
+          nss: candidat.nss 
+        })
+      ); 
 
 
 
@@ -277,6 +270,21 @@ export default function SousTirage() {
       try {
           // Make a PUT request to the backend API to update the record
           const response = await axios.put('http://localhost:3000/api/tirage/Tirage', { id_session, commune, nbrTotalPelerin, code_algo });
+           
+          axios.get('http://localhost:3000/api/wilaya/65ff830ed96578ad80742c2f')
+            .then(response => {
+              const additionalOptions = response.data;//.map(wilaya => ({value: wilaya.code, label: wilaya.ar_name}));
+              axios.get('http://localhost:3000/api/candidature/wilaya/prise/find?fieldName=wilaya&fieldValue='+additionalOptions.code)
+                .then(responseC => {
+                  setPelerins(responseC.data);
+                })
+                .catch(error => {
+                    console.error('Erreur lors de la récupération des options :', error);
+                });
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des options :', error);
+            }); 
           // Handle success (e.g., show a success message)
           alert("Record updated successfully");
       } catch (error) {
@@ -394,6 +402,7 @@ export default function SousTirage() {
     </button>
     <button
       className="text-[#1D1D1B] font-medium flex justify-between border-[#D8A353] rounded-md bg-[#D8A353] border items-center h-10 p-2 mr-2"
+      onClick={startTirage}
     >
       <MdOutlineSlowMotionVideo className="h-6 w-6 mt-2 mx-2  " src={add} />
       Affichage Séquentiel
@@ -405,7 +414,7 @@ export default function SousTirage() {
 
 <MUIDataTable
 title={""}
-data={recentAdminData}
+data={recentPelerenData}
 columns={columns}
 options={options}
 />
