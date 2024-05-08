@@ -1,3 +1,4 @@
+
 // App.js
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Resset_password from "./pages/Resset_password";
@@ -12,19 +13,18 @@ import { AuthContextProvider } from './context/authContext'; // Assuming your co
 import "./index";
 import SousSession from "./pages/SousSession"
 import RequireAuth from "./protectingRoutes/RequireAuth";
-import AttentePelerin from "./pages/AttentePelerin"
 import RequireNotAuth from "./protectingRoutes/RequireNotAuth";
-import RequireMasterAdmin from "./protectingRoutes/RequireMasterAdmin"
 import RequireAuthSsA from "./protectingRoutes/RequireAuthSsAdmin";
+import RequireMasterAdmin from "./protectingRoutes/RequireMasterAdmin"
+import AttentePelerin from "./pages/AttentePelerin"
 import Manassik from "../src/pages/Manassik";
 import Candidature from "./pages/Candidature";
 import Candidature_mahram  from "./pages/AddMahram";
 import UserProfile from "./pages/UserProfile";
 import Home_each_profile from "./pages/Home_each_profile";
 import Cansulter_cand from "./pages/Consulter_candidature";
-import Dash from "../src/pages/Dash_pages/Dashboard_Main"
-import Sous_Dash from "./pages/Dash_pages/Dashboard_sous";
-//import Dash from "../src/pages/Dash_pages/Dashboard_Main";// "../src/pages/Dash_pages/Dashboard";
+import SousDash from "./pages/Dash_pages/Dashboard_sous";
+import Dash from "../src/pages/Dash_pages/Dashboard_Main";
 import Medecins from "./pages/Medecins";
 import RecentAdmin from "./pages/AdminPages/RecentAdmin";
 import Session from "./pages/Session"
@@ -41,21 +41,15 @@ function App() {
       <div className="App">
         
         <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/AddAdmin" element={<RequireAuth><AddAdmin /></RequireAuth>} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/medecin" element={<Medecins/>} />
-          <Route path="/RecentAdmin" element={<RecentAdmin/>} />
-          <Route path="/Session" element={<Session/>} />
-          <Route path="/Candidat" element={<Candidat/>} />
-          <Route path="/Pelerin" element={<Pelerin/>} />
-          <Route path="/AttentePelerin" element={<AttentePelerin/>} />
+        <Route path="/" element={<RequireNotAuth><Home /></RequireNotAuth>} />
+        <Route path="/AddAdmin" element={<RequireMasterAdmin><AddAdmin /></RequireMasterAdmin>} />
 
+
+          <Route path="/SousSession" element={<RequireAuthSsA><SousSession/></RequireAuthSsA>} />
+          <Route path="/SousTirage" element={<RequireAuthSsA><SousTirage/></RequireAuthSsA>} />
+          <Route path="/SousPelerin" element={<RequireAuthSsA><SousPelerin/></RequireAuthSsA>} />
+          <Route path="/SousCandidat" element={<RequireAuthSsA><SousCandidat/></RequireAuthSsA>} />
           <Route path="/home" element={<RequireNotAuth><Home /></RequireNotAuth>} />
-          <Route path="/SousSession" element={<SousSession/>} />
-          <Route path="/SousTirage" element={<SousTirage/>} />
-          <Route path="/SousPelerin" element={<SousPelerin/>} />
-          <Route path="/SousCandidat" element={<SousCandidat/>} />
           <Route path="/medecin" element={<RequireMasterAdmin><Medecins/></RequireMasterAdmin>} />
           <Route path="/RecentAdmin" element={<RequireMasterAdmin><RecentAdmin/></RequireMasterAdmin>} />
           <Route path="/Session" element={<RequireMasterAdmin><Session/></RequireMasterAdmin>} />
@@ -73,9 +67,11 @@ function App() {
             element={<Resset_password />}
           />
           <Route path="/mail_conf" element={<EmailConfirmation />} />
-
+     
+          <Route path="/sousdash" element={<RequireAuthSsA><SousDash/></RequireAuthSsA>}></Route>
           <Route path="/dash" element={<RequireMasterAdmin><Dash/></RequireMasterAdmin>}></Route>
-          <Route path="/sousdash" element={<RequireAuthSsA><Sous_Dash/></RequireAuthSsA>}></Route>
+        
+
 
 
           
@@ -86,3 +82,4 @@ function App() {
 }
 
 export default App;
+

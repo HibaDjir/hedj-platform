@@ -8,12 +8,15 @@ import { GoPeople } from "react-icons/go";
 import { IoShuffleSharp } from "react-icons/io5";
 import { FaUserDoctor, FaPeopleGroup } from "react-icons/fa6";
 import { SlUserFollowing } from "react-icons/sl";
-import img from "../../../images/img.jpeg";
 import { getCustomers, getInventory, getComments} from "../../../pages/Dash_pages/API";
 import SessionSous from "../../../pages/SousSession"
 import SousTirage from '../../../pages/SousTirage';
 import { useLogout } from "../../../hooks/useLogout"
 import { useAuthContext } from "../../../hooks/useAuthContext";
+<<<<<<< HEAD
+=======
+import { jwtDecode } from 'jwt-decode';
+>>>>>>> origin/Merieme
 import { GiSandsOfTime } from "react-icons/gi";
 
 
@@ -24,20 +27,36 @@ const linkClass = 'flex flex-col items-center gap-2 font-light px-3 py-2 hover:b
 export default function Sidebar() {
 
     const [daata, setDaata] = useState({});
+     const [userId, setUserId] = useState(null);
+    const response = localStorage.getItem('user');
+    
+    const parsedRes = JSON.parse(response);
+    const token = parsedRes.token
+    const decodedToken = jwtDecode(token);
+
 
     const { logout } = useLogout();
-  const { user } = useAuthContext();
-  const handleClick = () => {
+    const { user } = useAuthContext();
+    const handleClick = () => {
     logout();
   };
   
     useEffect(() => {
+<<<<<<< HEAD
         fetchWilaya("6633e0b320bb4b1fc14f2188");
       }, []);
+=======
+        if (decodedToken && decodedToken._id) {
+            setUserId(decodedToken._id); // Store ID if found in decoded token
+            fetchWilaya(userId);
+          }
+      }, [daata, userId]);
+
+>>>>>>> origin/Merieme
     
       const fetchWilaya = async(id)=>{
         try {
-            const response = await fetch(`http://localhost:3000/api/masterAdmin/getSousAdminWilaya/${id}`);
+            const response = await fetch(`http://localhost:3000/api/masterAdmin/getSaousAdminByuserId/${id}`);
             if (!response.ok) {
               throw new Error('Failed to fetch Candidats');
             }
@@ -59,11 +78,7 @@ export default function Sidebar() {
 
 <li>
     <div className="flex flex-col items-center gap-2 px-1 py-3 justify-center">
-        <div className="rounded-full overflow-hidden border border-gray-300">
-            <img className="w-20 h-20 object-cover" src={img} alt="Profile" />
-        </div>
-        <p className="mt-6 font-bold text-xl text-center">{daata.nom} {daata.prenom}</p>
-        <p className="mt-2 font-bold text-xl text-center">Wilaya: {daata.wilaya}</p>
+        <p className="mt-2 font-bold text-xl text-center"> {daata.wilaya}</p>
 
     </div>
 </li>

@@ -10,6 +10,8 @@ router.route("/deleteAllPelerin").delete(pelerinController.deleteAllPelerin);
 router.route("/getPelerinByWilaya/:name").get(pelerinController.getPelerinByWilaya);
 router.route("/getPelerinByCommune/:name", ).get(pelerinController.getPelerinByCommune);
 router.route("/deleteAllPelerins", ).delete(pelerinController.deleteAllPelerinsFromDb);
+router.route("/deleteAllPelerinsFromDb").delete(pelerinController.deleteAllPelerinsFromDb);
+
 
 
 

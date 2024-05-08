@@ -6,7 +6,6 @@ const OnlyPublic = ({ children }) => {
   const { user } = useContext(AuthContext); // Destructure directly
   const storedUser = localStorage.getItem('user'); // Retrieve user data from localStorage
 
-
   if(storedUser){
   const userData = JSON.parse(storedUser); // Parse the stored user data (replace if not JSON)
   const userRole = userData.Role; // Extract and set user role

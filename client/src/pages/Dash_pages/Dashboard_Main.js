@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import BarChart from '../../components/Dash_components/BarChart'
+import BarCharOther from '../../components/Dash_components/BarCharOther'
 import DoughnutChart from '../../components/Dash_components/DoughnutChart'
 import LineChart from '../../components/Dash_components/LineChart'
 import Cards from '../../components/Dash_components/Cards'
@@ -37,7 +38,7 @@ export default function Dashboard() {
             <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl dark:text-black mb-4 p-10">Les dernières statistique de Elhadj</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
               <div className="p-7">
-                <BarChart />
+                <BarCharOther />
               </div>
               <div className="p-7">
                 <BarChart />

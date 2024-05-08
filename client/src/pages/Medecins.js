@@ -74,7 +74,16 @@ export default function Medecins() {
      }
     },
     {
-     name: "Admin_e_mail",
+
+      name: "lastName",
+      label: "Prenom",
+      options: {
+       filter: true,
+       sort: true,
+      }
+     },
+    {
+     name: "email",
      label: "E-mail",
      options: {
       filter: true,

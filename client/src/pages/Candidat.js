@@ -86,6 +86,7 @@ export default function Medecins() {
       sort: false,
      }
     },
+
     {
       name: "nationalite",
       label: "Nationalite",
@@ -166,8 +167,6 @@ export default function Medecins() {
     nom: candidat.nom,
     prenom: candidat.prenom,
     date_naissance: candidat.date_naissance,
-    prenom: candidat.prenom,
-    nom: candidat.nom,
     lieu_naissance: candidat.lieu_naissance,
     civilite: candidat.civilite,
     genre: candidat.genre,

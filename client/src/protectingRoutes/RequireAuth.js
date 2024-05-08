@@ -24,7 +24,6 @@ import { Navigate, useLocation } from "react-router-dom";
             }
         setIsLoading(false); // Update loading state after check
         if (!storedUser || !allowedRoles.includes(userRole)) { // Check user existence and role
-
             if (userRole === 'sousAdmin') {
                 redirectPath = '/sousdash';
             }else if(userRole === 'masterAdmin'){

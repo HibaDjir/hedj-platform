@@ -68,10 +68,8 @@ function Modal({ onClose }) {
       localStorage.setItem('user', JSON.stringify(json))
         // Determine the redirect path based on the user's role
         let redirectPath;
-        if (_.isEqual(json.Role, 'user')) {
-      
+        if (_.isEqual(json.Role, 'user')) {     
             redirectPath = location.state?.path || "/homelgin";
-
         } else if (json.Role === 'sousAdmin') {
             redirectPath = location.state?.path || "/sousdash";
         }else if (json.Role === 'masterAdmin'){

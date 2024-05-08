@@ -3,9 +3,8 @@ import MUIDataTable from "mui-datatables";
 import AddAdminModal from "../Popups/AddCommune";
 import add from "../images/mini_add.png";
 import Logo from "../images/LOGO.png";
-//import jwtDecode from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 import { AuthContext } from '../context/authContext'; // Assuming your context file path
-
 import Sidebar from '../components/Dash_components/shared/SidebarSous'
 import Header from '../components/Dash_components/shared/HeaderSous'
 import Combobox from '../components/Dash_components/combobox';
@@ -20,21 +19,21 @@ export default function Dashboard() {
     const [isAddAdminModalOpen, setIsAddAdminModalOpen] = useState(false);
     const [candidats, setCandidats] = useState([])
     const [daata, setDaata] = useState([]);
+    const [userId, setUserId] = useState(null);
+
+    const response = localStorage.getItem('user');
+    const parsedRes = JSON.parse(response);
+    const token = parsedRes.token
+    const decodedToken = jwtDecode(token);
 
     
     useEffect(() => {
-      const token = localStorage.getItem('user');
-      // if (token) {
-      //   try {
-      //     const decodedToken = jwtDecode(token);
-      //     const adminId = decodedToken.adminId; // Assuming "adminId" is the key in the token
-      //     fetchWilaya(adminId);
-      //   } catch (error) {
-      //     console.error('Error decoding token:', error);
-      //   }
-      // } else {
-      //       return      }
-      fetchWilaya("6633e0b320bb4b1fc14f2188");
+
+      if (decodedToken && decodedToken._id) {
+        setUserId(decodedToken._id); // Store ID if found in decoded token
+        fetchWilaya(userId);
+      }
+
       if (daata.wilaya) { // Check if daata.wilaya has a value to avoid errors
         fetchCandidats(daata.wilaya);
       }    
@@ -43,7 +42,7 @@ export default function Dashboard() {
   
       const fetchWilaya = async(id)=>{
         try {
-            const response = await fetch(`http://localhost:3000/api/masterAdmin/getSousAdminWilaya/${id}`);
+            const response = await fetch(`http://localhost:3000/api/masterAdmin/getSaousAdminByuserId/${id}`);
             if (!response.ok) {
               throw new Error('Failed to fetch Candidats');
             }
