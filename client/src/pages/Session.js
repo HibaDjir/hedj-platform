@@ -170,6 +170,7 @@ export default function Session() {
 
     const openAddAdminModal = (algo) => {
       setSelectedAlgo(algo);
+      alert(algo.id);
       setAlgo_selected(algo.id)
       setMode(algo.name);
       if (algo.name === "Par age") {
