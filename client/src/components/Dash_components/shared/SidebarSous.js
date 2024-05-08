@@ -15,6 +15,7 @@ import SessionSous from "../../../pages/SousSession"
 import SousTirage from '../../../pages/SousTirage';
 import { useLogout } from "../../../hooks/useLogout"
 import { useAuthContext } from "../../../hooks/useAuthContext";
+import { jwtDecode } from 'jwt-decode';
 import { GiSandsOfTime } from "react-icons/gi";
 
 
@@ -25,20 +26,33 @@ const linkClass = 'flex flex-col items-center gap-2 font-light px-3 py-2 hover:b
 export default function Sidebar() {
 
     const [daata, setDaata] = useState({});
+     const [userId, setUserId] = useState(null);
+    const response = localStorage.getItem('user');
+    
+    const parsedRes = JSON.parse(response);
+    const token = parsedRes.token
+    const decodedToken = jwtDecode(token);
+
 
     const { logout } = useLogout();
-  const { user } = useAuthContext();
-  const handleClick = () => {
+    const { user } = useAuthContext();
+    const handleClick = () => {
     logout();
   };
 
     useEffect(() => {
-        fetchWilaya();
-      }, [daata]);
+
+
+        if (decodedToken && decodedToken._id) {
+            setUserId(decodedToken._id); // Store ID if found in decoded token
+            fetchWilaya(userId);
+          }
+      }, [daata, userId]);
+
     
       const fetchWilaya = async(id)=>{
         try {
-            const response = await fetch(`http://localhost:3000/api/masterAdmin/getSousAdminWilaya/${id}`);
+            const response = await fetch(`http://localhost:3000/api/masterAdmin/getSaousAdminByuserId/${id}`);
             if (!response.ok) {
               throw new Error('Failed to fetch Candidats');
             }

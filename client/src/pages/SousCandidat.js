@@ -27,10 +27,12 @@ export default function Dashboard() {
 
     
     useEffect(() => {
+
       if (decodedToken && decodedToken._id) {
         setUserId(decodedToken._id); // Store ID if found in decoded token
         fetchWilaya(userId);
       }
+
       if (daata.wilaya) { // Check if daata.wilaya has a value to avoid errors
         fetchCandidats(daata.wilaya);
       }    }, [ daata,userId]);
@@ -86,9 +88,6 @@ export default function Dashboard() {
       {
         name: "lastName",
         label: "Prenom",
-
-   
-
         options: {
          filter: true,
          sort: true,
@@ -153,10 +152,17 @@ export default function Dashboard() {
           sort: false,
          }
         },
-      
-      
-       
-        
+
+       {
+         name: "Admin_numero_de_telephone",
+         label: "Numéro De teléphone",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+
+
        {
         name: "Etat_civil",
         label: "Etat Civil",
@@ -205,8 +211,16 @@ export default function Dashboard() {
           sort: false,
          }
         },
-       
-        
+
+        {
+         name: "Numero_ass",
+         label: "Numéro du passport de Elmahrem",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+
 
      ];
   const options = {

@@ -2,10 +2,21 @@ const Candidatures = require('../models/Candidature')
 const Pelerins = require('../models/pelerin')
 const Medecins = require('../models/Medecin')
 const Admins = require('../models/sousAdmin')
+const Commune = require('../models/Commune')
+const Wilaya = require('../models/wilaya')
 const Session = require('../models/Sessions');
-const Wilaya=require('../models/wilaya')
 
 
+
+const getCandidatsCountForWilaya = async (wilaya) => {
+  try {
+    const candidatsCount = await Candidature.countDocuments({ wilaya: wilaya.code });
+    return candidatsCount;
+  } catch (error) {
+    console.error('Error fetching candidats count for wilaya:', error);
+    throw new Error('Error fetching candidats count for wilaya');
+  }
+};
 
 exports.getCounts = async(req, res)=>{
  try {
@@ -27,6 +38,29 @@ exports.getCounts = async(req, res)=>{
     res.status(500).json({ error: 'Internal Server Error' });
  }
 }
+
+exports.getCountsWilaya = async(req, res)=>{
+  try {
+     const wilayaName = req.params.name
+     const lawilaya = await Wilaya.findOne({name:wilayaName})
+     const nbPlaces = lawilaya.nb_places
+     const candidatureCount = await Candidatures.find({wilaya: lawilaya.code}).countDocuments();
+     const medecinCount = await Medecins.find({
+      Wilaya:lawilaya._id
+    }).countDocuments();
+ 
+     const counts = {
+         candidaturesCount: candidatureCount,
+         medecinsCount: medecinCount,
+         nbPlaces: nbPlaces
+       };
+ 
+     console.log("les counts des tables", counts)
+     res.status(201).json(counts)
+  } catch (error) {
+     res.status(500).json({ error: 'Internal Server Error' });
+  }
+ }
 
 
 exports.getFMCandCount = async(req, res)=>{

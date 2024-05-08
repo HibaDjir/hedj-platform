@@ -88,12 +88,16 @@ export default function Medecins() {
       sort: false,
      }
     },
-    
-
-    { name: "etat",
+    {
+     name: "etat",
      label: "Etat",
+     options: {
+      filter: true,
+      sort: false,
+     }
     },
-{
+  {
+
       name: "Num_passport",
       label: "Numéro De Passport",
       options: {
@@ -103,7 +107,9 @@ export default function Medecins() {
      },
      {
       name: "email",
-     label: "E-mail",
+
+      label: "E-mail",
+
       options: {
        filter: true,
        sort: false,
@@ -175,6 +181,7 @@ export default function Medecins() {
        sort: false,
       }
      },
+
     
     
    

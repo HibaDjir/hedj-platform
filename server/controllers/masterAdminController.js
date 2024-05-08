@@ -207,6 +207,7 @@ exports.updateSousAdmin=async(req,res)=>{
 
 exports.getAdminsWilaya = async(req, res)=>{
     try {
+
        const  idAdmin = req.params.id 
         const sousadmin = await sousAdmin.findById({_id: idAdmin}).populate('Wilaya').populate('user').exec();
         console.log(sousadmin)
@@ -216,9 +217,35 @@ exports.getAdminsWilaya = async(req, res)=>{
             nom: sousadmin.user.firstName,
             prenom: sousadmin.user.lastName,
             _id: sousadmin._id,
-         
+
         });
     } catch (err) {
         res.status(400).json(err.message)
     }
+}
+
+//get sousAdminByidUse  
+//get sousAdminByidUse  
+exports.getSousAdminByUser=async(req,res)=>{ 
+    try{ 
+        let idUser=req.params.id 
+        const sousadmin=await sousAdmin.findOne({user:idUser}) 
+        console.log
+        const  idAdmin =sousadmin._id 
+        const sousadminPop = await sousAdmin.findById({_id: idAdmin}).populate('Wilaya').populate('user').exec(); 
+        console.log("admin POP", sousadminPop)
+
+        const lawilaya = sousadminPop.Wilaya.name 
+        console.log("la wilaya", lawilaya)
+        res.status(201).json({ 
+            wilaya: lawilaya, 
+            nom: sousadminPop.user.firstName, 
+            prenom: sousadminPop.user.lastName, 
+            _id: sousadminPop._id ,
+            nb_places: lawilaya.nb_places
+        }); 
+ 
+    }catch(err){ 
+        res.status(400).json({message: err.message}) 
+    } 
 }

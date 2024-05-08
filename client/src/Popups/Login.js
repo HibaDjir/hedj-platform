@@ -31,8 +31,6 @@ function Modal({ onClose }) {
     })
 
     const json = await response.json()
-
-
     console.log("THEEE RESPONSE",response)
     const res = JSON.stringify(json)
     const resData = JSON.parse(res);
