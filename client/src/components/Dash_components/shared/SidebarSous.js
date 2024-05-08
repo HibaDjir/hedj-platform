@@ -8,7 +8,6 @@ import { GoPeople } from "react-icons/go";
 import { IoShuffleSharp } from "react-icons/io5";
 import { FaUserDoctor, FaPeopleGroup } from "react-icons/fa6";
 import { SlUserFollowing } from "react-icons/sl";
-import img from "../../../images/img.jpeg";
 import { getCustomers, getInventory, getComments} from "../../../pages/Dash_pages/API";
 
 import SessionSous from "../../../pages/SousSession"
@@ -73,11 +72,7 @@ export default function Sidebar() {
 
 <li>
     <div className="flex flex-col items-center gap-2 px-1 py-3 justify-center">
-        <div className="rounded-full overflow-hidden border border-gray-300">
-            <img className="w-20 h-20 object-cover" src={img} alt="Profile" />
-        </div>
-        <p className="mt-6 font-bold text-xl text-center">{daata.nom} {daata.prenom}</p>
-        <p className="mt-2 font-bold text-xl text-center">Wilaya: {daata.wilaya}</p>
+        <p className="mt-2 font-bold text-xl text-center"> {daata.wilaya}</p>
 
     </div>
 </li>

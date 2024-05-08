@@ -2,39 +2,48 @@ import React from 'react';
 import Utils from "./shared/Utils";
 import { Bar } from 'react-chartjs-2';
 import {Chart as ChartJS} from "chart.js/auto"
+import { useEffect, useState } from 'react';
+
 
 export default function BarChart() {
+  const [counts, setCounts] = useState([]);
 
-const labels = Utils.months({count: 7});
+  useEffect(() => {
+    fetchCounts()
+    console.log("ages",counts)
+        },[]);  
+
+
+  const fetchCounts = async()=>{
+    try {
+        const response = await fetch(`http://localhost:3000/api/dashboardStats/getPelerinParAge`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch counts');
+        }
+        const data = await response.json();
+        setCounts(data);
+      } catch (error) {
+        console.error('Error fetching counts:', error);
+      }
+  } 
+
+  const labels = counts.map(item => item.ageRange);
+  const dataValues = counts.map(item => item.count); 
+
+
+
 const data = {
   labels: labels,
   datasets: [{
-    label: 'Statistiques des pèlerins en Algeries',
-    data: [65, 59, 80, 81, 56, 55, 40],
+    label: 'Statistiques des pèlerins en Algeries par ages',
+    data: dataValues,
     barThickness : 20,
     borderRadius: 15,
     backgroundColor: [
       'rgb(216,163,83)',
-      'rgb(216,163,83)',
-      'rgb(216,163,83)',
-      'rgb(216,163,83)',
-      'rgb(216,163,83)',
-      'rgb(216,163,83)',
-      'rgb(216,163,83)',
-      'rgb(216,163,83)',
     ],
     borderColor: [
-        'rgb(216,163,83)',
-        'rgb(216,163,83)',
-        'rgb(216,163,83)',
-        'rgb(216,163,83)',
-        'rgb(216,163,83)',
-        'rgb(216,163,83)',
-        'rgb(216,163,83)',
-        'rgb(216,163,83)',
-
-
-      
+        'rgb(216,163,83)',  
     ],
     borderWidth: 1,
     

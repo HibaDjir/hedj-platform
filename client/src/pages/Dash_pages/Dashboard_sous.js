@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
-import BarChart from '../../components/Dash_components/BarChart'
-import DoughnutChart from '../../components/Dash_components/DoughnutChart'
+import BarChartSous from '../../components/Dash_components/BarChartSous'
+import BarChartSousOther  from '../../components/Dash_components/BarChartSousOther'
+import DoughnutChart from '../../components/Dash_components/DoughnutSous'
 import LineChart from '../../components/Dash_components/LineChart'
 import Cards from '../../components/Dash_components/CardsSous'
 import Sidebar from '../../components/Dash_components/shared/SidebarSous'
@@ -41,10 +42,10 @@ export default function Dashboard() {
             <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl dark:text-black mb-4 p-10">Les dernières statistique de la Wilaya</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
               <div className="p-7">
-                <BarChart />
+                <BarChartSous />
               </div>
               <div className="p-7">
-                <BarChart />
+                <BarChartSousOther />
               </div>
               <div className=" p-7">
                 <DoughnutChart />

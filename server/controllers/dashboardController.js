@@ -187,6 +187,60 @@ exports.getPelerinParAge=async(req,res)=>{
 }
 
 
+  exports.getCandidatsByAge = async (req, res) => {
+    try {
+      const result = await Candidatures.aggregate([
+        {
+          $addFields: {
+            age: {
+              $floor: {
+                $divide: [
+                  { $subtract: [new Date(), "$date_naissance"] },
+                  31536000000 // Milliseconds in a year
+                ]
+              }
+            }
+          }
+        },
+        {
+          $group: {
+            _id: {
+              $subtract: [
+                { $ifNull: ["$age", 0] }, // Handle null values for age
+                { $mod: [{ $ifNull: ["$age", 0] }, 10] } // Handle null values for age
+              ]
+            },
+            count: { $sum: 1 }
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            ageRange: "$_id",
+            count: 1
+          }
+        },
+        {
+          $sort: {
+            ageRange: 1
+          }
+        }
+      ]);
+  
+      // Send the result as JSON response
+      res.json(result);
+    } catch (error) {
+      // If an error occurs, send an error response
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
+  
+    
+
+
+
+
 
 
 exports.countPelerinsByYear=async(req,res) =>{
@@ -216,7 +270,7 @@ exports.countPelerinsByYear=async(req,res) =>{
     
     // Convert the candidaturesByYear object to an array of objects
     const candidaturesArray = Object.entries(candidaturesByYear).map(([year, count]) => ({ year, count }));
-    req.json(candidaturesArray)
+    res.json(candidaturesArray)
     
 
 
@@ -321,6 +375,72 @@ let code=wilayFound.code
           ageRange: 1
         }
       }
+    ])
+    console.log('resultat est ',result)
+
+    // Send the result as JSON response
+    
+    res.json(result);
+  } catch (error) {
+    // If an error occurs, send an error response
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+//get count of condidature by age by wilaya
+
+
+
+exports.getCountOfCandidatureByAgeAndWilaya = async (req, res) => {
+  try {
+    const wilaya = req.params.name;
+    let wilayaFound = await Wilaya.findOne({ name: wilaya });
+    let code = wilayaFound.code;
+
+    // Execute the aggregation pipeline
+    const result = await Candidatures.aggregate([
+      // Filter documents by wilaya
+      { $match: { wilaya: parseInt(code) } },
+      // Calculate age from date of birth
+      {
+        $addFields: {
+          age: {
+            $floor: {
+              $divide: [
+                { $subtract: [new Date(), "$date_naissance"] },
+                31536000000 // Milliseconds in a year
+              ]
+            }
+          }
+        }
+      },
+      // Group by age range and count documents
+      {
+        $group: {
+          _id: {
+            $multiply: [
+              { $trunc: { $divide: ["$age", 10] } }, // Calculate the start of age range
+              10
+            ]
+          },
+          count: { $sum: 1 }
+        }
+      },
+      // Project the result with age range and count
+      {
+        $project: {
+          _id: 0,
+          ageRange: "$_id",
+          count: 1
+        }
+      },
+      // Sort by age range
+      {
+        $sort: {
+          ageRange: 1
+        }
+      }
     ]);
 
     // Send the result as JSON response
@@ -332,3 +452,42 @@ let code=wilayFound.code
   }
 };
 
+//get male and female count per wilaya for pelerin
+exports.getFMPelCountByWilaya=async(req, res)=>{
+  try {
+    let wilaya =req.params.name
+    let wilayaFound = await Wilaya.findOne({ name: wilaya });
+    
+    
+      const pelerinDuCode = await Pelerins.find().populate( "Candidature")
+      const pelerins = pelerinDuCode.filter(pelerin => pelerin.Candidature.wilaya === wilayaFound.code)
+
+
+      let femaleCount = 0;
+      let maleCount = 0;
+
+      for (const pelerin of pelerins) {
+          const candidature = await Candidatures.findOne({ _id: pelerin.Candidature });
+          if (candidature) {
+              if (candidature.genre === "أنثى" ) {//&& candidature.status === "is_elected"
+                  femaleCount++;
+              } else if (candidature.genre === "ذكر" ) {//&& candidature.status === "is_elected"
+                  maleCount++;
+              }
+          }
+      }
+
+      const FMcounts = {
+          femaleCount,
+          maleCount
+      }
+
+      console.log("les femmes pelerins: ", femaleCount)
+      console.log("les males pelerins: ", maleCount)
+
+      res.status(201).json(FMcounts)
+  } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+//////////  { $match: { "candidature.status": "is-elected" } },///////

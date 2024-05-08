@@ -212,7 +212,7 @@ exports.getAdminsWilaya = async(req, res)=>{
         const  idAdmin = req.params.id
 
         const sousadmin = await sousAdmin.findById({_id: idAdmin}).populate('Wilaya').populate('user').exec();
-        console.log(sousadmin)
+       
         const lawilaya = sousadmin.Wilaya.name
         res.status(201).json({
             wilaya: lawilaya,
