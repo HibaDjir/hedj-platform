@@ -20,12 +20,6 @@ const SessionSchema = new schema({
         enum:["En cours", "Candidature", "Tirage", "Medecin","Paiement","Elhadj", "Cloture"],
         default:"En cours"
     },
-<<<<<<< HEAD
-    cotat:{
-        type: Number,
-        require: true,
-    },
-=======
     inscription_d:{
         type: String,
     },
@@ -59,7 +53,6 @@ const SessionSchema = new schema({
     algo_selected:{
         type: String,
     }
->>>>>>> 203afcec4f85ee6a5f429612566aa191079169f6
 })
 
 module.exports = mongoose.model('sessions', SessionSchema)

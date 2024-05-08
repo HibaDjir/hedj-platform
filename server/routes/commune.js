@@ -11,11 +11,7 @@ const {
 } = require('../controllers/CommuneControllers')
 router.get('/All',getAllCommune)
 
-<<<<<<< HEAD
 router.get('/comById/:id',getCommuneById)
-=======
-//router.get('/:id',getCommuneById)
->>>>>>> 203afcec4f85ee6a5f429612566aa191079169f6
 
 router.get('/find', getCommune)
 

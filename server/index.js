@@ -56,7 +56,6 @@ const verifiyUser = (req, res, next)=>{
         return res.json("err token");
     }else{
         const decodedPayload = decodeToken(query.token);
-
         return res.json(decodedPayload._id);
     }
 }
