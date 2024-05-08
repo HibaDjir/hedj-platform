@@ -8,5 +8,7 @@ router.route('/getFMPelCount').get(dashboardController.getFMPelCount)
 router.route('/getPelerinParAge').get(dashboardController.getPelerinParAge);
 router.route('/getPelerinParYear').get(dashboardController.countPelerinsByYear);
 router.route('/getCountsWilaya/:name').get(dashboardController.getCountsWilaya)
+router.route('/getCandidParAge').get(dashboardController.getCandidatsByAge);
+
 
 module.exports=router;

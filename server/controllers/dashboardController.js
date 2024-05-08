@@ -186,6 +186,60 @@ exports.getPelerinParAge=async(req,res)=>{
 }
 
 
+  exports.getCandidatsByAge = async (req, res) => {
+    try {
+      const result = await Candidatures.aggregate([
+        {
+          $addFields: {
+            age: {
+              $floor: {
+                $divide: [
+                  { $subtract: [new Date(), "$date_naissance"] },
+                  31536000000 // Milliseconds in a year
+                ]
+              }
+            }
+          }
+        },
+        {
+          $group: {
+            _id: {
+              $subtract: [
+                { $ifNull: ["$age", 0] }, // Handle null values for age
+                { $mod: [{ $ifNull: ["$age", 0] }, 10] } // Handle null values for age
+              ]
+            },
+            count: { $sum: 1 }
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            ageRange: "$_id",
+            count: 1
+          }
+        },
+        {
+          $sort: {
+            ageRange: 1
+          }
+        }
+      ]);
+  
+      // Send the result as JSON response
+      res.json(result);
+    } catch (error) {
+      // If an error occurs, send an error response
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
+  
+    
+
+
+
+
 
 
 exports.countPelerinsByYear=async(req,res) =>{
@@ -215,7 +269,7 @@ exports.countPelerinsByYear=async(req,res) =>{
     
     // Convert the candidaturesByYear object to an array of objects
     const candidaturesArray = Object.entries(candidaturesByYear).map(([year, count]) => ({ year, count }));
-    req.json(candidaturesArray)
+    res.json(candidaturesArray)
     
 
 
