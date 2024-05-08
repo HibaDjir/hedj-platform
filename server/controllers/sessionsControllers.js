@@ -68,7 +68,7 @@ const deleteSession = async (req, res) => {
 }
 
 const updateSession = async (req, res) => {
-        const { nbr_candidats, inscription_d, inscription_f, tirage_d, tirage_f, consultaion_m_d, consultaion_m_f, paiement_d, paiement_f, hadj_d, hadj_f } = req.body;
+        const { nbr_candidats, inscription_d, inscription_f, tirage_d, tirage_f, consultaion_m_d, consultaion_m_f, paiement_d, paiement_f, hadj_d, hadj_f, algo_selected } = req.body;
         const { id } = req.params
 
         if(!mongoose.Types.ObjectId.isValid(id)){
@@ -88,7 +88,8 @@ const updateSession = async (req, res) => {
                 paiement_d: paiement_d,
                 paiement_f: paiement_f,
                 hadj_d: hadj_d,
-                hadj_f: hadj_f
+                hadj_f: hadj_f,
+                algo_selected: algo_selected
                 // You can add more fields as needed
             }
         };

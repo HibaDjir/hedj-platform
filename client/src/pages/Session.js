@@ -20,6 +20,7 @@ export default function Session() {
   const [id_session, setSession] = useState(null);
   const [annee, setAnnee] = useState('2024');
   const [nbr_candidats, setNbr_Candidats] = useState('');
+  const [mode, setMode] = useState(null);
 
   useEffect(() => {
     axios.get('http://localhost:3000/api/wilaya/All')
@@ -38,7 +39,14 @@ export default function Session() {
               setTirage_d(response.data.tirage_d);setTirage_f(response.data.tirage_f);
               setConsultaion_m_d(response.data.consultaion_m_d);setConsultaion_m_f(response.data.consultaion_m_f);
               setPaiement_d(response.data.paiement_d);setPaiement_f(response.data.paiement_f);
-              sethadj_d(response.data.hadj_d);setHadj_f(response.data.hadj_f);
+              sethadj_d(response.data.hadj_d);setHadj_f(response.data.hadj_f);setAlgo_selected(response.data.algo_selected);
+              axios.get('http://localhost:3000/api/tirage/find?fieldName=code&fieldValue='+response.data.algo_selected)
+                .then(responseType => {
+                  setMode(responseType.data.name);
+                })
+                .catch(error => {
+                    console.error('Erreur lors de la récupération des options :', error);
+                });
             })
             .catch(error => {
                 console.error('Erreur lors de la récupération des options :', error);
@@ -162,6 +170,8 @@ export default function Session() {
 
     const openAddAdminModal = (algo) => {
       setSelectedAlgo(algo);
+      setAlgo_selected(algo.id)
+      setMode(algo.name);
       if (algo.name === "Par age") {
         setIsAddAdminModalOpen(true);
       }
@@ -220,9 +230,8 @@ export default function Session() {
 
     const UpdateSession = async () => {
       try {
-        alert(id_session)
         const response = await axios.put('http://localhost:3000/api/session/'+id_session, { 
-          annee, nbr_candidats, inscription_d, inscription_f, tirage_d, tirage_f, consultaion_m_d, consultaion_m_f, paiement_d, paiement_f, hadj_d, hadj_f
+          annee, nbr_candidats, inscription_d, inscription_f, tirage_d, tirage_f, consultaion_m_d, consultaion_m_f, paiement_d, paiement_f, hadj_d, hadj_f, algo_selected
         });
         alert("Enregistrement avec succées");
       } catch (error) {
@@ -238,6 +247,7 @@ export default function Session() {
 
     const [isAddAdminModalOpen, setIsAddAdminModalOpen] = useState(false);
     const [selectedAlgo, setSelectedAlgo] = useState(null);
+    const [algo_selected, setAlgo_selected] = useState(null);
 
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
@@ -273,6 +283,7 @@ export default function Session() {
                 <img className="h-3 w-3  mt-2 mx-2  " src={add} />
                 Enregistrer le modification
               </button>
+              <p class="text-3xl">  Changer le type de tirage : </p> <Combobox className="z-0" style={{ width: 'calc(100% - 4px)' }} openAddAdminModal={openAddAdminModal} /> 
             </div>
             {/* <Cards /> */}
             <div>
@@ -284,32 +295,28 @@ export default function Session() {
   
 <div class="relative flex justify-center items-center border bg-[#FAF8F5] rounded-2xl overflow-hidden shadow transform transition duration-500 hover:scale-105 hover:rounded-2xl  h-40 w-50">
   <div class="absolute top-4 px-2 text-gray-700"> 
-  <div class="absolute top-0 px-2 text-gray-700 flex items-center ">
-    <TiTime className='h-7 w-7 '/>  
-    <h3 class="ml-2 text-sm font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Nombre de places Total</h3>
-</div>    
+    <div class="absolute top-0 px-2 text-gray-700 flex items-center ">
+      <TiTime className='h-7 w-7 '/>  
+      <h3 class="ml-2 text-sm font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Nombre de places Total</h3>
+    </div>    
     <div class="mb-6 mt-10 shadow-xl">
-    <input type="text" name="nbr_candidats" id="nbr_candidats" value={nbr_candidats} onChange={handleChangeValue} class="bg-gray-50  border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-50 h-10 p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"></input>
-</div>
-
-    <p class="text-3xl"></p>
-  </div>
-</div>
-
-
-
-<div class="relative flex justify-center items-center border bg-[#FAF8F5] rounded-2xl overflow-hidden shadow transfrom transition duration-500 hover:scale-105 hover:rounded-2xl h-40 w-50">
-  <div class="absolute top-4 px-2 text-gray-700">
-  <div class="absolute top-0 px-2 text-gray-700 flex items-center ">
-    <TiTime className='h-7 w-7 '/>  
-    <h3 class="ml-2 text-sm font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Mode de tirage </h3>
-</div>
-    <div class="relative mb-6 mt-10">
-      <Combobox className="z-0" style={{ width: 'calc(100% - 4px)' }} openAddAdminModal={openAddAdminModal} /> 
+      <input type="text" name="nbr_candidats" id="nbr_candidats" value={nbr_candidats} onChange={handleChangeValue} class="bg-gray-50  border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-50 h-10 p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"></input>
     </div>
- 
     <p class="text-3xl"></p>
   </div>
+</div>
+
+<div class="relative flex justify-center items-center border bg-[#FAF8F5] rounded-2xl overflow-hidden shadow transform transition duration-500 hover:scale-105 hover:rounded-2xl  h-40 w-50">
+  <div class="absolute top-4 px-2 text-gray-700"> 
+    <div class="top-0 px-2 text-gray-700 flex items-center ">
+      <TiTime className='h-6 w-6'/>  
+      <h3 class="ml-2 text-sm  font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Mode de Tirage</h3>
+      
+    </div>    
+  </div>
+
+    <p class="text-2xl text-center  text-gray-600"> {mode} </p>
+  
 </div>
 
 <div class=" relative flex justify-center items-center border bg-[#FAF8F5] rounded-2xl overflow-hidden shadow   transfrom transition duration-500 hover:scale-105  hover:rounded-2xl h-40 w-50"> 

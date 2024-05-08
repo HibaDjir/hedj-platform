@@ -548,8 +548,7 @@ function Candidature() {
                   styles={customStyles}
                   options={communes}
                   onChange={handleChangeCommune}
-                  placeholder=" البلدية
-             "
+                  placeholder="البلدية"
                   isRtl={true}
                 />
               </div>

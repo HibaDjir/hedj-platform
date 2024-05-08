@@ -55,6 +55,9 @@ const SessionSchema = new schema({
     },
     hadj_f:{
         type: String,
+    },
+    algo_selected:{
+        type: String,
     }
 >>>>>>> 203afcec4f85ee6a5f429612566aa191079169f6
 })

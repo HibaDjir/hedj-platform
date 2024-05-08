@@ -10,6 +10,8 @@ import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Add from "../images/Untitled.png";
 
+import axios from 'axios';
+
 function TirageAge({ onClose }) {
   const customStyles = {
     control: (provided, state) => ({
@@ -21,7 +23,7 @@ function TirageAge({ onClose }) {
   };
 
   const modalRef = useRef(null);
-  const [criterias, setCriterias] = useState([{ max: "", min: "" }]);
+  const [criterias, setCriterias] = useState([{ max: "", min: "", chance: "" }]);
   const [criteriaCount, setCriteriaCount] = useState(1);
 
   const closeModal = (e) => {
@@ -32,8 +34,9 @@ function TirageAge({ onClose }) {
 
   const handleAddCriteria = () => {
     if (criteriaCount < 3) {
-      setCriterias([...criterias, { max: "", min: "" }]);
+      setCriterias([...criterias, { max: "", min: "", chance: "" }]);
       setCriteriaCount(criteriaCount + 1);
+      alert(criterias[0].max)
     }
   };
 
@@ -41,6 +44,29 @@ function TirageAge({ onClose }) {
     const updatedCriterias = [...criterias];
     updatedCriterias[index][type] = value;
     setCriterias(updatedCriterias);
+  };
+
+  const UpdateAgeBracket = async () => {
+    try {
+      let minAge1=0, maxAge1=0, chance1=0, minAge2=0, maxAge2=0, chance2=0, minAge3=0, maxAge3=0, chance3=0;
+      let i = 1;
+      for (let criteria of criterias) {
+        if(i === 1) {
+          minAge1=criteria.min; maxAge1=criteria.max; chance1=criteria.chance; i+=1;
+        }else if(i === 2) {
+          minAge2=criteria.min; maxAge2=criteria.max; chance2=criteria.chance; i+=1;
+        }else{
+          minAge3=criteria.min; maxAge3=criteria.max; chance3=criteria.chance; i+=1;
+        }
+      }
+      const response = await axios.put('http://localhost:3000/api/tirage/update', { 
+         minAge1, maxAge1, chance1, minAge2, maxAge2, chance2, minAge3, maxAge3, chance3
+      });
+      alert("Enregistrement avec succées");
+    } catch (error) {
+      alert(error);
+      console.error('Error fetching data:', error);
+    }
   };
 
   return (
@@ -53,28 +79,7 @@ function TirageAge({ onClose }) {
         <div className="grid grid-cols-1 gap-y-2">
           {criterias.map((criteria, index) => (
             <div key={index}>
-              
-
-              
-
-
-
-
-
-
-
               <div className="w-full flex justify-center items-center ">
-       
-          
-
-
-
-
-
-
-
-
-
               <div className="w-full flex flex-col mr-5 mt-0">
                 <label className="text-fake_black mb-1" htmlFor={`max-age-${index}`}>
                   Age maximum:
@@ -108,25 +113,17 @@ function TirageAge({ onClose }) {
               </div>
         </div>
 
-
-
-
-
-
-
-
-
               <div className="w-full flex flex-col mt-2">
-                <label className="text-fake_black mb-1" htmlFor={`min-age-${index}`}>
+                <label className="text-fake_black mb-1" htmlFor={`chance-${index}`}>
                   Chance:
                 </label>
                 <input
-                  id={`min-age-${index}`}
+                  id={`chance-${index}`}
                   className="text-black p-1 border rounded-md border-fake_black w-full"
                   type="number"
                   placeholder="chance "
-                  value={criteria.min}
-                  onChange={(e) => handleAgeChange(index, "min", e.target.value)}
+                  value={criteria.chance}
+                  onChange={(e) => handleAgeChange(index, "chance", e.target.value)}
                   required
                 />
               </div>
@@ -138,9 +135,7 @@ function TirageAge({ onClose }) {
 
         <button
           className="text-[#1D1D1B] text-sm font-medium flex justify-center border-[#D8A353] rounded-md bg-[#D8A353] border p-2 mt-4 items-center x-auto w-[120px] h-[40px] mx-auto hover:bg-[#AD7946]"
-          
-          
-        >
+          onClick={UpdateAgeBracket}>
           Ajouter
         </button>
 
