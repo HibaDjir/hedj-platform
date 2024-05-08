@@ -1,5 +1,4 @@
-
-// App.js
+import { useHistory } from "react-router-dom";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Resset_password from "./pages/Resset_password";
 import Home from "./pages/Home";
@@ -26,14 +25,16 @@ import Cansulter_cand from "./pages/Consulter_candidature";
 import SousDash from "./pages/Dash_pages/Dashboard_sous";
 import Dash from "../src/pages/Dash_pages/Dashboard_Main";
 import Medecins from "./pages/Medecins";
-import RecentAdmin from "./pages/AdminPages/RecentAdmin";
-import Session from "./pages/Session"
-import Candidat from "./pages/Candidat"
-import Pelerin from "./pages/Pelerin"
-import SousTirage from "./pages/SousTirage"
-import SousPelerin from "./pages/SousPelerin"
-import SousCandidat from "./pages/SousCandidat"
+import EtatSantee from "./pages/EtatSantee";
+import VisiteMedical from "./pages/Medpages/VisiteMedical";
+import ListePelerin from "./pages/Medpages/ListePelerin";
+import HomeMedecin from "./pages/Medpages/Home";
 
+import PaimentVersementPostale from "./pages/PaimentVersementPostale";
+import Paimentcarteccp from "./pages/Paimentcarteccp";
+import Paiment from "./pages/AdminPages/Paiment";
+import Carteccp from "./pages/AdminPages/Carteccp";
+import Virementccp from "./pages/AdminPages/Virementccp";
 function App() {
   const isLoggedIn=localStorage.getItem('loggedIn')
   return (
@@ -41,20 +42,19 @@ function App() {
       <div className="App">
         
         <Routes>
-        <Route path="/" element={<RequireNotAuth><Home /></RequireNotAuth>} />
-        <Route path="/AddAdmin" element={<RequireMasterAdmin><AddAdmin /></RequireMasterAdmin>} />
-
-
-          <Route path="/SousSession" element={<RequireAuthSsA><SousSession/></RequireAuthSsA>} />
-          <Route path="/SousTirage" element={<RequireAuthSsA><SousTirage/></RequireAuthSsA>} />
-          <Route path="/SousPelerin" element={<RequireAuthSsA><SousPelerin/></RequireAuthSsA>} />
-          <Route path="/SousCandidat" element={<RequireAuthSsA><SousCandidat/></RequireAuthSsA>} />
-          <Route path="/home" element={<RequireNotAuth><Home /></RequireNotAuth>} />
-          <Route path="/medecin" element={<RequireMasterAdmin><Medecins/></RequireMasterAdmin>} />
-          <Route path="/RecentAdmin" element={<RequireMasterAdmin><RecentAdmin/></RequireMasterAdmin>} />
-          <Route path="/Session" element={<RequireMasterAdmin><Session/></RequireMasterAdmin>} />
-          <Route path="/Candidat" element={<RequireMasterAdmin><Candidat/></RequireMasterAdmin>} />
-          <Route path="/Pelerin" element={<RequireMasterAdmin><Pelerin/></RequireMasterAdmin>} />
+        <Route path="/" element={<Home />} />
+        <Route path="/homemedecin" element={<HomeMedecin/>} />
+        <Route path="/listepelerin" element={<ListePelerin />} />
+        <Route path="/AddAdmin" element={<AddAdmin />} />
+        <Route path="/sante" element={<EtatSantee />} />
+        <Route path="/paiment" element={<Paiment/>} />
+        <Route path="/carteccp" element={<Carteccp/>} />
+        <Route path="/virementccp" element={<Virementccp/>} />
+        <Route path="/paimentVP" element={<PaimentVersementPostale />} />
+        <Route path="/paimentcarteccp" element={<Paimentcarteccp />} />
+        <Route path="/pelerinsMed" element={<VisiteMedical/>} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/medecin" element={<Medecins/>} />
           <Route path="/homelgin" element={<RequireAuth><Home_owner_account /></RequireAuth>} />  
           <Route path="/candidature" element={<RequireAuth><Candidature /></RequireAuth>} />
           <Route path="/candidature_mahram" element={<RequireAuth><Candidature_mahram /></RequireAuth>} />

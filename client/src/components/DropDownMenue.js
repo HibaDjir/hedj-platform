@@ -94,7 +94,7 @@ const DropdownMenu = () => {
 
       {isOpen && (
         <div
-          className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-taupe_palette ring-1 ring-black ring-opacity-5 z-10"
+          className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-[#EAE1D1] ring-1 ring-black ring-opacity-5 z-10"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
@@ -104,7 +104,7 @@ const DropdownMenu = () => {
                 className="flex items-center px-4 py-2 text-sm font-medium text-fake_black bg-transparent rounded-md focus:outline-none transition duration-300 ease-in-out"
                 onClick={() => handleClick(candidat._id, candidat.nom+" "+candidat.prenom)}
               >
-                  <img src={user} className='w-6 h-6 mr-2' alt="User Icon" />
+                  
                   <span>{candidat.nom} {candidat.prenom}</span>
               </button>
             ))}

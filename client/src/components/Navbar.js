@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "tailwindcss/tailwind.css";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import ConditionalNavbar  from '../components/ConditionalNavbar ';
 import Logo from "../images/LOGO.png";
 import LoginModal from "../Popups/Login";
 import AddAdminModal from "../Popups/AddAdmin";
@@ -49,10 +50,23 @@ function Navbar() {
   }, []);
 
   return (
+
+
+
+    <div   >
+         <ConditionalNavbar 
+      events={[
+    { name: 'تقديم الطلب', date: '2024-05-05T12:00:00Z' },
+    { name: 'سحب قرعة', date: '2024-05-01T12:00:00Z' },
+    { name: 'تحميل المعلومات الطبية', date: '2024-06-15T12:00:00Z' },
+    { name: 'دفع التكاليف ', date: '2024-07-20T12:00:00Z' }
+  ]} 
+/>
     <div
       dir="rtl"
-      className={`flex justify-between items-center h-20 max-w-1240 mx-auto px-4 navbar bg-gradient-to-b from-fake_black to-transparent `}
+      className={`flex justify-between items-center h-20 max-w-1240 mx-auto px-4 navbar bg-gradient-to-b from-fake_black to-transparent mt-10`}
     >
+     
      <Link to="/home"> <img style={{ width: "80px", height: "auto" }} src={Logo} alt="LOGO" ></img></Link>
 
       <ul
@@ -80,11 +94,13 @@ function Navbar() {
           </button>
           {isLoginModalOpen && <LoginModal onClose={closeLoginModal} />}
         </li>
-        
         <li className="p-4 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-dorée duration-300">
-            <Link to="/AddAdmin">ADMINISTRATEUR </Link>
+            <Link to=" /AddAdmin" >ADMIN</Link>
           </li>
-     
+      
+          <li className="p-4 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-dorée duration-300">
+            <Link to="/listepelerin">homemed</Link>
+          </li>
       </ul>
 
       <div onClick={handleMobileNav} className="block md:hidden">
@@ -129,6 +145,7 @@ function Navbar() {
         
         </ul>
       </div>
+    </div>
     </div>
   );
 }

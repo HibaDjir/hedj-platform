@@ -309,6 +309,7 @@ function Candidature() {
         classNames="page-exit page-exit-active " 
         unmountOnExit
       >
+        
       <div className="flex flex-col justify-center items-center max-w-[1240px] mx-auto  bg-[#EAE1D1]  bg-opacity-90  rounded-xl shadow-2xl">
       <div className='flex justify-center items-center'>
   <div className="flex justify-item ">

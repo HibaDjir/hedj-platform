@@ -8,15 +8,8 @@ import { GoPeople } from "react-icons/go";
 import { GiSandsOfTime } from "react-icons/gi";
 import { FaUserDoctor, FaPeopleGroup } from "react-icons/fa6";
 import { SlUserFollowing } from "react-icons/sl";
-import medecin from "../../../pages/Medecins"
-import RecentAdmin from '../../../pages/AdminPages/RecentAdmin';
-import Session from '../../../pages/Session'
-import Candidat from '../../../pages/Candidat'
-import { useLogout } from "../../../hooks/useLogout"
-import { useAuthContext } from "../../../hooks/useAuthContext";
-const linkClass = 'flex flex-col items-center gap-2 font-light px-3 py-2 hover:bg-white  hover:underline rounded-sm text-base';
-
-
+import Paiment from '../../../pages/AdminPages/Paiment';
+import { FaCreditCard } from 'react-icons/fa';
 
 
 export default function Sidebar() {
@@ -116,10 +109,106 @@ export default function Sidebar() {
                         </li>
                     </div>
 
-                </ul>
-            </div>
-        </aside>
-    );
+		 <li>
+            <a href="#" class="flex items-center p-5 text-gray-900 rounded-lg dark:text-black hover:text-[#D8A353]  group">
+               <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-black group-hover:text-[#D8A353] dark:group-hover:text-[#D8A353]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+                  <CiTimer/>
+               </svg>
+               <span class="ms-3">Session de ELHadj</span>
+            </a>
+         </li>
+		 <li>
+            <a href="/AddAdmin" class="flex items-center p-5 text-gray-900 rounded-lg dark:text-black hover:text-[#D8A353]  group">
+               <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-black group-hover:text-[#D8A353] dark:group-hover:text-[#D8A353]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+             <GoPeople/>
+               </svg>
+               <span class="ms-3">Administrateurs</span>
+            </a>
+         </li>
+
+		 <li>
+            <a href="/medecin" class="flex items-center p-5 text-gray-900 rounded-lg dark:text-black hover:text-[#D8A353]  group">
+               <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-black group-hover:text-[#D8A353] dark:group-hover:text-[#D8A353]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+			 <FaUserDoctor/>
+               </svg>
+               <span class="ms-3">Médecins</span>
+            </a>
+         </li>
+
+		 <li>
+            <a href="#" class="flex items-center p-5 text-gray-900 rounded-lg dark:text-black hover:text-[#D8A353]  group">
+               <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-black group-hover:text-[#D8A353] dark:group-hover:text-[#D8A353]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+<FaPeopleGroup/>
+               </svg>
+               <span class="ms-3">Candidats</span>
+            </a>
+         </li>
+
+		 <li>
+            <a href="#" class="flex items-center p-5 text-gray-900 rounded-lg dark:text-black hover:text-[#D8A353]  group">
+               <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-black group-hover:text-[#D8A353] dark:group-hover:text-[#D8A353]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+			 <  SlUserFollowing/>
+               </svg>
+               <span class="ms-3">Pèlerins</span>
+            </a>
+         </li>
+
+         <li>
+            <a href="/paiment" class="flex items-center p-5 text-gray-900 rounded-lg dark:text-black hover:text-[#D8A353]   group">
+               <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-black group-hover:text-[#D8A353] dark:group-hover:text-[#D8A353]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+			 <FaCreditCard className=" flex justify-center"/>
+               </svg>
+               <span class="ms-3">Paiment</span>
+            </a>
+         </li>
+
+
+		 <div className="flex flex-col gap-0.5 pt-5 border-t border-neutral-400"> 
+         <li>
+            <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-black hover:text-red-500  group">
+               <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-black group-hover:text-[#D8A353] dark:group-hover:text-red-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+                   <MdLogout/>
+               </svg>
+               <span class="ms-3">Se deconnecter</span>
+            </a>
+         </li>
+		 </div>
+         
+         
+        
+      </ul>
+   </div>
+</aside>
+
+
+
+
+
+
+
+
+
+
+
+
+			 
+			
+
+
+			
+
+
+
+
+
+
+
+
+
+			
+			
+		
+	)
 }
 
 
