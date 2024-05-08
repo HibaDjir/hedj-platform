@@ -87,6 +87,14 @@ const CandidatureSchema = new schema({
         type: Number,
         require: true,
         default:0
+    },
+    is_elected:{
+        type: Boolean,
+        default:false
+    },
+    is_attente:{
+        type: Boolean,
+        default:false
     }
 
 },{ timeseries: true})

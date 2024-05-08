@@ -20,10 +20,43 @@ const SessionSchema = new schema({
         enum:["En cours", "Candidature", "Tirage", "Medecin","Paiement","Elhadj", "Cloture"],
         default:"En cours"
     },
+<<<<<<< HEAD
     cotat:{
         type: Number,
         require: true,
     },
+=======
+    inscription_d:{
+        type: String,
+    },
+    inscription_f:{
+        type: String,
+    },
+    tirage_d:{
+        type: String,
+    },
+    tirage_f:{
+        type: String,
+    },
+    consultaion_m_d:{
+        type: String,
+    },
+    consultaion_m_f:{
+        type: String,
+    },
+    paiement_d:{
+        type: String,
+    },
+    paiement_f:{
+        type: String,
+    },
+    hadj_d:{
+        type: String,
+    },
+    hadj_f:{
+        type: String,
+    }
+>>>>>>> 203afcec4f85ee6a5f429612566aa191079169f6
 })
 
 module.exports = mongoose.model('sessions', SessionSchema)

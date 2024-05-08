@@ -22,6 +22,9 @@ export default function RecentAdmin() {
       console.log("data before set",data)
       setSousAdmin(data);
    }
+
+
+ 
 };
 
   const handleDelete = async (id) => {
@@ -39,6 +42,8 @@ export default function RecentAdmin() {
       console.error('Error deleting SousAdmin:', error);
     }
   };
+ 
+
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
   const toggleSidebar = () => {

@@ -3,18 +3,18 @@ const candidature = require('../models/Candidature')
 const wilaya = require('../models/wilaya')
 const sesstion = require('../models/Sessions')
 
-// const getAllCandidatureAllFields = async (req, res) => {
-//     try {
-//         const userId = req.user;
-//         const candidats = await candidature.find({}).sort({createAt: -1})
-//         res.status(200).json(candidats)
-//     } catch (error) {
-//         res.status(500).json({ message: 'Internal server error',error: error.message});
-//     }
+ const getAllCandidature = async (req, res) => {
+     try {
+         const userId = req.user;
+         const candidats = await candidature.find({}).sort({createAt: -1})
+         res.status(200).json(candidats)
+     } catch (error) {
+         res.status(500).json({ message: 'Internal server error',error: error.message});
+     }
 
-// }
+ }
 
-const getAllCandidature = async (req, res) => {
+/*const getAllCandidature = async (req, res) => {
     try {
         const userId = req.user;
 
@@ -53,7 +53,7 @@ const getAllCandidature = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' ,error: error.message });
     }
-};
+};*/
 
 
 
@@ -107,6 +107,56 @@ const getCandidatureUserMale = async (req, res) => {
         return res.status(404).json({error: "vide"})
     }
     res.status(200).json(candidats)
+}
+
+const getCandidatureCodeWilaya = async (req, res) => {
+    //const { code } = req.params
+    const wilaya = req.query.fieldName; 
+    const fieldValue = req.query.fieldValue;
+
+    const query = { 
+        [wilaya]: fieldValue
+    };
+
+    const candidats = await candidature.find(query)
+    if(!candidats){
+        return res.status(404).json({error: "vide"})
+    }
+    res.status(200).json(candidats)
+}
+
+const getCandidatureCodeWilayaPrise = async (req, res) => {
+    //const { code } = req.params
+    const wilaya = req.query.fieldName; 
+    const fieldValue = req.query.fieldValue;
+
+    const query = { 
+        [wilaya]: fieldValue,
+        'is_elected': true
+    };
+
+    const candidatsPrise = await candidature.find(query)
+    if(!candidatsPrise){
+        return res.status(404).json({error: "vide"})
+    }
+    res.status(200).json(candidatsPrise)
+}
+
+const getCandidatureCodeWilayaAttente = async (req, res) => {
+    //const { code } = req.params
+    const wilaya = req.query.fieldName; 
+    const fieldValue = req.query.fieldValue;
+
+    const query = { 
+        [wilaya]: fieldValue,
+        'is_attente': true
+    };
+
+    const candidatsAttente = await candidature.find(query)
+    if(!candidatsAttente){
+        return res.status(404).json({error: "vide"})
+    }
+    res.status(200).json(candidatsAttente)
 }
 
 const getFirstCandidature = async (req, res) => {
@@ -217,5 +267,8 @@ module.exports = {
     getCandidatureUserMale,
     deleteCandidature,
     updateCandidature,
-    getCandByWilaya
+    getCandByWilaya,
+    getCandidatureCodeWilaya,
+    getCandidatureCodeWilayaPrise,
+    getCandidatureCodeWilayaAttente
 }
