@@ -8,6 +8,8 @@ import {CiTimer} from "react-icons/ci"
 import { GoPeople } from "react-icons/go";
 import { FaUserDoctor, FaPeopleGroup  } from "react-icons/fa6";
 import { SlUserFollowing } from "react-icons/sl";
+import Paiment from '../../../pages/AdminPages/Paiment';
+import { FaCreditCard } from 'react-icons/fa';
 
 const linkClass =
 	'flex items-center gap-2 font-light px-3 py-2 hover:bg-white  hover:underline rounded-sm text-base'
@@ -90,7 +92,14 @@ export default function Sidebar() {
             </a>
          </li>
 
-		 
+         <li>
+            <a href="/paiment" class="flex items-center p-5 text-gray-900 rounded-lg dark:text-black hover:text-[#D8A353]   group">
+               <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-black group-hover:text-[#D8A353] dark:group-hover:text-[#D8A353]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+			 <FaCreditCard className=" flex justify-center"/>
+               </svg>
+               <span class="ms-3">Paiment</span>
+            </a>
+         </li>
 
 
 		 <div className="flex flex-col gap-0.5 pt-5 border-t border-neutral-400"> 

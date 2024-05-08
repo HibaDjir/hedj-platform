@@ -1,4 +1,4 @@
-// App.js
+import { useHistory } from "react-router-dom";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Resset_password from "./pages/Resset_password";
 import Home from "./pages/Home";
@@ -22,6 +22,16 @@ import Cansulter_cand from "./pages/Consulter_candidature";
 
 import Sidebar from "../src/components/Dash_components/shared/Sidebar"
 import Medecins from "./pages/Medecins";
+import EtatSantee from "./pages/EtatSantee";
+import VisiteMedical from "./pages/Medpages/VisiteMedical";
+import ListePelerin from "./pages/Medpages/ListePelerin";
+import HomeMedecin from "./pages/Medpages/Home";
+
+import PaimentVersementPostale from "./pages/PaimentVersementPostale";
+import Paimentcarteccp from "./pages/Paimentcarteccp";
+import Paiment from "./pages/AdminPages/Paiment";
+import Carteccp from "./pages/AdminPages/Carteccp";
+import Virementccp from "./pages/AdminPages/Virementccp";
 function App() {
   const isLoggedIn=localStorage.getItem('loggedIn')
   return (
@@ -30,7 +40,16 @@ function App() {
         
         <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/homemedecin" element={<HomeMedecin/>} />
+        <Route path="/listepelerin" element={<ListePelerin />} />
         <Route path="/AddAdmin" element={<AddAdmin />} />
+        <Route path="/sante" element={<EtatSantee />} />
+        <Route path="/paiment" element={<Paiment/>} />
+        <Route path="/carteccp" element={<Carteccp/>} />
+        <Route path="/virementccp" element={<Virementccp/>} />
+        <Route path="/paimentVP" element={<PaimentVersementPostale />} />
+        <Route path="/paimentcarteccp" element={<Paimentcarteccp />} />
+        <Route path="/pelerinsMed" element={<VisiteMedical/>} />
           <Route path="/home" element={<Home />} />
           <Route path="/medecin" element={<Medecins/>} />
           <Route path="/homelgin" element={<RequireAuth><Home_owner_account /></RequireAuth>} />  

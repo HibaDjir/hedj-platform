@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
-import { getAdminStatus } from './lib/helpers';
+
 import user from '../../images/buchra.png';
 import filter from '../../images/filter.png';
 import add from '../../images/mini_add.png';
@@ -22,7 +22,7 @@ export default function RecentAdmin() {
          }
         },
         {
-         name: " Admin_e_mail",
+         name: "Admin_e_mail",
          label: "E-mail",
          options: {
           filter: true,
@@ -60,7 +60,7 @@ export default function RecentAdmin() {
     const recentAdminData = [
         {
             id: '1',
-            Admin_pic : user,
+            
             Admin_name: 'Harrath Bouchra',
             Admin_e_mail: 'bouchra.harrath5@gmail.com',
             current_Admin_status: 'Active',
@@ -68,7 +68,7 @@ export default function RecentAdmin() {
             Admin_numero_de_telephone: '06 54 32 55 78',
         },  {
             id: '2',
-            Admin_pic : user,
+            
             Admin_name: 'Harrath Bouchra',
             Admin_e_mail: 'bouchra.harrath5@gmail.com',
             current_Admin_status: 'Active',
@@ -77,7 +77,7 @@ export default function RecentAdmin() {
         },
         {
             id: '3',
-            Admin_pic : user,
+            
             Admin_name: 'Harrath Bouchra',
             Admin_e_mail: 'bouchra.harrath5@gmail.com',
             current_Admin_status: 'Active',
@@ -86,7 +86,7 @@ export default function RecentAdmin() {
         },
         {
             id: '4',
-            Admin_pic : user,
+            
             Admin_name: 'Harrath Bouchra',
             Admin_e_mail: 'bouchra.harrath5@gmail.com',
             current_Admin_status: 'Active',
@@ -95,7 +95,7 @@ export default function RecentAdmin() {
         },
         {
             id: '5',
-            Admin_pic : user,
+            
             Admin_name: 'Harrath Bouchra',
             Admin_e_mail: 'bouchra.harrath5@gmail.com',
             current_Admin_status: 'Active',
@@ -104,7 +104,7 @@ export default function RecentAdmin() {
         },
         {
             id: '6',
-            Admin_pic : user,
+            
             Admin_name: 'Harrath Bouchra',
             Admin_e_mail: 'bouchra.harrath5@gmail.com',
             current_Admin_status: 'Active',
@@ -113,7 +113,7 @@ export default function RecentAdmin() {
         },
         {
             id: '7',
-            Admin_pic : user,
+            
             Admin_name: 'Harrath Bouchra',
             Admin_e_mail: 'bouchra.harrath5@gmail.com',
             current_Admin_status: 'Active',
@@ -122,7 +122,7 @@ export default function RecentAdmin() {
         },
         {
             id: '8',
-            Admin_pic : user,
+            
             Admin_name: 'Harrath Bouchra',
             Admin_e_mail: 'bouchra.harrath5@gmail.com',
             current_Admin_status: 'Active',
@@ -131,7 +131,7 @@ export default function RecentAdmin() {
         },
         {
             id: '9',
-            Admin_pic : user,
+            
             Admin_name: 'Harrath Bouchra',
             Admin_e_mail: 'bouchra.harrath5@gmail.com',
             current_Admin_status: 'Active',
@@ -140,11 +140,20 @@ export default function RecentAdmin() {
         },
         {
             id: '10',
-            Admin_pic : user,
+            
             Admin_name: 'Harrath Bouchra',
             Admin_e_mail: 'bouchra.harrath5@gmail.com',
             current_Admin_status: 'Active',
             Admin_wilaya: 'Chlef',
+            Admin_numero_de_telephone: '06 54 32 55 78',
+        },
+        {
+            id: '10',
+            
+            Admin_name: 'Boukrara Melissa',
+            Admin_e_mail: 'bkrmel@gmail.com',
+            current_Admin_status: 'Active',
+            Admin_wilaya: 'boujie ',
             Admin_numero_de_telephone: '06 54 32 55 78',
         },
     ];
@@ -158,7 +167,7 @@ const openAddAdminModal = () => {
   };
     return (
 
-<div className='w-full 
+<div className='w-full  overflow-hidden
 '>
         <Sidebar/>
         <div className="bg-white px-4 pt-3 pb-4 rounded-sm border border-gray-200 flex-1 flex-col max-w-[1420px]  ml-64 ">

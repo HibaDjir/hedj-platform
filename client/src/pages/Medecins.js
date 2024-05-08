@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
-import { getAdminStatus } from "./AdminPages/lib/helpers";
+
+
 import user from "../images/buchra.png";
 import filter from "../images/filter.png";
 import add from "../images/mini_add.png";
@@ -30,7 +31,7 @@ export default function Medecins() {
      }
     },
     {
-     name: " Admin_e_mail",
+     name: "Admin_e_mail",
      label: "E-mail",
      options: {
       filter: true,

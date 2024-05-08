@@ -4,6 +4,7 @@ import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Hero  from './Hero';
 import Navbar from '../components/Navbar';
+import ConditionalNavbar  from '../components/ConditionalNavbar ';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -344,6 +345,8 @@ function Home() {
   return (
 
   <div  className='w-full h-full flex flex-col justify-center items-center bg-white_palette'>
+  
+
     <Navbar />
     <Hero/>
     <section dir ="rtl" id='hotel-slider' className='w-full h-[90vh] flex flex-col justify-center items-center  '>
