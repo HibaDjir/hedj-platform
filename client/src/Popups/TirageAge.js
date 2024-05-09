@@ -36,7 +36,7 @@ function TirageAge({ onClose }) {
     if (criteriaCount < 3) {
       setCriterias([...criterias, { max: "", min: "", chance: "" }]);
       setCriteriaCount(criteriaCount + 1);
-      alert(criterias[0].max)
+      //alert(criterias[0].max)
     }
   };
 

@@ -30,7 +30,6 @@ function Consulter_candidature() {
 
   const fetchCandidat = async () => {
       try {
-        alert(idCandidat)
           const response = await fetch('http://localhost:3000/api/candidature/'+idCandidat);
           if (!response.ok) {
               throw new Error('Failed to fetch data');

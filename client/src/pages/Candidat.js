@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
-import { getAdminStatus } from "./AdminPages/lib/helpers";
 import user from "../images/buchra.png";
 import filter from "../images/filter.png";
 import add from "../images/mini_add.png";
@@ -26,7 +25,6 @@ export default function Medecins() {
           //alert('http://localhost:3000/api/commune/find?fieldName=code&minValue='+additionalOptions.code+'00&maxValue='+additionalOptions.code+'99');
           axios.get('http://localhost:3000/api/candidature/genreMale/find?fieldName=wilaya&fieldValue='+additionalOptions.code)
             .then(responseC => {
-              alert(responseC.data)
               setCandidats(responseC.data);
             })
             .catch(error => {

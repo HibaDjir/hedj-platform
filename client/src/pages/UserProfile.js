@@ -38,7 +38,7 @@ function UserProfile() {
             throw new Error('Failed to fetch data');
         }
         const jsonData = await response.json();
-        alert(jsonData.email)
+        //alert(jsonData.email)
         setNom(jsonData.lastName);setPrenom(jsonData.firstName);setAdrmail(jsonData.email)
     } catch (error) {
         console.error('Error fetching data:', error);

@@ -115,7 +115,7 @@ exports.forgotPassword=async(req,res,next)=>{
 		const secret = process.env.JWTPRIVATEKEY
 		const token = jwt.sign({email: oldUser.email, id:oldUser._id}, secret, {expiresIn : '1d'})
 		const link=`http://localhost:3001/resetPassword/${oldUser._id}/${token}`
-		console.log(link)
+		//console.log(link)
 		await sendEmail({
 			email: oldUser.email,
 			 subject:'reset password mail...',
