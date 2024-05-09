@@ -8,6 +8,7 @@ router.route('/getFMCandCountByWilaya/:name').get(dashboardController.getFMPelCo
 router.route('/getFMPelCount').get(dashboardController.getFMPelCount)
 router.route('/getPelerinParAge').get(dashboardController.getPelerinParAge);
 router.route('/getPelerinParYear').get(dashboardController.countPelerinsByYear);
+router.route('/getPelerinParYearByWilaya/:name').get(dashboardController.countPelerinsByYearByWilaya);
 router.route('/getCountsWilaya/:name').get(dashboardController.getCountsWilaya)
 router.route('/getPelerinParAgeWilaya/:name').get(dashboardController.getPelerinParAgeAndWilaya)
 router.route('/getCondiddatureParAgeWilaya/:name').get(dashboardController.getCountOfCandidatureByAgeAndWilaya)
