@@ -33,8 +33,10 @@ import Pelerin from "./pages/Pelerin"
 import SousTirage from "./pages/SousTirage"
 import SousPelerin from "./pages/SousPelerin"
 import SousCandidat from "./pages/SousCandidat"
-
-
+import Paiment from "./pages/AdminPages/Paiment";
+import Carteccp from "./pages/AdminPages/Carteccp"
+import virementccp from "./pages/AdminPages/Virementccp"
+import Virementccp from "./pages/AdminPages/Virementccp";
 function App() {
   const isLoggedIn=localStorage.getItem('loggedIn')
   return (
@@ -50,6 +52,9 @@ function App() {
           <Route path="/Candidat" element={<Candidat/>} />
           <Route path="/Pelerin" element={<Pelerin/>} />
           <Route path="/AttentePelerin" element={<AttentePelerin/>} />
+          <Route path="/Paiment" element={<Paiment/>} />
+          <Route path="/Carteccp" element={<Carteccp/>} />
+          <Route path="/Virementccp" element={<Virementccp/>} />
 
           <Route path="/home" element={<RequireNotAuth><Home /></RequireNotAuth>} />
           <Route path="/SousSession" element={<SousSession/>} />
