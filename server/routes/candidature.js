@@ -7,7 +7,8 @@ const {
     getCandidatureUser,
     deleteCandidature,
     updateCandidature,
-    getCandByWilaya
+    getCandByWilaya,
+    deleteCands
 } = require('../controllers/CandidatureControllers')
 
 router.get('/', getAllCandidature)
@@ -26,4 +27,6 @@ router.delete('/:id', deleteCandidature)
 
 router.patch('/:id', updateCandidature)
 
-module.exports=router;
+router.delete('/', deleteCands )
+
+module.exports=router; 

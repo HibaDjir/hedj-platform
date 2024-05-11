@@ -4,6 +4,7 @@ const {User, validateAddSousAdmin}=require('../models/user_profiler')
 const sousAdmin = require('../models/sousAdmin')
 const bcrypt = require("bcrypt");
 const sendEmail=require('../util/sendEmail');
+const Candidature = require("../models/Candidature")
 
 
 // creating SousAdmin 
@@ -247,4 +248,30 @@ exports.getSousAdminByUser=async(req,res)=>{
     }catch(err){ 
         res.status(400).json({message: err.message}) 
     } 
+}
+
+//////////email apres paiment ADMIN VALIDATE USER AFTER HE SEES RECU DE PAIMENT
+exports.sendEmailValidateFInal=async(req,res)=>{ 
+    try {
+        let id=req.params.id 
+        let candidature=await Candidature.findById(id) 
+         if(candidature){ 
+            await sendEmail({ 
+                email: candidature.email, 
+                subject: 'السلام عليكم \n', 
+                message: `سيد(ة) ${candidature.nom } ${candidature.prenom }!\n\n
+                **معلوماتكم الشخصية**\n\n
+                اللقب :${candidature.nom}\n\n
+                الاسم :${candidature.prenom}\n\n
+                رقم جواز السفر :${candidature.num_passeport}\n 
+                لقد تم تاكيد كل المراحل لاداء مناسك الحج \n
+                تقبل الله منكم الحج\n
+                دعواتكم لنا` 
+            }); 
+         } 
+         res.json('Email send successfully')
+
+    } catch (err) {
+        res.status(400).json(err.message)
+    }
 }
