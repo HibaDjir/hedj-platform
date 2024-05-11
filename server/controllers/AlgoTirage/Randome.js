@@ -91,6 +91,11 @@ exports.electPilgrims = async (req, res) => {
         const   pelerins = await Condidatures.find(); // Fetch all pilgrims from the database
         let  {pelerinsElus,pelerinsRestants}= await electionPelerinsAuHasard(pelerins,nombreAElire)
         console.log("pelerin elu ",pelerinsElus) 
+     let candi=   await Condidatures.updateMany(
+            { _id: { $in: pelerinsElus.map(pelerin => pelerin._id) } }, // Find candidatures associated with the updated pelerins
+            { $set: { status: "is_elected" } } // Update their status to "is-elected"
+          );
+
         const pelerinfinal=setStatus(pelerinsElus,'is_elected')          
         
         let { pelerinsElus: pelerinsEnAttente, pelerinsRestants: pelerinsRestantsApresEnAttente } = await electionPelerinsAuHasard(pelerinsRestants, nbraelireenattente);

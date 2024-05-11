@@ -12,6 +12,8 @@ router.route('/deleteMedecinById/:id').delete(medecinController.deleteMedecinByI
 router.route('/deleteAllMedecins').delete(medecinController.deleteAllMedecins)
 router.route('/retrieveAllMedecins').patch(medecinController.retrieveAllMedecins)
 router.route('/retrieveMedecinById/:id').patch(medecinController.retrieveMedecinById)
+router.route('/SendEmailRdv/:id/:email').post(medecinController.SendEmailForPelerin)
+
 
 
 

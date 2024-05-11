@@ -76,7 +76,8 @@ const CandidatureSchema = new schema({
     },
     status:{
         type:String,
-        enum:["is_elected","is_enAttent"]
+        enum:["is_elected","is_enAttent"],
+        default:''
     
     },
     id_user:{
