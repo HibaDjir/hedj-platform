@@ -31,6 +31,10 @@ user_profiler.methods.generateAuthToken = function () {
 	});
 	return token;
 };
+
+
+
+
 const User = mongoose.model("user", user_profiler);
 
 const validateSignup = (data) => {
@@ -45,17 +49,19 @@ const validateSignup = (data) => {
 const validateLog = (data) => {
     const schema = Joi.object({
       email: Joi.string().email().required().label("Email"),
+
       password: Joi.string().required().label("Password"),
     });
     return schema.validate(data);
   };
 
-  //generat a random token
-  user_profiler.methods.createResetPasswordToken=async function(){
-    const resetToken=crypto.randomBytes(32).toString('hex')
-    this.passwordResettoken=crypto.createHash('sha256').update(resetToken).digest('hex')
-    this.passwordResettokenExpire=Date.now()+10*60*1000
-    console.log(resetToken,this.passwordResettoken)
-    return resetToken
-}
-module.exports = { User, validateSignup ,validateLog };
+  const ValidateResetPassword=(data)=>{
+    const schema = Joi.object({
+    password: passwordComplexity().required().label("Password"),
+  });
+	return schema.validate(data);
+  }
+
+ 
+
+module.exports = { User, validateSignup ,validateLog, ValidateResetPassword };

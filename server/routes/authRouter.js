@@ -8,5 +8,7 @@ router.route("/:id/verify/:token").get(authController.verifyEmail)
 router.route("/forgetpassword").post(authController.forgotPassword)
 router.route("/resetPassword/:id/:token").post(authController.resetPassord)
 
+router.get('/:id', authController.getUser)
+
 module.exports=router;
 

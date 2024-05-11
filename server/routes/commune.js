@@ -3,11 +3,15 @@ const {
     createCommune,
     getAllCommune,
     getCommune,
+    getCodeCommune,
     deleteCommune,
     updateCommune,
 } = require('../controllers/CommuneControllers')
 router.get('/All',getAllCommune)
+
 router.get('/find', getCommune)
+
+router.get('/codeCom/find', getCodeCommune)
 
 router.post('/', createCommune)
 

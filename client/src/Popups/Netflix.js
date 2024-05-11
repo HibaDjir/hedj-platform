@@ -1,70 +1,114 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import axios from "axios";
-import berra from "../images/log-in.png";
 import user from "../images/User.png";
+import log_out from "../images/log_out.png";
 import user_out from "../images/User_outlined.png";
 import Add from "../images/Untitled.png";
+import edit from "../images/edit-3.png";
+import axios from 'axios';
+
 function Netflix({ onClose }) {
   const modalRef = useRef();
 
-  const closeModal = (e) => {
-    if (modalRef.current === e.target) {
-      onClose();
-    }
+  useEffect(() => {
+    // Focus the close button when the modal opens
+    modalRef.current.focus();
+  }, []);
+
+  const closeModal = () => {
+    onClose();
+  };
+
+  
+  var id_user_n='';
+  const [candidature, setCandidature] = useState([]);
+  //const [id_user_n, setIdUser] = useState(null);
+
+  useEffect(() => {
+    const cookies = document.cookie.split(';');
+    const tokenCookie = cookies.find(cookie => cookie.trim().startsWith('token='));
+    const token = tokenCookie ? tokenCookie.split('=')[1] : null;
+    axios.get('http://localhost:3000/TestLogin?fieldName=token&fieldValue='+token)
+            .then(response => {
+              axios.get('http://localhost:3000/api/users/'+response.data)
+                      .then(responseF => {
+                        id_user_n = response.data;
+                        fetchCandidature(id_user_n);
+                        //alert(responseF.data)
+                      })
+                      .catch(error => {
+                          console.error('Erreur lors de la récupération des options :', error);
+                      });
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des options :', error);
+            });
+    
+  }, []);
+
+  const fetchCandidature = async (id_user) => {
+      try {
+          const response = await fetch('http://localhost:3000/api/candidature/id_user/find?fieldName=id_user&fieldValue='+id_user);
+          if (!response.ok) {
+              throw new Error('Failed to fetch data');
+          }
+          const jsonData = await response.json();
+          setCandidature(jsonData);
+      } catch (error) {
+          console.error('Error fetching data:', error);
+      }
   };
 
   return (
     <div
-      dir="rtl"
       ref={modalRef}
       onClick={closeModal}
-      className="fixed inset-0 z-[9999] bg-fixed  bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center n"
+      className="fixed inset-0 z-[9999] flex justify-center items-center bg-black bg-opacity-50 backdrop-blur-md"
     >
-      <div className="flex flex-col justify-center py-8 px-4 mx-auto w-[600px] h-auto rounded-2xl bg-[#F4EFE7]">
-        <div className="flex justify-between ">
-          <div className="flex justify-center items-center">
-            <img
-              src={berra}
-              className="h-[40px] w-[40px] ml-2 transition-transform duration-500 ease-in-out transform hover:scale-110"
-            />
-            <p className=" text-brown_palette">تسجيل الخروج</p>
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="bg-white rounded-lg p-8 w-full max-w-[700px] max-h-[400px] relative"
+      >
+     
+        <div className="flex justify-between mb-6">
+          <div className="flex items-center">
+            <img src={log_out} className="h-8 mr-2" alt="خروج" />
+            <p className="text-lg font-bold text-brown_palette">تسجيل الخروج</p>
           </div>
-
-          <div className="flex justify-center items-center">
-            <div className="flex flex-col text-right ml-2">
-              <p className=" text-fake_black">إسم المستخدم</p>
-              <p className=" text-brown_palette"> معلوممات الحساب</p>
+          <div className="flex justify-around">
+            <div className="flex flex-col">
+              <p className=" text-fake_black">إسم المستخدم</p> 
+              <div className="flex justify-center">
+               <img src={edit} alt="edit" style={{ width: '20px', height: '20px' }}/>
+               <p>معلومات الحساب</p>
+              </div>
             </div>
-            <img src={user} className="h-[50px] w-[50px]" />
+            <img src={user} alt="مستخدم" style={{ width: '70px', height: '70px' }} />
+
           </div>
         </div>
-        <div className="flex justify-center items-center mt-8">
-
-        <div className="flex flex-col justify-center items-center ml-4">
-            <Link to="/homelgin">
-              <img
-                src={user_out}
-                className="h-[60px] w-[60px] transition-transform duration-500 ease-in-out transform hover:scale-110"
-                alt="Add"
-              />
-            </Link>
-            <p className=" text-fake_black"> الإسم و اللقب</p>
-
-          </div>
-
-
-          <div className="flex flex-col justify-center items-center">
+        <div className="flex justify-center items-center">
+          {candidature.map(candidat => (
+            <div className="flex flex-col items-center mr-8">
+              <Link to="/home_each_profile">
+                <img
+                  src={user_out}
+                  className="w-16 h-16 mb-2 transition-transform hover:scale-110"
+                  alt="User Outlined"
+                />
+              </Link>
+              <p className="text-sm text-fake_black">{candidat.nom}<br />{candidat.prenom}</p>
+            </div>
+          ))}
+          <div className="flex flex-col items-center">
             <Link to="/candidature">
               <img
                 src={Add}
-                className="h-[60px] w-[60px] transition-transform duration-500 ease-in-out transform hover:scale-110"
+                className="w-16 h-16 mb-2 transition-transform hover:scale-110"
                 alt="Add"
               />
             </Link>
-            <p className=" text-brown_palette "> تسجيل شخص آخر</p>
-
+            <p className="text-sm text-brown_palette">تسجيل شخص آخر</p>
           </div>
         </div>
       </div>
