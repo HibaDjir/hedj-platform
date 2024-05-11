@@ -313,6 +313,7 @@ exports.getCountsWilaya = async(req, res)=>{
 
 
 
+
  ///get count of pelerin by age of specidied wilaya
 
 
@@ -551,3 +552,4 @@ exports.countPelerinsByYearByWilaya=async(req,res) =>{
       throw error;
   }
 }
+

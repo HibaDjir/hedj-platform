@@ -215,6 +215,17 @@ const getCandByWilaya = async(req, res)=>{
     
 }
 
+
+const deleteCands = async (req, res)=>{
+    try {
+        const deletedCands = await candidature.deleteMany()
+        res.status(200).json({ message: 'All cands deleted successfully' });
+    } catch (error) {
+        res.status(500).json({message: 'Internal server error', error: error.message });
+    }
+}
+
+
 module.exports = {
     createCandidature,
     getAllCandidature,
@@ -223,5 +234,6 @@ module.exports = {
     getCandidatureUser,
     deleteCandidature,
     updateCandidature,
-    getCandByWilaya
+    getCandByWilaya,
+    deleteCands
 }

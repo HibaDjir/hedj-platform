@@ -1,11 +1,36 @@
 
 const Condidatures=require('../../models/Candidature')
-
 const Commune =require('../../models/Commune')
 const {setStatus} = require('./clcPrctg');
 const pelerin = require('../../models/pelerin');
 const { all } = require('../../routes/pelerinRoute');
+const sendEmail=require('../../util/sendEmail')
 
+
+
+function envoieEmail(pelerinsElus){
+    try {
+        const emailEnvoie = pelerinsElus.map(pelerin => {
+            console.log('EVOIE MAIL: PELERIN EMAIL',pelerin.email)
+            console.log('EVOIE MAIL: PELERIN NOM',pelerin.nom)
+            console.log('EVOIE MAIL: PELERIN PRENOM',pelerin.prenom)
+                sendEmail({
+                email: pelerin.email,
+                subject:'السلام عليكم',
+                message:
+                `سيد(ة)  ${pelerin.nom}!\n\n
+                مبارك لكم، لقد تم اختياركم في القرعة لأداء مناسك الحج\n
+                **معلوماتكم الشخصية**\n\n
+                اللقب :${pelerin.nom}\n\n
+                الاسم :${pelerin.prenom}\n\n
+                رقم جواز السفر :${pelerin.num_passeport}\n
+                `
+           });
+        })
+    } catch (error) {   
+        console.log(error)
+    }
+}
 // Function for electing a specific number of pilgrims randomly
 function electionPelerinsAuHasard(pelerins, nombreAElire) {
     // Check if the number to be elected is greater than the total number of pilgrims
@@ -20,7 +45,7 @@ function electionPelerinsAuHasard(pelerins, nombreAElire) {
        
         // Randomly select a pilgrim from the remaining list
         const randomIndex = Math.floor(Math.random() * pelerinsRestants.length);
-        console.log(randomIndex)
+        // console.log(randomIndex)
         if(pelerinsElus.length===nombreAElire-1){
             if(pelerinsRestants[randomIndex].genre==='ذكر'){
                 pelerinsElus.push(pelerinsRestants[randomIndex])
@@ -38,7 +63,7 @@ function electionPelerinsAuHasard(pelerins, nombreAElire) {
         }
         let pelerinElu = pelerinsRestants[randomIndex];
        
-        console.log('pelerin elu outside female',pelerinElu)
+        // console.log('pelerin elu outside female',pelerinElu)
         pelerinsRestants.splice(randomIndex, 1); // Remove the selected pilgrim from the remaining list
 
         // Update the selected pilgrim's isSelected status
@@ -51,14 +76,14 @@ function electionPelerinsAuHasard(pelerins, nombreAElire) {
         // If the selected pilgrim is female and has a male reference, find the corresponding male pilgrim and update its isSelected status
         if (pelerinElu.genre === 'أنثى' && pelerinElu.id_mahrem) {
             let  pelerinF=pelerinElu
-            console.log('female is ',pelerinF)
+            // console.log('female is ',pelerinF)
             let malePelerinIndex = pelerinsRestants.findIndex(pelerin => pelerin._id.toString() === pelerinElu.id_mahrem);
-            console.log('index de mahrem ',malePelerinIndex)
+            // console.log('index de mahrem ',malePelerinIndex)
             //les cas ou le mahrem existe dans restants
             if (malePelerinIndex !== -1) {
                  pelerinElu = pelerinsRestants[malePelerinIndex];
                  pelerinsRestants.splice(malePelerinIndex , 1);
-                 console.log("mahrem de " +pelerinF+" est : ",pelerinElu)
+                //  console.log("mahrem de " +pelerinF+" est : ",pelerinElu)
                 
                  pelerinsElus.push(pelerinElu);
 
@@ -90,32 +115,72 @@ exports.electPilgrims = async (req, res) => {
         const{ nombreAElire ,nbraelireenattente}= req.body; // Extract the number of pilgrims to be elected from the request body
         const   pelerins = await Condidatures.find(); // Fetch all pilgrims from the database
         let  {pelerinsElus,pelerinsRestants}= await electionPelerinsAuHasard(pelerins,nombreAElire)
+
+        let candid = await Condidatures.updateMany( 
+            { _id: { $in: pelerinsElus.map(pelerin => pelerin._id) } }, // Find candidatures associated with the updated pelerins 
+            { $set: { status: "is_elected" } } // Update their status to "is-elected" 
+          );
+
+        console.log("UPDATE MANY T3 STATUS:", candid)
+          
         console.log("pelerin elu ",pelerinsElus) 
+
      let candi=   await Condidatures.updateMany(
             { _id: { $in: pelerinsElus.map(pelerin => pelerin._id) } }, // Find candidatures associated with the updated pelerins
             { $set: { status: "is_elected" } } // Update their status to "is-elected"
           );
 
-        const pelerinfinal=setStatus(pelerinsElus,'is_elected')          
+      
+
+        const pelerinfinal=setStatus(pelerinsElus,'is_elected')  
+        
+        //EST CE QUE EN ENOIE MAIL ICI POUR FAIRE ENTRER LES PELERINS ELUS COMPM PARAM
+        // envoieEmail(pelerinsElus)
+
+
+        //TTTTTTTTTTTTTTTEEEEEEEEEEEESSSSSSSSSSSSSSSSSSSSTTTTTTTTTTTTTTTTTTTTT
+        const testDate = [
+            {
+
+                "nom": "kadour",
+                "prenom": "kadour",
+                "num_passeport": "0000000000000000000",
+                "email": "meriemeaitchabane04@gmail.com",
+
+            },
+            {
+                "nom": "sara",
+                "prenom": "mokaddm",
+                "num_passeport": "7410852963",
+                "email": "acmerieme@gmail.com",
+            }]
+        envoieEmail(testDate)
+        //
+
         
         let { pelerinsElus: pelerinsEnAttente, pelerinsRestants: pelerinsRestantsApresEnAttente } = await electionPelerinsAuHasard(pelerinsRestants, nbraelireenattente);
    
-        console.log('Pèlerins en attente :', pelerinsEnAttente);
-        const pelerinEnAttentFinale=setStatus(pelerinsEnAttente,'is_enAttent')       
+        // console.log('Pèlerins en attente :', pelerinsEnAttente);
+        const pelerinEnAttentFinale=setStatus(pelerinsEnAttente,'is_enAttent') 
+        
+        
         let allPelerins = [...pelerinfinal, ...pelerinEnAttentFinale]
-        console.log("TOUSSSSSS LES PELERINS", allPelerins)
+        // console.log("TOUSSSSSS LES PELERINS", allPelerins)
      
         for (let  pelerinData of allPelerins) {
             try {
                 // Create a new Pelerin document
                 const newPelerin = await pelerin.create({ Candidature: pelerinData._id });
-                console.log('New pelerin created:', newPelerin);
+                // console.log('New pelerin created:', newPelerin);
             } catch (error) {
                 console.error('Error creating pelerin:', error);
             }
         }
 
         res.json(allPelerins);
+
+
+        //ou en envoie mail ici apres quo on set status to elected
       
 
     } catch (err) {
