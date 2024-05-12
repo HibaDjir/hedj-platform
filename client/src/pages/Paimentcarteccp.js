@@ -11,21 +11,18 @@ import   cartreccp from '../images/carte-eddahabiya.jpg';
 import Navbar_for_each_profile from '../components/Navbar_for_each_profile';
 
 function Paimentcarteccp() {
-    
-  const [selectedDate, setSelectedDate] = useState(null);
-  const handleChangeDate = (date) => {
-    setSelectedDate(date);
-  };
 
-  const [file,setFile]=useState(null);
-    const handleDragOver = (e) => {
-        e.preventDefault(); 
-        const selectedFile = e.target.files[0];
-        if (selectedFile){
-            setFile(selectedFile.name)
-        }
+  const [formCandidature, setFormCandidature] = useState({
+    num_carte: '',
+    code_carte: '',
+    propreitaire_carte: '',
+  });
+
+  
+    const [date_exp_carte, setDate_exp_carte] = useState(null);
+    const handleChangeDate = (date) => {
+      setDate_exp_carte(date);
     };
-    const handleClearFile = () => {setFile(null)}
 
     const [candidat, setCandidat] = useState([]);
     const [single, setSingle] = useState([]);
@@ -65,6 +62,26 @@ function Paimentcarteccp() {
             console.error('Error fetching data:', error);
         }
     };
+
+    
+
+    const handleAjouePaiement = async () => {
+      try {
+        const propreitaire_carte = formCandidature.propreitaire_carte, code_carte = formCandidature.code_carte, num_carte = formCandidature.num_carte;
+        await axios.put('http://localhost:3000/api/candidature/AddPaieCarte', {propreitaire_carte, code_carte, num_carte, date_exp_carte, idCandidat });
+        alert('Paiement avec la carte CCP est valider');
+      } catch (error) {
+        alert('Error uploading file:', error);
+      }
+    };
+    const handleChangeValue = (event) => {
+      const { name, value } = event.target;
+      setFormCandidature(prevState => ({
+          ...prevState,
+          [name]: value
+      }));
+    };
+
   return (
     <div dir="rtl" className="w-full h-full mx-auto  text-right flex flex-col justify-center items-center  p-5"
     style={{ backgroundImage: `url(${grande_poste})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
@@ -128,7 +145,8 @@ function Paimentcarteccp() {
                   w-full"
                   type="text"
                   placeholder="صاحب البطاقة"
-                  name="owner"
+                  value={formCandidature.propreitaire_carte} onChange={handleChangeValue}
+                  name="propreitaire_carte"
                   required
                 />
               </div>
@@ -145,7 +163,8 @@ function Paimentcarteccp() {
                   w-full"
                   type="text"
                   placeholder="رقم بطاقة البريد الجاري"
-                  name="carteccp"
+                  value={formCandidature.num_carte} onChange={handleChangeValue}
+                  name="num_carte"
                   required
                 />
               </div>
@@ -172,18 +191,12 @@ function Paimentcarteccp() {
                   w-full"
                   type="text"
                   placeholder="رمز الأمان"
-                  name="code"
+                  value={formCandidature.code_carte} onChange={handleChangeValue}
+                  name="code_carte"
                   required
                 />
               </div>
               </div>
-             
-
-
-
-              
-
-
 
               <div className=" w-full flex justify-center items-center">
               <div className="flex flex-col w-full mx-2">
@@ -193,7 +206,7 @@ function Paimentcarteccp() {
                 </label>
                 <DatePicker
                   className="text-black p-2 border rounded-xl  focus:outline-none focus:border-[#C09455]   w-full"
-                  selected={selectedDate}
+                  selected={date_exp_carte}
                   onChange={handleChangeDate}
                   dateFormat="dd/MM/yyyy"
                   locale={ar}
@@ -206,17 +219,12 @@ function Paimentcarteccp() {
 
               <div className=" w-full flex justify-center items-center">
                 <button  className="w-full border border-[#D4A373]  text-brown_palette rounded-2xl p-4 m-2 hover:bg-[#D8A353] hover:text-fake_black "
-            >
+                  onClick={handleAjouePaiement} >
                  تأكيد
                 </button>
-                </div>
+              </div>
 
         </div>
-
-
-
-         
-
 
         <div className="flex flex-col justify-center p-4 ">
    

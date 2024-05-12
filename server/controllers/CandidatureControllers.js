@@ -65,11 +65,6 @@ const sesstion = require('../models/Sessions')
     }
 };*/
 
-
-
-
-
-
 const getCandidature = async (req, res) => {
     //const { code } = req.params
     const genre = req.query.fieldName; 

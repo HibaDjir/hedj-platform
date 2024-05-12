@@ -34,6 +34,18 @@ import SousTirage from "./pages/SousTirage"
 import SousPelerin from "./pages/SousPelerin"
 import SousCandidat from "./pages/SousCandidat"
 
+import { useHistory } from "react-router-dom";
+import Sidebar from "../src/components/Dash_components/shared/Sidebar"
+import EtatSantee from "./pages/EtatSantee";
+import VisiteMedical from "./pages/Medpages/VisiteMedical";
+import ListePelerin from "./pages/Medpages/ListePelerin";
+import HomeMedecin from "./pages/Medpages/Home";
+
+import PaimentVersementPostale from "./pages/PaimentVersementPostale";
+import Paimentcarteccp from "./pages/Paimentcarteccp";
+import Paiment from "./pages/AdminPages/Paiment";
+import Carteccp from "./pages/AdminPages/Carteccp";
+import Virementccp from "./pages/AdminPages/Virementccp";
 
 function App() {
   const isLoggedIn=localStorage.getItem('loggedIn')
@@ -76,6 +88,18 @@ function App() {
 
           <Route path="/dash" element={<RequireMasterAdmin><Dash/></RequireMasterAdmin>}></Route>
           <Route path="/sousdash" element={<RequireAuthSsA><Sous_Dash/></RequireAuthSsA>}></Route>
+
+
+          <Route path="/homemedecin" element={<HomeMedecin/>} />
+          <Route path="/listepelerin" element={<ListePelerin />} />
+
+          <Route path="/sante" element={<EtatSantee />} />
+          <Route path="/paiment" element={<Paiment/>} />
+          <Route path="/carteccp" element={<Carteccp/>} />
+          <Route path="/virementccp" element={<Virementccp/>} />
+          <Route path="/paimentVP" element={<PaimentVersementPostale />} />
+          <Route path="/paimentcarteccp" element={<Paimentcarteccp />} />
+          <Route path="/pelerinsMed" element={<VisiteMedical/>} />
 
         </Routes>
       </div>

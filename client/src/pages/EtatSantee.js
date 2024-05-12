@@ -9,6 +9,8 @@ import  Clear from '../images/x_icon.png';
 import  upload from '../images/upload_icon.png';
 import   medical_examination from '../images/medical-examination.jpg';
 import Navbar_for_each_profile from '../components/Navbar_for_each_profile';
+
+
 function EtatSantee() {
 
 
@@ -17,7 +19,7 @@ function EtatSantee() {
         e.preventDefault(); 
         const selectedFile = e.target.files[0];
         if (selectedFile){
-            setFile(selectedFile.name)
+            setFile(selectedFile.name);
         }
     };
     const handleClearFile = () => {setFile(null)}
@@ -60,6 +62,19 @@ function EtatSantee() {
             console.error('Error fetching data:', error);
         }
     };
+
+    const handleUpload = async () => {
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('id', idCandidat);
+        await axios.post('http://localhost:3000/api/candidature/upload', {file, idCandidat});
+        alert('File uploaded successfully');
+      } catch (error) {
+        alert('Error uploading file:', error);
+      }
+    };
+
   return (
 
     <div dir="rtl" className="w-full h-full mx-auto  text-right flex flex-col justify-center items-center bg-cover bg-center p-5"
@@ -269,6 +284,12 @@ function EtatSantee() {
                 placeholder="أمراض مزمنة"
                 required
               />
+              <div className=" w-full flex justify-center items-center">
+                <button  className="w-full border border-[#D4A373]  text-brown_palette rounded-2xl p-4 m-2 hover:bg-[#D8A353] hover:text-fake_black "
+                  onClick={handleUpload} >
+                 تأكيد
+                </button>
+              </div>
             </div>
         </div>
 
@@ -314,7 +335,7 @@ function EtatSantee() {
                         SVG؟ PNG؟ JPG أو JPEG (بحد أقصى 800 × 400 بكسل)
                     </p>
                 </div>
-                <input id='dragdrop-file' type='file' hidden onChange={handleDragOver}/>
+                <input id='dragdrop-file' name='file' type='file' hidden onChange={handleDragOver}/>
             </label>
         )}
     </div>

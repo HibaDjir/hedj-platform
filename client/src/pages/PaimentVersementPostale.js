@@ -10,22 +10,30 @@ import   grande_poste from '../images/GPA02.jpg';
 import   cartreccp from '../images/carte-eddahabiya.jpg';
 import Navbar_for_each_profile from '../components/Navbar_for_each_profile';
 function PaimentVersementPostale() {
+  
+  const [formCandidature, setFormCandidature] = useState({
+    num_compte: '',
+    cle_compte: '',
+    num_versement: '',
+    propreitaire_compte: '',
+    address_op: '',
+  });
 
   
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [date_operation, setDate_operation] = useState(null);
   const handleChangeDate = (date) => {
-    setSelectedDate(date);
+    setDate_operation(date);
   };
 
-  const [file,setFile]=useState(null);
+  const [file_paie_ver,setFile_paie_ver]=useState(null);
     const handleDragOver = (e) => {
         e.preventDefault(); 
         const selectedFile = e.target.files[0];
         if (selectedFile){
-            setFile(selectedFile.name)
+          setFile_paie_ver(selectedFile.name)
         }
     };
-    const handleClearFile = () => {setFile(null)}
+    const handleClearFile = () => {setFile_paie_ver(null)}
 
     const [candidat, setCandidat] = useState([]);
     const [single, setSingle] = useState([]);
@@ -65,6 +73,24 @@ function PaimentVersementPostale() {
             console.error('Error fetching data:', error);
         }
     };
+
+  const handleUpload = async () => {
+    try {
+      const num_compte = formCandidature.num_compte, cle_compte = formCandidature.cle_compte, num_rib = formCandidature.num_rib,
+      propreitaire_compte = formCandidature.propreitaire_compte, address_op = formCandidature.address_op;
+      await axios.post('http://localhost:3000/api/candidature/uploadVersement', {file_paie_ver, num_compte, cle_compte, num_rib, propreitaire_compte, address_op, date_operation, idCandidat});
+      alert('Enregistrement du versement Réussie');
+    } catch (error) {
+      alert('Error uploading file:', error);
+    }
+  };
+  const handleChangeValue = (event) => {
+    const { name, value } = event.target;
+    setFormCandidature(prevState => ({
+        ...prevState,
+        [name]: value
+    }));
+  };
   return (
     <div dir="rtl" className="w-full h-full mx-auto  text-right flex flex-col justify-center items-center  p-5"
     style={{ backgroundImage: `url(${grande_poste})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
@@ -132,7 +158,8 @@ function PaimentVersementPostale() {
                   w-full"
                   type="text"
                   placeholder="حساب البريد الجاري"
-                  name="ccp"
+                  name="num_compte"
+                  value={formCandidature.num_compte} onChange={handleChangeValue}
                   required
                 />
               </div>
@@ -147,7 +174,8 @@ function PaimentVersementPostale() {
                   w-full"
                   type="text"
                   placeholder="المفتاح"
-                  name="clefccp"
+                  name="cle_compte"
+                  value={formCandidature.cle_compte} onChange={handleChangeValue}
                   required
                 />
               </div>
@@ -172,7 +200,8 @@ function PaimentVersementPostale() {
                   w-full"
                   type="text"
                   placeholder="رقم الإيداع البريدي"
-                  name="rip"
+                  name="num_rib"
+                  value={formCandidature.num_rib} onChange={handleChangeValue}
                   required
                 />
               </div>
@@ -192,7 +221,8 @@ function PaimentVersementPostale() {
                   w-full"
                   type="text"
                   placeholder="صاحب الحساب"
-                  name="owner"
+                  name="propreitaire_compte"
+                  value={formCandidature.propreitaire_compte} onChange={handleChangeValue}
                   required
                 />
               </div>
@@ -208,10 +238,12 @@ function PaimentVersementPostale() {
                 </label>
                 <DatePicker
                   className="text-black p-2 border rounded-xl  focus:outline-none focus:border-[#C09455]   w-full"
-                  selected={selectedDate}
+                  selected={date_operation}
                   onChange={handleChangeDate}
+                  value={date_operation} //onChange={handleChangeValue}
                   dateFormat="dd/MM/yyyy"
                   locale={ar}
+                  name='date_operation'
                   placeholderText="تاريخ الملاد"
                 />
               </div>
@@ -229,7 +261,8 @@ function PaimentVersementPostale() {
                   w-full"
                   type="text"
                   placeholder=" العنوان "
-                  name="Adresse"
+                  value={formCandidature.address_op} onChange={handleChangeValue}
+                  name="address_op"
                   required
                 />
               </div>
@@ -237,7 +270,7 @@ function PaimentVersementPostale() {
 
               <div className=" w-full flex justify-center items-center">
                 <button  className="w-full border border-[#D4A373]  text-brown_palette rounded-2xl p-4 m-2 hover:bg-[#D8A353] hover:text-fake_black "
-            >
+                  onClick={handleUpload} >
                  تأكيد
                 </button>
                 </div>
@@ -255,12 +288,12 @@ function PaimentVersementPostale() {
         تحميل الملف
     </label>
     <div className='flex items-start w-full'>
-        {file ? (
+        {file_paie_ver ? (
       <div className='my-3'>
       <div className='relative inline-block'>
           <div className='p-2 bg-gray-200 text-gray-800 rounded-md shadow-md'>
               <span className='text-black font-medium text-lg'>اسم الملف: </span>
-              <span>{file}</span>
+              <span>{file_paie_ver}</span>
           </div>
           <button className='absolute -top-2 -right-2 bg-red-500 text-white cursor-pointer rounded-full p-1 shadow-md' onClick={handleClearFile}>
               <img src={Clear} alt="Clear" className="h-4 w-4" />
@@ -268,7 +301,7 @@ function PaimentVersementPostale() {
           <img  className="w-[500px] mx-auto my-4  border rounded-3xl border-gray-300 shadow-2xl transition-transform duration-500 ease-in-out transform hover:scale-110"
        // f blaset src je pense ghadi thettou url ta3 l file
        
-    alt="here you will display the file fetched from the database" />
+        alt="here you will display the file fetched from the database" />
       </div>
   </div>
   
