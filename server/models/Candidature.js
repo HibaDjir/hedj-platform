@@ -88,6 +88,50 @@ const CandidatureSchema = new schema({
         type: Number,
         require: true,
         default:0
+    },
+    is_elected:{
+        type: Boolean,
+        default:false
+    },
+    is_attente:{
+        type: Boolean,
+        default:false
+    },
+    file_medical: {
+      type: String
+    },
+    num_compte: {
+      type: String
+    },
+    cle_compte: {
+      type: String
+    },
+    num_rib: {
+      type: String
+    },
+    propreitaire_compte: {
+      type: String
+    },
+    date_operation:{
+        type: Date
+    },
+    address_op: {
+      type: String
+    },
+    file_paie_ver: {
+      type: String
+    },
+    propreitaire_carte: {
+      type: String
+    },
+    num_carte: {
+      type: String
+    },
+    code_carte: {
+      type: String
+    },
+    date_operation:{
+        type: Date
     }
 
 },{ timeseries: true})

@@ -23,6 +23,7 @@ const pelerinRouter=require('./routes/pelerinRoute')
 const masterAdminRoute=require('./routes/masterAdminRoute')
 const medecinRoute=require('./routes/medecinRoute')
 const dashboardRoute=require('./routes/dashboardRoute')
+const tirageTypeRoute=require('./routes/TirageType')
  
 index.use("/api/users",authRouter) 
 index.use("/api/wilaya",wilayaRouter) 
@@ -31,45 +32,46 @@ index.use("/api/candidature",candidatureRouter)
 index.use("/api/session",sessionsRouter) 
 index.use("/api/methodeTirage",tirageRouter) 
 index.use("/api",pelerinRouter) 
-index.use("/api/commune",communeRouter) 
+//index.use("/api/commune",communeRouter) 
 index.use("/api/masterAdmin",masterAdminRoute)
 index.use("/api/medecin",medecinRoute) 
 index.use("/api/dashboardStats", dashboardRoute)
+index.use("/api/tirage", tirageTypeRoute)
 
 
 
 
-// const verifiyUser = (req, res, next)=>{
-//     /*const cookies = document.cookie.split(';');
-//     const tokenCookie = cookies.find(cookie => cookie.trim().startsWith('token='));
-//     const token = tokenCookie ? tokenCookie.split('=')[1] : null;
-//     const token = localStorage.getItem('token');*/
-//     const token = req.query.fieldName; 
-//     const fieldValue = req.query.fieldValue;
+const verifiyUser = (req, res, next)=>{
+    /*const cookies = document.cookie.split(';');
+    const tokenCookie = cookies.find(cookie => cookie.trim().startsWith('token='));
+    const token = tokenCookie ? tokenCookie.split('=')[1] : null;
+    const token = localStorage.getItem('token');*/
+    const token = req.query.fieldName; 
+    const fieldValue = req.query.fieldValue;
 
-//     const query = { 
-//         [token]: fieldValue
-//     };
-//     if(!query.token){
-//         return res.json("err token");
-//     }else{
-//         const decodedPayload = decodeToken(query.token);
+    const query = { 
+        [token]: fieldValue
+    };
+    if(!query.token){
+        return res.json("err token");
+    }else{
+        const decodedPayload = decodeToken(query.token);
+        if(decodedPayload) return res.json(decodedPayload._id);
+        else return res.json(null);
+    }
+}
 
-//         return res.json(decodedPayload._id);
-//     }
-// }
+function decodeToken(token) {
+    try {
+        const decoded = jwt.verify(token, process.env.JWTPRIVATEKEY);
+        return decoded;
+    } catch (error) {
+        console.error('Error decoding token:', error.message);
+        return null; 
+    }
+}
 
-// function decodeToken(token) {
-//     try {
-//         const decoded = jwt.verify(token, process.env.JWTPRIVATEKEY);
-//         return decoded;
-//     } catch (error) {
-//         console.error('Error decoding token:', error.message);
-//         return null; 
-//     }
-// }
-
-// index.get('/TestLogin', verifiyUser)
+index.get('/TestLogin', verifiyUser)
 
 //create server 
 

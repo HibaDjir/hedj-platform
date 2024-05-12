@@ -1,4 +1,3 @@
-
 // App.js
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Resset_password from "./pages/Resset_password";
@@ -13,18 +12,20 @@ import { AuthContextProvider } from './context/authContext'; // Assuming your co
 import "./index";
 import SousSession from "./pages/SousSession"
 import RequireAuth from "./protectingRoutes/RequireAuth";
-import RequireNotAuth from "./protectingRoutes/RequireNotAuth";
-import RequireAuthSsA from "./protectingRoutes/RequireAuthSsAdmin";
-import RequireMasterAdmin from "./protectingRoutes/RequireMasterAdmin"
 import AttentePelerin from "./pages/AttentePelerin"
+import RequireNotAuth from "./protectingRoutes/RequireNotAuth";
+import RequireMasterAdmin from "./protectingRoutes/RequireMasterAdmin"
+import RequireAuthSsA from "./protectingRoutes/RequireAuthSsAdmin";
+import RequireAuthMed from "./protectingRoutes/RequireAuthMed";
 import Manassik from "../src/pages/Manassik";
 import Candidature from "./pages/Candidature";
 import Candidature_mahram  from "./pages/AddMahram";
 import UserProfile from "./pages/UserProfile";
 import Home_each_profile from "./pages/Home_each_profile";
 import Cansulter_cand from "./pages/Consulter_candidature";
-import SousDash from "./pages/Dash_pages/Dashboard_sous";
-import Dash from "../src/pages/Dash_pages/Dashboard_Main";
+import Dash from "../src/pages/Dash_pages/Dashboard_Main"
+import Sous_Dash from "./pages/Dash_pages/Dashboard_sous";
+//import Dash from "../src/pages/Dash_pages/Dashboard_Main";// "../src/pages/Dash_pages/Dashboard";
 import Medecins from "./pages/Medecins";
 import RecentAdmin from "./pages/AdminPages/RecentAdmin";
 import Session from "./pages/Session"
@@ -34,6 +35,18 @@ import SousTirage from "./pages/SousTirage"
 import SousPelerin from "./pages/SousPelerin"
 import SousCandidat from "./pages/SousCandidat"
 
+import { useHistory } from "react-router-dom";
+import Sidebar from "../src/components/Dash_components/shared/Sidebar"
+import EtatSantee from "./pages/EtatSantee";
+import VisiteMedical from "./pages/Medpages/VisiteMedical";
+import ListePelerin from "./pages/Medpages/ListePelerin";
+import HomeMedecin from "./pages/Medpages/Home";
+
+import PaimentVersementPostale from "./pages/PaimentVersementPostale";
+import Paimentcarteccp from "./pages/Paimentcarteccp";
+import Paiment from "./pages/AdminPages/Paiment";
+import Carteccp from "./pages/AdminPages/Carteccp";
+import Virementccp from "./pages/AdminPages/Virementccp";
 
 function App() {
   const isLoggedIn=localStorage.getItem('loggedIn')
@@ -42,15 +55,20 @@ function App() {
       <div className="App">
         
         <Routes>
-        <Route path="/" element={<RequireNotAuth><Home /></RequireNotAuth>} />
-        <Route path="/AddAdmin" element={<RequireMasterAdmin><AddAdmin /></RequireMasterAdmin>} />
+        <Route path="/AddAdmin" element={<RequireAuth><AddAdmin /></RequireAuth>} />
+          <Route path="/" element={<RequireNotAuth><Home /></RequireNotAuth>} />
+   
+   
 
+          
 
+          <Route path="/AttentePelerin" element={<RequireMasterAdmin><AttentePelerin/></RequireMasterAdmin>} />
+
+          <Route path="/home" element={<RequireNotAuth><Home /></RequireNotAuth>} />
           <Route path="/SousSession" element={<RequireAuthSsA><SousSession/></RequireAuthSsA>} />
           <Route path="/SousTirage" element={<RequireAuthSsA><SousTirage/></RequireAuthSsA>} />
           <Route path="/SousPelerin" element={<RequireAuthSsA><SousPelerin/></RequireAuthSsA>} />
           <Route path="/SousCandidat" element={<RequireAuthSsA><SousCandidat/></RequireAuthSsA>} />
-          <Route path="/home" element={<RequireNotAuth><Home /></RequireNotAuth>} />
           <Route path="/medecin" element={<RequireMasterAdmin><Medecins/></RequireMasterAdmin>} />
           <Route path="/RecentAdmin" element={<RequireMasterAdmin><RecentAdmin/></RequireMasterAdmin>} />
           <Route path="/Session" element={<RequireMasterAdmin><Session/></RequireMasterAdmin>} />
@@ -68,14 +86,20 @@ function App() {
             element={<Resset_password />}
           />
           <Route path="/mail_conf" element={<EmailConfirmation />} />
-     
-          <Route path="/sousdash" element={<RequireAuthSsA><SousDash/></RequireAuthSsA>}></Route>
+
           <Route path="/dash" element={<RequireMasterAdmin><Dash/></RequireMasterAdmin>}></Route>
-        
+          <Route path="/sousdash" element={<RequireAuthSsA><Sous_Dash/></RequireAuthSsA>}></Route>
+          <Route path="/homemedecin" element={<RequireAuthMed><HomeMedecin/></RequireAuthMed>} />
+          <Route path="/listepelerin" element={<RequireAuthMed><ListePelerin /></RequireAuthMed>} />
 
+          <Route path="/sante" element={<RequireAuth><EtatSantee /></RequireAuth>} />
+          <Route path="/paiment" element={<Paiment/>} />
+          <Route path="/carteccp" element={<Carteccp/>} />
+          <Route path="/virementccp" element={<Virementccp/>} />
+          <Route path="/paimentVP" element={<RequireAuth><PaimentVersementPostale /></RequireAuth>} />
+          <Route path="/paimentcarteccp" element={<RequireAuth><Paimentcarteccp /></RequireAuth>} />
+          <Route path="/pelerinsMed" element={<RequireAuthMed><VisiteMedical/></RequireAuthMed>} />
 
-
-          
         </Routes>
       </div>
     </Router>

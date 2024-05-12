@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
-import { getAdminStatus } from "./AdminPages/lib/helpers";
 import user from "../images/buchra.png";
 import filter from "../images/filter.png";
 import add from "../images/mini_add.png";
@@ -11,18 +10,20 @@ import Sidebar from "../components/Dash_components/shared/Sidebar";
 import AddAdminModal from "../Popups/AddMed";
 // import img from "../images/img.jpeg"
 import Header from "../components/Dash_components/shared/Header";
+
+import axios from 'axios';
+
 export default function Medecins() {
   const [candidats, setCandidats] = useState([])
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-      
   useEffect(() => {
     fetchCandidats();
   }, [candidats]);
 
   const fetchCandidats = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/candidature/');
+      const response = await fetch('http://localhost:3000/api/candidature/Aff');
       if (!response.ok) {
         throw new Error('Failed to fetch Candidats');
       }
@@ -32,8 +33,6 @@ export default function Medecins() {
       console.error('Error fetching candidats:', error);
     }
   };
-
-
 
   
   const toggleSidebar = () => {
@@ -204,6 +203,7 @@ export default function Medecins() {
     Candidat_commune:candidat.Candidat_commune,
     Num_passport:candidat.Num_passport
   }));      
+
 
 
 

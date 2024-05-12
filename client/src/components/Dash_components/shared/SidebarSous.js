@@ -9,7 +9,6 @@ import { IoShuffleSharp } from "react-icons/io5";
 import { FaUserDoctor, FaPeopleGroup } from "react-icons/fa6";
 import { SlUserFollowing } from "react-icons/sl";
 import { getCustomers, getInventory, getComments} from "../../../pages/Dash_pages/API";
-
 import SessionSous from "../../../pages/SousSession"
 import SousTirage from '../../../pages/SousTirage';
 import { useLogout } from "../../../hooks/useLogout"
@@ -38,7 +37,7 @@ export default function Sidebar() {
     const handleClick = () => {
     logout();
   };
-
+  
     useEffect(() => {
 
         if (decodedToken && decodedToken._id) {

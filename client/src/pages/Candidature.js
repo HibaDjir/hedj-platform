@@ -98,21 +98,11 @@ function Candidature() {
   const [id_session, setSession] = useState(null);
   const [annee, setAnnee] = useState(null);
   const [id_user, setIdUser] = useState(null);
-
   useEffect(() => {
     axios.get('http://localhost:3000/api/wilaya/All')
             .then(response => {
               const additionalOptions = response.data.map(wilaya => ({value: wilaya.code, label: wilaya.ar_name}));
               setWilayas(additionalOptions);
-            })
-            .catch(error => {
-                console.error('Erreur lors de la récupération des options :', error);
-            });
-
-    axios.get('http://localhost:3000/api/candidature/genre/find?fieldName=genre&fieldValue=ذكر')
-            .then(response => {
-              const additionalOptions = response.data.map(condidature => ({value: condidature._id, label: condidature.nom +" "+ condidature.prenom}));
-              setCondidature(additionalOptions);
             })
             .catch(error => {
                 console.error('Erreur lors de la récupération des options :', error);
@@ -132,7 +122,15 @@ function Candidature() {
             .then(response => {
               axios.get('http://localhost:3000/api/users/'+response.data)
                       .then(responseF => {
-                        setIdUser(response.data)
+                        setIdUser(response.data);   
+                        axios.get('http://localhost:3000/api/candidature/genreMale/find?fieldName=id_user&fieldValue='+response.data)
+                                .then(response => {
+                                  const additionalOptions = response.data.map(condidature => ({value: condidature._id, label: condidature.nom +" "+ condidature.prenom}));
+                                  setCondidature(additionalOptions);
+                                })
+                                .catch(error => {
+                                    console.error('Erreur lors de la récupération des options :', error);
+                                });
                         //alert(responseF.data)
                       })
                       .catch(error => {
@@ -141,7 +139,7 @@ function Candidature() {
             })
             .catch(error => {
                 console.error('Erreur lors de la récupération des options :', error);
-            });
+            }); 
   }, [])
 
   const options = [
@@ -311,6 +309,7 @@ function Candidature() {
         classNames="page-exit page-exit-active " 
         unmountOnExit
       >
+        
       <div className="flex flex-col justify-center items-center max-w-[1240px] mx-auto  bg-[#EAE1D1]  bg-opacity-90  rounded-xl shadow-2xl">
       <div className='flex justify-center items-center'>
   <div className="flex justify-item ">
@@ -550,8 +549,7 @@ function Candidature() {
                   styles={customStyles}
                   options={communes}
                   onChange={handleChangeCommune}
-                  placeholder=" البلدية
-             "
+                  placeholder="البلدية"
                   isRtl={true}
                 />
               </div>

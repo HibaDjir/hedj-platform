@@ -4,7 +4,6 @@ const {User, validateAddSousAdmin}=require('../models/user_profiler')
 const sousAdmin = require('../models/sousAdmin')
 const bcrypt = require("bcrypt");
 const sendEmail=require('../util/sendEmail');
-const { find, findById } = require('../models/Medecin');
 const Candidature = require('../models/Candidature');
 const Sessions = require('../models/Sessions');
 
@@ -26,7 +25,7 @@ exports.createSousAdmin=async(req,res)=>{
 
 		const salt = await bcrypt.genSalt(Number(process.env.SALT));
 		const hashPassword = await bcrypt.hash(req.body.password, salt);
-        console.log(hashPassword)
+        //console.log(hashPassword)
         
         // Set the default role to "sousAdmin"
         req.body.Role="sousAdmin"
@@ -109,7 +108,7 @@ exports.getsousAdminById=async(req,res)=>{
         .populate('user')
         .populate('Wilaya')
          .exec();
-         console.log(populateSousAdmin)
+         //console.log(populateSousAdmin)
 
          res.status(201).json(populateSousAdmin)
 
@@ -216,7 +215,7 @@ exports.getAdminsWilaya = async(req, res)=>{
         const  idAdmin = req.params.id
 
         const sousadmin = await sousAdmin.findById({_id: idAdmin}).populate('Wilaya').populate('user').exec();
-       
+
         const lawilaya = sousadmin.Wilaya.name
         res.status(201).json({
             wilaya: lawilaya,
@@ -232,29 +231,8 @@ exports.getAdminsWilaya = async(req, res)=>{
 
 //get sousAdminByidUse  
 //get sousAdminByidUse  
-exports.getSousAdminByUser=async(req,res)=>{ 
-    try{ 
-        let idUser=req.params.id 
-        const sousadmin=await sousAdmin.findOne({user:idUser}) 
-        console.log
-        const  idAdmin =sousadmin._id 
-        const sousadminPop = await sousAdmin.findById({_id: idAdmin}).populate('Wilaya').populate('user').exec(); 
-        console.log("admin POP", sousadminPop)
 
-        const lawilaya = sousadminPop.Wilaya.name 
-        console.log("la wilaya", lawilaya)
-        res.status(201).json({ 
-            wilaya: lawilaya, 
-            nom: sousadminPop.user.firstName, 
-            prenom: sousadminPop.user.lastName, 
-            _id: sousadminPop._id ,
-            nb_places: lawilaya.nb_places
-        }); 
- 
-    }catch(err){ 
-        res.status(400).json({message: err.message}) 
-    } 
-}
+
 
 //////////email apres paiment ADMIN VALIDATE USER AFTER HE SEES RECU DE PAIMENT
 exports.sendEmailValidateFInal=async(req,res)=>{ 
@@ -319,6 +297,32 @@ exports.sendEmailPaiement=async(req,res)=>{
         res.json(err.message)
     }
 
+}
+
+//////////email apres paiment ADMIN VALIDATE USER AFTER HE SEES RECU DE PAIMENT
+exports.sendEmailValidateFInal=async(req,res)=>{ 
+    try {
+        let id=req.params.id 
+        let candidature=await Candidature.findById(id) 
+         if(candidature){ 
+            await sendEmail({ 
+                email: candidature.email, 
+                subject: 'السلام عليكم \n', 
+                message: `سيد(ة) ${candidature.nom } ${candidature.prenom }!\n\n
+                **معلوماتكم الشخصية**\n\n
+                اللقب :${candidature.nom}\n\n
+                الاسم :${candidature.prenom}\n\n
+                رقم جواز السفر :${candidature.num_passeport}\n 
+                لقد تم تاكيد كل المراحل لاداء مناسك الحج \n
+                تقبل الله منكم الحج\n
+                دعواتكم لنا` 
+            }); 
+         } 
+         res.json('Email send successfully')
+
+    } catch (err) {
+        res.status(400).json(err.message)
+    }
 
 
 }

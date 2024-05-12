@@ -55,7 +55,7 @@ function Modal({ onClose }) {
           redirectPath = location.state?.path || "/dash";
         }
         else if (json.Role === 'medecin'){
-          redirectPath = location.state?.path || "/medecin ";
+          redirectPath = location.state?.path || "/listepelerin";
         }
         navigate(redirectPath ,{replace:true}) 
 
@@ -145,4 +145,3 @@ function Modal({ onClose }) {
 }
 
 export default Modal;
-

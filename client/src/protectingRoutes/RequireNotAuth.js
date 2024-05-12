@@ -19,7 +19,7 @@ const OnlyPublic = ({ children }) => {
     return <Navigate to="/dash" replace />; // Redirect to a specific page
   }  
   else if(user && userRole ==="medecin"){
-    return <Navigate to="/medecin" replace />; // Redirect to a specific page
+    return <Navigate to="/listepelerin" replace />; // Redirect to a specific page
   }
   
   }
