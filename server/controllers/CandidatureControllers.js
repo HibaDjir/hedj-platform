@@ -4,6 +4,7 @@ const wilaya = require('../models/wilaya')
 const commune = require('../models/Commune')
 const sesstion = require('../models/Sessions')
 
+
 const getAllCandidatureAllFields = async (req, res) => {
     try {
         const userId = req.user;
@@ -191,6 +192,7 @@ const getCandByWilaya = async(req, res)=>{
                     Groupe_sang: candidat.groupage,
                     Malad_chro: candidat.maladie_cronique,
                     Adresse_com: candidat.address
+
                 };
             } catch (error) {
                 console.error('Error fetching wilaya for candidat:', candidat, error);

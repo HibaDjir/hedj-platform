@@ -122,9 +122,8 @@ exports.electPilgrims = async (req, res) => {
           );
 
         console.log("UPDATE MANY T3 STATUS:", candid)
-          
         console.log("pelerin elu ",pelerinsElus) 
-        const pelerinfinal=setStatus(pelerinsElus,'is_elected')  
+
         
         //EST CE QUE EN ENOIE MAIL ICI POUR FAIRE ENTRER LES PELERINS ELUS COMPM PARAM
         // envoieEmail(pelerinsElus)
@@ -148,6 +147,14 @@ exports.electPilgrims = async (req, res) => {
             }]
         envoieEmail(testDate)
         //
+
+     let candi=   await Condidatures.updateMany(
+            { _id: { $in: pelerinsElus.map(pelerin => pelerin._id) } }, // Find candidatures associated with the updated pelerins
+            { $set: { status: "is_elected" } } // Update their status to "is-elected"
+          );
+
+        const pelerinfinal=setStatus(pelerinsElus,'is_elected')          
+
         
         let { pelerinsElus: pelerinsEnAttente, pelerinsRestants: pelerinsRestantsApresEnAttente } = await electionPelerinsAuHasard(pelerinsRestants, nbraelireenattente);
    

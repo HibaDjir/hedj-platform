@@ -152,6 +152,7 @@ export default function Dashboard() {
           sort: false,
          }
         },
+
        {
         name: "Etat_civil",
         label: "Etat Civil",
@@ -200,6 +201,7 @@ export default function Dashboard() {
           sort: false,
          }
         },
+
 
      ];
   const options = {

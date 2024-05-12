@@ -4,7 +4,8 @@ const Medecins = require('../models/Medecin')
 const Admins = require('../models/sousAdmin')
 const Commune = require('../models/Commune')
 const Session = require('../models/Sessions');
-const Wilaya=require('../models/wilaya')
+const Wilaya=require("../models/wilaya")
+
 
 
 const getCandidatsCountForWilaya = async (wilaya) => {
@@ -91,7 +92,7 @@ exports.getFMPelCount=async(req, res)=>{
 
         for (const pelerin of pelerins) {
             const candidature = await Candidatures.findOne({ _id: pelerin.Candidature });
-            if (candidature) {
+            if (candidature  && candidature.status==="is_elected") {
                 if (candidature.genre === "أنثى" ) {//&& candidature.status === "is_elected"
                     femaleCount++;
                 } else if (candidature.genre === "ذكر" ) {//&& candidature.status === "is_elected"
@@ -127,6 +128,7 @@ exports.getPelerinParAge=async(req,res)=>{
               as: 'candidature'
             }
           },
+          { $match: { "candidature.status": "is_elected" } },
           {
             $addFields: {
               age: {
@@ -201,6 +203,7 @@ exports.getPelerinParAge=async(req,res)=>{
             }
           }
         },
+        
         {
           $group: {
             _id: {
@@ -244,16 +247,19 @@ exports.getPelerinParAge=async(req,res)=>{
 
 exports.countPelerinsByYear=async(req,res) =>{
   try {
-    const candidatures = await Candidatures.find({ status: 'is_elected' });
+    let pelerins=await Pelerins.find()
 
     // Create an object to store the count of candidatures by year
     const candidaturesByYear = {};
     
     // Iterate through the candidatures
-    for (const candidature of candidatures) {
+    for (const pelerin of pelerins) {
+      const candidature = await Candidatures.findOne({_id:pelerin.Candidature});
+      console.log('candidature est',candidature)
         // Find the associated session by id
+      if(candidature.status==='is_elected'){
         const session = await Session.findById(candidature.id_session);
-    
+      console.log('sesion is ',session)
         // If session is found, extract the year
         if (session) {
             const year = session.annee;
@@ -265,6 +271,7 @@ exports.countPelerinsByYear=async(req,res) =>{
                 candidaturesByYear[year] = 1;
             }
         }
+      }
     }
     
     // Convert the candidaturesByYear object to an array of objects
@@ -304,3 +311,244 @@ exports.getCountsWilaya = async(req, res)=>{
   }
  }
 
+
+
+
+ ///get count of pelerin by age of specidied wilaya
+
+
+
+
+
+
+
+
+exports.getPelerinParAgeAndWilaya = async (req, res) => {
+  try {
+    const  wilaya  = req.params.name;
+let wilayFound= await Wilaya.findOne({name:wilaya})
+let code=wilayFound.code
+    // Execute the aggregation pipeline
+    const result = await Pelerins.aggregate([
+      // Lookup candidatures based on pelerin's Candidature ID
+      {
+        $lookup: {
+          from: 'candidatures',
+          localField: 'Candidature',
+          foreignField: '_id',
+          as: 'candidature'
+        }
+      },
+      // Unwind the array of candidatures
+      { $unwind: "$candidature" },
+      // Filter documents by wilaya
+      { $match: { "candidature.wilaya": parseInt(code) } },
+      { $match: { "candidature.status": "is_elected" } },
+      // Calculate age from date of birth in candidature
+      {
+        $addFields: {
+          age: {
+            $floor: {
+              $divide: [
+                { $subtract: [new Date(), "$candidature.date_naissance"] },
+                31536000000 // Milliseconds in a year
+              ]
+            }
+          }
+        }
+      },
+      // Group by age range and count documents
+      {
+        $group: {
+          _id: {
+            $multiply: [
+              { $trunc: { $divide: ["$age", 10] } }, // Calculate the start of age range
+              10
+            ]
+          },
+          count: { $sum: 1 }
+        }
+      },
+      // Project the result with age range and count
+      {
+        $project: {
+          _id: 0,
+          ageRange: "$_id",
+          count: 1
+        }
+      },
+      // Sort by age range
+      {
+        $sort: {
+          ageRange: 1
+        }
+      }
+    ])
+    console.log('resultat est ',result)
+
+    // Send the result as JSON response
+    
+    res.json(result);
+  } catch (error) {
+    // If an error occurs, send an error response
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+//get count of condidature by age by wilaya
+
+
+
+exports.getCountOfCandidatureByAgeAndWilaya = async (req, res) => {
+  try {
+    const wilaya = req.params.name;
+    let wilayaFound = await Wilaya.findOne({ name: wilaya });
+    let code = wilayaFound.code;
+
+    // Execute the aggregation pipeline
+    const result = await Candidatures.aggregate([
+      // Filter documents by wilaya
+      { $match: { wilaya: parseInt(code) } },
+      
+      // Calculate age from date of birth
+      {
+        $addFields: {
+          age: {
+            $floor: {
+              $divide: [
+                { $subtract: [new Date(), "$date_naissance"] },
+                31536000000 // Milliseconds in a year
+              ]
+            }
+          }
+        }
+      },
+      // Group by age range and count documents
+      {
+        $group: {
+          _id: {
+            $multiply: [
+              { $trunc: { $divide: ["$age", 10] } }, // Calculate the start of age range
+              10
+            ]
+          },
+          count: { $sum: 1 }
+        }
+      },
+      // Project the result with age range and count
+      {
+        $project: {
+          _id: 0,
+          ageRange: "$_id",
+          count: 1
+        }
+      },
+      // Sort by age range
+      {
+        $sort: {
+          ageRange: 1
+        }
+      }
+    ]);
+
+    // Send the result as JSON response
+    res.json(result);
+  } catch (error) {
+    // If an error occurs, send an error response
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+//get male and female count per wilaya for pelerin
+exports.getFMPelCountByWilaya=async(req, res)=>{
+  try {
+    let wilaya =req.params.name
+    let wilayaFound = await Wilaya.findOne({ name: wilaya });
+    
+    
+      const pelerinDuCode = await Pelerins.find().populate( "Candidature")
+      const pelerins = pelerinDuCode.filter(pelerin => pelerin.Candidature.wilaya === wilayaFound.code)
+
+
+      let femaleCount = 0;
+      let maleCount = 0;
+
+      for (const pelerin of pelerins) {
+          const candidature = await Candidatures.findOne({ _id: pelerin.Candidature });
+          if (candidature && candidature.status==="is_elected") {
+              if (candidature.genre === "أنثى" ) {//&& candidature.status === "is_elected"
+                  femaleCount++;
+              } else if (candidature.genre === "ذكر" ) {//&& candidature.status === "is_elected"
+                  maleCount++;
+              }
+          }
+      }
+
+      const FMcounts = {
+          femaleCount,
+          maleCount
+      }
+
+      console.log("les femmes pelerins: ", femaleCount)
+      console.log("les males pelerins: ", maleCount)
+
+      res.status(201).json(FMcounts)
+  } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+//////////  { $match: { "candidature.status": "is-elected" } },///////
+
+
+
+//pelerin by year for wilaya
+
+exports.countPelerinsByYearByWilaya=async(req,res) =>{
+  try {
+
+    const wilaya = req.params.name;
+    let wilayaFound = await Wilaya.findOne({ name: wilaya });
+    let code = wilayaFound.code;
+    let pelerins=await Pelerins.find()
+
+    // Create an object to store the count of candidatures by year
+    const candidaturesByYear = {};
+    
+    // Iterate through the candidatures
+    for (const pelerin of pelerins) {
+      const candidature = await Candidatures.findOne({_id:pelerin.Candidature,wilaya:code});
+      console.log('candidature est',candidature)
+        // Find the associated session by id
+      
+        if (candidature && candidature.status==="is_elected") {
+        const session = await Session.findById(candidature.id_session);
+      console.log('sesion is ',session)
+        // If session is found, extract the year
+        if (session) {
+            const year = session.annee;
+    
+            // Increment the count for the year in the candidaturesByYear object
+            if (candidaturesByYear[year]) {
+                candidaturesByYear[year]++;
+            } else {
+                candidaturesByYear[year] = 1;
+            }
+        }
+      }
+      //}
+    }
+    
+    // Convert the candidaturesByYear object to an array of objects
+    const candidaturesArray = Object.entries(candidaturesByYear).map(([year, count]) => ({ year, count }));
+    res.json(candidaturesArray)
+    
+
+
+      
+  } catch (error) {
+      console.error('Error counting pelerins by year:', error);
+      throw error;
+  }
+}

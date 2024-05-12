@@ -52,6 +52,7 @@ export default function Medecins() {
 
   const columns = [
     {
+
      name: "firstName",
      label: "Nom",
      options: {
@@ -80,6 +81,7 @@ export default function Medecins() {
     {
      name: "Candidat_sexe",
      label: "Sexe",
+
      options: {
       filter: true,
       sort: false,
@@ -104,7 +106,9 @@ export default function Medecins() {
      },
      {
       name: "email",
+
       label: "E-mail",
+
       options: {
        filter: true,
        sort: false,
@@ -135,8 +139,7 @@ export default function Medecins() {
          sort: false,
         }
        },
-
-   {
+{
       name: "Nat",
       label: "Nationalité",
       options: {
@@ -177,6 +180,7 @@ export default function Medecins() {
       }
      },
 
+
    ];
    const options = {
     filterType: 'checkbox',
@@ -199,11 +203,6 @@ export default function Medecins() {
     Etat_civil:candidat.Etat_civil,
     Candidat_commune:candidat.Candidat_commune,
     Num_passport:candidat.Num_passport
-
-
-    
-
-    
   }));      
 
 

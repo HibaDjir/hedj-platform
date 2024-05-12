@@ -4,7 +4,10 @@ const {User, validateAddSousAdmin}=require('../models/user_profiler')
 const sousAdmin = require('../models/sousAdmin')
 const bcrypt = require("bcrypt");
 const sendEmail=require('../util/sendEmail');
-const Candidature = require("../models/Candidature")
+const { find, findById } = require('../models/Medecin');
+const Candidature = require('../models/Candidature');
+const Sessions = require('../models/Sessions');
+
 
 
 // creating SousAdmin 
@@ -209,15 +212,18 @@ exports.updateSousAdmin=async(req,res)=>{
 exports.getAdminsWilaya = async(req, res)=>{
     try {
 
+
         const  idAdmin = req.params.id
+
         const sousadmin = await sousAdmin.findById({_id: idAdmin}).populate('Wilaya').populate('user').exec();
-        console.log(sousadmin)
+       
         const lawilaya = sousadmin.Wilaya.name
         res.status(201).json({
             wilaya: lawilaya,
             nom: sousadmin.user.firstName,
             prenom: sousadmin.user.lastName,
             _id: sousadmin._id,
+
         });
     } catch (err) {
         res.status(400).json(err.message)
@@ -274,4 +280,45 @@ exports.sendEmailValidateFInal=async(req,res)=>{
     } catch (err) {
         res.status(400).json(err.message)
     }
+
+}
+
+
+//paiement controller email
+
+
+exports.sendEmailPaiement=async(req,res)=>{
+    try{
+        let id=req.params.id
+        let candidature=await Candidature.findById(id)
+        let idSession=candidature.id_session
+        let session=await Sessions.findById(idSession)
+        console.log('session ',session.cotat)
+         if(candidature){
+            await sendEmail({
+                email: candidature.email,
+                subject: 'دفع وصل',
+                message: `
+                السلام عليكم
+                نعلم حضرتكم 
+                ${candidature.nom } ${candidature.prenom }!\n\n
+                **معلوماتكم الشخصية**\n\n
+                اللقب :${candidature.nom}\n\n
+                الاسم :${candidature.prenom}\n\n
+                رقم جواز السفر :${candidature.num_passeport}\n
+                بوجوب دفع تكاليف الحج في الفترة المحددة 
+                  ${session.paiement_d} ${session.paiement_f}
+              
+                \n!!!تحياتنا`
+            });
+         }
+         res.json('Email send successfully')
+
+    }catch(err){
+
+        res.json(err.message)
+    }
+
+
+
 }

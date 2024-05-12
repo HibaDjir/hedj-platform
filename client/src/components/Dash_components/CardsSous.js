@@ -14,7 +14,6 @@ import { useEffect, useState } from "react";
 	const [nbcandidat, setNbcandidats] = useState(0);
 
 
-
     const [daata, setDaata] = useState([]);
     const [userId, setUserId] = useState(null);
 
@@ -62,6 +61,7 @@ import { useEffect, useState } from "react";
                 console.error('Error fetching Cards:', error);
               }
           } 
+
 
 
 
