@@ -46,7 +46,7 @@ exports.signup = async (req, res) =>
 exports.verifyEmail=async(req,res,next)=>{
     try {
         const token = req.params.token;
-		console.log(token)
+		//console.log(token)
         if (!token) return res.status(400).send({ message: "no token" });
 		const id =req.params.id
         const user = await User.findOne({ _id:id});
@@ -98,7 +98,7 @@ exports.login=async (req, res) => {
 		token:token
 	}) 
 	} catch (error) {
-		res.status(500).json({ message: "Internal Server Error" });console.log('error',error.message)
+		res.status(500).json({ message: "Internal Server Error" });//console.log('error',error.message)
 	}
 };
 
@@ -115,7 +115,7 @@ exports.forgotPassword=async(req,res,next)=>{
 		const secret = process.env.JWTPRIVATEKEY
 		const token = jwt.sign({email: oldUser.email, id:oldUser._id}, secret, {expiresIn : '1d'})
 		const link=`http://localhost:3001/resetPassword/${oldUser._id}/${token}`
-		console.log(link)
+		//console.log(link)
 		await sendEmail({
 			email: oldUser.email,
 			 subject:'reset password mail...',

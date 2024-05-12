@@ -32,7 +32,7 @@ exports.getCounts = async(req, res)=>{
         admins: adminCount
       };
 
-    console.log("les counts des tables", counts)
+    //console.log("les counts des tables", counts)
     res.status(201).json(counts)
  } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
@@ -55,7 +55,7 @@ exports.getCountsWilaya = async(req, res)=>{
          nbPlaces: nbPlaces
        };
  
-     console.log("les counts des tables", counts)
+     //console.log("les counts des tables", counts)
      res.status(201).json(counts)
   } catch (error) {
      res.status(500).json({ error: 'Internal Server Error' });
@@ -72,8 +72,8 @@ exports.getFMCandCount = async(req, res)=>{
             femaleCount,
             maleCount
         }
-        console.log("les femmes candidatures: ", femaleCount)
-        console.log("les males candidatures: ", maleCount)
+        //console.log("les femmes candidatures: ", femaleCount)
+        //console.log("les males candidatures: ", maleCount)
 
         res.status(201).json(FMcounts)
     } catch (error) {
@@ -106,8 +106,8 @@ exports.getFMPelCount=async(req, res)=>{
             maleCount
         }
 
-        console.log("les femmes pelerins: ", femaleCount)
-        console.log("les males pelerins: ", maleCount)
+        //console.log("les femmes pelerins: ", femaleCount)
+        //console.log("les males pelerins: ", maleCount)
 
         res.status(201).json(FMcounts)
     } catch (error) {
@@ -173,7 +173,7 @@ exports.getPelerinParAge=async(req,res)=>{
         ]);
     
         // Send the result as JSON response
-        console.log(result)
+        //console.log(result)
         res.json(result);
       } catch (error) {
         // If an error occurs, send an error response
@@ -304,7 +304,7 @@ exports.getCountsWilaya = async(req, res)=>{
          nbPlaces: nbPlaces
        };
  
-     console.log("les counts des tables", counts)
+     //console.log("les counts des tables", counts)
      res.status(201).json(counts)
   } catch (error) {
      res.status(500).json({ error: 'Internal Server Error' });

@@ -11,7 +11,7 @@ const {
 } = require('../controllers/CommuneControllers')
 router.get('/All',getAllCommune)
 
-router.get('/:id',getCommuneById)
+router.get('/comById/:id',getCommuneById)
 
 router.get('/find', getCommune)
 
@@ -21,7 +21,7 @@ router.post('/', createCommune)
 
 router.delete('/:id', deleteCommune)
 
-router.patch('/:id', updateCommune)
+router.put('/update', updateCommune)
 
 router.post('/ajouterCotat', ajouterCotatCommune)
 

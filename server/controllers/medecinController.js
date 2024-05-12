@@ -19,7 +19,7 @@ exports.getAllMedecins = async(req, res)=>{
         if(!medecins){
             return res.status(404).json("Medecins not found"); // Handle missing commune
         }
-        console.log("Les medecins sont: ",medecins)
+        //console.log("Les medecins sont: ",medecins)
         res.status(200).json(medecins);
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' ,error: error.message});
@@ -67,7 +67,7 @@ exports.createMedecin = async(req, res)=>{
         .populate('Wilaya')
         .exec();
 
-        console.log(populatedMedecin)
+        //console.log(populatedMedecin)
         res.status(201).json(populatedMedecin)
 
         //sending a mail to medecin
@@ -104,7 +104,7 @@ exports.getMedecinById = async (req, res) =>{
         .populate('user')
         .populate('Wilaya')
          .exec();
-         console.log(populatedMedecin)
+         //console.log(populatedMedecin)
 
          res.status(201).json(populatedMedecin)
     } catch (error) {
@@ -119,8 +119,8 @@ exports.deleteAllMedecinsFromDb = async (req, res)=>{
         const deletedUserMedecin = await User.deleteMany({Role: "medecin"})
         const deletedMedecins = await Medecin.deleteMany();
 
-        console.log("Delete de la table users:", deletedUserMedecin)
-        console.log("Delete de la table medecins:",deletedMedecins)
+        //console.log("Delete de la table users:", deletedUserMedecin)
+        //console.log("Delete de la table medecins:",deletedMedecins)
 
         res.status(200).json({ message: 'All medecins deleted successfully' });
     } catch (error) {
@@ -145,8 +145,8 @@ exports.deleteMedecinByIdFromDb = async (req, res) => {
         // Delete medecin from Medecin collection
         const deletedMedecin = await Medecin.findByIdAndDelete(medecinId);
  
-        console.log("Deleted medecin from Medecin collection:", deletedMedecin);
-        console.log("Deleted medecin from User collection:", deletedUserMedecin);
+        //console.log("Deleted medecin from Medecin collection:", deletedMedecin);
+        //console.log("Deleted medecin from User collection:", deletedUserMedecin);
 
         res.status(200).json({ message: 'Medecin and associated user deleted successfully' });
     } catch (error) {
@@ -161,7 +161,7 @@ exports.deleteAllMedecins = async (req, res)=>{
     try {
         const deletedMedecins = await Medecin.updateMany({},  {$set: {is_deleted: true}});
 
-        console.log("Delete de la table medecins LOGICALLY:",deletedMedecins)
+        //console.log("Delete de la table medecins LOGICALLY:",deletedMedecins)
 
         res.status(200).json({ message: 'All medecins deleted successfully' });
     } catch (error) {
@@ -175,7 +175,7 @@ exports.retrieveAllMedecins = async (req, res)=>{
     try {
         const retrievedMedecins = await Medecin.updateMany({},  {$set: {is_deleted: false}});
 
-        console.log("retrieve de la table medecins LOGICALLY:",retrievedMedecins)
+        //console.log("retrieve de la table medecins LOGICALLY:",retrievedMedecins)
 
 
         res.status(200).json({ message: 'All medecins retrieved successfully' });
@@ -198,7 +198,7 @@ exports.deleteMedecinById = async (req, res) => {
         // Delete medecin from Medecin collection
         const deletedMedecin = await Medecin.findOneAndUpdate({_id: medecinId}, {$set: {is_deleted: true}});
  
-        console.log("Deleted medecin from Medecin collection:", deletedMedecin);
+        //console.log("Deleted medecin from Medecin collection:", deletedMedecin);
 
         res.status(200).json({ message: 'Medecin deleted successfully' });
     } catch (error) {
@@ -220,7 +220,7 @@ exports.retrieveMedecinById = async (req, res) => {
         // Delete medecin from Medecin collection
         const retrievedMedecin = await Medecin.findOneAndUpdate({_id: medecinId}, {$set: {is_deleted: false}});
  
-        console.log("Retrieved medecin from Medecin collection:", retrievedMedecin);
+        //console.log("Retrieved medecin from Medecin collection:", retrievedMedecin);
 
         res.status(200).json({ message: 'Medecin retrieved successfully' });
     } catch (error) {
@@ -232,7 +232,7 @@ exports.retrieveMedecinById = async (req, res) => {
 
 exports.updateMedecin = async(req, res)=>{
     try {
-        console.log(req.body.firstName)
+        //console.log(req.body.firstName)
         const idMedecin = req.params.id
         const leMedecin = await Medecin.findById({_id:idMedecin })
 

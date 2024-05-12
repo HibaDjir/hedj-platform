@@ -6,6 +6,7 @@ import Logo from "../images/LOGO.png";
 import NetflixModal from "../Popups/Netflix";
 import user from "../images/User.png";
 import DropdownMenu from "./DropDownMenue";
+import ChoixPaiment from "./ChoixPaiment";
 
 function Navbar_for_each_profile() {
 
@@ -54,10 +55,10 @@ function Navbar_for_each_profile() {
           <Link to="/"> حجز الرحلات</Link>
         </li>
         <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent text-brown_palette duration-300">
-          <Link to="/">دفع التكاليف</Link>
+          <ChoixPaiment/>
         </li>
         <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent text-brown_palette duration-300">
-          <Link to="/">الحالة الصحية</Link>
+          <Link to="/sante">الحالة الصحية</Link>
         </li>
      
         <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent text-brown_palette duration-300">
