@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import { idCandidat } from '../../components/DropDownMenue';
 import  Clear from '../../images/x_icon.png';
 import  pic  from '../../images/NussukiPic/bold-guy.jpg';
 import  upload from '../../images/upload_icon.png';
@@ -11,21 +10,95 @@ import   medical_examination from '../../images/medical-examination.jpg';
 import Navbar_for_each_profile from '../../components/Navbar_for_each_profile';
 import Sidebar from '../../components/Dash_components/shared/Sidebar';
 import NavbarMed from '../../components/NavbarMed';
+
+import { idCandidat } from '../Medpages/ListePelerin';
+
 function VisiteMedical() {
 
+  
+
+  const [candidat, setCandidat] = useState([]);
+
+  const [single, setSingle] = useState([]);
+  const [married, setMarried] = useState([]);
+  const [divorced, setDivorced] = useState([]);
+  const [widowed, setwiWdowed] = useState([]);
+
+  const [male, setMale] = useState([]);
+  const [female, setFemale] = useState([]);
+  const [is_valid_med, setIs_valid_med] = useState(false);
+
+  useEffect(() => {
+    fetchCandidat();
+  }, []);
+
+
+  const fetchCandidat = async () => {
+      try {
+          const response = await fetch('http://localhost:3000/api/candidature/'+idCandidat);
+          if (!response.ok) {
+              throw new Error('Failed to fetch data');
+          }
+          const jsonData = await response.json();
+          setCandidat(jsonData);
+          setFemale(false);
+          setMale(false);
+
+          setSingle(false);
+          setMarried(false);
+          setDivorced(false);
+          setwiWdowed(false);
+
+          if(jsonData.genre === 'ذكر') setMale(true);
+          else setFemale(true);
+
+          if(jsonData.civilite === 'اعزب/عزباء') setSingle(true);
+          else if(jsonData.civilite === 'متزوج(ة)') setMarried(true);
+          else if(jsonData.civilite === 'مطلق(ة)') setDivorced(true);
+          else setwiWdowed(true);
+      } catch (error) {
+          console.error('Error fetching data:', error);
+      }
+  };
+
+  
+  const handleChangeSelect = (selectedOption) => {
+    const { name, id } = selectedOption.target;
+    switch (id) {
+      case "is_valid_med_o":
+        setIs_valid_med(true)
+        break;
+      case "is_valid_med_n":
+        setIs_valid_med(false);
+        break;
+      default:
+        // code block to be executed if none of the cases match
+    }
+
+    //setSelectedOption(selectedOption);
+  };
+  const handleValidMedecin = async () => {
+    try {
+
+      await axios.put('http://localhost:3000/api/candidature/ValidMedecin/update', {idCandidat, is_valid_med, interrogatoire});
+      alert('Consultation Medecin avec succée');
+    } catch (error) {
+      alert('Error uploading file:', error);
+    }
+  };
 
     const [antecedants_med, setantecedants_med] = useState([]);
-    const [inputValue, setInputValue] = useState('');
+    const [interrogatoire, setInterrogatoire] = useState('');
 
     const handleChange = (e) => {
-        setInputValue(e.target.value);
+      setInterrogatoire(e.target.value);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (inputValue.trim() !== '') {
-            setantecedants_med([...antecedants_med, inputValue.trim()]);
-            setInputValue('');
+        if (interrogatoire.trim() !== '') {
+            setantecedants_med([...antecedants_med, interrogatoire.trim()]);
+            setInterrogatoire('');
         }
     };
 
@@ -73,7 +146,7 @@ function VisiteMedical() {
                   className="text-black p-2 border rounded-xl focus:outline-none focus:border-[#C09455]  w-full"
                   type="text"
                   placeholder="Numéro d'assurance maladie "
-                //  value={candidat.nss}
+                  value={candidat.nss}
                   readOnly
                   required
                 />
@@ -87,6 +160,7 @@ function VisiteMedical() {
                   className="text-black p-2 border rounded-xl focus:outline-none focus:border-[#C09455]
                   w-full"
                   type="text"
+                  value={candidat.prenom}
                   placeholder="Prénom"
                   name="firstName"
              
@@ -102,7 +176,7 @@ function VisiteMedical() {
                   className="text-black p-2 border rounded-xl   w-full focus:outline-none focus:border-[#C09455]"
                   type="text"
                   placeholder="Nom"
-             
+                  value={candidat.nom}
                   name="lastName"
                   readOnly
                   required
@@ -123,7 +197,7 @@ function VisiteMedical() {
                   className="text-black p-2 border rounded-xl focus:outline-none focus:border-[#C09455]   w-full"
                   readOnly
                   
-                 // value={candidat.date_naissance}
+                  value={candidat.date_naissance}
                   dateFormat="dd/MM/yyyy"
                   placeholderText="Date de naissance "
                 />
@@ -136,7 +210,7 @@ function VisiteMedical() {
                   className="text-black p-2 border rounded-xl focus:outline-none focus:border-[#C09455]  w-full"
                   type="text"
                   name="birthp"
-                  //value={candidat.lieu_naissance}
+                  value={candidat.lieu_naissance}
                   readOnly
                   placeholder=" Lieu de naissance"
                   required
@@ -150,7 +224,7 @@ function VisiteMedical() {
                   <input
                     type="radio"
                     id="single"
-                   // checked={single}
+                    checked={single}
                     readOnly
                     name="maritalStatus"
                     className="mr-2 h-4 w-4focus:outline-none focus:border-[#C09455] rounded-xl"
@@ -163,7 +237,7 @@ function VisiteMedical() {
                   <input
                     type="radio"
                     id="married"
-                   // checked={married}
+                    checked={married}
                     readOnly
                     name="maritalStatus"
                     className="mr-2 h-4 w-4focus:outline-none focus:border-[#C09455] rounded-xl"
@@ -176,7 +250,7 @@ function VisiteMedical() {
                   <input
                     type="radio"
                     id="divorced"
-                 //   checked={divorced}
+                    checked={divorced}
                     readOnly
                     name="maritalStatus"
                     className="mr-2 h-4 w-4focus:outline-none focus:border-[#C09455] rounded-xl text-xl"
@@ -189,7 +263,7 @@ function VisiteMedical() {
                   <input
                     type="radio"
                     id="widowed"
-                   // checked={widowed}
+                    checked={widowed}
                     readOnly
                     name="maritalStatus"
                     className="mr-2 h-4 w-4focus:outline-none focus:border-[#C09455] rounded-xl"
@@ -208,7 +282,7 @@ function VisiteMedical() {
                   <input
                     type="radio"
                     id="female"
-                    //checked={female}
+                    checked={female}
                     readOnly
                     className="mr-2 h-4 w-4focus:outline-none focus:border-[#C09455] rounded-xl"
                     name="gender"
@@ -221,7 +295,7 @@ function VisiteMedical() {
                   <input
                     type="radio"
                     id="male"
-                  //  checked={male}
+                    checked={male}
                     readOnly
                     className="mr-2 h-4 w-4focus:outline-none focus:border-[#C09455] rounded-xl"
                     name="gender"
@@ -243,7 +317,7 @@ function VisiteMedical() {
                   className="text-black p-2 border rounded-xl focus:outline-none focus:border-[#C09455]  w-full"
                   type="text"
                   placeholder="Le groupe sanguin"
-                 // value={candidat.groupage}
+                  value={candidat.groupage}
                   readOnly
                   required
                 />
@@ -258,7 +332,7 @@ function VisiteMedical() {
                 readOnly
                 rows={2} // Adjust the number of rows as needed
                 cols={50}
-                //value={candidat.maladie_cronique}
+                value={candidat.maladie_cronique}
                 placeholder="Maladies chroniques "
                 required
               />
@@ -272,7 +346,7 @@ L'interrogatoire médical : </h1>
             <form onSubmit={handleSubmit} className="mb-4">
                 <input
                     type="text"
-                    value={inputValue}
+                    value={interrogatoire}
                     onChange={handleChange}
                     placeholder="
                     Ajouter un antécédent médical"
@@ -305,8 +379,9 @@ L'interrogatoire médical : </h1>
   <div className="flex w-full mt-2 justify-around p-8">
     <div className="flex items-center">
       <input
-        type="radio"
-        id="valide"
+        type="radio"handleChangeSelect
+        id="is_valid_med_o"
+        onChange={handleChangeSelect}
         className="mr-2 h-4 w-4focus:outline-none focus:border-[#C09455] rounded-xl"
         name='validationStatus'
       />
@@ -317,7 +392,8 @@ L'interrogatoire médical : </h1>
     <div className="flex items-center">
       <input
         type="radio"
-        id="non_valide"
+        id="is_valid_med_n"
+        onChange={handleChangeSelect}
         className="mr-2 h-4 w-4focus:outline-none focus:border-[#C09455] rounded-xl"
         name='validationStatus'
       />
@@ -325,7 +401,15 @@ L'interrogatoire médical : </h1>
         Non validé
       </label>
     </div>
+
+
   </div>
+<div className=" w-full flex justify-center items-center">
+  <button  className="w-full border border-[#D4A373]  text-brown_palette rounded-2xl p-4 m-2 hover:bg-[#D8A353] hover:text-fake_black "
+    onClick={handleValidMedecin} >
+   Confirmer
+  </button>
+</div>
 </div>
 
 

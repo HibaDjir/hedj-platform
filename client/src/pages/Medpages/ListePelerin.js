@@ -1,239 +1,164 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
 import Sidebar from "../../components/Dash_components/shared/Sidebar";
-import { Link } from "react-router-dom";
+import { Link,useNavigate  } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import NavbarMed from "../../components/NavbarMed";
 
-function ListePelerin() {
-  const [selectedDate, setSelectedDate] = useState({});
+import axios from 'axios';
+import { MdVisibility } from "react-icons/md";
 
-  const handleChangeDate = (date, dataIndex) => {
+export let idCandidat = 'dzddzddzd';
+
+function ListePelerin() {
+  const navigate=useNavigate()
+  const [selectedDate, setSelectedDate] = useState({});
+  const [candidats, setCandidats] = useState([]);
+
+  useEffect(() => {   
+        axios.get('http://localhost:3000/api/candidature/medecin/find?fieldName=id_medecin&fieldValue=663bd2be3b644e05d59fd85f')
+          .then(responseC => {
+            setCandidats(responseC.data);
+          })
+          .catch(error => {
+              console.error('Erreur lors de la récupération des options :', error);
+          });
+  }, []);
+
+  const handleColumnClick = (candidat_rslt) => {
+    idCandidat=candidat_rslt;
+    if(idCandidat === 'dzddzddzd'){
+      navigate('/listepelerin')
+    }else{
+      navigate('/pelerinsMed')
+    }
+    // Perform actions based on the clicked column index
+  };
+  const handleChangeDate = async (date, dataIndex, rowIndex) => {
     setSelectedDate({ ...selectedDate, [dataIndex]: date });
+    const id = recentPelerenData[rowIndex]._id;const date_rdv = date;
+    try {
+      // Make a PUT request to the backend API to update the record
+      const response = await axios.put('http://localhost:3000/api/candidature/RDV/update', { id, date_rdv });
+      // Handle success (e.g., show a success message)
+      alert("RDV ajoute avec succée");
+  } catch (error) {
+      // Handle error (e.g., show an error message)
+      alert(error);
+      console.error("Error:", error);
+  }
   };
 
   const columns = [
     {
-      name: "Pelerin_name",
-      label: "Candidat",
-      options: {
-        filter: true,
-        sort: true,
-      },
+     name: "_id",
+     label: "Nom",
+     MdVisibility:false,
+     options: {
+      display: false,
+      filter: true,
+      sort: true,
+     }
     },
     {
-      name: "Wilaya",
-      label: "Wilaya",
+     name: "nom",
+     label: "Nom",
+     options: {
+      filter: true,
+      sort: true,
+     }
+    },
+    {
+      name: "prenom",
+      label: "Prenom",
       options: {
+       filter: true,
+       sort: false,
+      }
+     },
+     {
+      name: "genre",
+      label: "Genre",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+     {
+      name: "groupage",
+      label: "Groupage",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+     {
+      name: "nss",
+      label: "Numéro de sécurité sociel",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+     {
+       name: "telephone",
+       label: "Telephone",
+       options: {
         filter: true,
         sort: false,
+       }
       },
-    },
-    {
-      name: "Commune",
-      label: "Commune",
+     {
+      name: "email",
+      label: "Adresse email",
       options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: "gender",
-      label: "Sexe",
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: "Etat_civile",
-      label: "Etat civile",
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: "Groupe_sanguin",
-      label: "Groupe sanguin",
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: "rendezVous",
-      label: "Rendez Vous",
-      options: {
-        filter: false,
-        sort: false,
-        customBodyRenderLite: (dataIndex, rowIndex) => {
-          return (
-            <div>
-              <DatePicker
-                className="text-black p-2 border rounded-xl border-fake_black w-full"
-                selected={selectedDate[dataIndex]}
-                onChange={(date) => handleChangeDate(date, dataIndex)}
-                dateFormat="dd/MM/yyyy"
-                placeholderText="rendez vous"
-              />
-            </div>
-          );
-        },
-      },
-    },
-  ];
-
-  const options = {
-    filterType: "checkbox",
-  };
-
-  const pelerins_data = [
-    {
-      id: "1",
-      Pelerin_name: (
-        <Link to="/pelerinsMed" style={{ color: "inherit", textDecoration: "inherit" }}>
-          Harrath Bouchra
-        </Link>
+       filter: true,
+       sort: false,
+      }
+     },
+     {
+       name: "date_rdv",
+       label: "Rendez Vous",
+       options: {
+         filter: false,
+         sort: false,
+         customBodyRenderLite: (dataIndex, rowIndex) => {
+           return (
+             <div>
+               <DatePicker
+                 className="text-black p-2 border rounded-xl border-fake_black w-full"
+                 selected={selectedDate[dataIndex]}
+                 value={recentPelerenData[rowIndex].date_rdv}
+                 onChange={(date_rdv) => handleChangeDate(date_rdv, dataIndex, rowIndex)}
+                 dateFormat="dd/MM/yyyy"
+                 placeholderText="rendez vous"
+               />
+             </div>
+           );
+         },
+       },
+     }
+   ];
+    const options = {
+      filterType: 'checkbox',
+    };
+    const recentPelerenData = candidats.map(candidat => ({
+      _id: candidat._id,
+      nom: (
+        <a onClick={() => handleColumnClick(candidat._id)} style={{ color: "inherit", textDecoration: "inherit", cursor: 'pointer' }}>
+          {candidat.nom}
+        </a>
       ),
-      Wilaya: "chlef",
-      Commune: "dik la commune",
-      gender: "Femme",
-      Etat_civile: "celibataire",
-      Groupe_sanguin: "O+",
-      
-      rendezVous: "2024-05-10",
-    },
-
-    {
-        id: "1",
-        Pelerin_name: (
-          <Link to="/pelerinsMed" style={{ color: "inherit", textDecoration: "inherit" }}>
-            Harrath Bouchra
-          </Link>
-        ),
-        Wilaya: "chlef",
-        Commune: "dik la commune",
-        gender: "Femme",
-        Etat_civile: "celibataire",
-        Groupe_sanguin: "O+",
-        rendezVous: "2024-05-10",
-      },
-
-      {
-        id: "1",
-        Pelerin_name: (
-          <Link to="/pelerinsMed" style={{ color: "inherit", textDecoration: "inherit" }}>
-            Harrath Bouchra
-          </Link>
-        ),
-        Wilaya: "chlef",
-        Commune: "dik la commune",
-        gender: "Femme",
-        Etat_civile: "celibataire",
-        Groupe_sanguin: "O+",
-        rendezVous: "2024-05-10",
-      },
-      {
-        id: "1",
-        Pelerin_name: (
-          <Link to="/pelerinsMed" style={{ color: "inherit", textDecoration: "inherit" }}>
-            Harrath Bouchra
-          </Link>
-        ),
-        Wilaya: "chlef",
-        Commune: "dik la commune",
-        gender: "Femme",
-        Etat_civile: "celibataire",
-        Groupe_sanguin: "O+",
-        rendezVous: "2024-05-10",
-      },
-      {
-        id: "1",
-        Pelerin_name: (
-          <Link to="/pelerinsMed" style={{ color: "inherit", textDecoration: "inherit" }}>
-            Harrath Bouchra
-          </Link>
-        ),
-        Wilaya: "chlef",
-        Commune: "dik la commune",
-        gender: "Femme",
-        Etat_civile: "celibataire",
-        Groupe_sanguin: "O+",
-        rendezVous: "2024-05-10",
-      },
-      {
-        id: "1",
-        Pelerin_name: (
-          <Link to="/pelerinsMed" style={{ color: "inherit", textDecoration: "inherit" }}>
-            Harrath Bouchra
-          </Link>
-        ),
-        Wilaya: "chlef",
-        Commune: "dik la commune",
-        gender: "Femme",
-        Etat_civile: "celibataire",
-        Groupe_sanguin: "O+",
-        rendezVous: "2024-05-10",
-      },
-      {
-        id: "1",
-        Pelerin_name: (
-          <Link to="/pelerinsMed" style={{ color: "inherit", textDecoration: "inherit" }}>
-            Harrath Bouchra
-          </Link>
-        ),
-        Wilaya: "chlef",
-        Commune: "dik la commune",
-        gender: "Femme",
-        Etat_civile: "celibataire",
-        Groupe_sanguin: "O+",
-        rendezVous: "2024-05-10",
-      },
-      {
-        id: "1",
-        Pelerin_name: (
-          <Link to="/pelerinsMed" style={{ color: "inherit", textDecoration: "inherit" }}>
-            Harrath Bouchra
-          </Link>
-        ),
-        Wilaya: "chlef",
-        Commune: "dik la commune",
-        gender: "Femme",
-        Etat_civile: "celibataire",
-        Groupe_sanguin: "O+",
-        rendezVous: "2024-05-10",
-      },
-      {
-        id: "1",
-        Pelerin_name: (
-          <Link to="/pelerinsMed" style={{ color: "inherit", textDecoration: "inherit" }}>
-            Harrath Bouchra
-          </Link>
-        ),
-        Wilaya: "chlef",
-        Commune: "dik la commune",
-        gender: "Femme",
-        Etat_civile: "celibataire",
-        Groupe_sanguin: "O+",
-        rendezVous: "2024-05-10",
-      },
-      {
-        id: "1",
-        Pelerin_name: (
-          <Link to="/pelerinsMed" style={{ color: "inherit", textDecoration: "inherit" }}>
-            Harrath Bouchra
-          </Link>
-        ),
-        Wilaya: "chlef",
-        Commune: "dik la commune",
-        gender: "Femme",
-        Etat_civile: "celibataire",
-        Groupe_sanguin: "O+",
-        rendezVous: "2024-05-10",
-      },
-  ];
+      prenom: candidat.prenom,
+      groupage: candidat.groupage,
+      nss: candidat.nss ,
+      genre: candidat.genre,
+      telephone: candidat.telephone,
+      email: candidat.email,
+      date_rdv: candidat.date_rdv
+    })
+  ); 
 
   return (
    <div className=" w-full h-full">
@@ -242,7 +167,7 @@ function ListePelerin() {
      
           <MUIDataTable className="ml-8  rounded-sm border shadow-md border-gray-200 bg-[#FAF8F5] flex-col max-w-[1420px] justify-center"
             title={"Pelerins"}
-            data={pelerins_data}
+            data={recentPelerenData}
             columns={columns}
             options={options}
           />

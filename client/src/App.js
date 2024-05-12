@@ -33,10 +33,20 @@ import Pelerin from "./pages/Pelerin"
 import SousTirage from "./pages/SousTirage"
 import SousPelerin from "./pages/SousPelerin"
 import SousCandidat from "./pages/SousCandidat"
+
+import { useHistory } from "react-router-dom";
+import Sidebar from "../src/components/Dash_components/shared/Sidebar"
+import EtatSantee from "./pages/EtatSantee";
+import VisiteMedical from "./pages/Medpages/VisiteMedical";
+import ListePelerin from "./pages/Medpages/ListePelerin";
+import HomeMedecin from "./pages/Medpages/Home";
+
+import PaimentVersementPostale from "./pages/PaimentVersementPostale";
+import Paimentcarteccp from "./pages/Paimentcarteccp";
 import Paiment from "./pages/AdminPages/Paiment";
-import Carteccp from "./pages/AdminPages/Carteccp"
-import virementccp from "./pages/AdminPages/Virementccp"
+import Carteccp from "./pages/AdminPages/Carteccp";
 import Virementccp from "./pages/AdminPages/Virementccp";
+
 function App() {
   const isLoggedIn=localStorage.getItem('loggedIn')
   return (
@@ -52,9 +62,6 @@ function App() {
           <Route path="/Candidat" element={<Candidat/>} />
           <Route path="/Pelerin" element={<Pelerin/>} />
           <Route path="/AttentePelerin" element={<AttentePelerin/>} />
-          <Route path="/Paiment" element={<Paiment/>} />
-          <Route path="/Carteccp" element={<Carteccp/>} />
-          <Route path="/Virementccp" element={<Virementccp/>} />
 
           <Route path="/home" element={<RequireNotAuth><Home /></RequireNotAuth>} />
           <Route path="/SousSession" element={<SousSession/>} />
@@ -82,6 +89,18 @@ function App() {
           <Route path="/dash" element={<RequireMasterAdmin><Dash/></RequireMasterAdmin>}></Route>
           <Route path="/sousdash" element={<RequireAuthSsA><Sous_Dash/></RequireAuthSsA>}></Route>
 
+
+          <Route path="/homemedecin" element={<HomeMedecin/>} />
+          <Route path="/listepelerin" element={<ListePelerin />} />
+
+          <Route path="/sante" element={<EtatSantee />} />
+          <Route path="/paiment" element={<Paiment/>} />
+          <Route path="/carteccp" element={<Carteccp/>} />
+          <Route path="/virementccp" element={<Virementccp/>} />
+          <Route path="/paimentVP" element={<PaimentVersementPostale />} />
+          <Route path="/paimentcarteccp" element={<Paimentcarteccp />} />
+          <Route path="/pelerinsMed" element={<VisiteMedical/>} />
+
         </Routes>
       </div>
     </Router>
@@ -89,4 +108,3 @@ function App() {
 }
 
 export default App;
-
