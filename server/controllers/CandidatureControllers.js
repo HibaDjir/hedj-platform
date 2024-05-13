@@ -12,8 +12,7 @@ const sesstion = require('../models/Sessions')
      } catch (error) {
          res.status(500).json({ message: 'Internal server error',error: error.message});
      }
-
- }
+}
 
 /*const getAllCandidature = async (req, res) => {
     try {
@@ -357,6 +356,7 @@ const getCandByWilaya = async(req, res)=>{
                     Groupe_sang: candidat.groupage,
                     Malad_chro: candidat.maladie_cronique,
                     Adresse_com: candidat.address
+
                 };
             } catch (error) {
                 console.error('Error fetching wilaya for candidat:', candidat, error);

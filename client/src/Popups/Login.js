@@ -75,6 +75,9 @@ function Modal({ onClose }) {
         }else if (json.Role === 'masterAdmin'){
           redirectPath = location.state?.path || "/dash";
         }
+        else if (json.Role === 'medecin'){
+          redirectPath = location.state?.path || "/medecin ";
+        }
         navigate(redirectPath ,{replace:true}) 
 
       // update the auth context

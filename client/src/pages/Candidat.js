@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
-import { format } from "date-fns";
-import { Link } from "react-router-dom";
-import user from "../images/buchra.png";
-import filter from "../images/filter.png";
-import add from "../images/mini_add.png";
-import down from "../images/chevron_down.png";
 import Sidebar from "../components/Dash_components/shared/Sidebar";
 import AddAdminModal from "../Popups/AddMed";
 // import img from "../images/img.jpeg"
@@ -127,7 +121,7 @@ export default function Medecins() {
      },
      {
       name: "email",
-      label: "Adresse email",
+      label: "E-mail",
       options: {
        filter: true,
        sort: false,
