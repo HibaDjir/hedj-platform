@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ar from "date-fns/locale/ar";
-import { idCandidat } from '../../components/DropDownMenue';
 import  Clear from '../../images/x_icon.png';
 import  upload from '../../images/upload_icon.png';
 import   grande_poste from '../../images/GPA02.jpg';
@@ -11,9 +10,41 @@ import   cartreccp from '../../images/carte-eddahabiya.jpg';
 import Navbar_for_each_profile from '../../components/Navbar_for_each_profile';
 import Sidebar from '../../components/Dash_components/shared/Sidebar';
 
-function Carteccp() {
+import { idCandidat } from '../AdminPages/Paiment';
 
+function Carteccp() {
+  
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  
+  const [candidat, setCandidat] = useState([]);
+
+  useEffect(() => {
+    fetchCandidat();
+  }, []);
+
+
+  const fetchCandidat = async () => {
+      try {
+          const response = await fetch('http://localhost:3000/api/candidature/'+idCandidat);
+          if (!response.ok) {
+              throw new Error('Failed to fetch data');
+          }
+          const jsonData = await response.json();
+          setCandidat(jsonData);
+      } catch (error) {
+          console.error('Error fetching data:', error);
+      }
+  };
+
+  const handleAppClick = async (result_paie) => {
+    try {
+
+      await axios.put('http://localhost:3000/api/candidature/ValidPaie/update', {idCandidat, result_paie});
+      alert('Opération avec succée');
+    } catch (error) {
+      alert('Error uploading file:', error);
+    }
+  };
   
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);}
@@ -52,7 +83,7 @@ function Carteccp() {
                   type="text"
                   placeholder="Prénom"
                   name="firstName"
-                  //value={candidat.prenom}
+                  value={candidat.prenom}
                   readOnly
                   required
                 />
@@ -65,7 +96,7 @@ function Carteccp() {
                   className="text-black p-2 border rounded-xl   w-full focus:outline-none border-[#C09455] hover:cursor-pointer"
                   type="text"
                   placeholder="Nom"
-                //  value={candidat.nom}
+                  value={candidat.nom}
                   name="lastName"
                   readOnly
                   required
@@ -89,6 +120,7 @@ function Carteccp() {
                   type="text"
                   placeholder="Le titulaire de la carte"
                   name="owner"
+                  value={candidat.propreitaire_carte}
                   required
                   readOnly
                 />
@@ -107,6 +139,7 @@ function Carteccp() {
                   type="text"
                   placeholder="Numéro de la carte du compte courant "
                   name="carteccp"
+                  value={candidat.num_carte}
                   required
                   readOnly
                 />
@@ -135,6 +168,7 @@ function Carteccp() {
                   type="text"
                   placeholder="Code de sécurité "
                   name="code"
+                  value={candidat.code_carte}
                   required
                   readOnly
                 />
@@ -156,7 +190,7 @@ function Carteccp() {
                 </label>
                 <DatePicker
                   className="text-black p-2 border rounded-xl  focus:outline-none border-[#C09455] hover:cursor-pointer   w-full"
-                 
+                  value={candidat.date_exp_carte}
                   dateFormat="dd/MM/yyyy"
                   locale={ar}
                   placeholderText="Date d'expiration
@@ -175,11 +209,11 @@ function Carteccp() {
                 </label>
                 <div className=" w-full flex justify-center items-center">
                 <button  className="w-full border border-[#D4A373]  text-brown_palette rounded-2xl p-4 m-2 hover:bg-[#D8A353] hover:text-fake_black "
-            >
+                    onClick={() => handleAppClick(1)}>
                  Approuvé
                 </button>
                 <button  className="w-full border border-[#D4A373]  text-brown_palette rounded-2xl p-4 m-2 hover:bg-[#D8A353] hover:text-fake_black "
-            >
+                    onClick={() => handleAppClick(2)}>
                   Non Approuvé
                 </button>
                 </div>

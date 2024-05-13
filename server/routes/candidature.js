@@ -15,7 +15,9 @@ const {
     getCandidatureCodeWilayaAttente,
     getCandidatureIdMedecin,
     updateCandidatRDV,
-    updateCandidatConsMed
+    updateCandidatConsMed,
+    getCandidatureIfPaie,
+    updateValidPay
 } = require('../controllers/CandidatureControllers')
 
 const candidat = require('../models/Candidature');
@@ -31,6 +33,8 @@ router.get('/genre/find', getCandidature)
 router.get('/wilaya/find', getCandidatureCodeWilaya)
 
 router.get('/medecin/find', getCandidatureIdMedecin)
+
+router.get('/validPaie/find', getCandidatureIfPaie)
 
 router.get('/wilaya/prise/find', getCandidatureCodeWilayaPrise)
 
@@ -49,6 +53,8 @@ router.patch('/:id', updateCandidature)
 router.put('/RDV/update', updateCandidatRDV)
 
 router.put('/ValidMedecin/update', updateCandidatConsMed)
+
+router.put('/ValidPaie/update', updateValidPay)
 
 
 const storage = multer.diskStorage({
@@ -110,6 +116,8 @@ router.post('/upload', upload.single('file'), async (req, res) => {
               propreitaire_compte: propreitaire_compte,
               address_op: address_op,
               date_operation: date_operation,
+              is_paie_carte: false,
+              is_valid_paie: 0
           }
       };
   
@@ -133,7 +141,9 @@ router.post('/upload', upload.single('file'), async (req, res) => {
             propreitaire_carte: propreitaire_carte,
             code_carte: code_carte,
             num_carte: num_carte,
-            date_exp_carte: date_exp_carte
+            date_exp_carte: date_exp_carte,
+            is_paie_carte: true,
+            is_valid_paie: 0
           }
       };
   

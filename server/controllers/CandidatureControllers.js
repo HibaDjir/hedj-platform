@@ -180,6 +180,22 @@ const getCandidatureIdMedecin = async (req, res) => {
     res.status(200).json(candidatsAttente)
 }
 
+const getCandidatureIfPaie = async (req, res) => {
+    //const { code } = req.params
+    const is_valid_paie = req.query.fieldName; 
+    const fieldValue = req.query.fieldValue;
+
+    const query = { 
+        [is_valid_paie]: { $ne: fieldValue }
+    };
+
+    const candidatsAttente = await candidature.find(query)
+    if(!candidatsAttente){
+        return res.status(404).json({error: "vide"})
+    }
+    res.status(200).json(candidatsAttente)
+}
+
 const getFirstCandidature = async (req, res) => {
     const { id } = req.params
 
@@ -287,6 +303,30 @@ const updateCandidatConsMed = async (req, res) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 }
+const updateValidPay = async (req, res) => {
+    try {
+        // Define the criteria for identifying the documents to update
+        const { idCandidat, result_paie } = req.body;
+        const criteria = { '_id': idCandidat };
+
+        // Define the update operation
+        const update = {
+            $set: {
+                // Specify the fields to update and their new values
+                is_valid_paie: result_paie
+                // You can add more fields as needed
+            }
+        };
+
+        // Update the documents that match the criteria
+        const result = await candidature.updateOne(criteria, update, {upsert: true});
+
+        return res.status(200).json({ message: `${result.nModified} records updated successfully` });
+    } catch (error) {
+        console.error('Error:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+}
 const getCandByWilaya = async(req, res)=>{
         try{
         const {name} = req.params
@@ -354,5 +394,7 @@ module.exports = {
     getCandidatureCodeWilayaAttente,
     getCandidatureIdMedecin,
     updateCandidatRDV,
-    updateCandidatConsMed
+    updateCandidatConsMed,
+    getCandidatureIfPaie,
+    updateValidPay
 }

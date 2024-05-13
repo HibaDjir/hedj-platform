@@ -129,7 +129,7 @@ const CandidatureSchema = new schema({
     code_carte: {
       type: String
     },
-    date_operation:{
+    date_exp_carte:{
         type: Date
     },
     id_medecin: {
@@ -149,9 +149,13 @@ const CandidatureSchema = new schema({
         type: Boolean,
         default:false
     },
-    is_valid_paie:{
+    is_paie_carte:{
         type: Boolean,
         default:false
+    },
+    is_valid_paie:{
+        type: Number,
+        default:-1
     }
 
 },{ timeseries: true})

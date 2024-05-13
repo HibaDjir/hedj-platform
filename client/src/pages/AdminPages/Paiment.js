@@ -1,9 +1,30 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import MUIDataTable from "mui-datatables";
 import Sidebar from "../../components/Dash_components/shared/Sidebar";
+import { Link,useNavigate  } from "react-router-dom";
 import carteccp from "./Carteccp"
 import virementccp from "./Virementccp"
+
+import axios from 'axios';
+
+export let idCandidat = 'dzddzddzd';
+
 function Paiment() {
+  const navigate=useNavigate()
+
+  const [candidats, setCandidats] = useState([]);
+
+  useEffect(() => {   
+        //axios.get('http://localhost:3000/api/candidature/validPaie/find?fieldName=id_medecin&fieldValue=663bd2be3b644e05d59fd85f')
+        axios.get('http://localhost:3000/api/candidature/validPaie/find?fieldName=is_valid_paie&fieldValue=-1')
+          .then(responseC => {
+            setCandidats(responseC.data);
+          })
+          .catch(error => {
+              console.error('Erreur lors de la récupération des options :', error);
+          });
+  }, []);
+
   const handleRowClick = (rowData) => {
     const paiment = rowData[1]; // Assuming "Paiment" is the second column
     if (paiment === "carte ccp") {
@@ -15,6 +36,16 @@ function Paiment() {
     }
   };
 
+  const handleColumnClick = (candidat_rslt, paiment) => {
+    idCandidat=candidat_rslt;
+    if(paiment === true && idCandidat != 'dzddzddzd'){
+      navigate('/Carteccp')
+    }else if(paiment === false && idCandidat != 'dzddzddzd'){
+      navigate('/Virementccp')
+    }
+    // Perform actions based on the clicked column index
+  };
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
   const toggleSidebar = () => {
@@ -22,6 +53,7 @@ function Paiment() {
 
   }
   const columns = [
+    { name: "_id", label: "Nom", options: { display: false, filter: false, sort: true, } },
     { name: "Nom_Prenom", label: "Nom Prenom", options: { filter: false, sort: true } },
     { name: "Paiment", label: "Type de paiment", options: { filter: true, sort: true } },
     { name: "Decision", label: "Décision", options: { filter: true, sort: true } },
@@ -29,26 +61,20 @@ function Paiment() {
 
   const options = {
     filterType: "checkbox",
-    onRowClick: handleRowClick,
+    //onRowClick: handleRowClick,
   };
 
-  const PaimentData = [
-    { Nom_Prenom: "Harrath Bouchra", Paiment: "carte ccp", Decision: "en attente" },
-    { Nom_Prenom: "Harrath djamila", Paiment: "virement postale", Decision: " en attente" },
-    { Nom_Prenom: "Harrath Bouchra", Paiment: "carte ccp", Decision: "en attente" },
-    { Nom_Prenom: "Harrath djamila", Paiment: "virement postale", Decision: " en attente" },
-    { Nom_Prenom: "Harrath Bouchra", Paiment: "carte ccp", Decision: "en attente" },
-    { Nom_Prenom: "Harrath djamila", Paiment: "virement postale", Decision: " en attente" },
-    { Nom_Prenom: "Harrath Bouchra", Paiment: "carte ccp", Decision: "en attente" },
-    { Nom_Prenom: "Harrath djamila", Paiment: "virement postale", Decision: " en attente" },
-    { Nom_Prenom: "Harrath Bouchra", Paiment: "carte ccp", Decision: "en attente" },
-    { Nom_Prenom: "Harrath djamila", Paiment: "virement postale", Decision: " en attente" },
-    { Nom_Prenom: "Harrath Bouchra", Paiment: "carte ccp", Decision: "en attente" },
-    { Nom_Prenom: "Harrath djamila", Paiment: "virement postale", Decision: " en attente" },
-    { Nom_Prenom: "Harrath Bouchra", Paiment: "carte ccp", Decision: "en attente" },
-    { Nom_Prenom: "Harrath djamila", Paiment: "virement postale", Decision: " en attente" },
-   
-  ];
+  const PaimentData = candidats.map(candidat => ({
+    _id: candidat._id,
+    Nom_Prenom: (
+      <a onClick={() => handleColumnClick(candidat._id, candidat.is_paie_carte)} style={{ color: "inherit", textDecoration: "inherit", cursor: 'pointer' }}>
+        {candidat.nom} {candidat.prenom}
+      </a>
+    ),
+    Paiment: candidat.is_paie_carte ? 'carte ccp' : 'virement postale',
+    Decision: candidat.is_valid_paie === 0 ? 'en attente' : (candidat.is_valid_paie === 1 ? 'Approuvé' : (candidat.is_valid_paie === 2 ? 'Non Approuvé' : 'Accun paiement' ) ),
+  })
+  );  
 
   return (
 

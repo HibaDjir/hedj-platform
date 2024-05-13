@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ar from "date-fns/locale/ar";
-import { idCandidat } from '../../components/DropDownMenue';
 import  Clear from '../../images/x_icon.png';
 import  upload from '../../images/upload_icon.png';
 import   grande_poste from '../../images/GPA02.jpg';
@@ -11,9 +10,42 @@ import   cartreccp from '../../images/carte-eddahabiya.jpg';
 import Navbar_for_each_profile from '../../components/Navbar_for_each_profile';
 
 import Sidebar from '../../components/Dash_components/shared/Sidebar';
+
+import { idCandidat } from '../AdminPages/Paiment';
+
 function Virementccp() {
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  
+  const [candidat, setCandidat] = useState([]);
+
+  useEffect(() => {
+    fetchCandidat();
+  }, []);
+
+
+  const fetchCandidat = async () => {
+      try {
+          const response = await fetch('http://localhost:3000/api/candidature/'+idCandidat);
+          if (!response.ok) {
+              throw new Error('Failed to fetch data');
+          }
+          const jsonData = await response.json();
+          setCandidat(jsonData);
+      } catch (error) {
+          console.error('Error fetching data:', error);
+      }
+  };
+
+  const handleAppClick = async (result_paie) => {
+    try {
+
+      await axios.put('http://localhost:3000/api/candidature/ValidPaie/update', {idCandidat, result_paie});
+      alert('Opération avec succée');
+    } catch (error) {
+      alert('Error uploading file:', error);
+    }
+  };
   
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -67,7 +99,7 @@ function Virementccp() {
                   type="text"
                   placeholder="Prénom"
                   name="firstName"
-                 
+                  value={candidat.prenom}
                   readOnly
                   required
                 />
@@ -80,7 +112,7 @@ function Virementccp() {
                   className="text-black p-2 border rounded-xl   w-full focus:outline-none border-[#C09455]"
                   type="text"
                   placeholder="Nom"
-                
+                  value={candidat.nom}
                   name="lastName"
                   readOnly
                   required
@@ -104,6 +136,7 @@ function Virementccp() {
                   type="text"
                   placeholder="CCP"
                   name="ccp"
+                  value={candidat.num_compte}
                   required
                   readOnly
                 />
@@ -120,6 +153,7 @@ function Virementccp() {
                   type="text"
                   placeholder="Clé"
                   name="clefccp"
+                  value={candidat.cle_compte}
                   required
                   readOnly
                 />
@@ -146,6 +180,7 @@ function Virementccp() {
                   type="text"
                   placeholder="RIP"
                   name="rip"
+                  value={candidat.num_rib}
                   required
                   readOnly
                 />
@@ -167,6 +202,7 @@ function Virementccp() {
                   type="text"
                   placeholder="Intitulé"
                   name="owner"
+                  value={candidat.propreitaire_compte}
                   required
                   readOnly
                 />
@@ -183,6 +219,7 @@ function Virementccp() {
                 </label>
                 <DatePicker
                   className="text-black p-2 border rounded-xl  focus:outline-none border-[#C09455]   w-full"
+                  value={candidat.date_naissance}
                  
                   dateFormat="dd/MM/yyyy"
                readOnly
@@ -204,6 +241,7 @@ function Virementccp() {
                   type="text"
                   placeholder="Adresse	"
                   name="Adresse"
+                  value={candidat.address}
                   required
                   readOnly
                 />
@@ -218,11 +256,11 @@ function Virementccp() {
                 </label>
                 <div className=" w-full flex justify-center items-center">
                 <button  className="w-full border border-[#D4A373]  text-brown_palette rounded-2xl p-4 m-2 hover:bg-[#D8A353] hover:text-fake_black "
-            >
+                    onClick={() => handleAppClick(1)}>
                  Approuvé
                 </button>
                 <button  className="w-full border border-[#D4A373]  text-brown_palette rounded-2xl p-4 m-2 hover:bg-[#D8A353] hover:text-fake_black "
-            >
+                    onClick={() => handleAppClick(2)}>
                   Non Approuvé
                 </button>
                 </div>
