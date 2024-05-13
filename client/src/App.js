@@ -34,7 +34,6 @@ import Pelerin from "./pages/Pelerin"
 import SousTirage from "./pages/SousTirage"
 import SousPelerin from "./pages/SousPelerin"
 import SousCandidat from "./pages/SousCandidat"
-
 import { useHistory } from "react-router-dom";
 import Sidebar from "../src/components/Dash_components/shared/Sidebar"
 import EtatSantee from "./pages/EtatSantee";
@@ -48,6 +47,7 @@ import Paiment from "./pages/AdminPages/Paiment";
 import Carteccp from "./pages/AdminPages/Carteccp";
 import Virementccp from "./pages/AdminPages/Virementccp";
 
+
 function App() {
   const isLoggedIn=localStorage.getItem('loggedIn')
   return (
@@ -57,13 +57,7 @@ function App() {
         <Routes>
         <Route path="/AddAdmin" element={<RequireAuth><AddAdmin /></RequireAuth>} />
           <Route path="/" element={<RequireNotAuth><Home /></RequireNotAuth>} />
-   
-   
-
-          
-
           <Route path="/AttentePelerin" element={<RequireMasterAdmin><AttentePelerin/></RequireMasterAdmin>} />
-
           <Route path="/home" element={<RequireNotAuth><Home /></RequireNotAuth>} />
           <Route path="/SousSession" element={<RequireAuthSsA><SousSession/></RequireAuthSsA>} />
           <Route path="/SousTirage" element={<RequireAuthSsA><SousTirage/></RequireAuthSsA>} />
@@ -93,7 +87,7 @@ function App() {
           <Route path="/listepelerin" element={<RequireAuthMed><ListePelerin /></RequireAuthMed>} />
 
           <Route path="/sante" element={<RequireAuth><EtatSantee /></RequireAuth>} />
-          <Route path="/paiment" element={<Paiment/>} />
+          <Route path="/paiment" element={<RequireMasterAdmin><Paiment/></RequireMasterAdmin>} />
           <Route path="/carteccp" element={<Carteccp/>} />
           <Route path="/virementccp" element={<Virementccp/>} />
           <Route path="/paimentVP" element={<RequireAuth><PaimentVersementPostale /></RequireAuth>} />

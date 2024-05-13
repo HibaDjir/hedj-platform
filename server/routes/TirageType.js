@@ -22,4 +22,4 @@ router.put('/update', updateTirageType)
 router.put('/Tirage', calculeTirageType)
 
 
-module.exports=router;
+module.exports=router; 

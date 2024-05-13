@@ -278,12 +278,11 @@ export default function Session() {
             
             <div className="flex justify-between mb-8 mt-6 ">
               <button
-                  className="text-[#1D1D1B] text-md font-medium flex justify-between  border-[#D8A353] rounded-md bg-[#D8A353] border p-2"
+                  className="items-center text-[#1D1D1B] text-md font-medium flex justify-between  border-[#D8A353] rounded-md bg-[#D8A353] border p-2"
                 onClick={UpdateSession}>
-                <img className="h-3 w-3  mt-2 mx-2  " src={add} />
-                Enregistrer le modification
+                <img className="h-5 w-5  mt-2 mx-2  " src={add} />
+                Enregistrer les modification
               </button>
-              <p class="text-3xl">  Changer le type de tirage : </p> <Combobox className="z-0" style={{ width: 'calc(100% - 4px)' }} openAddAdminModal={openAddAdminModal} /> 
             </div>
             {/* <Cards /> */}
             <div>
@@ -311,11 +310,11 @@ export default function Session() {
     <div class="top-0 px-2 text-gray-700 flex items-center ">
       <TiTime className='h-6 w-6'/>  
       <h3 class="ml-2 text-sm  font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Mode de Tirage</h3>
-      
     </div>    
   </div>
+  <Combobox className="z-0" style={{ width: 'calc(100% - 4px)' }} openAddAdminModal={openAddAdminModal} /> 
 
-    <p class="text-2xl text-center  text-gray-600"> {mode} </p>
+   
   
 </div>
 
@@ -425,7 +424,7 @@ export default function Session() {
 
 
 
-    <div className="bg-white px-4 pt-3 pb-4 rounded-sm  border-gray-200 flex-1 flex-col max-w-[1420px]   ">
+    <div className="bg-white px-4 pt-3 pb-4 rounded-sm   border-gray-200 flex-1 flex-col max-w-[1420px]   ">
 
        
   <div className="max-w-[1420px]">

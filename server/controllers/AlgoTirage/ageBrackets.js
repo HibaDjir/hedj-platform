@@ -172,25 +172,25 @@ exports.elecPilgrimsCumDist = async (req, res) => {
           );
 
         //envoie mail aux pelerins elus
-        // envoieEmail(pelerinsElu)
+        envoieEmail(pelerinsElu)
 
                 //TTTTTTTTTTTTTTTEEEEEEEEEEEESSSSSSSSSSSSSSSSSSSSTTTTTTTTTTTTTTTTTTTTT
-                const testDate = [
-                    {
+                // const testDate = [
+                //     {
         
-                        "nom": "kadour",
-                        "prenom": "kadour",
-                        "num_passeport": "0000000000000000000",
-                        "email": "meriemeaitchabane04@gmail.com",
+                //         "nom": "kadour",
+                //         "prenom": "kadour",
+                //         "num_passeport": "0000000000000000000",
+                //         "email": "meriemeaitchabane04@gmail.com",
         
-                    },
-                    {
-                        "nom": "sara",
-                        "prenom": "mokaddm",
-                        "num_passeport": "7410852963",
-                        "email": "acmerieme@gmail.com",
-                    }]
-                envoieEmail(testDate)
+                //     },
+                //     {
+                //         "nom": "sara",
+                //         "prenom": "mokaddm",
+                //         "num_passeport": "7410852963",
+                //         "email": "acmerieme@gmail.com",
+                //     }]
+                // envoieEmail(testDate)
 
 
         console.log("winners are: ", winners)

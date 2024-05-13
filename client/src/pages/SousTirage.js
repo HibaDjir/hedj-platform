@@ -43,35 +43,46 @@ export default function SousTirage() {
             div.style.borderColor = "";
           }
         });
-        axios.get('http://localhost:3000/api/wilaya/65ff830ed96578ad80742c2f')
+        //avant ca on get la wilaya du user comme on a fait linking soudash fetchWilaya
+        axios.get('http://localhost:3000/api/wilaya/65ff830ed96578ad80742c2f')//on utilise un autre get wilaya by name qui donne la meme reponse, la wilaya
           .then(response => {
+            console.log("response of api/wilaya/", response.data)
             const additionalOptions = response.data;//.map(wilaya => ({value: wilaya.code, label: wilaya.ar_name}));
             //alert('http://localhost:3000/api/commune/find?fieldName=code&minValue='+additionalOptions.code+'00&maxValue='+additionalOptions.code+'99');
             axios.get('http://localhost:3000/api/commune/find?fieldName=code&minValue='+additionalOptions.code+'00&maxValue='+additionalOptions.code+'99')
               .then(responseC => {
+                console.log("response of api/commune", responseC.data)
               const additionalOptions = responseC.data.map(commune => ({value: commune.code+"|"+commune.nb_places, label: commune.ar_name}));
               setCommunes(additionalOptions);
               })
               .catch(error => {
                   console.error('Erreur lors de la récupération des options :', error);
               });
-          })
+          }) 
           .catch(error => {
               console.error('Erreur lors de la récupération des options :', error);
           });
+       
           axios.get('http://localhost:3000/api/session/stateSession/find?fieldName=state&fieldValue=En cours')
           .then(response => {
+            console.log("response of api/session/stateSession", response.data)
+
             setSession(response.data._id);setCode_algo(response.data.algo_selected);
           })
           .catch(error => {
               console.error('Erreur lors de la récupération des options :', error);
           });  
-          axios.get('http://localhost:3000/api/wilaya/65ff830ed96578ad80742c2f')
+             //on ajoute un get de typeTirage pour age bracket (min max et chance)
+          axios.get('http://localhost:3000/api/wilaya/65ff830ed96578ad80742c2f')//meme chose
             .then(response => {
+              console.log("response of api/wilaya/ 2 eme", response.data)
+
+              
               const additionalOptions = response.data;//.map(wilaya => ({value: wilaya.code, label: wilaya.ar_name}));
               //alert('http://localhost:3000/api/commune/find?fieldName=code&minValue='+additionalOptions.code+'00&maxValue='+additionalOptions.code+'99');
               axios.get('http://localhost:3000/api/candidature/wilaya/prise/find?fieldName=wilaya&fieldValue='+additionalOptions.code)
                 .then(responseC => {
+                  console.log("response of api/candidature/wilaya/prise/find", responseC.data)
                   setPelerins(responseC.data);
                 })
                 .catch(error => {
@@ -265,11 +276,13 @@ export default function SousTirage() {
 
     };
 
+    //ici on appele notre alogorithmes avec switch case de mode_algo
+    //en haut on utilise useeffect pour fetch de pelerinsByCommune
     const startTirage = async () => {
       // Get the input value for the clicked row
       try {
           // Make a PUT request to the backend API to update the record
-          const response = await axios.put('http://localhost:3000/api/tirage/Tirage', { id_session, commune, nbrTotalPelerin, code_algo });
+          const response = await axios.put('http://localhost:3000/api/tirage/Tirage', { id_session, commune, nbrTotalPelerin, code_algo }); //ici on appele ntre ctrlr
            
           axios.get('http://localhost:3000/api/wilaya/65ff830ed96578ad80742c2f')
             .then(response => {

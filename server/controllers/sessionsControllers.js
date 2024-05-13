@@ -5,7 +5,7 @@ const getAllSession = async (req, res) => {
     const sessions = await session.find({}).sort({createAt: -1})
     res.status(200).json(sessions)
 }
-
+ 
 const createSession = async (req, res) => {
     const {annee, nbr_candidats} = req.body
     try {

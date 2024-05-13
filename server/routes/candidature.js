@@ -14,7 +14,8 @@ const {
     getCandidatureCodeWilaya,
     getCandidatureCodeWilayaPrise,
     getCandidatureCodeWilayaAttente,
-    getAllCandidatureAff
+    getAllCandidatureAff,
+    updateCandidatConsMed
 
 } = require('../controllers/CandidatureControllers')
 
@@ -45,6 +46,7 @@ router.delete('/:id', deleteCandidature)
 
 router.patch('/:id', updateCandidature)
 
+router.put('/ValidMedecin/update', updateCandidatConsMed)
 
 router.delete('/', deleteCands )
 

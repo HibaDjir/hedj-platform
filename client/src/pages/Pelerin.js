@@ -266,7 +266,7 @@ const recentAdminData = [
         <div className=" w-full flex flex-col">
         <div className={`flex flex-col flex-1 pl-10 sm:pl-14 md:pl-20 lg:pl-64 p-3 gap-9 transition-margin ${isSidebarOpen ? 'ml-64' : 'ml-0'}`}>
         
-<Header/>
+     <Header/>
 
 
       <div className="bg-white px-4 pt-3 pb-4 rounded-sm  border-gray-200 flex-1 flex-col max-w-[1420px]   ">

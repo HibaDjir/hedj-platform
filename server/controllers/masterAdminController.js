@@ -108,7 +108,7 @@ exports.getsousAdminById=async(req,res)=>{
         .populate('user')
         .populate('Wilaya')
          .exec();
-         //console.log(populateSousAdmin)
+         console.log(populateSousAdmin)
 
          res.status(201).json(populateSousAdmin)
 
