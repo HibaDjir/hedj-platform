@@ -9,15 +9,27 @@ import  upload from '../../images/upload_icon.png';
 import   grande_poste from '../../images/GPA02.jpg';
 import   cartreccp from '../../images/carte-eddahabiya.jpg';
 import Navbar_for_each_profile from '../../components/Navbar_for_each_profile';
+
 import Sidebar from '../../components/Dash_components/shared/Sidebar';
 function Virementccp() {
-  return (
-    <div className="bg-white px-4 pt-3 pb-4 rounded-sm border border-gray-200 flex-1 flex-col max-w-[1420px]  ml-64 ">
 
-    <Sidebar/>
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+
+  }
+  return (
+    <div>
+    <div className='w-full flex overflow-hidden
+'><div className={`fixed  top-0 left-0 h-screen z-50 transition-transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0  sm:w-auto`} >
+<Sidebar />
+</div>
+<div className=" w-full flex flex-col">
+        <div className={`flex flex-col flex-1 pl-10 sm:pl-14 md:pl-20 lg:pl-64  gap-5 transition-margin ${isSidebarOpen ? 'ml-64' : 'ml-0'}`}>
      
-        <div className="flex flex-col justify-center items-center max-w-[1240px] h-auto
-        mx-auto  bg-[#EAE1D1]  bg-opacity-90  rounded-xl shadow-2xl mt-16">
+        <div className="flex flex-col justify-center items-center max-w-[1240px] 
+        mx-auto  bg-[#EAE1D1]  bg-opacity-90  rounded-xl shadow-2xl mt-7">
 
 
 
@@ -36,6 +48,11 @@ function Virementccp() {
   </div>
 </div>
 <div className=" mx-auto  grid md:grid-cols-2 w-full  ">
+
+
+
+
+
 
         <div className="flex flex-col justify-center   p-4 rounded-md ">
         
@@ -237,10 +254,24 @@ function Virementccp() {
 
   </div>
   
+  </div>
 
-
-      
     </div>
+    </div>
+    </div>
+
+
+    <button onClick={toggleSidebar} aria-label="Toggle Sidebar" className="fixed top-5 left-5 z-50 p-3 bg-[#FAF8F5] rounded-full text-gray-600 sm:hidden">
+          {isSidebarOpen ? (
+            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 18L18 6M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          ) : (
+            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          )}
+    </button>
     </div>
   )
 }

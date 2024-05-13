@@ -75,7 +75,7 @@ function TirageAge({ onClose }) {
       onClick={closeModal}
       className="fixed inset-0 z-[9999] bg-fixed bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center"
     >
-      <div className="flex flex-col justify-center py-4 px-2 mx-auto w-[320px] rounded-3xl bg-[#F7F6F3]">
+      <div className="flex flex-col justify-center py-6 px-7 mx-auto w-[400px] rounded-3xl bg-[#F7F6F3]">
         <div className="grid grid-cols-1 gap-y-2">
           {criterias.map((criteria, index) => (
             <div key={index}>
