@@ -8,7 +8,7 @@ router.route("/updateSousAdmin/:id").patch(masterAdminController.updateSousAdmin
 router.route('/deleteSousAdmin/:id').delete(masterAdminController.deleteSousAdmin)
 router.route("/getSousAdminWilaya/:id").get(masterAdminController.getAdminsWilaya);
 router.route("/SendEmailPaiement/:id").get(masterAdminController.sendEmailPaiement);
-
+router.route("/getSaousAdminByuserId/:id").get(masterAdminController.getSousAdminByUser);
 
 
 module.exports=router;

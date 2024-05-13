@@ -198,6 +198,11 @@ exports.elecPilgrimsCumDist = async (req, res) => {
         
         //set status of attente
         const pelerinEnAttente = setStatus(attente, "is_enAttent")
+
+        let candidAtt = await Candidature.updateMany( 
+            { _id: { $in: attente.map(pelerin => pelerin._id) } }, // Find candidatures associated with the updated pelerins 
+            { $set: { status: "is_enAttent" } } // Update their status to "is-elected" 
+          );
         //the attente
         console.log("en attente are: ", attente)
         

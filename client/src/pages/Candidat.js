@@ -19,6 +19,7 @@ export default function Medecins() {
 
   useEffect(() => {
     fetchCandidats();
+    console.log("less cands",candidats)
   }, [candidats]);
 
   const fetchCandidats = async () => {

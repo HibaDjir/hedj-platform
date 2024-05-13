@@ -135,27 +135,27 @@ exports.electPilgrims = async (req, res) => {
 
         
         //EST CE QUE EN ENOIE MAIL ICI POUR FAIRE ENTRER LES PELERINS ELUS COMPM PARAM
-        // envoieEmail(pelerinsElus)
+        envoieEmail(pelerinsElus)
 
 
         //TTTTTTTTTTTTTTTEEEEEEEEEEEESSSSSSSSSSSSSSSSSSSSTTTTTTTTTTTTTTTTTTTTT
-        const testDate = [
-            {
+        // const testDate = [
+        //     {
 
-                "nom": "kadour",
-                "prenom": "kadour",
-                "num_passeport": "0000000000000000000",
-                "email": "meriemeaitchabane04@gmail.com",
+        //         "nom": "kadour",
+        //         "prenom": "kadour",
+        //         "num_passeport": "0000000000000000000",
+        //         "email": "meriemeaitchabane04@gmail.com",
 
-            },
-            {
-                "nom": "sara",
-                "prenom": "mokaddm",
-                "num_passeport": "7410852963",
-                "email": "acmerieme@gmail.com",
-            }]
-        envoieEmail(testDate)
-        //
+        //     },
+        //     {
+        //         "nom": "sara",
+        //         "prenom": "mokaddm",
+        //         "num_passeport": "7410852963",
+        //         "email": "acmerieme@gmail.com",
+        //     }]
+        // envoieEmail(testDate)
+        // //
 
         
         let { pelerinsElus: pelerinsEnAttente, pelerinsRestants: pelerinsRestantsApresEnAttente } = await electionPelerinsAuHasard(pelerinsRestants, nbraelireenattente);
@@ -163,6 +163,10 @@ exports.electPilgrims = async (req, res) => {
         // console.log('Pèlerins en attente :', pelerinsEnAttente);
         const pelerinEnAttentFinale=setStatus(pelerinsEnAttente,'is_enAttent') 
         
+        let candidAtt = await Condidatures.updateMany( 
+            { _id: { $in: pelerinsEnAttente.map(pelerin => pelerin._id) } }, // Find candidatures associated with the updated pelerins 
+            { $set: { status: "is_enAttent" } } // Update their status to "is-elected" 
+          );
         
         let allPelerins = [...pelerinfinal, ...pelerinEnAttentFinale]
         // console.log("TOUSSSSSS LES PELERINS", allPelerins)

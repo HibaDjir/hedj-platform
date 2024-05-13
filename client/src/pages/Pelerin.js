@@ -6,7 +6,25 @@ import Header from "../components/Dash_components/shared/Header";
 export default function Medecins() {
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  
+  const [pelerin, setPelerin] = useState([])
+  useEffect(() => {
+    fetchPelerin();
+    console.log('pelerin est  ',pelerin)
+  }, [pelerin]); 
+
+  const fetchPelerin = async () => { 
+    try {
+      const response = await fetch('http://localhost:3000/api/getAllPelerins');
+      if (!response.ok) {
+        throw new Error('Failed to fetch pelerin');
+      }
+      const data = await response.json();
+      console.log('data est ',data)
+      setPelerin(data);
+    } catch (error) {
+      console.error('Error fetching pelerin:', error);
+    }
+  };
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
 
@@ -21,235 +39,164 @@ export default function Medecins() {
     setIsAddAdminModalOpen(false);
   };
 
+
   const columns = [
     {
-      name: "Admin_name",
-      label: "Nom du Candidat",
+
+     name: "firstName",
+     label: "Nom",
+     options: {
+      filter: true,
+      sort: true,
+     }
+    },
+    {
+      name: "lastName",
+      label: "Prenom",
       options: {
        filter: true,
        sort: true,
       }
      },
-     {
-       name: "Admin_wilaya",
-       label: "wilaya",
-       options: {
-        filter: true,
-        sort: false,
-       }
-      },
-      {
-       name: "Candidat_commune",
-       label: "Commune",
-       options: {
-        filter: true,
-        sort: false,
-       }
-      },
-     {
-      name: "Candidat_sexe",
-      label: "Sexe",
-      options: {
-       filter: true,
-       sort: false,
-      }
-     },
-     {
-       name: "Num_passport",
-       label: "Numéro De Passport",
-       options: {
-        filter: true,
-        sort: false,
-       }
-      },
-     {
-       name: "Admin_numero_de_telephone",
-       label: "Numéro De teléphone",
-       options: {
-        filter: true,
-        sort: false,
-       }
-      },
-      {
-       name: " Admin_e_mail",
-       label: "E-mail",
-       options: {
-        filter: true,
-        sort: false,
-       }
-      },
-     {
-      name: "Etat_civil",
-      label: "Etat Civil",
-      options: {
-       filter: true,
-       sort: false,
-      }
-     },
-     {
-       name: "Nat",
-       label: "Nationalité",
-       options: {
-        filter: true,
-        sort: false,
-       }
-      },
-      {
-       name: "Adresse_com",
-       label: "Adresse complete",
-       options: {
-        filter: true,
-        sort: false,
-       }
-      },
-      {
-       name: "Groupe_sang",
-       label: "Groupe sanguin",
-       options: {
-        filter: true,
-        sort: false,
-       }
-      },
-      {
-       name: "Numero_ass",
-       label: "Numéro d'assurance",
-       options: {
-        filter: true,
-        sort: false,
-       }
-      },
-      {
-       name: "Malad_chro",
-       label: "Maladie Chronique",
-       options: {
-        filter: true,
-        sort: false,
-       }
-      },
-      {
-       name: "Numero_ass",
-       label: "Numéro du passport de Elmahrem",
-       options: {
-        filter: true,
-        sort: false,
-       }
-      },
+    
      
+     {
+      name: "Candidat_commune",
+      label: "Commune",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+    {
+     name: "Candidat_sexe",
+     label: "Sexe",
+
+     options: {
+      filter: true,
+      sort: false,
+     }
+    },
+
+    {
+     name: "etat",
+     label: "Etat",
+     options: {
+      filter: true,
+      sort: false,
+     }
+    },
+  {
+      name: "Num_passport",
+      label: "Numéro De Passport",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+     {
+      name: "email",
+      label: "E-mail",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+    {
+     name: "Etat_civil",
+     label: "Etat Civil",
+     options: {
+      filter: true,
+      sort: false,
+     }
+    },
+    {
+
+     name: "name",
+     label: "wilaya",
+     options: {
+      filter: true,
+      sort: false,
+     }
+    },
+    {
+        name: "NumeroTelephone",
+        label: "Numéro De teléphone",
+        options: {
+         filter: true,
+         sort: false,
+        }
+       },
+{
+      name: "Nat",
+      label: "Nationalité",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+     {
+      name: "Adresse_com",
+      label: "Adresse complete",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+     {
+      name: "Groupe_sang",
+      label: "Groupe sanguin",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+     {
+      name: "Numero_ass",
+      label: "Numéro d'assurance",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+     {
+      name: "Malad_chro",
+      label: "Maladie Chronique",
+      options: {
+       filter: true,
+       sort: false,
+      }
+     },
+
+
    ];
 const options = {
     filterType: 'checkbox',
   };
-const recentAdminData = [
-  {
+  
+const recentPelerin =  pelerin.map(pel => {
+  console.log('pel:', pel)
+  return{
+    firstName: pel.nom,
+    lastName: pel.prenom,
+    email: pel.email,
+    NumeroTelephone: pel.NumeroTelephone,
+    etat: pel.etat,
+    name:pel.wilayaName,
+    _id: pel._id ,
+    Nat:pel.Nat,
+    Adresse_com:pel.Adresse_com,
+    Groupe_sang:pel.Groupe_sang,
+    Numero_ass:pel.Numero_ass,
+    Malad_chro:pel.Malad_chro,
+    Adresse_com: pel.address,
+    Candidat_sexe:pel.Candidat_sexe,
+    Etat_civil:pel.Etat_civil,
+    Candidat_commune:pel.Candidat_commune,
+    Num_passport:pel.Num_passport
+  }
+  });
 
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-
-
-    Admin_name: "Harrath Bouchra",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-    Admin_name: "kechar djamal",
-    Admin_e_mail: "bouchra.harrath5@gmail.com",
-    current_Admin_status: "Active",
-    Admin_wilaya: "Chlef",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-    Admin_name: "kechar djamal",
-    Admin_e_mail: "kechar@gmail.com",
-    current_Admin_status: "innactif",
-    Admin_wilaya: "Bejaia",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-    Admin_name: "mohammed djamal",
-    Admin_e_mail: "kechar@gmail.com",
-    current_Admin_status: "innactif",
-    Admin_wilaya: "Bejaia",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-  {
-    Admin_name: "djamila kechar",
-    Admin_e_mail: "djamila.kechar@gmail.com",
-    current_Admin_status: "innactif",
-    Admin_wilaya: "Bejaia",
-    Admin_numero_de_telephone: "06 54 32 55 78",
-  },
-];
 
 
 
@@ -286,7 +233,7 @@ const recentAdminData = [
     </div>
         <MUIDataTable
   title={"Pélerins"}
-  data={recentAdminData}
+  data={recentPelerin }
   columns={columns}
   options={options}
 />
