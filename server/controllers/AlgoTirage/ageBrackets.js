@@ -2,6 +2,33 @@
 const Candidature = require("../../models/Candidature");
 const { setStatus } = require('./clcPrctg');
 const pelerin = require('../../models/pelerin');
+const sendEmail=require('../../util/sendEmail')
+
+
+
+function envoieEmail(pelerinsElus){
+    try {
+        const emailEnvoie = pelerinsElus.map(pelerin => {
+            console.log('EVOIE MAIL: PELERIN EMAIL',pelerin.email)
+            console.log('EVOIE MAIL: PELERIN NOM',pelerin.nom)
+            console.log('EVOIE MAIL: PELERIN PRENOM',pelerin.prenom)
+                sendEmail({
+                email: pelerin.email,
+                subject:'CONGRATS',
+                message:
+                `Hi  ${pelerin.nom}!\n\n
+                Congrats you are elected for Hadj!\n
+                **Your Credentials:**\n\n
+                Nom :${pelerin.nom}\n\n
+                Prenom :${pelerin.prenom}\n\n
+                Num Passeport:${pelerin.num_passeport}\n
+                `
+           });
+        })
+    } catch (error) {   
+        console.log(error)
+    }
+}
 
 function mappingUsers(ageBrackets, users) {
     const currentDate = new Date();
@@ -139,6 +166,30 @@ exports.elecPilgrimsCumDist = async (req, res) => {
         //set status of winners
         const pelerinsElu = setStatus(winners, "is_elected")
         //the winners
+
+
+        //envoie mail aux pelerins elus
+        // envoieEmail(pelerinsElu)
+
+                //TTTTTTTTTTTTTTTEEEEEEEEEEEESSSSSSSSSSSSSSSSSSSSTTTTTTTTTTTTTTTTTTTTT
+                const testDate = [
+                    {
+        
+                        "nom": "kadour",
+                        "prenom": "kadour",
+                        "num_passeport": "0000000000000000000",
+                        "email": "meriemeaitchabane04@gmail.com",
+        
+                    },
+                    {
+                        "nom": "sara",
+                        "prenom": "mokaddm",
+                        "num_passeport": "7410852963",
+                        "email": "acmerieme@gmail.com",
+                    }]
+                envoieEmail(testDate)
+
+
         console.log("winners are: ", winners)
         const { winners: attente, weightedUsers: weightedUsersEnAtt } = await performLottery(nbEnAttente, weightedRestants)
         
