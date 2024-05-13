@@ -49,7 +49,7 @@ function TirageAge({ onClose }) {
   const UpdateAgeBracket = async () => {
     try {
       let minAge1=0, maxAge1=0, chance1=0, minAge2=0, maxAge2=0, chance2=0, minAge3=0, maxAge3=0, chance3=0;
-      let i = 1;
+      let i = 1;let ttChance = 0;
       for (let criteria of criterias) {
         if(i === 1) {
           minAge1=criteria.min; maxAge1=criteria.max; chance1=criteria.chance; i+=1;
@@ -58,11 +58,18 @@ function TirageAge({ onClose }) {
         }else{
           minAge3=criteria.min; maxAge3=criteria.max; chance3=criteria.chance; i+=1;
         }
+        ttChance+=parseFloat(criteria.chance);
       }
-      const response = await axios.put('http://localhost:3000/api/tirage/update', { 
-         minAge1, maxAge1, chance1, minAge2, maxAge2, chance2, minAge3, maxAge3, chance3
-      });
-      alert("Enregistrement avec succées");
+      if(ttChance > 100) {
+        alert("la somme des chances ne doit pas dépassé 100%");
+        ttChance = 0;
+      }
+      else{
+        const response = await axios.put('http://localhost:3000/api/tirage/update', { 
+           minAge1, maxAge1, chance1, minAge2, maxAge2, chance2, minAge3, maxAge3, chance3
+        });
+        alert("Enregistrement avec succées");
+      }
     } catch (error) {
       alert(error);
       console.error('Error fetching data:', error);

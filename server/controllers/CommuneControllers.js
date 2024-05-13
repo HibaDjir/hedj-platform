@@ -131,20 +131,20 @@ const updateCommune = async (req, res) => {
 
 const ajouterCotatCommune = async(req, res) =>{
     try {
-                const { nomCommune, nb_places } = req.body;
-                if (typeof nb_places !== 'number') {
-                    return res.status(400).json("Invalid nb_places: Must be a number");
-                }
-                const Lacommune = await commune.findOneAndUpdate(
-                    { ar_name: nomCommune},
-                    { $set: { nb_places } }, 
-                    { new: true } // Return the updated document
-                );
-        
-                if (!Lacommune) {
-                    return res.status(404).json("Commune not found"); // Handle missing commune
-                }
-                res.status(200).json(Lacommune)
+        const { nomCommune, nb_places } = req.body;
+        if (typeof nb_places !== 'number') {
+            return res.status(400).json("Invalid nb_places: Must be a number");
+        }
+        const Lacommune = await commune.findOneAndUpdate(
+            { ar_name: nomCommune},
+            { $set: { nb_places } }, 
+            { new: true } // Return the updated document
+        );
+
+        if (!Lacommune) {
+            return res.status(404).json("Commune not found"); // Handle missing commune
+        }
+        res.status(200).json(Lacommune)
         
     } catch (error) {
         res.status(500).json({ message: "Server Error", error: error.message })

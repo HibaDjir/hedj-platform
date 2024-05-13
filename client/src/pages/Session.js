@@ -175,6 +175,9 @@ export default function Session() {
       if (algo.name === "Par age") {
         setIsAddAdminModalOpen(true);
       }
+      if (algo.name === "Performant") {
+        setIsAddAdminModalOpen(true);
+      }
     }
   
     const closeAddAdminModal = () => {
@@ -440,7 +443,7 @@ export default function Session() {
 </div>
 </div>
 
-{isAddAdminModalOpen && selectedAlgo && selectedAlgo.name === "Par age" && (
+{isAddAdminModalOpen && selectedAlgo && (selectedAlgo.name === "Par age" || selectedAlgo.id === "PF")  && (
           <TirageAge onClose={closeAddAdminModal} />
         )}
 

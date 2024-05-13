@@ -231,18 +231,15 @@ exports.getAdminsWilaya = async(req, res)=>{
 exports.getSousAdminByUser=async(req,res)=>{ 
     try{ 
         let idUser=req.params.id 
-        const sousadmin=await sousAdmin.findOne({user:idUser}) 
-        //console.log
-        const  idAdmin =sousadmin._id 
-        const sousadminPop = await sousAdmin.findById({_id: idAdmin}).populate('Wilaya').populate('user').exec(); 
-        //console.log("admin POP", sousadminPop)
+        //console.log("admin POP", idUser)
+        const sousadminPop=await sousAdmin.findOne({user: idUser}) 
+        const user_con=await User.findOne({_id: idUser}) 
 
-        const lawilaya = sousadminPop.Wilaya.name 
-        //console.log("la wilaya", lawilaya)
+        const lawilaya = sousadminPop.Wilaya
         res.status(201).json({ 
             wilaya: lawilaya, 
-            nom: sousadminPop.user.firstName, 
-            prenom: sousadminPop.user.lastName, 
+            nom: user_con.firstName, 
+            prenom: user_con.lastName,
             _id: sousadminPop._id ,
             nb_places: lawilaya.nb_places
         }); 

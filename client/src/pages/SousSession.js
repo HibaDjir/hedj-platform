@@ -12,6 +12,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
 import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';*/
 import { TiTime } from "react-icons/ti";
 
+import { jwtDecode } from 'jwt-decode';
+
 import moment from 'moment';
 import axios from 'axios';
 
@@ -142,24 +144,38 @@ export default function Dashboard() {
     const [debuthedj, setDebutedj] = useState();
     const [finhedj, setFinhedj] = useState();
 
+    const [daata, setDaata] = useState([]);
+    const [userId, setUserId] = useState(null);
+
+    const response = localStorage.getItem('user');
+    const parsedRes = JSON.parse(response);
+    const token = parsedRes.token
+    const decodedToken = jwtDecode(token);
+
     useEffect(() => {
-      
-        axios.get('http://localhost:3000/api/wilaya/65ff830ed96578ad80742c2f')
+        
+      if (decodedToken && decodedToken._id) {
+        setUserId(decodedToken._id); // Store ID if found in decoded token
+        if(decodedToken._id != null) fetchWilaya(decodedToken._id);
+        if(daata.wilaya != null){
+          axios.get('http://localhost:3000/api/wilaya/'+daata.wilaya)
           .then(response => {
             const additionalOptions = response.data;//.map(wilaya => ({value: wilaya.code, label: wilaya.ar_name}));
             //alert('http://localhost:3000/api/commune/find?fieldName=code&minValue='+additionalOptions.code+'00&maxValue='+additionalOptions.code+'99');
             axios.get('http://localhost:3000/api/commune/find?fieldName=code&minValue='+additionalOptions.code+'00&maxValue='+additionalOptions.code+'99')
               .then(responseC => {
-                const additionalOptionsC = responseC.data;
-                setCommunes(additionalOptionsC);
+                const additionalOptions = responseC.data;
+                setCommunes(additionalOptions);
               })
               .catch(error => {
                   console.error('Erreur lors de la récupération des options :', error);
               });
-          })
-          .catch(error => {
-              console.error('Erreur lors de la récupération des options :', error);
-          });
+              })
+              .catch(error => {
+                  console.error('Erreur lors de la récupération des options :', error);
+              });
+        }
+      }
 
         axios.get('http://localhost:3000/api/session/stateSession/find?fieldName=state&fieldValue=En cours')
           .then(response => {
@@ -186,6 +202,18 @@ export default function Dashboard() {
         setFinpaiment("Oran");
     }, []);
 
+    const fetchWilaya = async(id)=>{
+      try {
+          const response = await fetch(`http://localhost:3000/api/masterAdmin/getSaousAdminByuserId/${id}`);
+          if (!response.ok) {
+            throw new Error('Failed to fetch Candidats');
+          }
+          const data = await response.json();
+          setDaata(data);
+        } catch (error) {
+          console.error('Error fetching candidats:', error);
+        }
+    } 
 
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   

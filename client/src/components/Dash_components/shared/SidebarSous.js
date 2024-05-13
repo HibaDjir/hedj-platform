@@ -71,7 +71,7 @@ export default function Sidebar() {
 
 <li>
     <div className="flex flex-col items-center gap-2 px-1 py-3 justify-center">
-        <p className="mt-2 font-bold text-xl text-center"> {daata.wilaya}</p>
+        <p className="mt-2 font-bold text-xl text-center"> {daata.nom} {daata.prenom}</p>
 
     </div>
 </li>

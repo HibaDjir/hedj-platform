@@ -505,7 +505,7 @@ exports.countPelerinsByYearByWilaya=async(req,res) =>{
 
     const wilaya = req.params.name;
     let wilayaFound = await Wilaya.findOne({ name: wilaya });
-    let code = wilayaFound.code;
+    let code = wilayaFound.code; 
     let pelerins=await Pelerins.find()
 
     // Create an object to store the count of candidatures by year

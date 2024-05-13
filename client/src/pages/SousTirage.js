@@ -13,21 +13,30 @@ import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
 import { TiTime } from "react-icons/ti";
 import Select from "react-select";
 import { MdOutlineSlowMotionVideo } from "react-icons/md";
+import { jwtDecode } from 'jwt-decode';
 
 import axios from 'axios';
 
 export default function SousTirage() {
 
 
-  const [communes, setCommunes] = useState([]);
-  
-  const [id_session, setSession] = useState(null);
-  
-  const [nbrTotalPelerin, setNbrTotalPelerin] = useState(null);
-  
-  const [code_algo, setCode_algo] = useState(null);
+    const [communes, setCommunes] = useState([]);
+    
+    const [id_session, setSession] = useState(null);
+    
+    const [nbrTotalPelerin, setNbrTotalPelerin] = useState(null);
+    
+    const [code_algo, setCode_algo] = useState(null);
 
-  const [pelerins, setPelerins] = useState([]);
+    const [pelerins, setPelerins] = useState([]);
+
+    const [daata, setDaata] = useState([]);
+    const [userId, setUserId] = useState(null);
+
+    const response = localStorage.getItem('user');
+    const parsedRes = JSON.parse(response);
+    const token = parsedRes.token
+    const decodedToken = jwtDecode(token);
 
     const [selectedAlgorithm, setSelectedAlgorithm] = useState(null);
     useEffect(() => {
@@ -43,50 +52,89 @@ export default function SousTirage() {
             div.style.borderColor = "";
           }
         });
-        axios.get('http://localhost:3000/api/wilaya/65ff830ed96578ad80742c2f')
-          .then(response => {
-            const additionalOptions = response.data;//.map(wilaya => ({value: wilaya.code, label: wilaya.ar_name}));
-            //alert('http://localhost:3000/api/commune/find?fieldName=code&minValue='+additionalOptions.code+'00&maxValue='+additionalOptions.code+'99');
-            axios.get('http://localhost:3000/api/commune/find?fieldName=code&minValue='+additionalOptions.code+'00&maxValue='+additionalOptions.code+'99')
-              .then(responseC => {
-              const additionalOptions = responseC.data.map(commune => ({value: commune.code+"|"+commune.nb_places, label: commune.ar_name}));
-              setCommunes(additionalOptions);
+        
+        if (decodedToken && decodedToken._id) {
+          setUserId(decodedToken._id); // Store ID if found in decoded token
+          //alert(userId)
+          if(userId != null) fetchWilaya(userId);
+          if(daata.wilaya != null){
+            axios.get('http://localhost:3000/api/wilaya/'+daata.wilaya)
+            .then(response => {
+              const additionalOptions = response.data;//.map(wilaya => ({value: wilaya.code, label: wilaya.ar_name}));
+              //alert('http://localhost:3000/api/commune/find?fieldName=code&minValue='+additionalOptions.code+'00&maxValue='+additionalOptions.code+'99');
+              axios.get('http://localhost:3000/api/commune/find?fieldName=code&minValue='+additionalOptions.code+'00&maxValue='+additionalOptions.code+'99')
+                .then(responseC => {
+                  const additionalOptions = responseC.data.map(commune => ({value: commune.code+"|"+commune.nb_places, label: commune.ar_name}));
+                  setCommunes(additionalOptions);
+                })
+                .catch(error => {
+                    console.error('Erreur lors de la récupération des options :', error);
+                });
+                })
+                .catch(error => {
+                    console.error('Erreur lors de la récupération des options :', error);
+                });
+            
+            axios.get('http://localhost:3000/api/wilaya/'+daata.wilaya)
+              .then(response => {
+                const additionalOptions = response.data;//.map(wilaya => ({value: wilaya.code, label: wilaya.ar_name}));
+                //alert('http://localhost:3000/api/commune/find?fieldName=code&minValue='+additionalOptions.code+'00&maxValue='+additionalOptions.code+'99');
+                axios.get('http://localhost:3000/api/candidature/wilaya/prise/find?fieldName=wilaya&fieldValue='+additionalOptions.code)
+                  .then(responseC => {
+                    setPelerins(responseC.data);
+                  })
+                  .catch(error => {
+                      console.error('Erreur lors de la récupération des options :', error);
+                  });
               })
               .catch(error => {
                   console.error('Erreur lors de la récupération des options :', error);
               });
-          })
-          .catch(error => {
-              console.error('Erreur lors de la récupération des options :', error);
-          });
+            
+          //fetchCardsInfo (daata.wilaya)
+          }
+        }
           axios.get('http://localhost:3000/api/session/stateSession/find?fieldName=state&fieldValue=En cours')
           .then(response => {
             setSession(response.data._id);setCode_algo(response.data.algo_selected);
           })
           .catch(error => {
               console.error('Erreur lors de la récupération des options :', error);
-          });  
-          axios.get('http://localhost:3000/api/wilaya/65ff830ed96578ad80742c2f')
-            .then(response => {
-              const additionalOptions = response.data;//.map(wilaya => ({value: wilaya.code, label: wilaya.ar_name}));
-              //alert('http://localhost:3000/api/commune/find?fieldName=code&minValue='+additionalOptions.code+'00&maxValue='+additionalOptions.code+'99');
-              axios.get('http://localhost:3000/api/candidature/wilaya/prise/find?fieldName=wilaya&fieldValue='+additionalOptions.code)
-                .then(responseC => {
-                  setPelerins(responseC.data);
-                })
-                .catch(error => {
-                    console.error('Erreur lors de la récupération des options :', error);
-                });
-            })
-            .catch(error => {
-                console.error('Erreur lors de la récupération des options :', error);
-            }); 
+          });   
           setDebutinsc('Charles')
           setMode('Par age')
           setDebutpaiment("Oran")
           setFinpaiment("Oran")
-      }, []);
+      }, [userId,daata]);
 
+
+      const fetchWilaya = async(id)=>{
+        try {
+            const response = await fetch(`http://localhost:3000/api/masterAdmin/getSaousAdminByuserId/${id}`);
+            if (!response.ok) {
+              throw new Error('Failed to fetch Candidats');
+            }
+            const data = await response.json();
+            setDaata(data);
+          } catch (error) {
+            console.error('Error fetching candidats:', error);
+          }
+      } 
+
+      /*const fetchCardsInfo = async(wilaya)=>{
+        try {
+            const response = await fetch(`http://localhost:3000/api/dashboardStats/getCountsWilaya/${wilaya}`);
+            if (!response.ok) {
+              throw new Error('Failed to fetch Cards Info');
+            }
+            const data = await response.json(); 
+            setNbcandidats(data.candidaturesCount)
+            setNbplaces(data.nbPlaces)
+            setNbcommunes('26')
+          } catch (error) {
+            console.error('Error fetching Cards:', error);
+          }
+      }*/
 
     const customStyles = {
         control: (provided, state) => ({

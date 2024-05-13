@@ -35,7 +35,7 @@ const createTirageType = async (req, res) => {
 const updateTirageType = async (req, res) => {
     try {
         const { minAge1, maxAge1, chance1, minAge2, maxAge2, chance2, minAge3, maxAge3, chance3 } = req.body;
-        const criteria = { 'code': 'PA' };
+        const criteria = { 'code': 'PA', 'code': 'PF' };
         const update = {
             $set: {
                 minAge1: minAge1,
