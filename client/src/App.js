@@ -16,6 +16,7 @@ import AttentePelerin from "./pages/AttentePelerin"
 import RequireNotAuth from "./protectingRoutes/RequireNotAuth";
 import RequireMasterAdmin from "./protectingRoutes/RequireMasterAdmin"
 import RequireAuthSsA from "./protectingRoutes/RequireAuthSsAdmin";
+import RequireAuthMed from "./protectingRoutes/RequireAuthMed";
 import Manassik from "../src/pages/Manassik";
 import Candidature from "./pages/Candidature";
 import Candidature_mahram  from "./pages/AddMahram";
@@ -24,7 +25,6 @@ import Home_each_profile from "./pages/Home_each_profile";
 import Cansulter_cand from "./pages/Consulter_candidature";
 import Dash from "../src/pages/Dash_pages/Dashboard_Main"
 import Sous_Dash from "./pages/Dash_pages/Dashboard_sous";
-//import Dash from "../src/pages/Dash_pages/Dashboard_Main";// "../src/pages/Dash_pages/Dashboard";
 import Medecins from "./pages/Medecins";
 import RecentAdmin from "./pages/AdminPages/RecentAdmin";
 import Session from "./pages/Session"
@@ -33,7 +33,6 @@ import Pelerin from "./pages/Pelerin"
 import SousTirage from "./pages/SousTirage"
 import SousPelerin from "./pages/SousPelerin"
 import SousCandidat from "./pages/SousCandidat"
-
 import { useHistory } from "react-router-dom";
 import Sidebar from "../src/components/Dash_components/shared/Sidebar"
 import EtatSantee from "./pages/EtatSantee";
@@ -47,27 +46,23 @@ import Paiment from "./pages/AdminPages/Paiment";
 import Carteccp from "./pages/AdminPages/Carteccp";
 import Virementccp from "./pages/AdminPages/Virementccp";
 
+
 function App() {
   const isLoggedIn=localStorage.getItem('loggedIn')
   return (
     <Router>
       <div className="App">
         
-        <Routes><Route path="/" element={<Home />} />
+        <Routes>
         <Route path="/AddAdmin" element={<RequireAuth><AddAdmin /></RequireAuth>} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/medecin" element={<Medecins/>} />
-          <Route path="/RecentAdmin" element={<RecentAdmin/>} />
-          <Route path="/Session" element={<Session/>} />
-          <Route path="/Candidat" element={<Candidat/>} />
-          <Route path="/Pelerin" element={<Pelerin/>} />
-          <Route path="/AttentePelerin" element={<AttentePelerin/>} />
+          <Route path="/" element={<RequireNotAuth><Home /></RequireNotAuth>} />
+          <Route path="/AttentePelerin" element={<RequireMasterAdmin><AttentePelerin/></RequireMasterAdmin>} />
 
           <Route path="/home" element={<RequireNotAuth><Home /></RequireNotAuth>} />
-          <Route path="/SousSession" element={<SousSession/>} />
-          <Route path="/SousTirage" element={<SousTirage/>} />
-          <Route path="/SousPelerin" element={<SousPelerin/>} />
-          <Route path="/SousCandidat" element={<SousCandidat/>} />
+          <Route path="/SousSession" element={<RequireAuthSsA><SousSession/></RequireAuthSsA>} />
+          <Route path="/SousTirage" element={<RequireAuthSsA><SousTirage/></RequireAuthSsA>} />
+          <Route path="/SousPelerin" element={<RequireAuthSsA><SousPelerin/></RequireAuthSsA>} />
+          <Route path="/SousCandidat" element={<RequireAuthSsA><SousCandidat/></RequireAuthSsA>} />
           <Route path="/medecin" element={<RequireMasterAdmin><Medecins/></RequireMasterAdmin>} />
           <Route path="/RecentAdmin" element={<RequireMasterAdmin><RecentAdmin/></RequireMasterAdmin>} />
           <Route path="/Session" element={<RequireMasterAdmin><Session/></RequireMasterAdmin>} />
@@ -88,18 +83,16 @@ function App() {
 
           <Route path="/dash" element={<RequireMasterAdmin><Dash/></RequireMasterAdmin>}></Route>
           <Route path="/sousdash" element={<RequireAuthSsA><Sous_Dash/></RequireAuthSsA>}></Route>
+          <Route path="/homemedecin" element={<RequireAuthMed><HomeMedecin/></RequireAuthMed>} />
+          <Route path="/listepelerin" element={<RequireAuthMed><ListePelerin /></RequireAuthMed>} />
 
-
-          <Route path="/homemedecin" element={<HomeMedecin/>} />
-          <Route path="/listepelerin" element={<ListePelerin />} />
-
-          <Route path="/sante" element={<EtatSantee />} />
-          <Route path="/paiment" element={<Paiment/>} />
+          <Route path="/sante" element={<RequireAuth><EtatSantee /></RequireAuth>} />
+          <Route path="/paiment" element={<RequireAuthSsA><Paiment/></RequireAuthSsA>} />
           <Route path="/carteccp" element={<Carteccp/>} />
           <Route path="/virementccp" element={<Virementccp/>} />
-          <Route path="/paimentVP" element={<PaimentVersementPostale />} />
-          <Route path="/paimentcarteccp" element={<Paimentcarteccp />} />
-          <Route path="/pelerinsMed" element={<VisiteMedical/>} />
+          <Route path="/paimentVP" element={<RequireAuth><PaimentVersementPostale /></RequireAuth>} />
+          <Route path="/paimentcarteccp" element={<RequireAuth><Paimentcarteccp /></RequireAuth>} />
+          <Route path="/pelerinsMed" element={<RequireAuthMed><VisiteMedical/></RequireAuthMed>} />
 
         </Routes>
       </div>

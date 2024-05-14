@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import MUIDataTable from "mui-datatables";
-import Sidebar from "../../components/Dash_components/shared/Sidebar";
+import Sidebar from "../../components/Dash_components/shared/SidebarSous";
 import { Link,useNavigate  } from "react-router-dom";
 import carteccp from "./Carteccp"
 import virementccp from "./Virementccp"

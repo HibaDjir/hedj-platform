@@ -16,14 +16,14 @@ function envoieEmail(pelerinsElus){
             console.log('EVOIE MAIL: PELERIN PRENOM',pelerin.prenom)
                 sendEmail({
                 email: pelerin.email,
-                subject:'CONGRATS',
+                subject:'السلام عليكم',
                 message:
-                `Hi  ${pelerin.nom}!\n\n
-                Congrats you are elected for Hadj!\n
-                **Your Credentials:**\n\n
-                Nom :${pelerin.nom}\n\n
-                Prenom :${pelerin.prenom}\n\n
-                Num Passeport:${pelerin.num_passeport}\n
+                `سيد(ة)  ${pelerin.nom}!\n\n
+                مبارك لكم، لقد تم اختياركم في القرعة لأداء مناسك الحج\n
+                **معلوماتكم الشخصية**\n\n
+                اللقب :${pelerin.nom}\n\n
+                الاسم :${pelerin.prenom}\n\n
+                رقم جواز السفر :${pelerin.num_passeport}\n
                 `
            });
         })
@@ -115,37 +115,58 @@ exports.electPilgrims = async (req, res) => {
         const{ nombreAElire ,nbraelireenattente}= req.body; // Extract the number of pilgrims to be elected from the request body
         const   pelerins = await Condidatures.find(); // Fetch all pilgrims from the database
         let  {pelerinsElus,pelerinsRestants}= await electionPelerinsAuHasard(pelerins,nombreAElire)
+
+        let candid = await Condidatures.updateMany( 
+            { _id: { $in: pelerinsElus.map(pelerin => pelerin._id) } }, // Find candidatures associated with the updated pelerins 
+            { $set: { status: "is_elected" } } // Update their status to "is-elected" 
+          );
+
+        console.log("UPDATE MANY T3 STATUS:", candid)
         console.log("pelerin elu ",pelerinsElus) 
+
+        let candi=   await Condidatures.updateMany(
+            { _id: { $in: pelerinsElus.map(pelerin => pelerin._id) } }, // Find candidatures associated with the updated pelerins
+            { $set: { status: "is_elected" } } // Update their status to "is-elected"
+          );
+
+      
+
         const pelerinfinal=setStatus(pelerinsElus,'is_elected')  
+
         
         //EST CE QUE EN ENOIE MAIL ICI POUR FAIRE ENTRER LES PELERINS ELUS COMPM PARAM
-        // envoieEmail(pelerinsElus)
+        envoieEmail(pelerinsElus)
 
 
         //TTTTTTTTTTTTTTTEEEEEEEEEEEESSSSSSSSSSSSSSSSSSSSTTTTTTTTTTTTTTTTTTTTT
-        const testDate = [
-            {
+        // const testDate = [
+        //     {
 
-                "nom": "kadour",
-                "prenom": "kadour",
-                "num_passeport": "0000000000000000000",
-                "email": "meriemeaitchabane04@gmail.com",
+        //         "nom": "kadour",
+        //         "prenom": "kadour",
+        //         "num_passeport": "0000000000000000000",
+        //         "email": "meriemeaitchabane04@gmail.com",
 
-            },
-            {
-                "nom": "sara",
-                "prenom": "mokaddm",
-                "num_passeport": "7410852963",
-                "email": "acmerieme@gmail.com",
-            }]
-        envoieEmail(testDate)
-        //
+        //     },
+        //     {
+        //         "nom": "sara",
+        //         "prenom": "mokaddm",
+        //         "num_passeport": "7410852963",
+        //         "email": "acmerieme@gmail.com",
+        //     }]
+        // envoieEmail(testDate)
+        // //
+
         
         let { pelerinsElus: pelerinsEnAttente, pelerinsRestants: pelerinsRestantsApresEnAttente } = await electionPelerinsAuHasard(pelerinsRestants, nbraelireenattente);
    
         // console.log('Pèlerins en attente :', pelerinsEnAttente);
         const pelerinEnAttentFinale=setStatus(pelerinsEnAttente,'is_enAttent') 
         
+        let candidAtt = await Condidatures.updateMany( 
+            { _id: { $in: pelerinsEnAttente.map(pelerin => pelerin._id) } }, // Find candidatures associated with the updated pelerins 
+            { $set: { status: "is_enAttent" } } // Update their status to "is-elected" 
+          );
         
         let allPelerins = [...pelerinfinal, ...pelerinEnAttentFinale]
         // console.log("TOUSSSSSS LES PELERINS", allPelerins)

@@ -8,7 +8,7 @@ import  upload from '../../images/upload_icon.png';
 import   grande_poste from '../../images/GPA02.jpg';
 import   cartreccp from '../../images/carte-eddahabiya.jpg';
 import Navbar_for_each_profile from '../../components/Navbar_for_each_profile';
-import Sidebar from '../../components/Dash_components/shared/Sidebar';
+import Sidebar from '../../components/Dash_components/shared/SidebarSous';
 
 import { idCandidat } from '../AdminPages/Paiment';
 

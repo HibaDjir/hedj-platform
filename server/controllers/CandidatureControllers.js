@@ -4,6 +4,20 @@ const wilaya = require('../models/wilaya')
 const commune = require('../models/Commune')
 const sesstion = require('../models/Sessions')
 
+
+
+
+const getAllCandidatureAllFields = async (req, res) => {
+    try {
+        const userId = req.user;
+        const candidats = await candidature.find({}).sort({createAt: -1})
+        res.status(200).json(candidats)
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error',error: error.message});
+    }
+}
+
+
  const getAllCandidature = async (req, res) => {
      try {
          const userId = req.user;
@@ -12,9 +26,10 @@ const sesstion = require('../models/Sessions')
      } catch (error) {
          res.status(500).json({ message: 'Internal server error',error: error.message});
      }
+
 }
 
-/*const getAllCandidature = async (req, res) => {
+const getAllCandidatureAff = async (req, res) => {
     try {
         const userId = req.user;
 
@@ -62,7 +77,7 @@ const sesstion = require('../models/Sessions')
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' ,error: error.message });
     }
-};*/
+}
 
 const getCandidature = async (req, res) => {
     //const { code } = req.params
@@ -147,7 +162,7 @@ const getCandidatureCodeWilayaPrise = async (req, res) => {
 }
 
 const getCandidatureCodeWilayaAttente = async (req, res) => {
-    //const { code } = req.params
+        //const { code } = req.params
     const wilaya = req.query.fieldName; 
     const fieldValue = req.query.fieldValue;
 
@@ -206,7 +221,9 @@ const getFirstCandidature = async (req, res) => {
     const candidat = await candidature.findById(id)
     if(!candidat){
         return res.status(404).json({error: "vide"})
+        
     }
+    console.log("LE CANDIDAT INFOS",candidat )
     res.status(200).json(candidat)
 }
 
@@ -278,31 +295,31 @@ const updateCandidatRDV = async (req, res) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 }
-const updateCandidatConsMed = async (req, res) => {
-    try {
-        // Define the criteria for identifying the documents to update
-        const { idCandidat, is_valid_med, interrogatoire } = req.body;
-        const criteria = { '_id': idCandidat };
+// const updateCandidatConsMed = async (req, res) => {
+//     try {
+//         // Define the criteria for identifying the documents to update
+//         const { idCandidat, is_valid_med, interrogatoire } = req.body;
+//         const criteria = { '_id': idCandidat };
 
-        // Define the update operation
-        const update = {
-            $set: {
-                // Specify the fields to update and their new values
-                interrogatoire: interrogatoire,
-                is_valid_med: is_valid_med
-                // You can add more fields as needed
-            }
-        };
+//         // Define the update operation
+//         const update = {
+//             $set: {
+//                 // Specify the fields to update and their new values
+//                 interrogatoire: interrogatoire,
+//                 is_valid_med: is_valid_med
+//                 // You can add more fields as needed
+//             }
+//         };
 
-        // Update the documents that match the criteria
-        const result = await candidature.updateOne(criteria, update, {upsert: true});
+//         // Update the documents that match the criteria
+//         const result = await candidature.updateOne(criteria, update, {upsert: true});
 
-        return res.status(200).json({ message: `${result.nModified} records updated successfully` });
-    } catch (error) {
-        console.error('Error:', error);
-        return res.status(500).json({ message: 'Internal server error' });
-    }
-}
+//         return res.status(200).json({ message: `${result.nModified} records updated successfully` });
+//     } catch (error) {
+//         console.error('Error:', error);
+//         return res.status(500).json({ message: 'Internal server error' });
+//     }
+// }
 const updateValidPay = async (req, res) => {
     try {
         // Define the criteria for identifying the documents to update
@@ -328,56 +345,93 @@ const updateValidPay = async (req, res) => {
     }
 }
 const getCandByWilaya = async(req, res)=>{
-        try{
-        const {name} = req.params
-        const lawilaya = await wilaya.findOne({name})
-        const candid = await candidature.find({wilaya: lawilaya.code})
+    try{
+    const {name} = req.params
+    const lawilaya = await wilaya.findOne({name})
+    const candid = await candidature.find({wilaya: lawilaya.code})
 
 
-        const simpleCandidats = await Promise.all(candid.map(async (candidat) => {
-            try {
-                const lawilaya = await wilaya.findOne({ code: candidat.wilaya });
-                const lacommune = await commune.findOne({code: candidat.commune})
+    const simpleCandidats = await Promise.all(candid.map(async (candidat) => {
+        try {
+            const lawilaya = await wilaya.findOne({ code: candidat.wilaya });
+            const lacommune = await commune.findOne({code: candidat.commune})
 
-                // Return the desired structure with wilayaName as a string
-                return {                                                                                        
-                    _id: candidat._id,
-                    nom: candidat.nom,
-                    prenom: candidat.prenom,
-                    email: candidat.email,
-                    NumeroTelephone: candidat.telephone,
-                    etat: candidat.status,
-                    wilayaName: lawilaya ? lawilaya.name : null, // String: wilaya name or null
-                    Candidat_commune: lacommune.ar_name,
-                    Candidat_sexe: candidat.genre,
-                    Numero_ass: candidat.nss,
-                    Num_passport: candidat.num_passeport,
-                    Etat_civil: candidat.civilite,
-                    Nat: candidat.nationalite,
-                    Groupe_sang: candidat.groupage,
-                    Malad_chro: candidat.maladie_cronique,
-                    Adresse_com: candidat.address
+            // Return the desired structure with wilayaName as a string
+            return {                                                                                        
+                _id: candidat._id,
+                nom: candidat.nom,
+                prenom: candidat.prenom,
+                email: candidat.email,
+                NumeroTelephone: candidat.telephone,
+                etat: candidat.status,
+                wilayaName: lawilaya ? lawilaya.name : null, // String: wilaya name or null
+                Candidat_commune: lacommune.ar_name,
+                Candidat_sexe: candidat.genre,
+                Numero_ass: candidat.nss,
+                Num_passport: candidat.num_passeport,
+                Etat_civil: candidat.civilite,
+                Nat: candidat.nationalite,
+                Groupe_sang: candidat.groupage,
+                Malad_chro: candidat.maladie_cronique,
+                Adresse_com: candidat.address
 
-                };
-            } catch (error) {
-                console.error('Error fetching wilaya for candidat:', candidat, error);
-                // You can optionally return a default value or handle the error differently here
-                return {
-                    nbr_enregistrement: candidat.nbr_enregistrement,
-                    _id: candidat._id,
-                    nom: candidat.nom,
-                    prenom: candidat.prenom,
-                    // ... include other relevant fields from candidat
-                    wilayaName: null, // String: null if wilaya not found
-                };
-            }
-        }));
-
-        res.status(200).json(simpleCandidats);
+            };
         } catch (error) {
-            res.status(500).json({ message: 'Internal server error' });
+            console.error('Error fetching wilaya for candidat:', candidat, error);
+            // You can optionally return a default value or handle the error differently here
+            return {
+                nbr_enregistrement: candidat.nbr_enregistrement,
+                _id: candidat._id,
+                nom: candidat.nom,
+                prenom: candidat.prenom,
+                // ... include other relevant fields from candidat
+                wilayaName: null, // String: null if wilaya not found
+            };
         }
-    
+    }));
+
+    res.status(200).json(simpleCandidats);
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error' });
+    }
+
+}
+
+
+
+const deleteCands = async (req, res)=>{
+    try {
+        const deletedCands = await candidature.deleteMany()
+        res.status(200).json({ message: 'All cands deleted successfully' });
+    } catch (error) {
+        res.status(500).json({message: 'Internal server error', error: error.message });
+    }
+}
+
+const updateCandidatConsMed = async (req, res) => {
+    try {
+        // Define the criteria for identifying the documents to update
+        const { idCandidat, is_valid_med, interrogatoire } = req.body;
+        const criteria = { '_id': idCandidat };
+
+        // Define the update operation
+        const update = {
+            $set: {
+                // Specify the fields to update and their new values
+                interrogatoire: interrogatoire,
+                is_valid_med: is_valid_med
+                // You can add more fields as needed
+            }
+        };
+
+        // Update the documents that match the criteria
+        const result = await candidature.updateOne(criteria, update, {upsert: true});
+
+        return res.status(200).json({ message: `${result.nModified} records updated successfully` });
+    } catch (error) {
+        console.error('Error:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
 }
 
 module.exports = {
@@ -390,6 +444,7 @@ module.exports = {
     deleteCandidature,
     updateCandidature,
     getCandByWilaya,
+    deleteCands,
     getCandidatureCodeWilaya,
     getCandidatureCodeWilayaPrise,
     getCandidatureCodeWilayaAttente,
@@ -397,5 +452,6 @@ module.exports = {
     updateCandidatRDV,
     updateCandidatConsMed,
     getCandidatureIfPaie,
-    updateValidPay
+    updateValidPay,
+    getAllCandidatureAff
 }

@@ -4,6 +4,9 @@ const {User, validateMedecin} = require('../models/user_profiler')
 const bcrypt = require("bcrypt")
 const sendEmail=require('../util/sendEmail')
 const { findOneAndUpdate } = require('../models/Candidature')
+const Candidature = require('../models/Candidature')
+const Pelerins=require('../models/pelerin')
+const Sessions=require('../models/Sessions.js')
 
 //Afficher tous les medecins
 exports.getAllMedecins = async(req, res)=>{
@@ -299,3 +302,63 @@ exports.updateMedecin = async(req, res)=>{
     }
 }
 
+
+//sending email for status:is_rdv
+
+exports.SendEmailForPelerin=async(req,res)=>{
+    try{
+
+        let id=req.params.id
+        let  email=req.params.email
+        const {date_de_consul} = req.body
+    
+        let medecin=await Medecin.findOne({user:id})
+        if (!medecin) {
+            return res.status(404).json({ message: "Medecin not found" });
+        }
+        let medecininfo=await User.findById(medecin.user)
+        
+        let candidature=await Candidature.findOne({email:email})
+        if(candidature){
+        await sendEmail({
+            email: email,
+            subject: 'موعد طبيب',
+            message: `السلام عليكم 
+            نعلم حضرتكم 
+            ${candidature.nom}
+            ${candidature.prenom}
+            **معلوماتكم الشخصية**\n\n
+                اللقب :${candidature.nom}\n\n
+                الاسم :${candidature.prenom}\n\n
+                رقم جواز السفر :${candidature.num_passeport}\n
+            بوجود موعد طبي لدى الطبيب(ة)
+            ${medecininfo.firstName} \n
+            في تاريخ
+            on ${date_de_consul}
+            \n!!!تحياتنا`
+        });
+    }
+       res.json("email send successfully")
+
+    }catch(err){
+        res.json(err.message)
+
+    }
+      
+  
+
+
+}
+
+
+///email pour paiment
+exports.sendEmailPaiement=async(req,res)=>{
+
+    try{
+        
+    }
+    catch(err){
+
+        res.json(err.message)
+    }
+}

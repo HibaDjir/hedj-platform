@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Link,useNavigate , useLocation } from "react-router-dom";
+import { Link,useNavigate,useLocation  } from "react-router-dom";
 import { useState } from "react";
 import { useAuthContext } from '../hooks/useAuthContext'
 import axios from 'axios'
@@ -17,34 +17,13 @@ function Modal({ onClose }) {
     const [isLoading, setIsLoading] = useState(false)
     const { dispatch } = useAuthContext()
     const location=useLocation()
-    const [errorMessage, setErrorMessage] = useState('');
 
     
     const navigate=useNavigate()
 
     const handleSubmit = async (e) =>{
       e.preventDefault();
-      axios.post('http://localhost:3000/api/users/login', {email,password})
-      .then(res=>{
-        if(res.data.token){
-          document.cookie = `token=${res.data.token}; expires=2D; path=/`;
-          alert("logged in")
-        }
-        if(res.data.Role === 'admin'){
-          navigate('/dashboard')
-        }else{
-          navigate('/homelgin')
-      }
-      }).catch(err => {
-        console.log(err)
-        if (err.response && err.response.data && err.response.data.message) {
-          setErrorMessage('البريد الإلكتروني أو كلمة المرور غير صحيحة.');
-        } else {
-          setErrorMessage('An error occurred. Please try again later.');
-        }
-      })
 
-      setIsLoading(true);
       const response = await fetch('http://localhost:3000/api/users/login', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -76,7 +55,7 @@ function Modal({ onClose }) {
           redirectPath = location.state?.path || "/dash";
         }
         else if (json.Role === 'medecin'){
-          redirectPath = location.state?.path || "/medecin ";
+          redirectPath = location.state?.path || "/listepelerin";
         }
         navigate(redirectPath ,{replace:true}) 
 
@@ -166,4 +145,3 @@ function Modal({ onClose }) {
 }
 
 export default Modal;
-

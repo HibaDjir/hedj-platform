@@ -2,9 +2,11 @@
 const Wilaya=require('../models/wilaya')
 const {User, validateAddSousAdmin}=require('../models/user_profiler')
 const sousAdmin = require('../models/sousAdmin')
-const medecin = require('../models/Medecin')
 const bcrypt = require("bcrypt");
 const sendEmail=require('../util/sendEmail');
+const Candidature = require('../models/Candidature');
+const Sessions = require('../models/Sessions');
+
 
 
 // creating SousAdmin 
@@ -213,7 +215,7 @@ exports.getAdminsWilaya = async(req, res)=>{
         const  idAdmin = req.params.id
 
         const sousadmin = await sousAdmin.findById({_id: idAdmin}).populate('Wilaya').populate('user').exec();
-       
+
         const lawilaya = sousadmin.Wilaya.name
         res.status(201).json({
             wilaya: lawilaya,
@@ -229,44 +231,72 @@ exports.getAdminsWilaya = async(req, res)=>{
 
 //get sousAdminByidUse  
 //get sousAdminByidUse  
-exports.getSousAdminByUser=async(req,res)=>{ 
-    try{ 
-        let idUser=req.params.id 
-        //console.log("admin POP", idUser)
-        const sousadminPop=await sousAdmin.findOne({user: idUser}) 
-        const user_con=await User.findOne({_id: idUser}) 
 
-        const lawilaya = sousadminPop.Wilaya
-        //console.log("admin POP ", sousadmin.wilaya.code)
-        res.status(201).json({ 
-            wilaya: sousadminPop.Wilaya, 
-            nom: user_con.firstName, 
-            prenom: user_con.lastName,
-            _id: sousadminPop._id ,
-            nb_places: lawilaya.nb_places
-        }); 
- 
-    }catch(err){ 
-        res.status(400).json({message: err.message}) 
-    } 
+
+
+
+
+
+//paiement controller email
+
+
+exports.sendEmailPaiement=async(req,res)=>{
+    try{
+        let id=req.params.id
+        let candidature=await Candidature.findById(id)
+        let idSession=candidature.id_session
+        let session=await Sessions.findById(idSession)
+        console.log('session ',session.cotat)
+         if(candidature){
+            await sendEmail({
+                email: candidature.email,
+                subject: 'دفع وصل',
+                message: `
+                السلام عليكم
+                نعلم حضرتكم 
+                ${candidature.nom } ${candidature.prenom }!\n\n
+                **معلوماتكم الشخصية**\n\n
+                اللقب :${candidature.nom}\n\n
+                الاسم :${candidature.prenom}\n\n
+                رقم جواز السفر :${candidature.num_passeport}\n
+                بوجوب دفع تكاليف الحج في الفترة المحددة 
+                  ${session.paiement_d} ${session.paiement_f}
+              
+                \n!!!تحياتنا`
+            });
+         }
+         res.json('Email send successfully')
+
+    }catch(err){
+
+        res.json(err.message)
+    }
+
 }
-exports.getMedecinByUser=async(req,res)=>{ 
-    try{ 
-        let idUser=req.params.id 
-        //console.log("admin POP", idUser)
-        const medecinPop=await medecin.findOne({user: idUser}) 
-        const user_con=await User.findOne({_id: idUser}) 
 
-        //console.log("admin POP ", sousadmin.wilaya.code)
-        res.status(201).json({ 
-            wilaya: medecinPop.Wilaya, 
-            nom: user_con.firstName, 
-            prenom: user_con.lastName,
-            _id: medecinPop._id ,
-            nb_places: medecinPop.Wilaya.nb_places
-        }); 
- 
-    }catch(err){ 
-        res.status(400).json({message: err.message}) 
-    } 
+//////////email apres paiment ADMIN VALIDATE USER AFTER HE SEES RECU DE PAIMENT
+exports.sendEmailValidateFInal=async(req,res)=>{ 
+    try {
+        let id=req.params.id 
+        let candidature=await Candidature.findById(id) 
+         if(candidature){ 
+            await sendEmail({ 
+                email: candidature.email, 
+                subject: 'السلام عليكم \n', 
+                message: `سيد(ة) ${candidature.nom } ${candidature.prenom }!\n\n
+                **معلوماتكم الشخصية**\n\n
+                اللقب :${candidature.nom}\n\n
+                الاسم :${candidature.prenom}\n\n
+                رقم جواز السفر :${candidature.num_passeport}\n 
+                لقد تم تاكيد كل المراحل لاداء مناسك الحج \n
+                تقبل الله منكم الحج\n
+                دعواتكم لنا` 
+            }); 
+         } 
+         res.json('Email send successfully')
+
+    } catch (err) {
+        res.status(400).json(err.message)
+    }
+
 }

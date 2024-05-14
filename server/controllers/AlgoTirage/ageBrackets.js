@@ -13,16 +13,16 @@ function envoieEmail(pelerinsElus){
             console.log('EVOIE MAIL: PELERIN NOM',pelerin.nom)
             console.log('EVOIE MAIL: PELERIN PRENOM',pelerin.prenom)
                 sendEmail({
-                email: pelerin.email,
-                subject:'CONGRATS',
-                message:
-                `Hi  ${pelerin.nom}!\n\n
-                Congrats you are elected for Hadj!\n
-                **Your Credentials:**\n\n
-                Nom :${pelerin.nom}\n\n
-                Prenom :${pelerin.prenom}\n\n
-                Num Passeport:${pelerin.num_passeport}\n
-                `
+                    email: pelerin.email,
+                    subject:'السلام عليكم',
+                    message:
+                    `سيد(ة)  ${pelerin.nom}!\n\n
+                    مبارك لكم، لقد تم اختياركم في القرعة لأداء مناسك الحج\n
+                    **معلوماتكم الشخصية**\n\n
+                    اللقب :${pelerin.nom}\n\n
+                    الاسم :${pelerin.prenom}\n\n
+                    رقم جواز السفر :${pelerin.num_passeport}\n
+                    `
            });
         })
     } catch (error) {   
@@ -166,28 +166,31 @@ exports.elecPilgrimsCumDist = async (req, res) => {
         //set status of winners
         const pelerinsElu = setStatus(winners, "is_elected")
         //the winners
-
+        let candid = await Candidature.updateMany( 
+            { _id: { $in: winners.map(pelerin => pelerin._id) } }, // Find candidatures associated with the updated pelerins 
+            { $set: { status: "is_elected" } } // Update their status to "is-elected" 
+          );
 
         //envoie mail aux pelerins elus
-        // envoieEmail(pelerinsElu)
+        envoieEmail(pelerinsElu)
 
                 //TTTTTTTTTTTTTTTEEEEEEEEEEEESSSSSSSSSSSSSSSSSSSSTTTTTTTTTTTTTTTTTTTTT
-                const testDate = [
-                    {
+                // const testDate = [
+                //     {
         
-                        "nom": "kadour",
-                        "prenom": "kadour",
-                        "num_passeport": "0000000000000000000",
-                        "email": "meriemeaitchabane04@gmail.com",
+                //         "nom": "kadour",
+                //         "prenom": "kadour",
+                //         "num_passeport": "0000000000000000000",
+                //         "email": "meriemeaitchabane04@gmail.com",
         
-                    },
-                    {
-                        "nom": "sara",
-                        "prenom": "mokaddm",
-                        "num_passeport": "7410852963",
-                        "email": "acmerieme@gmail.com",
-                    }]
-                envoieEmail(testDate)
+                //     },
+                //     {
+                //         "nom": "sara",
+                //         "prenom": "mokaddm",
+                //         "num_passeport": "7410852963",
+                //         "email": "acmerieme@gmail.com",
+                //     }]
+                // envoieEmail(testDate)
 
 
         console.log("winners are: ", winners)
@@ -195,6 +198,11 @@ exports.elecPilgrimsCumDist = async (req, res) => {
         
         //set status of attente
         const pelerinEnAttente = setStatus(attente, "is_enAttent")
+
+        let candidAtt = await Candidature.updateMany( 
+            { _id: { $in: attente.map(pelerin => pelerin._id) } }, // Find candidatures associated with the updated pelerins 
+            { $set: { status: "is_enAttent" } } // Update their status to "is-elected" 
+          );
         //the attente
         console.log("en attente are: ", attente)
         

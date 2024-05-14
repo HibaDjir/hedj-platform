@@ -10,6 +10,7 @@ const {
     deleteCandidature,
     updateCandidature,
     getCandByWilaya,
+    deleteCands,
     getCandidatureCodeWilaya,
     getCandidatureCodeWilayaPrise,
     getCandidatureCodeWilayaAttente,
@@ -17,14 +18,19 @@ const {
     updateCandidatRDV,
     updateCandidatConsMed,
     getCandidatureIfPaie,
-    updateValidPay
+    updateValidPay,
+    getAllCandidatureAff,
+    
+
+
 } = require('../controllers/CandidatureControllers')
 
 const candidat = require('../models/Candidature');
 
 router.get('/', getAllCandidature)
+router.get('/Aff', getAllCandidatureAff)
 
-router.get('/name/:name', getCandByWilaya) //////nommer les route 
+router.get('/:name', getCandByWilaya) //////nommer les route 
 
 router.get('/:id', getFirstCandidature)
 
@@ -50,11 +56,17 @@ router.delete('/:id', deleteCandidature)
 
 router.patch('/:id', updateCandidature)
 
+
 router.put('/RDV/update', updateCandidatRDV)
+
+
+router.put('/ValidPaie/update', updateValidPay)
 
 router.put('/ValidMedecin/update', updateCandidatConsMed)
 
-router.put('/ValidPaie/update', updateValidPay)
+router.delete('/', deleteCands )
+
+
 
 
 const storage = multer.diskStorage({
@@ -158,3 +170,6 @@ router.post('/upload', upload.single('file'), async (req, res) => {
     });
 
 module.exports=router;
+
+
+

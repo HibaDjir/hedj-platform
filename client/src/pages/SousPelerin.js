@@ -37,188 +37,200 @@ export default function Dashboard() {
     const token = parsedRes.token
     const decodedToken = jwtDecode(token);
 
-    
     useEffect(() => {
 
       if (decodedToken && decodedToken._id) {
         setUserId(decodedToken._id); // Store ID if found in decoded token
         fetchWilaya(userId);
-        //alert(daata.wilaya)
+
       }
+
       if (daata.wilaya) { // Check if daata.wilaya has a value to avoid errors
-        axios.get('http://localhost:3000/api/wilaya/'+daata.wilaya)
-        .then(response => {
-          const additionalOptions = response.data;//.map(wilaya => ({value: wilaya.code, label: wilaya.ar_name}));
-          //alert('http://localhost:3000/api/commune/find?fieldName=code&minValue='+additionalOptions.code+'00&maxValue='+additionalOptions.code+'99');
-          axios.get('http://localhost:3000/api/candidature/wilaya/prise/find?fieldName=wilaya&fieldValue='+additionalOptions.code)
-            .then(responseC => {
-              setPelerins(responseC.data);setLenPelerins(responseC.data.length);
-            })
-            .catch(error => {
-                console.error('Erreur lors de la récupération des options :', error);
-            });
-        })
-        .catch(error => {
-            console.error('Erreur lors de la récupération des options :', error);
-        });
-        //fetchCandidats(daata.wilaya);
-      }  
-    }, [userId, daata]);
-    const fetchWilaya = async(id)=>{
-      try {
-          const response = await fetch(`http://localhost:3000/api/masterAdmin/getSaousAdminByuserId/${id}`);
-          if (!response.ok) {
-            throw new Error('Failed to fetch Candidats');
-          }
-          const data = await response.json();
-          setDaata(data);
-        } catch (error) {
-          console.error('Error fetching candidats:', error);
-        }
-    }
+        fetchPelerin(daata.wilaya);
+      }    }, [ daata,userId]);
+
 
   
-  const columns = [
-    {
-     name: "nom",
-     label: "Nom",
-     options: {
-      filter: true,
-      sort: true,
-     }
-    },
-    {
-      name: "prenom",
-      label: "Prenom",
-      options: {
-       filter: true,
-       sort: false,
+      const fetchWilaya = async(id)=>{
+        try {
+            const response = await fetch(`http://localhost:3000/api/masterAdmin/getSaousAdminByuserId/${id}`);
+            if (!response.ok) {
+              throw new Error('Failed to fetch Candidats');
+            }
+            const data = await response.json();
+            setDaata(data);
+          } catch (error) {
+            console.error('Error fetching candidats:', error);
+          }
       }
-     },
-     {
-      name: "date_naissance",
-      label: "Date de naissance",
-      options: {
-       filter: true,
-       sort: false,
-      }
-     },
-    {
-     name: "lieu_naissance",
-     label: "Lieu de naissance",
-     options: {
-      filter: true,
-      sort: false,
-     }
-    },
-    {
-      name: "nationalite",
-      label: "Nationalite",
-      options: {
-       filter: true,
-       sort: false,
-      }
-     },
-    {
-      name: "civilite",
-      label: "Civilite",
-      options: {
-       filter: true,
-       sort: false,
-      }
-     },
-     {
-      name: "genre",
-      label: "Genre",
-      options: {
-       filter: true,
-       sort: false,
-      }
-     },
-    {
-     name: "num_passeport",
-     label: "Num passeport",
-     options: {
-      filter: true,
-      sort: false,
-     }
-    },
-    {
-      name: "telephone",
-      label: "Telephone",
-      options: {
-       filter: true,
-       sort: false,
-      }
-     },
-     {
-      name: "email",
-      label: "Adresse email",
-      options: {
-       filter: true,
-       sort: false,
-      }
-     },
-     {
-      name: "address",
-      label: "Address",
-      options: {
-       filter: true,
-       sort: false,
-      }
-     },
-     {
-      name: "groupage",
-      label: "Groupage",
-      options: {
-       filter: true,
-       sort: false,
-      }
-     },
-     {
-      name: "nss",
-      label: "Numéro de sécurité sociel",
-      options: {
-       filter: true,
-       sort: false,
-      }
-     }
-   ];
+
+
+      const fetchPelerin = async (wilaya) => {
+        try {
+          const response = await fetch(`http://localhost:3000/api/getPelerinByWilaya/${wilaya}`);
+          if (!response.ok) {
+            throw new Error('Failed to fetch pelerins');
+          }
+          const data = await response.json();
+          setPelerins(data);
+        } catch (error) {
+          console.error('Error fetching pelerins:', error);
+        }
+      };
+  
+      const columns = [
+        {
+  
+         name: "firstName",
+         label: "Nom",
+         options: {
+          filter: true,
+          sort: true,
+         }
+        },
+        {
+          name: "lastName",
+          label: "Prenom",
+          options: {
+           filter: true,
+           sort: true,
+          }
+         },
+  
+        {
+         name: "email",
+         label: "E-mail",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+        {
+         name: "etat",
+         label: "Etat",
+         options: {
+          filter: true,
+          sort: false,
+         }
+        },
+   
+        {
+            name: "NumeroTelephone",
+            label: "Numéro De teléphone",
+            options: {
+             filter: true,
+             sort: false,
+            }
+           },
+  
+         {
+           name: "name",
+           label: "wilaya",
+           options: {
+            filter: true,
+            sort: false,
+           }
+          },
+          {
+            name: "Candidat_commune",
+            label : "Commune",
+            options: {
+              filter: true,
+              sort: false
+            }
+          },
+       
+         {
+          name: "Candidat_sexe",
+          label: "Sexe",
+          options: {
+           filter: true,
+           sort: false,
+          }
+         },
+         {
+           name: "Num_passport",
+           label: "Numéro De Passport",
+           options: {
+            filter: true,
+            sort: false,
+           }
+          },
+  
+         {
+          name: "Etat_civil",
+          label: "Etat Civil",
+          options: {
+           filter: true,
+           sort: false,
+          }
+         },
+         {
+           name: "Nat",
+           label: "Nationalité",
+           options: {
+            filter: true,
+            sort: false,
+           }
+          },
+          {
+           name: "Adresse_com",
+           label: "Adresse complete",
+           options: {
+            filter: true,
+            sort: false,
+           }
+          },
+          {
+           name: "Groupe_sang",
+           label: "Groupe sanguin",
+           options: {
+            filter: true,
+            sort: false,
+           }
+          },
+          {
+           name: "Numero_ass",
+           label: "Numéro d'assurance",
+           options: {
+            filter: true,
+            sort: false,
+           }
+          },
+          {
+           name: "Malad_chro",
+           label: "Maladie Chronique",
+           options: {
+            filter: true,
+            sort: false,
+           }
+          },
+
+  
+  
+       ];
     const options = {
-      filterType: 'checkbox',
-    };
-    const recentPelerenData = pelerins.map(candidat => ({
-      nom: candidat.nom,
-      prenom: candidat.prenom,
-      date_naissance: candidat.date_naissance,
-      lieu_naissance: candidat.lieu_naissance,
-      civilite: candidat.civilite,
-      genre: candidat.genre,
-      num_passeport: candidat.num_passeport,
-      telephone: candidat.telephone,
-      email: candidat.email,
-      address: candidat.address,
-      groupage: candidat.groupage,
-      nss: candidat.nss 
-    })
-  ); 
-    /*const recentCanData = pelerins.map(candidat => ({
-      nom: candidat.nom,
-      prenom: candidat.prenom,
-      date_naissance: candidat.date_naissance,
-      prenom: candidat.prenom,
-      nom: candidat.nom,
-      lieu_naissance: candidat.lieu_naissance,
-      civilite: candidat.civilite,
-      genre: candidat.genre,
-      num_passeport: candidat.nom,
-      telephone: candidat.prenom,
-      email: candidat.email,
-      NumeroTelephone: candidat.NumeroTelephone,
-      address: candidat.address,
-      groupage: candidat.groupage,
-      nss: candidat.nss 
-    }));*/
+        filterType: 'checkbox',
+      };
+      const recentPelData = pelerins.map(pel => ({
+        firstName: pel.nom,
+        lastName: pel.prenom,
+        email: pel.email,
+        NumeroTelephone: pel.NumeroTelephone,
+        name: pel.wilayaName,
+        _id: pel._id ,
+        Nat:pel.Nat,
+        Adresse_com:pel.Adresse_com,
+        Groupe_sang:pel.Groupe_sang,
+        Numero_ass:pel.Numero_ass,
+        Malad_chro:pel.Malad_chro,
+        Adresse_com: pel.address,
+        Candidat_sexe:pel.Candidat_sexe,
+        Etat_civil:pel.Etat_civil,
+        Candidat_commune:pel.Candidat_commune,
+        Num_passport:pel.Num_passport
+      }));
+  
 
 
 
@@ -261,7 +273,7 @@ export default function Dashboard() {
   </div>    
   </div>
   
-      <p class="text-2xl text-center font-semibold text-gray-600"> {pelerinsLen}
+      <p class="text-2xl text-center font-semibold text-gray-600"> {pelerins.length}
 </p>
    
   </div> 
@@ -278,7 +290,7 @@ export default function Dashboard() {
 </div>
 <MUIDataTable
   title={"Pélerins"}
-  data={recentPelerenData}
+  data={recentPelData}
   columns={columns}
   options={options}
   />

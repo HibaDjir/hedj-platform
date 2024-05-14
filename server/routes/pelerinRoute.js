@@ -11,6 +11,11 @@ router.route("/getPelerinByWilaya/:name").get(pelerinController.getPelerinByWila
 router.route("/getPelerinByCommune/:name", ).get(pelerinController.getPelerinByCommune);
 router.route("/deleteAllPelerins", ).delete(pelerinController.deleteAllPelerinsFromDb);
 router.route("/deleteAllPelerinsFromDb").delete(pelerinController.deleteAllPelerinsFromDb);
+router.route("/getAllPelerinsAtt").get(pelerinController.getAllPelerinsAtt);
+router.route("/getPelerinByWilayaAtt/:name").get(pelerinController.getPelerinByWilayaAtt);
+
+
+
 
 
 

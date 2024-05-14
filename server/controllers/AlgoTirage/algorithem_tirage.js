@@ -1,4 +1,4 @@
-const candidats=require('../../models/Candidature')
+ const candidats=require('../../models/Candidature')
 const tirage_type=require('../../models/TirageType')
 
 async function updateCandidat(pelerinPrise){
