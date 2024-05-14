@@ -32,7 +32,7 @@ function ListePelerin() {
       setUserId(decodedToken._id); // Store ID if found in decoded token 663bd2be3b644e05d59fd85f
       fetchMedecin(decodedToken._id)
     } 
-    /*if (daata._id) { 
+    if (daata._id) { 
       axios.get('http://localhost:3000/api/candidature/medecin/find?fieldName=id_medecin&fieldValue='+daata._id)
       .then(responseC => {
         setCandidats(responseC.data);
@@ -40,14 +40,14 @@ function ListePelerin() {
       .catch(error => {
           console.error('Erreur lors de la récupération des options :', error);
       });
-    } */
-    axios.get('http://localhost:3000/api/candidature/medecin/find?fieldName=id_medecin&fieldValue=663bd2be3b644e05d59fd85f')
+    } 
+    /*axios.get('http://localhost:3000/api/candidature/medecin/find?fieldName=id_medecin&fieldValue=663bd2be3b644e05d59fd85f')
     .then(responseC => {
       setCandidats(responseC.data);
     })
     .catch(error => {
         console.error('Erreur lors de la récupération des options :', error);
-    });
+    });*/
         
   }, [userId, daata]);
 
