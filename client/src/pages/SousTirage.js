@@ -319,7 +319,7 @@ export default function SousTirage() {
           // Make a PUT request to the backend API to update the record
           const response = await axios.put('http://localhost:3000/api/tirage/Tirage', { id_session, commune, nbrTotalPelerin, code_algo });
            
-          axios.get('http://localhost:3000/api/wilaya/65ff830ed96578ad80742c2f')
+          axios.get('http://localhost:3000/api/wilaya/'+daata.wilaya)
             .then(response => {
               const additionalOptions = response.data;//.map(wilaya => ({value: wilaya.code, label: wilaya.ar_name}));
               axios.get('http://localhost:3000/api/candidature/wilaya/prise/find?fieldName=wilaya&fieldValue='+additionalOptions.code)

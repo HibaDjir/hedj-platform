@@ -9,7 +9,6 @@ import { GiSandsOfTime } from "react-icons/gi";
 import { FaUserDoctor, FaPeopleGroup } from "react-icons/fa6";
 import { SlUserFollowing } from "react-icons/sl";
 import Paiment from '../../../pages/AdminPages/Paiment';
-import { FaCreditCard } from 'react-icons/fa';
 import { useLogout } from "../../../hooks/useLogout"
 import { useAuthContext } from "../../../hooks/useAuthContext";
 
@@ -94,14 +93,6 @@ export default function Sidebar() {
                             <span className="ms-3">Liste d'attente</span>
                         </a>
                     </li>
-                    <li>
-            <a href="Paiment" class="flex items-center p-5 text-gray-900 rounded-lg dark:text-black hover:text-[#D8A353]   group">
-               <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-black group-hover:text-[#D8A353] dark:group-hover:text-[#D8A353]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
-			 <FaCreditCard className=" flex justify-center"/>
-               </svg>
-               <span class="ms-3">Paiment</span>
-            </a>
-         </li>
 
                     <div className="flex flex-col gap-0.5 pt-5 border-t border-neutral-400">
                         <li>

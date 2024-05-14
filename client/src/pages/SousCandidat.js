@@ -14,6 +14,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
 import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
 import { TiTime } from "react-icons/ti";
 
+import axios from 'axios';
+
 export default function Dashboard() {
 
     const [isAddAdminModalOpen, setIsAddAdminModalOpen] = useState(false);
@@ -33,11 +35,25 @@ export default function Dashboard() {
         setUserId(decodedToken._id); // Store ID if found in decoded token
         fetchWilaya(userId);
       }
-
       if (daata.wilaya) { // Check if daata.wilaya has a value to avoid errors
-        fetchCandidats(daata.wilaya);
+        axios.get('http://localhost:3000/api/wilaya/'+daata.wilaya)
+        .then(response => {
+          const additionalOptions = response.data;//.map(wilaya => ({value: wilaya.code, label: wilaya.ar_name}));
+          //alert('http://localhost:3000/api/commune/find?fieldName=code&minValue='+additionalOptions.code+'00&maxValue='+additionalOptions.code+'99');
+          axios.get('http://localhost:3000/api/candidature/wilaya/find?fieldName=wilaya&fieldValue='+additionalOptions.code)
+            .then(responseC => {
+              setCandidats(responseC.data);
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des options :', error);
+            });
+        })
+        .catch(error => {
+            console.error('Erreur lors de la récupération des options :', error);
+        });
+        //fetchCandidats(daata.wilaya);
       }    
-    }, [ daata]);
+    }, [userId, daata]);
 
   
       const fetchWilaya = async(id)=>{
@@ -54,7 +70,7 @@ export default function Dashboard() {
       }
 
 
-    const fetchCandidats = async (wilaya) => {
+    /*const fetchCandidats = async (wilaya) => {
       try {
         const response = await fetch(`http://localhost:3000/api/candidature/${wilaya}`);
         if (!response.ok) {
@@ -65,7 +81,7 @@ export default function Dashboard() {
       } catch (error) {
         console.error('Error fetching candidats:', error);
       }
-    };
+    };*/
   
 
     const openAddAdminModal = () => {

@@ -2,6 +2,7 @@
 const Wilaya=require('../models/wilaya')
 const {User, validateAddSousAdmin}=require('../models/user_profiler')
 const sousAdmin = require('../models/sousAdmin')
+const medecin = require('../models/Medecin')
 const bcrypt = require("bcrypt");
 const sendEmail=require('../util/sendEmail');
 
@@ -236,12 +237,33 @@ exports.getSousAdminByUser=async(req,res)=>{
         const user_con=await User.findOne({_id: idUser}) 
 
         const lawilaya = sousadminPop.Wilaya
+        //console.log("admin POP ", sousadmin.wilaya.code)
         res.status(201).json({ 
-            wilaya: lawilaya, 
+            wilaya: sousadminPop.Wilaya, 
             nom: user_con.firstName, 
             prenom: user_con.lastName,
             _id: sousadminPop._id ,
             nb_places: lawilaya.nb_places
+        }); 
+ 
+    }catch(err){ 
+        res.status(400).json({message: err.message}) 
+    } 
+}
+exports.getMedecinByUser=async(req,res)=>{ 
+    try{ 
+        let idUser=req.params.id 
+        //console.log("admin POP", idUser)
+        const medecinPop=await medecin.findOne({user: idUser}) 
+        const user_con=await User.findOne({_id: idUser}) 
+
+        //console.log("admin POP ", sousadmin.wilaya.code)
+        res.status(201).json({ 
+            wilaya: medecinPop.Wilaya, 
+            nom: user_con.firstName, 
+            prenom: user_con.lastName,
+            _id: medecinPop._id ,
+            nb_places: medecinPop.Wilaya.nb_places
         }); 
  
     }catch(err){ 

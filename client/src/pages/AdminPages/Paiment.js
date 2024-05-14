@@ -4,6 +4,7 @@ import Sidebar from "../../components/Dash_components/shared/Sidebar";
 import { Link,useNavigate  } from "react-router-dom";
 import carteccp from "./Carteccp"
 import virementccp from "./Virementccp"
+import {jwtDecode} from 'jwt-decode';
 
 import axios from 'axios';
 
@@ -13,17 +14,56 @@ function Paiment() {
   const navigate=useNavigate()
 
   const [candidats, setCandidats] = useState([]);
+  
+  const [daata, setDaata] = useState([]);
+  const [userId, setUserId] = useState(null);
 
-  useEffect(() => {   
+  const response = localStorage.getItem('user');
+  const parsedRes = JSON.parse(response);
+  const token = parsedRes.token
+  const decodedToken = jwtDecode(token);
+
+  
+  useEffect(() => {
+
+    if (decodedToken && decodedToken._id) {
+      setUserId(decodedToken._id); // Store ID if found in decoded token
+      fetchWilaya(userId);
+      //alert(daata.wilaya)
+    }
+    if (daata.wilaya) { // Check if daata.wilaya has a value to avoid errors
+      axios.get('http://localhost:3000/api/wilaya/'+daata.wilaya)
+      .then(response => {
+        const additionalOptions = response.data;//.map(wilaya => ({value: wilaya.code, label: wilaya.ar_name}));
+        //alert('http://localhost:3000/api/commune/find?fieldName=code&minValue='+additionalOptions.code+'00&maxValue='+additionalOptions.code+'99');
+        axios.get('http://localhost:3000/api/candidature/validPaie/find?fieldName=wilaya&fieldValue='+additionalOptions.code)
+        .then(responseC => {
+          setCandidats(responseC.data);
+        })
+        .catch(error => {
+            console.error('Erreur lors de la récupération des options :', error);
+        });
+      })
+      .catch(error => {
+          console.error('Erreur lors de la récupération des options :', error);
+      });
+      //fetchCandidats(daata.wilaya);
+    } 
         //axios.get('http://localhost:3000/api/candidature/validPaie/find?fieldName=id_medecin&fieldValue=663bd2be3b644e05d59fd85f')
-        axios.get('http://localhost:3000/api/candidature/validPaie/find?fieldName=is_valid_paie&fieldValue=-1')
-          .then(responseC => {
-            setCandidats(responseC.data);
-          })
-          .catch(error => {
-              console.error('Erreur lors de la récupération des options :', error);
-          });
-  }, []);
+  }, [userId, daata]);
+
+  const fetchWilaya = async(id)=>{
+    try {
+        const response = await fetch(`http://localhost:3000/api/masterAdmin/getSaousAdminByuserId/${id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch Candidats');
+        }
+        const data = await response.json();
+        setDaata(data);
+      } catch (error) {
+        console.error('Error fetching candidats:', error);
+      }
+  }
 
   const handleRowClick = (rowData) => {
     const paiment = rowData[1]; // Assuming "Paiment" is the second column

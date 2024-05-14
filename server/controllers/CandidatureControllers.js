@@ -181,11 +181,12 @@ const getCandidatureIdMedecin = async (req, res) => {
 
 const getCandidatureIfPaie = async (req, res) => {
     //const { code } = req.params
-    const is_valid_paie = req.query.fieldName; 
+    const wilaya = req.query.fieldName; 
     const fieldValue = req.query.fieldValue;
 
     const query = { 
-        [is_valid_paie]: { $ne: fieldValue }
+        'is_valid_paie': { $ne: -1 },
+        [wilaya]: fieldValue
     };
 
     const candidatsAttente = await candidature.find(query)

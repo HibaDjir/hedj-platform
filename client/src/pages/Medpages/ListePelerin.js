@@ -8,6 +8,7 @@ import NavbarMed from "../../components/NavbarMed";
 
 import axios from 'axios';
 import { MdVisibility } from "react-icons/md";
+import {jwtDecode} from 'jwt-decode';
 
 export let idCandidat = 'dzddzddzd';
 
@@ -15,16 +16,54 @@ function ListePelerin() {
   const navigate=useNavigate()
   const [selectedDate, setSelectedDate] = useState({});
   const [candidats, setCandidats] = useState([]);
+  
+  const [daata, setDaata] = useState([]);
+  const [userId, setUserId] = useState(null);
 
-  useEffect(() => {   
-        axios.get('http://localhost:3000/api/candidature/medecin/find?fieldName=id_medecin&fieldValue=663bd2be3b644e05d59fd85f')
-          .then(responseC => {
-            setCandidats(responseC.data);
-          })
-          .catch(error => {
-              console.error('Erreur lors de la récupération des options :', error);
-          });
-  }, []);
+  const response = localStorage.getItem('user');
+  const parsedRes = JSON.parse(response);
+  const token = parsedRes.token
+  const decodedToken = jwtDecode(token);
+
+  
+  useEffect(() => {
+
+    if (decodedToken && decodedToken._id) {
+      setUserId(decodedToken._id); // Store ID if found in decoded token 663bd2be3b644e05d59fd85f
+      fetchMedecin(decodedToken._id)
+    } 
+    /*if (daata._id) { 
+      axios.get('http://localhost:3000/api/candidature/medecin/find?fieldName=id_medecin&fieldValue='+daata._id)
+      .then(responseC => {
+        setCandidats(responseC.data);
+      })
+      .catch(error => {
+          console.error('Erreur lors de la récupération des options :', error);
+      });
+    } */
+    axios.get('http://localhost:3000/api/candidature/medecin/find?fieldName=id_medecin&fieldValue=663bd2be3b644e05d59fd85f')
+    .then(responseC => {
+      setCandidats(responseC.data);
+    })
+    .catch(error => {
+        console.error('Erreur lors de la récupération des options :', error);
+    });
+        
+  }, [userId, daata]);
+
+  
+  const fetchMedecin = async(id)=>{
+    try {
+        const response = await fetch(`http://localhost:3000/api/masterAdmin/getMedecinuserId/${id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch Candidats');
+        }
+        const data = await response.json();
+        setDaata(data);
+      } catch (error) {
+        console.error('Error fetching candidats:', error);
+      }
+  }
 
   const handleColumnClick = (candidat_rslt) => {
     idCandidat=candidat_rslt;
