@@ -31,7 +31,7 @@ export default function Session() {
             .catch(error => {
                 console.error('Erreur lors de la récupération des options :', error);
             });
-
+            
     axios.get('http://localhost:3000/api/session/stateSession/find?fieldName=state&fieldValue=En cours')
             .then(response => {
               setSession(response.data._id);setAnnee(response.data.annee);setNbr_Candidats(response.data.nbr_candidats)
@@ -237,6 +237,7 @@ export default function Session() {
           annee, nbr_candidats, inscription_d, inscription_f, tirage_d, tirage_f, consultaion_m_d, consultaion_m_f, paiement_d, paiement_f, hadj_d, hadj_f, algo_selected
         });
         alert("Enregistrement avec succées");
+        
       } catch (error) {
         alert(error);
           console.error('Error fetching data:', error);

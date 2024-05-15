@@ -2,7 +2,9 @@
 const Candidature = require("../../models/Candidature");
 const { setStatus } = require('./clcPrctg');
 const pelerin = require('../../models/pelerin');
-const sendEmail=require('../../util/sendEmail')
+const sendEmail=require('../../util/sendEmail');
+const Commune =require('../../models/Commune')
+
 
 
 
@@ -156,41 +158,26 @@ async function performLottery(nbPlaces, weightedUsers) {
 
 exports.elecPilgrimsCumDist = async (req, res) => {
 
-    const { ageBrackets, nbPlaces, nbEnAttente } = req.body
-    const users = await Candidature.find();
+    const { ageBrackets, nbrTotalPelerin, commune  } = req.body
+    console.log("agebrackets:", ageBrackets, "nbrtotpel, ",nbrTotalPelerin, "commune", commune)
+    const nbEnAttente = Math.round(0.3 * nbrTotalPelerin)
+    const users = await Candidature.find({ commune});
 
     try {
         const { weightedUsers } = mappingUsers(ageBrackets, users)
-        const { winners, weightedUsers: weightedRestants } = await performLottery(nbPlaces, weightedUsers)
+        const { winners, weightedUsers: weightedRestants } = await performLottery(nbrTotalPelerin, weightedUsers)
         console.log("weighted en restants", weightedRestants)
         //set status of winners
         const pelerinsElu = setStatus(winners, "is_elected")
         //the winners
         let candid = await Candidature.updateMany( 
             { _id: { $in: winners.map(pelerin => pelerin._id) } }, // Find candidatures associated with the updated pelerins 
-            { $set: { status: "is_elected" } } // Update their status to "is-elected" 
+            { $set: { status: "is_elected" } } ,
+            {$set: { is_elected: true } }// Update their status to "is-elected" 
           );
 
         //envoie mail aux pelerins elus
         envoieEmail(pelerinsElu)
-
-                //TTTTTTTTTTTTTTTEEEEEEEEEEEESSSSSSSSSSSSSSSSSSSSTTTTTTTTTTTTTTTTTTTTT
-                // const testDate = [
-                //     {
-        
-                //         "nom": "kadour",
-                //         "prenom": "kadour",
-                //         "num_passeport": "0000000000000000000",
-                //         "email": "meriemeaitchabane04@gmail.com",
-        
-                //     },
-                //     {
-                //         "nom": "sara",
-                //         "prenom": "mokaddm",
-                //         "num_passeport": "7410852963",
-                //         "email": "acmerieme@gmail.com",
-                //     }]
-                // envoieEmail(testDate)
 
 
         console.log("winners are: ", winners)
@@ -201,7 +188,8 @@ exports.elecPilgrimsCumDist = async (req, res) => {
 
         let candidAtt = await Candidature.updateMany( 
             { _id: { $in: attente.map(pelerin => pelerin._id) } }, // Find candidatures associated with the updated pelerins 
-            { $set: { status: "is_enAttent" } } // Update their status to "is-elected" 
+            { $set: { status: "is_enAttent" } },
+            {$set: { is_attente: true } } // Update their status to "is-elected" 
           );
         //the attente
         console.log("en attente are: ", attente)

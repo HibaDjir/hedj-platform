@@ -7,7 +7,8 @@ const {
     deleteCommune,
     updateCommune,
     ajouterCotatCommune,
-    getCommuneById
+    getCommuneById,
+    getNbCommune
 } = require('../controllers/CommuneControllers')
 router.get('/All',getAllCommune)
 
@@ -24,6 +25,8 @@ router.delete('/:id', deleteCommune)
 router.put('/update', updateCommune)
 
 router.post('/ajouterCotat', ajouterCotatCommune)
+
+router.get('/lacommune/:code', getNbCommune)
 
 
 module.exports=router;

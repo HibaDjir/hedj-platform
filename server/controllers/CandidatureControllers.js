@@ -99,6 +99,7 @@ const getCandidatureUser = async (req, res) => {
     //const { code } = req.params
     const id_user = req.query.fieldName; 
     const fieldValue = req.query.fieldValue;
+    console.log("ID USER", id_user)
 
     const query = { 
         [id_user]: fieldValue
@@ -210,7 +211,7 @@ const getCandidatureIfPaie = async (req, res) => {
     }
     res.status(200).json(candidatsAttente)
 }
-
+ 
 const getFirstCandidature = async (req, res) => {
     const { id } = req.params
 
@@ -453,5 +454,6 @@ module.exports = {
     updateCandidatConsMed,
     getCandidatureIfPaie,
     updateValidPay,
-    getAllCandidatureAff
+    getAllCandidatureAff,
+    
 }

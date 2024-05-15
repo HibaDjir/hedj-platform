@@ -24,7 +24,7 @@ const {
 
 
 } = require('../controllers/CandidatureControllers')
-
+ 
 const candidat = require('../models/Candidature');
 
 router.get('/', getAllCandidature)

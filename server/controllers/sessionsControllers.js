@@ -40,7 +40,7 @@ const getAnneeSession = async (req, res) => {
         return res.status(404).json({error: "vide"})
     }
     res.status(200).json(Session)
-}
+} 
 
 const getStateSession = async (req, res) => {
     //const { code } = req.params
@@ -95,9 +95,10 @@ const updateSession = async (req, res) => {
         };
 
         // Update the documents that match the criteria
-        const result = await session.updateOne({_id: id}, update, {upsert: true});
-
-        return res.status(200).json({ message: `${result.nModified} records updated successfully` });
+        const result = await session.updateOne({_id: id}, update);
+       // return res.status(200).json({ message: `${result.nModified} records updated successfully` });
+        const updatedSession = await session.findById(id);
+        return res.status(200).json(updatedSession);
         /*const updatedData = req.body;
 
         const Session = await session.findOneAndUpdate({_id: id}, {

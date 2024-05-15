@@ -111,22 +111,24 @@ function electionPelerinsAuHasard(pelerins, nombreAElire) {
 // Controller method to elect pilgrims randomly and save them to the database
 exports.electPilgrims = async (req, res) => {
     try {
-
-        const{ nombreAElire ,nbraelireenattente}= req.body; // Extract the number of pilgrims to be elected from the request body
-        const   pelerins = await Condidatures.find(); // Fetch all pilgrims from the database
-        let  {pelerinsElus,pelerinsRestants}= await electionPelerinsAuHasard(pelerins,nombreAElire)
+        const{ nbrTotalPelerin ,commune}= req.body; // Extract the number of pilgrims to be elected from the request body
+        console.log("LE NBR A ELIRE", nbrTotalPelerin)
+        const nbraelireenattente = Math.round(0.3 * nbrTotalPelerin)
+        const   pelerins = await Condidatures.find({commune}); // Fetch all pilgrims from the database
+        let  {pelerinsElus,pelerinsRestants}= await electionPelerinsAuHasard(pelerins,nbrTotalPelerin)
+        console.log("pelerin elu ",pelerinsElus) 
 
         let candid = await Condidatures.updateMany( 
             { _id: { $in: pelerinsElus.map(pelerin => pelerin._id) } }, // Find candidatures associated with the updated pelerins 
             { $set: { status: "is_elected" } } // Update their status to "is-elected" 
           );
 
-        console.log("UPDATE MANY T3 STATUS:", candid)
         console.log("pelerin elu ",pelerinsElus) 
 
         let candi=   await Condidatures.updateMany(
             { _id: { $in: pelerinsElus.map(pelerin => pelerin._id) } }, // Find candidatures associated with the updated pelerins
-            { $set: { status: "is_elected" } } // Update their status to "is-elected"
+            { $set: { status: "is_elected" } },
+            {$set: { is_elected: true } } // Update their status to "is-elected"
           );
 
       
@@ -138,25 +140,6 @@ exports.electPilgrims = async (req, res) => {
         envoieEmail(pelerinsElus)
 
 
-        //TTTTTTTTTTTTTTTEEEEEEEEEEEESSSSSSSSSSSSSSSSSSSSTTTTTTTTTTTTTTTTTTTTT
-        // const testDate = [
-        //     {
-
-        //         "nom": "kadour",
-        //         "prenom": "kadour",
-        //         "num_passeport": "0000000000000000000",
-        //         "email": "meriemeaitchabane04@gmail.com",
-
-        //     },
-        //     {
-        //         "nom": "sara",
-        //         "prenom": "mokaddm",
-        //         "num_passeport": "7410852963",
-        //         "email": "acmerieme@gmail.com",
-        //     }]
-        // envoieEmail(testDate)
-        // //
-
         
         let { pelerinsElus: pelerinsEnAttente, pelerinsRestants: pelerinsRestantsApresEnAttente } = await electionPelerinsAuHasard(pelerinsRestants, nbraelireenattente);
    
@@ -165,7 +148,8 @@ exports.electPilgrims = async (req, res) => {
         
         let candidAtt = await Condidatures.updateMany( 
             { _id: { $in: pelerinsEnAttente.map(pelerin => pelerin._id) } }, // Find candidatures associated with the updated pelerins 
-            { $set: { status: "is_enAttent" } } // Update their status to "is-elected" 
+            { $set: { status: "is_enAttent" } } ,
+            {$set: { is_attente: true } } // Update their status to "is-elected" 
           );
         
         let allPelerins = [...pelerinfinal, ...pelerinEnAttentFinale]
@@ -181,7 +165,7 @@ exports.electPilgrims = async (req, res) => {
             }
         }
 
-        res.json(allPelerins);
+        res.json(pelerinsElus);
 
 
         //ou en envoie mail ici apres quo on set status to elected

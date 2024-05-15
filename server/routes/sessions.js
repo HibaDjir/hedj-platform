@@ -7,7 +7,7 @@ const {
     getStateSession,
     deleteSession,
     updateSession,
-} = require('../controllers/sessionsControllers')
+} = require('../controllers/sessionsControllers') 
 
 router.get('/All',getAllSession)
 

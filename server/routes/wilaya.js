@@ -2,16 +2,20 @@ const router = require('express').Router();
 const {
     createWilaya,
     getAllWilaya,
-    getWilaya,
+    getWilaya, 
     getCodeWilaya,
     deleteWilaya,
     updateWilaya,
     ajouterCotatWilaya,
+    getWilayaName
 } = require('../controllers/wilayaControllers')
 
 router.get('/All',getAllWilaya)
 
 router.get('/:id', getWilaya)
+
+router.get('/name/:name', getWilayaName)
+
 
 router.get('/codeWil/find', getCodeWilaya)
 

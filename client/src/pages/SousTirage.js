@@ -31,6 +31,9 @@ export default function SousTirage() {
     const [pelerins, setPelerins] = useState([]);
 
     const [daata, setDaata] = useState([]);
+
+    const [ageBrackets, setAgeBrackets] =useState([]);
+
     const [userId, setUserId] = useState(null);
 
     const response = localStorage.getItem('user');
@@ -39,7 +42,17 @@ export default function SousTirage() {
     const decodedToken = jwtDecode(token);
 
     const [selectedAlgorithm, setSelectedAlgorithm] = useState(null);
+    const [commune, setSelectedOptionCommune] = useState(null);
+    const [buttonClicked, setButtonClicked] = useState(false);
+
+
+
+    const handleStartTirage = () => {
+        setButtonClicked(true);
+    };
+
     useEffect(() => {
+
         const selectedDiv = document.getElementById(selectedAlgorithm);
         if (selectedDiv) {
           selectedDiv.style.borderColor = "#D8A353";
@@ -52,13 +65,13 @@ export default function SousTirage() {
             div.style.borderColor = "";
           }
         });
-        
+             
         if (decodedToken && decodedToken._id) {
           setUserId(decodedToken._id); // Store ID if found in decoded token
           //alert(userId)
           if(userId != null) fetchWilaya(userId);
           if(daata.wilaya != null){
-            axios.get('http://localhost:3000/api/wilaya/'+daata.wilaya)
+            axios.get(`http://localhost:3000/api/wilaya/name/${daata.wilaya}`)
             .then(response => {
               const additionalOptions = response.data;//.map(wilaya => ({value: wilaya.code, label: wilaya.ar_name}));
               //alert('http://localhost:3000/api/commune/find?fieldName=code&minValue='+additionalOptions.code+'00&maxValue='+additionalOptions.code+'99');
@@ -74,24 +87,7 @@ export default function SousTirage() {
                 .catch(error => {
                     console.error('Erreur lors de la récupération des options :', error);
                 });
-            
-            axios.get('http://localhost:3000/api/wilaya/'+daata.wilaya)
-              .then(response => {
-                const additionalOptions = response.data;//.map(wilaya => ({value: wilaya.code, label: wilaya.ar_name}));
-                //alert('http://localhost:3000/api/commune/find?fieldName=code&minValue='+additionalOptions.code+'00&maxValue='+additionalOptions.code+'99');
-                axios.get('http://localhost:3000/api/candidature/wilaya/prise/find?fieldName=wilaya&fieldValue='+additionalOptions.code)
-                  .then(responseC => {
-                    setPelerins(responseC.data);
-                  })
-                  .catch(error => {
-                      console.error('Erreur lors de la récupération des options :', error);
-                  });
-              })
-              .catch(error => {
-                  console.error('Erreur lors de la récupération des options :', error);
-              });
-            
-          //fetchCardsInfo (daata.wilaya)
+
           }
         }
           axios.get('http://localhost:3000/api/session/stateSession/find?fieldName=state&fieldValue=En cours')
@@ -101,12 +97,53 @@ export default function SousTirage() {
           .catch(error => {
               console.error('Erreur lors de la récupération des options :', error);
           });   
-          setDebutinsc('Charles')
-          setMode('Par age')
-          setDebutpaiment("Oran")
-          setFinpaiment("Oran")
-      }, [userId,daata]);
+          
+      }, [userId,daata, nbrTotalPelerin]);
 
+      useEffect(() => {
+        fetchNbPlaces(); // Fetch the data first
+        console.log("taht el fetch", nbrTotalPelerin)
+        if (buttonClicked) {
+          startTirage(nbrTotalPelerin);
+      }
+    }, [commune,buttonClicked]);
+
+    useEffect(() => {
+      fetchAgeBrack()
+  }, []);
+
+
+  const fetchAgeBrack = async()=>{
+    try {
+      const response = await fetch('http://localhost:3000/api/tirage/criteria');
+      if (!response.ok) {
+        throw new Error('Failed to fetch Candidats');
+      }
+      const data = await response.json();
+      console.log("RESSSSSSSSSSS DE critaria", data)
+      setAgeBrackets(data)
+
+      } catch (error) {
+        console.error('Error fetching candidats:', error);
+      }
+  } 
+
+
+      const fetchNbPlaces = async()=>{
+        try {
+            const response = await fetch(`http://localhost:3000/api/commune/lacommune/${commune}`);
+            if (!response.ok) {
+              throw new Error('Failed to fetch Candidats');
+            }
+            const data = await response.json();
+            console.log("THE DATAAAAAAAAAAAAAAAAA T3 DAKHEL FATCH", data)
+            setNbrTotalPelerin(data.nb)
+
+
+          } catch (error) {
+            console.error('Error fetching candidats:', error);
+          }
+      } 
 
       const fetchWilaya = async(id)=>{
         try {
@@ -120,21 +157,6 @@ export default function SousTirage() {
             console.error('Error fetching candidats:', error);
           }
       } 
-
-      /*const fetchCardsInfo = async(wilaya)=>{
-        try {
-            const response = await fetch(`http://localhost:3000/api/dashboardStats/getCountsWilaya/${wilaya}`);
-            if (!response.ok) {
-              throw new Error('Failed to fetch Cards Info');
-            }
-            const data = await response.json(); 
-            setNbcandidats(data.candidaturesCount)
-            setNbplaces(data.nbPlaces)
-            setNbcommunes('26')
-          } catch (error) {
-            console.error('Error fetching Cards:', error);
-          }
-      }*/
 
     const customStyles = {
         control: (provided, state) => ({
@@ -306,39 +328,49 @@ export default function SousTirage() {
     const [finhedj, setFinhedj] = useState();
 
 
-    const [commune, setSelectedOptionCommune] = useState(null);
+
     const handleChangeCommune = (event) => {
       const selectedValue = (event.value).split("|");
       setSelectedOptionCommune(parseInt(selectedValue[0]));setNbrTotalPelerin(selectedValue[1]);
 
     };
 
-    const startTirage = async () => {
-      // Get the input value for the clicked row
+    const startTirage = async (nbrTotalPelerin) => {
       try {
-          // Make a PUT request to the backend API to update the record
-          const response = await axios.put('http://localhost:3000/api/tirage/Tirage', { id_session, commune, nbrTotalPelerin, code_algo });
-           
-          axios.get('http://localhost:3000/api/wilaya/'+daata.wilaya)
-            .then(response => {
-              const additionalOptions = response.data;//.map(wilaya => ({value: wilaya.code, label: wilaya.ar_name}));
-              axios.get('http://localhost:3000/api/candidature/wilaya/prise/find?fieldName=wilaya&fieldValue='+additionalOptions.code)
-                .then(responseC => {
-                  setPelerins(responseC.data);
+        console.log("MOOOOOOOOODE TIRAAAAAAAAGE", code_algo)
+        switch(code_algo){
+          case "AL":
+         {  
+              const response = await fetch('http://localhost:3000/api/methodeTirage/random', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ nbrTotalPelerin, commune })
+              })
+              if (!response.ok) {
+                throw new Error('Failed to fetch Candidats');
+              }
+              const data = await response.json();
+              setPelerins(data) 
+              break;
+          }
+            case "PA":
+              {
+                const res = await fetch('http://localhost:3000/api/methodeTirage/ageBrackets', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ ageBrackets,nbrTotalPelerin, commune })
                 })
-                .catch(error => {
-                    console.error('Erreur lors de la récupération des options :', error);
-                });
-            })
-            .catch(error => {
-                console.error('Erreur lors de la récupération des options :', error);
-            }); 
-          // Handle success (e.g., show a success message)
-          alert("Record updated successfully");
+              if (!res.ok) {
+                throw new Error('Failed to fetch Candidats');
+              }
+              const result = await res.json();
+              setPelerins(result) 
+                break;
+              }
+        }
+        
       } catch (error) {
-          // Handle error (e.g., s
-          alert(error);
-          console.error("Error:", error);
+        console.error("Error:", error.message);
       }
 
   };
@@ -443,7 +475,8 @@ export default function SousTirage() {
     </div>
     <button
       className="text-[#1D1D1B] text-md font-medium flex justify-between border-[#D8A353] rounded-md bg-[#D8A353] border items-center h-10 p-2 mr-2"
-      onClick={startTirage}
+      onClick={handleStartTirage}
+      disabled={nbrTotalPelerin === null}
     >
       <FaCirclePlay className="h-6 w-6 mt-2 mx-2  " src={add} />
       Commencer le tirage

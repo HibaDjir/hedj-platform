@@ -27,6 +27,22 @@ const getAllCommune = async (req, res) => {
 
 }
 
+const getNbCommune= async (req, res) => {
+    try {
+        const {code} = req.params
+        const lacommune = await commune.findOne({code})
+        const communeData = lacommune.nb_places
+
+        res.status(200).json({nb:communeData})
+    } catch (error) {
+        res.status(500).json({ message: "Server Error", error: error.message })
+    }
+
+}
+
+
+
+
 const getCommuneById = async(req, res)=>{
     try {
         const { id } = req.params
@@ -151,9 +167,7 @@ const ajouterCotatCommune = async(req, res) =>{
     }
 }
 
-const getNbCandidats = async(req, res)=>{
 
-}
 
 module.exports = {
     createCommune,
@@ -163,5 +177,6 @@ module.exports = {
     deleteCommune,
     updateCommune,
     ajouterCotatCommune, 
-    getCommuneById
+    getCommuneById,
+    getNbCommune
 }

@@ -25,7 +25,7 @@ const getAllWilaya = async (req, res) => {
     }
 
 }
-
+   
 const getWilaya = async (req, res) => {
     try {
         const { id } = req.params
@@ -35,6 +35,31 @@ const getWilaya = async (req, res) => {
         }
     
         const wil = await wilaya.findById(id)
+        if(!wil){
+            return res.status(404).json({error: "vide"})
+        }
+        const candidatsCount = await getCandidatsCountForWilaya(wil)
+        const wilayaData = {...wil.toObject(), candidatsCount}
+
+        res.status(200).json(wilayaData)
+    } catch (error) {
+        res.status(500).json({ message: "Server Error", error: error.message })
+    }
+
+
+}
+
+
+const getWilayaName = async (req, res) => {
+    try {
+        const name = req.params.name
+
+        if (!name) {
+            return res.status(400).json({ error: "Missing 'name' parameter" });
+        }
+
+        const wil = await wilaya.findOne({name})
+
         if(!wil){
             return res.status(404).json({error: "vide"})
         }
@@ -140,5 +165,6 @@ module.exports = {
     getCodeWilaya,
     deleteWilaya,
     updateWilaya,
-    ajouterCotatWilaya
+    ajouterCotatWilaya,
+    getWilayaName
 }

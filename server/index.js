@@ -7,7 +7,7 @@ const cors=require('cors');
 dotenv.config() 
 let index= express() 
 
- 
+   
  
 index.use(express.json()) 
 index.use(cors());

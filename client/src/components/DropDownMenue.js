@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import axios from 'axios';
 
-export let idCandidat = 'szdzdzdz';
+let idCandidat = null;
 
 const DropdownMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -129,5 +129,6 @@ const DropdownMenu = () => {
     </div>
   );
 };
+export { idCandidat };
 
 export default DropdownMenu;
