@@ -5,7 +5,8 @@ const {
     getTirageType,
     createTirageType,
     updateTirageType,
-    getTirageAgeBracket
+    getTirageAgeBracket,
+    getTiragePerf
 } = require('../controllers/TirageTypeControllers')
 
 const {
@@ -23,6 +24,11 @@ router.put('/update', updateTirageType)
 router.put('/Tirage', calculeTirageType)
 
 router.get('/criteria',getTirageAgeBracket)
+
+router.get('/perfCriteria',getTiragePerf)
+
+
+
 
 
 module.exports=router; 

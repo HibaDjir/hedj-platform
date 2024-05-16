@@ -84,10 +84,37 @@ const getTirageAgeBracket = async (req, res) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 }
+
+const getTiragePerf = async (req, res) => {
+    try {
+        const criteria = { 'code': 'PF'};
+        const result = await tirage_type.findOne(criteria);
+        // Update the documents that match the criteria
+        const toSend = [
+            {
+                minAge1: result.minAge1,
+                maxAge1: result.maxAge1,
+                chance1: result.chance1,
+                minAge2: result.minAge2,
+                maxAge2: result.maxAge2,
+                chance2: result.chance2,
+                minAge3: result.minAge3,
+                maxAge3: result.maxAge3,
+                chance3: result.chance3
+            }
+    ]
+        return res.status(200).json(toSend);
+    } catch (error) {
+        console.error('Error:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
 module.exports = {
     getAllTirageType,
     getTirageType,
     createTirageType,
     updateTirageType,
-    getTirageAgeBracket
+    getTirageAgeBracket,
+    getTiragePerf
 }

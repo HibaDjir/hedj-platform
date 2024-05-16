@@ -111,10 +111,10 @@ function electionPelerinsAuHasard(pelerins, nombreAElire) {
 // Controller method to elect pilgrims randomly and save them to the database
 exports.electPilgrims = async (req, res) => {
     try {
-        const{ nbrTotalPelerin ,commune}= req.body; // Extract the number of pilgrims to be elected from the request body
+        const{ nbrTotalPelerin ,commune, session}= req.body; // Extract the number of pilgrims to be elected from the request body
         console.log("LE NBR A ELIRE", nbrTotalPelerin)
         const nbraelireenattente = Math.round(0.3 * nbrTotalPelerin)
-        const   pelerins = await Condidatures.find({commune}); // Fetch all pilgrims from the database
+        const   pelerins = await Condidatures.find({commune, id_session:session}); // Fetch all pilgrims from the database
         let  {pelerinsElus,pelerinsRestants}= await electionPelerinsAuHasard(pelerins,nbrTotalPelerin)
         console.log("pelerin elu ",pelerinsElus) 
 

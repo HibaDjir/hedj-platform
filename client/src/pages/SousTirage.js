@@ -22,7 +22,7 @@ export default function SousTirage() {
 
     const [communes, setCommunes] = useState([]);
     
-    const [id_session, setSession] = useState(null);
+    const [session, setSession] = useState(null);
     
     const [nbrTotalPelerin, setNbrTotalPelerin] = useState(null);
     
@@ -33,6 +33,12 @@ export default function SousTirage() {
     const [daata, setDaata] = useState([]);
 
     const [ageBrackets, setAgeBrackets] =useState([]);
+
+    const [ageBrackets_perf, setAgeBrackets_perf] =useState([]);
+
+    const [showingPelerin, setShowingPelerin] = useState(null); // State to track the pelerin to display
+
+    const [currentIndex, setCurrentIndex] = useState(0);
 
     const [userId, setUserId] = useState(null);
 
@@ -47,8 +53,16 @@ export default function SousTirage() {
 
 
 
+  // Function to handle "Affichage Séquentiel" button click
+  // const handleSequentialDisplay = () => {
+  //     const nextIndex = (currentIndex + 1) % pelerins.length;
+  //     setCurrentIndex(nextIndex);
+  //     setShowingPelerin(pelerins[nextIndex]);
+  // };
+
+
     const handleStartTirage = () => {
-        setButtonClicked(true);
+      setButtonClicked(true);
     };
 
     useEffect(() => {
@@ -110,6 +124,7 @@ export default function SousTirage() {
 
     useEffect(() => {
       fetchAgeBrack()
+      fetchPerf()
   }, []);
 
 
@@ -125,6 +140,21 @@ export default function SousTirage() {
 
       } catch (error) {
         console.error('Error fetching candidats:', error);
+      }
+  } 
+
+  const fetchPerf = async()=>{
+    try {
+      const response = await fetch('http://localhost:3000/api/tirage/perfCriteria');
+      if (!response.ok) {
+        throw new Error('Failed to fetch data');
+      }
+      const data = await response.json();
+      console.log("RESSSSSSSSSSS DE PERFCRITERIA", data)
+      setAgeBrackets_perf(data)
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
       }
   } 
 
@@ -275,9 +305,10 @@ export default function SousTirage() {
           }
          }
        ];
-        const options = {
-          filterType: 'checkbox',
-        };
+       const options = {
+        filterType: 'checkbox',
+      
+    };
         const recentPelerenData = pelerins.map(candidat => ({
           nom: candidat.nom,
           prenom: candidat.prenom,
@@ -344,10 +375,10 @@ export default function SousTirage() {
               const response = await fetch('http://localhost:3000/api/methodeTirage/random', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ nbrTotalPelerin, commune })
+                body: JSON.stringify({ nbrTotalPelerin, commune,session })
               })
               if (!response.ok) {
-                throw new Error('Failed to fetch Candidats');
+                throw new Error('Failed to fetch pelerins');
               }
               const data = await response.json();
               setPelerins(data) 
@@ -358,15 +389,44 @@ export default function SousTirage() {
                 const res = await fetch('http://localhost:3000/api/methodeTirage/ageBrackets', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ ageBrackets,nbrTotalPelerin, commune })
+                body: JSON.stringify({ ageBrackets,nbrTotalPelerin, commune,session })
                 })
               if (!res.ok) {
-                throw new Error('Failed to fetch Candidats');
+                throw new Error('Failed to fetch pelerins');
               }
               const result = await res.json();
               setPelerins(result) 
                 break;
               }
+              case "NC":
+                {
+                  const res = await fetch('http://localhost:3000/api/methodeTirage/nbrEnr', {
+                  method: 'POST',
+                  headers: {'Content-Type': 'application/json'},
+                  body: JSON.stringify({ nbrTotalPelerin, commune, session })
+                  })
+                if (!res.ok) {
+                  throw new Error('Failed to fetch pelerins');
+                }
+                const result = await res.json();
+                setPelerins(result) 
+                  break;
+                }
+                case "PF":
+                  {
+                    const res = await fetch('http://localhost:3000/api/methodeTirage/perf', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ ageBrackets_perf,nbrTotalPelerin, commune, session })
+                    })
+                  if (!res.ok) {
+                    throw new Error('Failed to fetch pelerins');
+                  }
+                  const result = await res.json();
+                  console.log("HADI T3 pfffffffffffffffffffff", result)
+                  setPelerins(result) 
+                    break;
+                  }
         }
         
       } catch (error) {
@@ -481,25 +541,25 @@ export default function SousTirage() {
       <FaCirclePlay className="h-6 w-6 mt-2 mx-2  " src={add} />
       Commencer le tirage
     </button>
-    <button
+    {/* <button
       className="text-[#1D1D1B] font-medium flex justify-between border-[#D8A353] rounded-md bg-[#D8A353] border items-center h-10 p-2 mr-2"
-      onClick={startTirage}
+     
     >
       <MdOutlineSlowMotionVideo className="h-6 w-6 mt-2 mx-2  " src={add} />
       Affichage Séquentiel
-    </button>
+    </button> */}
     </div>
   </div>
 </div>
 
 
-<MUIDataTable
-title={""}
-data={recentPelerenData}
-columns={columns}
-options={options}
-/>
-
+                <MUIDataTable
+                    title={""}
+                    data={pelerins} // Display only the current pelerin
+                    columns={columns}
+                    options={options}
+                />
+         
 
 
 </div>

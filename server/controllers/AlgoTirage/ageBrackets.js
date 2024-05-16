@@ -158,10 +158,12 @@ async function performLottery(nbPlaces, weightedUsers) {
 
 exports.elecPilgrimsCumDist = async (req, res) => {
 
-    const { ageBrackets, nbrTotalPelerin, commune  } = req.body
+    const { ageBrackets, nbrTotalPelerin, commune,session  } = req.body
     console.log("agebrackets:", ageBrackets, "nbrtotpel, ",nbrTotalPelerin, "commune", commune)
     const nbEnAttente = Math.round(0.3 * nbrTotalPelerin)
-    const users = await Candidature.find({ commune});
+    const users = await Candidature.find({ commune, id_session: session});
+
+    console.log("USERS", users)
 
     try {
         const { weightedUsers } = mappingUsers(ageBrackets, users)
@@ -177,7 +179,7 @@ exports.elecPilgrimsCumDist = async (req, res) => {
           );
 
         //envoie mail aux pelerins elus
-        envoieEmail(pelerinsElu)
+        // envoieEmail(pelerinsElu)
 
 
         console.log("winners are: ", winners)
