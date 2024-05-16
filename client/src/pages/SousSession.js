@@ -158,7 +158,7 @@ export default function Dashboard() {
         setUserId(decodedToken._id); // Store ID if found in decoded token
         if(decodedToken._id != null) fetchWilaya(decodedToken._id);
         if(daata.wilaya != null){
-          axios.get('http://localhost:3000/api/wilaya/'+daata.wilaya)
+          axios.get('http://localhost:3000/api/wilaya/name/'+daata.wilaya)
           .then(response => {
             const additionalOptions = response.data;//.map(wilaya => ({value: wilaya.code, label: wilaya.ar_name}));
             //alert('http://localhost:3000/api/commune/find?fieldName=code&minValue='+additionalOptions.code+'00&maxValue='+additionalOptions.code+'99');

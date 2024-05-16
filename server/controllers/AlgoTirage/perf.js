@@ -3,6 +3,32 @@ const router = express.Router();
 const Candidature = require('../../models/Candidature');
 const pelerin = require('../../models/pelerin');
 const { setStatus } = require('./clcPrctg');
+const sendEmail=require('../../util/sendEmail');
+
+
+function envoieEmail(pelerinsElus){
+    try {
+        const emailEnvoie = pelerinsElus.map(pelerin => {
+            console.log('EVOIE MAIL: PELERIN EMAIL',pelerin.email)
+            console.log('EVOIE MAIL: PELERIN NOM',pelerin.nom)
+            console.log('EVOIE MAIL: PELERIN PRENOM',pelerin.prenom)
+                sendEmail({
+                    email: pelerin.email,
+                    subject:'السلام عليكم',
+                    message:
+                    `سيد(ة)  ${pelerin.nom}!\n\n
+                    مبارك لكم، لقد تم اختياركم في القرعة لأداء مناسك الحج\n
+                    **معلوماتكم الشخصية**\n\n
+                    اللقب :${pelerin.nom}\n\n
+                    الاسم :${pelerin.prenom}\n\n
+                    رقم جواز السفر :${pelerin.num_passeport}\n
+                    `
+           });
+        })
+    } catch (error) {   
+        console.log(error)
+    }
+}
 
 function getDateFromAge(age) {
     const today = new Date();
@@ -37,7 +63,7 @@ async function tiragePerformant(nbrTotalPelerinT, commune_code, session_id, ageB
             const candidatures = await Candidature.find({
                 id_session: session_id, 
                 commune: commune_code, 
-                date_naissance: {
+                'date_naissance': {
                     $gte: maxDate,
                     $lt: minDate
                 }
@@ -162,7 +188,7 @@ exports.perfCtrlr = async (req, res) => {
             {$set: { is_attente: true } } // Update their status to "is-elected" 
           );
 
-         envoieEmail(selectedPilgrims)
+        //  envoieEmail(selectedPilgrims)
 
          let allPelerins = [...selectedPilgrims, ...pelerinsAtt];
 
