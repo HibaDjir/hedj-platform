@@ -100,7 +100,7 @@ const getCandidatureUser = async (req, res) => {
     const id_user = req.query.fieldName; 
     const fieldValue = req.query.fieldValue;
     console.log("ID USER", id_user)
-
+ 
     const query = { 
         [id_user]: fieldValue
     };
@@ -179,6 +179,7 @@ const getCandidatureCodeWilayaAttente = async (req, res) => {
     res.status(200).json(candidatsAttente)
 }
 
+
 const getCandidatureIdMedecin = async (req, res) => {
     //const { code } = req.params
     const id_medecin = req.query.fieldName; 
@@ -212,6 +213,7 @@ const getCandidatureIfPaie = async (req, res) => {
     res.status(200).json(candidatsAttente)
 }
  
+
 const getFirstCandidature = async (req, res) => {
     const { id } = req.params
 
@@ -222,11 +224,10 @@ const getFirstCandidature = async (req, res) => {
     const candidat = await candidature.findById(id)
     if(!candidat){
         return res.status(404).json({error: "vide"})
-        
     }
-    console.log("LE CANDIDAT INFOS",candidat )
     res.status(200).json(candidat)
 }
+
 
 const createCandidature = async (req, res) => {
     const formData = req.body;

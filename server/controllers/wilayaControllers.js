@@ -86,6 +86,7 @@ const getCodeWilaya = async (req, res) => {
     res.status(200).json(wil)
 }
 
+
 const createWilaya = async (req, res) => {
     const {code, ar_name, name} = req.body
     try {

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import MUIDataTable from "mui-datatables";
-import Sidebar from "../../components/Dash_components/shared/SidebarSous";
+import Sidebar from "../../components/Dash_components/shared/Sidebar";
 import { Link,useNavigate  } from "react-router-dom";
 import carteccp from "./Carteccp"
 import virementccp from "./Virementccp"
@@ -32,7 +32,7 @@ function Paiment() {
       //alert(daata.wilaya)
     }
     if (daata.wilaya) { // Check if daata.wilaya has a value to avoid errors
-      axios.get('http://localhost:3000/api/wilaya/'+daata.wilaya)
+      axios.get('http://localhost:3000/api/wilaya/name/'+daata.wilaya)
       .then(response => {
         const additionalOptions = response.data;//.map(wilaya => ({value: wilaya.code, label: wilaya.ar_name}));
         //alert('http://localhost:3000/api/commune/find?fieldName=code&minValue='+additionalOptions.code+'00&maxValue='+additionalOptions.code+'99');
@@ -86,6 +86,7 @@ function Paiment() {
     // Perform actions based on the clicked column index
   };
 
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
   const toggleSidebar = () => {
@@ -115,7 +116,7 @@ function Paiment() {
     Decision: candidat.is_valid_paie === 0 ? 'en attente' : (candidat.is_valid_paie === 1 ? 'Approuvé' : (candidat.is_valid_paie === 2 ? 'Non Approuvé' : 'Accun paiement' ) ),
   })
   );  
-
+  
   return (
 
     <div className='w-full flex overflow-hidden

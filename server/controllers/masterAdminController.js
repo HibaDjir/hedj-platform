@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt");
 const sendEmail=require('../util/sendEmail');
 const Candidature = require('../models/Candidature');
 const Sessions = require('../models/Sessions');
+const medecin = require('../models/Medecin')
 
 
 
@@ -299,4 +300,24 @@ exports.sendEmailValidateFInal=async(req,res)=>{
         res.status(400).json(err.message)
     }
 
+}
+
+exports.getMedecinByUser=async(req,res)=>{ 
+    try{ 
+        let idUser=req.params.id 
+        const medecinPop=await medecin.findOne({user: idUser}) 
+        const user_con=await User.findOne({_id: idUser}) 
+
+        //console.log("admin POP ", sousadmin.wilaya.code)
+        res.status(201).json({ 
+            wilaya: medecinPop.Wilaya, 
+            nom: user_con.firstName, 
+            prenom: user_con.lastName,
+            _id: medecinPop._id ,
+            nb_places: medecinPop.Wilaya.nb_places
+        }); 
+ 
+    }catch(err){ 
+        res.status(400).json({message: err.message}) 
+    } 
 }

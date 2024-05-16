@@ -25,7 +25,7 @@ function Carteccp() {
 
   const fetchCandidat = async () => {
       try {
-          const response = await fetch('http://localhost:3000/api/candidature/'+idCandidat);
+          const response = await fetch('http://localhost:3000/api/candidature/cand/'+idCandidat);
           if (!response.ok) {
               throw new Error('Failed to fetch data');
           }

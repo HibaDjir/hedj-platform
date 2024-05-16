@@ -9,7 +9,7 @@ router.route('/deleteSousAdmin/:id').delete(masterAdminController.deleteSousAdmi
 router.route("/getSousAdminWilaya/:id").get(masterAdminController.getAdminsWilaya);
 router.route("/getSaousAdminByuserId/:id").get(masterAdminController.getSousAdminByUser);
 router.route("/SendEmailPaiement/:id").get(masterAdminController.sendEmailPaiement);
-
+router.route("/getMedecinByuserId/:id").get(masterAdminController.getMedecinByUser);
 
 
 module.exports=router;

@@ -21,7 +21,7 @@ const {
     updateValidPay,
     getAllCandidatureAff,
     
-
+  
 
 } = require('../controllers/CandidatureControllers')
  
@@ -32,7 +32,7 @@ router.get('/Aff', getAllCandidatureAff)
 
 router.get('/:name', getCandByWilaya) //////nommer les route 
 
-router.get('/:id', getFirstCandidature)
+router.get('/cand/:id', getFirstCandidature)
 
 router.get('/genre/find', getCandidature)
 

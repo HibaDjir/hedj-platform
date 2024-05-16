@@ -35,7 +35,7 @@ function VisiteMedical() {
 
   const fetchCandidat = async () => {
       try {
-          const response = await fetch('http://localhost:3000/api/candidature/'+idCandidat);
+          const response = await fetch('http://localhost:3000/api/candidature/cand/'+idCandidat);
           if (!response.ok) {
               throw new Error('Failed to fetch data');
           }
@@ -116,6 +116,8 @@ function VisiteMedical() {
         }
     };
     const handleClearFile = () => {setFile(null)}
+
+    
   return (
 
     <div   className=" overflow-hidden  w-full h-full mx-auto   flex flex-col justify-center items-center bg-cover bg-center p-5  overflow-x-hidden overflow-y-hidden"

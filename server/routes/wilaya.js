@@ -6,7 +6,7 @@ const {
     getCodeWilaya,
     deleteWilaya,
     updateWilaya,
-    ajouterCotatWilaya,
+    ajouterCotatWilaya, 
     getWilayaName
 } = require('../controllers/wilayaControllers')
 

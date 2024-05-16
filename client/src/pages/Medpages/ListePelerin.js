@@ -41,20 +41,14 @@ function ListePelerin() {
           console.error('Erreur lors de la récupération des options :', error);
       });
     } 
-    /*axios.get('http://localhost:3000/api/candidature/medecin/find?fieldName=id_medecin&fieldValue=663bd2be3b644e05d59fd85f')
-    .then(responseC => {
-      setCandidats(responseC.data);
-    })
-    .catch(error => {
-        console.error('Erreur lors de la récupération des options :', error);
-    });*/
+ 
         
   }, [userId, daata]);
 
   
   const fetchMedecin = async(id)=>{
     try {
-        const response = await fetch(`http://localhost:3000/api/masterAdmin/getMedecinuserId/${id}`);
+        const response = await fetch(`http://localhost:3000/api/masterAdmin/getMedecinByuserId/${id}`);
         if (!response.ok) {
           throw new Error('Failed to fetch Candidats');
         }
@@ -200,21 +194,21 @@ function ListePelerin() {
   ); 
 
   return (
-   <div className=" w-full h-full">
-    <NavbarMed/>
-   <div className="w-full overflow-hidden bg-white p-16  ">
-     
-          <MUIDataTable className="ml-8  rounded-sm border shadow-md border-gray-200 bg-[#FAF8F5] flex-col max-w-[1420px] justify-center"
-            title={"Pelerins"}
-            data={recentPelerenData}
-            columns={columns}
-            options={options}
-          />
-       
-     
-    </div>
-    </div>
-  );
+    <div className=" w-full h-full">
+     <NavbarMed/>
+    <div className="w-full overflow-hidden bg-white p-16  ">
+      
+           <MUIDataTable className="ml-8  rounded-sm border shadow-md border-gray-200 bg-[#FAF8F5] flex-col max-w-[1420px] justify-center"
+             title={"Pelerins"}
+             data={recentPelerenData}
+             columns={columns}
+             options={options}
+           />
+        
+      
+     </div>
+     </div>
+   );
 }
 
 export default ListePelerin;

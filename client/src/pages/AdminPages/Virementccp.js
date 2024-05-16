@@ -9,7 +9,7 @@ import   grande_poste from '../../images/GPA02.jpg';
 import   cartreccp from '../../images/carte-eddahabiya.jpg';
 import Navbar_for_each_profile from '../../components/Navbar_for_each_profile';
 
-import Sidebar from '../../components/Dash_components/shared/SidebarSous';
+import Sidebar from '../../components/Dash_components/shared/Sidebar';
 
 import { idCandidat } from '../AdminPages/Paiment';
 
@@ -26,12 +26,15 @@ function Virementccp() {
 
   const fetchCandidat = async () => {
       try {
-          const response = await fetch('http://localhost:3000/api/candidature/'+idCandidat);
+          const response = await fetch('http://localhost:3000/api/candidature/cand/'+idCandidat);
           if (!response.ok) {
               throw new Error('Failed to fetch data');
           }
+          console.log("id du cand", idCandidat)
           const jsonData = await response.json();
           setCandidat(jsonData);
+          console.log("lee cand", jsonData)
+
       } catch (error) {
           console.error('Error fetching data:', error);
       }

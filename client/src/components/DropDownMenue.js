@@ -24,6 +24,7 @@ const DropdownMenu = () => {
               axios.get('http://localhost:3000/api/users/'+response.data)
                       .then(responseF => {
                         fetchCandidature(response.data);
+                        console.log("")
                         //alert(responseF.data)
                       })
                       .catch(error => {
@@ -71,6 +72,7 @@ const DropdownMenu = () => {
   
   const handleClick = (id, nomP) => {
     setContent(nomP);
+    console.log("id in handle click",id )
     idCandidat = id;
     setIsOpen(!isOpen);
     clearTimeout(timerRef.current);
