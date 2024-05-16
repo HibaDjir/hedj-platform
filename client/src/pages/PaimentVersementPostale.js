@@ -42,6 +42,8 @@ function PaimentVersementPostale() {
     const [widowed, setwiWdowed] = useState([]);
     const [male, setMale] = useState([]);
     const [female, setFemale] = useState([]);
+
+    const [is_read_only, setIsReadOnly] = useState(false);
   
     useEffect(() => {
       fetchCandidat();
@@ -68,6 +70,17 @@ function PaimentVersementPostale() {
             else if(jsonData.civilite === 'متزوج(ة)') setMarried(true);
             else if(jsonData.civilite === 'مطلق(ة)') setDivorced(true);
             else setwiWdowed(true);
+            if(jsonData.propreitaire_compte != null){
+              setIsReadOnly(true);
+              setFormCandidature(prevState => ({
+                  ...prevState,
+                  num_compte: jsonData.num_compte,
+                  cle_compte: jsonData.cle_compte,
+                  num_versement: jsonData.num_versement,
+                  propreitaire_compte: jsonData.propreitaire_compte,
+                  address_op: jsonData.address_op,
+              }));
+            }
             
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -161,6 +174,7 @@ function PaimentVersementPostale() {
                   name="num_compte"
                   value={formCandidature.num_compte} onChange={handleChangeValue}
                   required
+                  readOnly={is_read_only}
                 />
               </div>
 
@@ -177,6 +191,7 @@ function PaimentVersementPostale() {
                   name="cle_compte"
                   value={formCandidature.cle_compte} onChange={handleChangeValue}
                   required
+                  readOnly={is_read_only}
                 />
               </div>
 
@@ -203,6 +218,7 @@ function PaimentVersementPostale() {
                   name="num_rib"
                   value={formCandidature.num_rib} onChange={handleChangeValue}
                   required
+                  readOnly={is_read_only}
                 />
               </div>
               </div>
@@ -224,6 +240,7 @@ function PaimentVersementPostale() {
                   name="propreitaire_compte"
                   value={formCandidature.propreitaire_compte} onChange={handleChangeValue}
                   required
+                  readOnly={is_read_only}
                 />
               </div>
               </div>
@@ -245,6 +262,7 @@ function PaimentVersementPostale() {
                   locale={ar}
                   name='date_operation'
                   placeholderText="تاريخ الملاد"
+                  readOnly={is_read_only}
                 />
               </div>
               </div>
@@ -264,16 +282,17 @@ function PaimentVersementPostale() {
                   value={formCandidature.address_op} onChange={handleChangeValue}
                   name="address_op"
                   required
+                  readOnly={is_read_only}
                 />
               </div>
               </div>
 
-              <div className=" w-full flex justify-center items-center">
+              {!is_read_only && <div className=" w-full flex justify-center items-center">
                 <button  className="w-full border border-[#D4A373]  text-brown_palette rounded-2xl p-4 m-2 hover:bg-[#D8A353] hover:text-fake_black "
                   onClick={handleUpload} >
                  تأكيد
                 </button>
-                </div>
+                </div>}
 
         </div>
 
@@ -295,9 +314,9 @@ function PaimentVersementPostale() {
               <span className='text-black font-medium text-lg'>اسم الملف: </span>
               <span>{file_paie_ver}</span>
           </div>
-          <button className='absolute -top-2 -right-2 bg-red-500 text-white cursor-pointer rounded-full p-1 shadow-md' onClick={handleClearFile}>
+          {!is_read_only && <button className='absolute -top-2 -right-2 bg-red-500 text-white cursor-pointer rounded-full p-1 shadow-md' onClick={handleClearFile}>
               <img src={Clear} alt="Clear" className="h-4 w-4" />
-          </button>
+          </button>}
           <img  className="w-[500px] mx-auto my-4  border rounded-3xl border-gray-300 shadow-2xl transition-transform duration-500 ease-in-out transform hover:scale-110"
        // f blaset src je pense ghadi thettou url ta3 l file
        
@@ -311,16 +330,16 @@ function PaimentVersementPostale() {
             <label htmlFor='dragdrop-file' className='flex flex-col items-center justify-center w-full h-[80vh] border-[#C09455] border-dashed border-2 rounded-md cursor-pointer bg-gray-50'>
                 <div className='flex flex-col items-center justify-center pt-5 pb-6'>
                     <img src={upload} alt="Upload"/>
-                    <p className='mb-2 text-xl '> 
+                    {!is_read_only && <p className='mb-2 text-xl '> 
                         <span className=' text-xl'>انقر للتحميل</span>
                         <br/>
                         سحب وإفلات
-                    </p>
-                    <p className='text-md text-gray-500 '>
+                    </p>}
+                    {!is_read_only && <p className='text-md text-gray-500 '>
                         SVG؟ PNG؟ JPG أو JPEG (بحد أقصى 800 × 400 بكسل)
-                    </p>
+                    </p>}
                 </div>
-                <input id='dragdrop-file' type='file' hidden onChange={handleDragOver}/>
+                {!is_read_only && <input id='dragdrop-file' type='file' hidden onChange={handleDragOver}/>}
             </label>
         )}
     </div>

@@ -1,23 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import user from "../images/User.png";
 import log_out from "../images/log_out.png";
 
+import { idCandidat } from '../components/DropDownMenue';
+
 const ChoixPaiment = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const [candidat, setCandidat] = useState([]);
+  const [is_valid_med, setIsValidMed] = useState(false);
+
+  useEffect(() => {
+    fetchCandidat();
+  }, [candidat]);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
+  const fetchCandidat = async () => {
+      try {
+          const response = await fetch('http://localhost:3000/api/candidature/'+idCandidat);
+          if (!response.ok) {
+              throw new Error('Failed to fetch data');
+          }
+          const jsonData = await response.json();
+          setCandidat(jsonData);setIsValidMed(jsonData.is_valid_med);
+      } catch (error) {
+          console.error('Error fetching data:', error);
+      }
+  };
+
   return (
     <div className="relative">
-      <button
+      {is_valid_med && <button
         className=" hover:border-b hover:cursor-pointer ease-in-out border-transparent text-brown_palette duration-300"
         onClick={toggleMenu}
       >
         <span>دفع التكاليف</span>
-      </button>
+      </button>}
 
       {isOpen && (
         <div className="absolute  right-0  mt-8 w-48 rounded-md shadow-lg bg-[#EAE1D1] ring-1 ring-black ring-opacity-5 z-10">

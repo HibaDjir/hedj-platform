@@ -31,10 +31,12 @@ function Paimentcarteccp() {
     const [widowed, setwiWdowed] = useState([]);
     const [male, setMale] = useState([]);
     const [female, setFemale] = useState([]);
+
+    const [is_read_only, setIsReadOnly] = useState(false);
   
     useEffect(() => {
       fetchCandidat();
-    }, []);
+    }, [candidat]);
     const fetchCandidat = async () => {
         try {
             const response = await fetch('http://localhost:3000/api/candidature/'+idCandidat);
@@ -57,6 +59,17 @@ function Paimentcarteccp() {
             else if(jsonData.civilite === 'متزوج(ة)') setMarried(true);
             else if(jsonData.civilite === 'مطلق(ة)') setDivorced(true);
             else setwiWdowed(true);
+
+            if(jsonData.propreitaire_carte != null){
+              setIsReadOnly(true);
+              setFormCandidature(prevState => ({
+                  ...prevState,
+                  num_carte: jsonData.num_carte,
+                  code_carte: jsonData.code_carte,
+                  propreitaire_carte: jsonData.propreitaire_carte,
+              }));
+              setDate_exp_carte(jsonData.date_exp_carte);
+            } 
             
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -147,6 +160,7 @@ function Paimentcarteccp() {
                   placeholder="صاحب البطاقة"
                   value={formCandidature.propreitaire_carte} onChange={handleChangeValue}
                   name="propreitaire_carte"
+                  readOnly={is_read_only}
                   required
                 />
               </div>
@@ -166,6 +180,7 @@ function Paimentcarteccp() {
                   value={formCandidature.num_carte} onChange={handleChangeValue}
                   name="num_carte"
                   required
+                  readOnly={is_read_only}
                 />
               </div>
 
@@ -194,6 +209,7 @@ function Paimentcarteccp() {
                   value={formCandidature.code_carte} onChange={handleChangeValue}
                   name="code_carte"
                   required
+                  readOnly={is_read_only}
                 />
               </div>
               </div>
@@ -210,19 +226,19 @@ function Paimentcarteccp() {
                   onChange={handleChangeDate}
                   dateFormat="dd/MM/yyyy"
                   locale={ar}
-                  placeholderText="تاريخ الانتهاء
-"
+                  placeholderText="تاريخ الانتهاء"
+                  readOnly={is_read_only}
                 />
               </div>
               </div>
 
 
-              <div className=" w-full flex justify-center items-center">
+              {!is_read_only && <div className=" w-full flex justify-center items-center">
                 <button  className="w-full border border-[#D4A373]  text-brown_palette rounded-2xl p-4 m-2 hover:bg-[#D8A353] hover:text-fake_black "
                   onClick={handleAjouePaiement} >
                  تأكيد
                 </button>
-              </div>
+              </div>}
 
         </div>
 

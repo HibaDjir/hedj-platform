@@ -31,6 +31,8 @@ function EtatSantee() {
     const [widowed, setwiWdowed] = useState([]);
     const [male, setMale] = useState([]);
     const [female, setFemale] = useState([]);
+    const [is_read_only, setIsReadOnly] = useState(false);
+
   
     useEffect(() => {
       fetchCandidat();
@@ -57,6 +59,8 @@ function EtatSantee() {
             else if(jsonData.civilite === 'متزوج(ة)') setMarried(true);
             else if(jsonData.civilite === 'مطلق(ة)') setDivorced(true);
             else setwiWdowed(true);
+
+            if(jsonData.file_medical != null) setIsReadOnly(true);
             
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -284,12 +288,12 @@ function EtatSantee() {
                 placeholder="أمراض مزمنة"
                 required
               />
-              <div className=" w-full flex justify-center items-center">
+              {!is_read_only && <div className=" w-full flex justify-center items-center">
                 <button  className="w-full border border-[#D4A373]  text-brown_palette rounded-2xl p-4 m-2 hover:bg-[#D8A353] hover:text-fake_black "
                   onClick={handleUpload} >
                  تأكيد
                 </button>
-              </div>
+              </div>}
             </div>
         </div>
 
@@ -325,17 +329,17 @@ function EtatSantee() {
         ) : (
             <label htmlFor='dragdrop-file' className='flex flex-col items-center justify-center w-full h-[80vh] border-[#C09455] border-dashed border-2 rounded-md cursor-pointer bg-gray-50'>
                 <div className='flex flex-col items-center justify-center pt-5 pb-6'>
-                    <img src={upload} alt="Upload"/>
-                    <p className='mb-2 text-xl '> 
+                <img src={upload} alt="Upload"/> 
+                {!is_read_only && <p className='mb-2 text-xl '> 
                         <span className=' text-xl'>انقر للتحميل</span>
                         <br/>
                         سحب وإفلات
-                    </p>
-                    <p className='text-md text-gray-500 '>
+                    </p>}
+                {!is_read_only && <p className='text-md text-gray-500 '>
                         SVG؟ PNG؟ JPG أو JPEG (بحد أقصى 800 × 400 بكسل)
-                    </p>
+                    </p>}
                 </div>
-                <input id='dragdrop-file' name='file' type='file' hidden onChange={handleDragOver}/>
+                {!is_read_only && <input id='dragdrop-file' name='file' type='file' hidden onChange={handleDragOver}/>}
             </label>
         )}
     </div>
