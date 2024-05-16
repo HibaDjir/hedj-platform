@@ -4,8 +4,6 @@ import "moment/locale/ar";
 import "moment/locale/fr"; // Import French locale
 import "moment-hijri";
 import moment from "moment";
-import { useLogout } from "../hooks/useLogout";
-import { useAuthContext } from "../hooks/useAuthContext";
 
 import heroBg from "../images/houdjadjes.jpeg";
 import heroBg_01 from "../images/serqa_nussuki_01.jpg";
@@ -51,13 +49,6 @@ const hijriYear = currentGregorianDate.format("YYYY");
   moment.locale("fr");
   const currentTime = currentGregorianDate.format("HH:mm:ss");
 
-  const { logout } = useLogout();
-  const { user } = useAuthContext();
-
-  const handleClick = () => {
-    logout();
-  };
-
   return (
     <div
       dir="rtl"
@@ -73,12 +64,6 @@ const hijriYear = currentGregorianDate.format("YYYY");
           </h1>
           <p className="text-2xl text-white">{`${hijriDayOfWeek}, ${hijriDay} ${hijriMonth} ${hijriYear}`}</p>
         </div>
-        {user && (
-          <div>
-            <span>{user.email}</span>
-            <button onClick={handleClick}>Log out</button>
-          </div>
-        )}
       </div>
     </div>
   );

@@ -7,6 +7,8 @@ import NetflixModal from "../Popups/Netflix";
 import user from "../images/User.png";
 import DropdownMenu from "./DropDownMenue";
 import ChoixPaiment from "./ChoixPaiment";
+import PaimentVersementPostale from "../pages/PaimentVersementPostale";
+
 
 import { idCandidat } from '../components/DropDownMenue';
 
@@ -84,6 +86,12 @@ function Navbar_for_each_profile() {
           <Link to="/consulter_cand">الاطلاع على الاستمارة</Link>    
         </li>
 
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent text-brown_palette duration-300">
+        {is_valid_med && <Link to="/paimentVP">دفع التكاليف</Link>}
+        </li>
+
+        
+
         <li className="p-4 m-2  hover:cursor-pointer ">
           <DropdownMenu/>
         </li>
@@ -116,19 +124,14 @@ function Navbar_for_each_profile() {
         <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300">
         {is_elected && <Link to="/">الحالة الصحية</Link>}
         </li>
-        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300">
+        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent text-brown_palette duration-300">
         {is_valid_med && <Link to="/">دفع التكاليف</Link>}
         </li>
         <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300">
         <Link to="/"> حجز الرحلات</Link>
         </li>
           
-        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300 ">
-          <Link to="/home">الصفحة الرإيسية</Link>
-        </li>
-        <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300">
-          <Link to="/nussuki">مناسك</Link>
-        </li>
+    
           
         </ul>
       </div>

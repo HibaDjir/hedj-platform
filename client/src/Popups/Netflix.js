@@ -6,9 +6,20 @@ import user_out from "../images/User_outlined.png";
 import Add from "../images/Untitled.png";
 import edit from "../images/edit-3.png";
 import axios from 'axios';
+import { useLogout } from "../hooks/useLogout";
+import { useAuthContext } from "../hooks/useAuthContext";
+
 
 function Netflix({ onClose }) {
   const modalRef = useRef();
+
+  const { logout } = useLogout();
+  const { user } = useAuthContext();
+
+  const handleClickLogout = () => {
+    logout();
+  };
+
 
   useEffect(() => {
     // Focus the close button when the modal opens
@@ -73,7 +84,12 @@ function Netflix({ onClose }) {
         <div className="flex justify-between mb-6">
           <div className="flex items-center">
             <img src={log_out} className="h-8 mr-2" alt="خروج" />
-            <p className="text-lg font-bold text-brown_palette">تسجيل الخروج</p>
+            
+            {user && (
+          <div>
+            <button onClick={handleClickLogout}> تسجيل الخروج</button>
+          </div>
+        )}
           </div>
           <div className="flex justify-around">
             <div className="flex flex-col">

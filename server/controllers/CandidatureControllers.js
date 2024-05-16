@@ -297,31 +297,7 @@ const updateCandidatRDV = async (req, res) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 }
-// const updateCandidatConsMed = async (req, res) => {
-//     try {
-//         // Define the criteria for identifying the documents to update
-//         const { idCandidat, is_valid_med, interrogatoire } = req.body;
-//         const criteria = { '_id': idCandidat };
 
-//         // Define the update operation
-//         const update = {
-//             $set: {
-//                 // Specify the fields to update and their new values
-//                 interrogatoire: interrogatoire,
-//                 is_valid_med: is_valid_med
-//                 // You can add more fields as needed
-//             }
-//         };
-
-//         // Update the documents that match the criteria
-//         const result = await candidature.updateOne(criteria, update, {upsert: true});
-
-//         return res.status(200).json({ message: `${result.nModified} records updated successfully` });
-//     } catch (error) {
-//         console.error('Error:', error);
-//         return res.status(500).json({ message: 'Internal server error' });
-//     }
-// }
 const updateValidPay = async (req, res) => {
     try {
         // Define the criteria for identifying the documents to update
@@ -426,6 +402,7 @@ const updateCandidatConsMed = async (req, res) => {
             }
         };
 
+
         // Update the documents that match the criteria
         const result = await candidature.updateOne(criteria, update, {upsert: true});
 
@@ -435,7 +412,6 @@ const updateCandidatConsMed = async (req, res) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 }
-
 module.exports = {
     createCandidature,
     getAllCandidature,

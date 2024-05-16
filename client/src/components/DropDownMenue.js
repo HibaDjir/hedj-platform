@@ -2,6 +2,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import user from "../images/User.png";
 import log_out from "../images/log_out.png";
 import { Link } from 'react-router-dom';
+import { useLogout } from "../hooks/useLogout";
+import { useAuthContext } from "../hooks/useAuthContext";
+
 
 import axios from 'axios';
 
@@ -14,6 +17,14 @@ const DropdownMenu = () => {
   const [content, setContent] = useState('المستخدم');
 
   const [candidature, setCandidature] = useState([]);
+
+  const { logout } = useLogout();
+  const { user } = useAuthContext();
+
+  const handleClickLogout = () => {
+    logout();
+  };
+
 
   useEffect(() => {
     const cookies = document.cookie.split(';');
@@ -118,12 +129,16 @@ const DropdownMenu = () => {
               <span>صاحب الحساب</span>
             </button>
             <Link
-              to="/logout"
+              to="/home"
               className=" px-4 py-2 text-sm text-fake_black hover:bg-brown_palette hover:text-gray-900 flex items-center"
               role="menuitem"
             >
               <img src={log_out} className='w-6 h-6 mr-2' alt="Logout Icon" />
-              <span>تسجيل الخروج</span>
+              {user && (
+          <div>
+            <button onClick={handleClickLogout}>Log out</button>
+          </div>
+        )}
             </Link>
           </div>
         </div>

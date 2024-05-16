@@ -31,7 +31,7 @@ router.get('/', getAllCandidature)
 router.get('/Aff', getAllCandidatureAff)
 
 router.get('/:name', getCandByWilaya) //////nommer les route 
-
+ 
 router.get('/cand/:id', getFirstCandidature)
 
 router.get('/genre/find', getCandidature)

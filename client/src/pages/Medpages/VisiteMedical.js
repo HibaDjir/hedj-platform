@@ -79,8 +79,9 @@ function VisiteMedical() {
   };
   const handleValidMedecin = async () => {
     try {
-
+ 
       await axios.put('http://localhost:3000/api/candidature/ValidMedecin/update', {idCandidat, is_valid_med, interrogatoire});
+      console.log('la reponse', )
       alert('Consultation Medecin avec succée');
     } catch (error) {
       alert('Error uploading file:', error);
