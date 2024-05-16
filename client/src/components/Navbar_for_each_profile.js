@@ -8,6 +8,8 @@ import user from "../images/User.png";
 import DropdownMenu from "./DropDownMenue";
 import ChoixPaiment from "./ChoixPaiment";
 
+import { idCandidat } from '../components/DropDownMenue';
+
 function Navbar_for_each_profile() {
 
   const [mobileNav, setMobileNav] = useState(false);
@@ -20,8 +22,12 @@ function Navbar_for_each_profile() {
   const handleDesktopNav = () => {
     setDesktopNav(!desktopNav);
   };
+  const [candidat, setCandidat] = useState([]);
+  const [is_elected, setIsElected] = useState(false);
+  const [is_valid_med, setIsValidMed] = useState(false);
 
   useEffect(() => {
+    fetchCandidat();
     setMobileNav(false);
 
     const handleResize = () => {
@@ -35,7 +41,20 @@ function Navbar_for_each_profile() {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [candidat]);
+  const fetchCandidat = async () => {
+      try {
+          const response = await fetch('http://localhost:3000/api/candidature/'+idCandidat);
+          if (!response.ok) {
+              throw new Error('Failed to fetch data');
+          }
+          const jsonData = await response.json();
+          setCandidat(jsonData)
+          setIsElected(jsonData.is_elected);setIsValidMed(jsonData.is_valid_med);
+      } catch (error) {
+          console.error('Error fetching data:', error);
+      }
+  };
 
   return (
     <div
@@ -58,7 +77,7 @@ function Navbar_for_each_profile() {
           <ChoixPaiment/>
         </li>
         <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent text-brown_palette duration-300">
-          <Link to="/sante">الحالة الصحية</Link>
+        {is_elected && <Link to="/sante">الحالة الصحية</Link>}
         </li>
      
         <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent text-brown_palette duration-300">
@@ -95,13 +114,13 @@ function Navbar_for_each_profile() {
            
         </li>
         <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300">
-          <Link to="/">الحالة الصحية</Link>
+        {is_elected && <Link to="/">الحالة الصحية</Link>}
         </li>
         <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300">
-          <Link to="/">دفع التكاليف</Link>
+        {is_valid_med && <Link to="/">دفع التكاليف</Link>}
         </li>
         <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300">
-          <Link to="/"> حجز الرحلات</Link>
+        <Link to="/"> حجز الرحلات</Link>
         </li>
           
         <li className="p-4 m-2 hover:border-b hover:cursor-pointer ease-in-out border-transparent hover:border-white duration-300 ">
