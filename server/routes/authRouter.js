@@ -12,3 +12,4 @@ router.get('/:id', authController.getUser)
 
 module.exports=router;
 
+ 

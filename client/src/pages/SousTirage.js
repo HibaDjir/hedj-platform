@@ -36,9 +36,9 @@ export default function SousTirage() {
 
     const [ageBrackets_perf, setAgeBrackets_perf] =useState([]);
 
-    const [showingPelerin, setShowingPelerin] = useState(null); // State to track the pelerin to display
+    // const [showingPelerin, setShowingPelerin] = useState(null); // State to track the pelerin to display
 
-    const [currentIndex, setCurrentIndex] = useState(0);
+    // const [currentIndex, setCurrentIndex] = useState(0);
 
     const [userId, setUserId] = useState(null);
 
@@ -53,23 +53,44 @@ export default function SousTirage() {
 
 
 
-  // Function to handle "Affichage Séquentiel" button click
-  // const handleSequentialDisplay = () => {
-  //     const nextIndex = (currentIndex + 1) % pelerins.length;
-  //     setCurrentIndex(nextIndex);
-  //     setShowingPelerin(pelerins[nextIndex]);
-  // };
-
-
     const handleStartTirage = () => {
       setButtonClicked(true);
     };
 
     useEffect(() => {
+    
+      if(code_algo){
+        switch(code_algo){
+          case "PA":{
+          setSelectedAlgorithm("tranche-age")
+          break;
+          }
+          case "NC":{
+          setSelectedAlgorithm("numero-inscription")
+          break;
+          }
+          case "PF":{
+          setSelectedAlgorithm("performant")
+          break;
+          }
+          case "AL":{
+          setSelectedAlgorithm("aleatoire")
+          break;
+          }
+          default:
+            setSelectedAlgorithm(null)
+            break;
+
+      }
+      }
+
 
         const selectedDiv = document.getElementById(selectedAlgorithm);
         if (selectedDiv) {
           selectedDiv.style.borderColor = "#D8A353";
+          selectedDiv.style.borderWidth = "3px";
+          selectedDiv.style.borderStyle = "solid"; 
+
         }
     
         // Reset border color of other divs
@@ -116,11 +137,10 @@ export default function SousTirage() {
 
       useEffect(() => {
         fetchNbPlaces(); // Fetch the data first
-        console.log("taht el fetch", nbrTotalPelerin)
         if (buttonClicked) {
           startTirage(nbrTotalPelerin);
       }
-    }, [commune,buttonClicked]);
+    }, [commune,buttonClicked,code_algo]);
 
     useEffect(() => {
       fetchAgeBrack()
@@ -135,7 +155,6 @@ export default function SousTirage() {
         throw new Error('Failed to fetch Candidats');
       }
       const data = await response.json();
-      console.log("RESSSSSSSSSSS DE critaria", data)
       setAgeBrackets(data)
 
       } catch (error) {
@@ -150,7 +169,6 @@ export default function SousTirage() {
         throw new Error('Failed to fetch data');
       }
       const data = await response.json();
-      console.log("RESSSSSSSSSSS DE PERFCRITERIA", data)
       setAgeBrackets_perf(data)
 
       } catch (error) {
@@ -368,7 +386,6 @@ export default function SousTirage() {
 
     const startTirage = async (nbrTotalPelerin) => {
       try {
-        console.log("MOOOOOOOOODE TIRAAAAAAAAGE", code_algo)
         switch(code_algo){
           case "AL":
          {  
@@ -423,7 +440,6 @@ export default function SousTirage() {
                     throw new Error('Failed to fetch pelerins');
                   }
                   const result = await res.json();
-                  console.log("HADI T3 pfffffffffffffffffffff", result)
                   setPelerins(result) 
                     break;
                   }
@@ -459,7 +475,7 @@ export default function SousTirage() {
       <div
         id="tranche-age"
         className="algorithm-div relative flex justify-center items-center border bg-[#FAF8F5] rounded-2xl overflow-hidden shadow transform transition duration-500 hover:scale-105 hover:rounded-2xl  h-40 w-50"
-        onClick={() => setSelectedAlgorithm("tranche-age")}
+        // onClick={() => setSelectedAlgorithm("tranche-age")}
       >
         <div className="absolute top-4 px-2 text-gray-700">
           <div className="top-0 px-2 text-gray-700 flex items-center ">
@@ -472,7 +488,7 @@ export default function SousTirage() {
       <div
         id="numero-inscription"
         className="algorithm-div relative flex justify-center items-center border bg-[#FAF8F5] rounded-2xl overflow-hidden shadow transform transition duration-500 hover:scale-105 hover:rounded-2xl  h-40 w-50"
-        onClick={() => setSelectedAlgorithm("numero-inscription")}
+        // onClick={() => setSelectedAlgorithm("numero-inscription")}
       >
         <div className="absolute top-4 px-2 text-gray-700">
           <div className="top-0 px-2 text-gray-700 flex items-center ">
@@ -485,7 +501,7 @@ export default function SousTirage() {
       <div
         id="aleatoire"
         className="algorithm-div relative flex justify-center items-center border bg-[#FAF8F5] rounded-2xl overflow-hidden shadow transform transition duration-500 hover:scale-105 hover:rounded-2xl  h-40 w-50"
-        onClick={() => setSelectedAlgorithm("aleatoire")}
+        // onClick={() => setSelectedAlgorithm("aleatoire")}
       >
         <div className="absolute top-4 px-2 text-gray-700">
           <div className="top-0 px-2 text-gray-700 flex items-center ">
@@ -498,14 +514,14 @@ export default function SousTirage() {
       <div
         id="performant"
         className="algorithm-div relative flex justify-center items-center border bg-[#FAF8F5] rounded-2xl overflow-hidden shadow transform transition duration-500 hover:scale-105 hover:rounded-2xl  h-40 w-50"
-        onClick={() => setSelectedAlgorithm("performant")}
+        // onClick={() => setSelectedAlgorithm("performant")}
       >
         <div className="absolute top-4 px-2 text-gray-700">
           <div className="top-0 px-2 text-gray-700 flex items-center ">
-            <h3 className="ml-2 text-sm font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Tirage par</h3>
+            <h3 className="ml-2 text-sm font-extrabold text-[#C09455] tracking-wider font-The-Year-of-The-Camel">Tirage</h3>
           </div>    
         </div>
-        <p className="text-2xl text-center font-semibold text-gray-600">Tous les Performances</p>
+        <p className="text-2xl text-center font-semibold text-gray-600">Performant</p>
       </div>
     </div>
 

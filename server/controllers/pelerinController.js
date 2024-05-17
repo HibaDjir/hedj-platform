@@ -213,7 +213,7 @@ exports.deleteAllPelerinsFromDb = async (req, res)=>{
     }
  }
 
-
+ 
  exports.getPelerinByWilayaAtt = async(req, res) =>{
     try{
     const {name} = req.params 

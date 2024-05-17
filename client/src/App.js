@@ -31,20 +31,22 @@ import Session from "./pages/Session"
 import Candidat from "./pages/Candidat"
 import Pelerin from "./pages/Pelerin"
 import SousTirage from "./pages/SousTirage"
+import CheckEmail from "./pages/CheckEmail"
 import SousPelerin from "./pages/SousPelerin"
 import SousCandidat from "./pages/SousCandidat"
-import { useHistory } from "react-router-dom";
 import Sidebar from "../src/components/Dash_components/shared/Sidebar"
 import EtatSantee from "./pages/EtatSantee";
 import VisiteMedical from "./pages/Medpages/VisiteMedical";
 import ListePelerin from "./pages/Medpages/ListePelerin";
 import HomeMedecin from "./pages/Medpages/Home";
+import SousAttente from "./pages/SousAttente"
 
 import PaimentVersementPostale from "./pages/PaimentVersementPostale";
 import Paimentcarteccp from "./pages/Paimentcarteccp";
 import Paiment from "./pages/AdminPages/Paiment";
 import Carteccp from "./pages/AdminPages/Carteccp";
 import Virementccp from "./pages/AdminPages/Virementccp";
+import TirageSeq from "./pages/TirageSeq"
 
 
 function App() {
@@ -61,6 +63,9 @@ function App() {
           <Route path="/home" element={<RequireNotAuth><Home /></RequireNotAuth>} />
           <Route path="/SousSession" element={<RequireAuthSsA><SousSession/></RequireAuthSsA>} />
           <Route path="/SousTirage" element={<RequireAuthSsA><SousTirage/></RequireAuthSsA>} />
+          <Route path="/TirageSeq" element={<RequireAuthSsA><TirageSeq/></RequireAuthSsA>} />
+          <Route path="/SousAttente" element={<RequireAuthSsA><SousAttente/></RequireAuthSsA>} />
+
           <Route path="/SousPelerin" element={<RequireAuthSsA><SousPelerin/></RequireAuthSsA>} />
           <Route path="/SousCandidat" element={<RequireAuthSsA><SousCandidat/></RequireAuthSsA>} />
           <Route path="/medecin" element={<RequireMasterAdmin><Medecins/></RequireMasterAdmin>} />
@@ -79,7 +84,11 @@ function App() {
             path="/resetPassword/:token"
             element={<Resset_password />}
           />
+
           <Route path="/mail_conf" element={<EmailConfirmation />} />
+
+          
+          <Route path="/api/users/:id/verify/:token" element={<CheckEmail />} />
 
           <Route path="/dash" element={<RequireMasterAdmin><Dash/></RequireMasterAdmin>}></Route>
           <Route path="/sousdash" element={<RequireAuthSsA><Sous_Dash/></RequireAuthSsA>}></Route>

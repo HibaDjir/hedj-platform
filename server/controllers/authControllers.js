@@ -29,7 +29,7 @@ exports.signup = async (req, res) =>
 
 		user=await new User({ ...req.body, password: hashPassword }).save();
 		const token = user.generateAuthToken();
-		const url=`http://3001/${user.id}/verify/${token}`	
+		const url=`http://localhost:3001/api/users/${user.id}/verify/${token}`	
 			await sendEmail({
 			email: user.email,
 			 subject:'Verifying Email...',
@@ -46,7 +46,6 @@ exports.signup = async (req, res) =>
 exports.verifyEmail=async(req,res,next)=>{
     try {
         const token = req.params.token;
-		//console.log(token)
         if (!token) return res.status(400).send({ message: "no token" });
 		const id =req.params.id
         const user = await User.findOne({ _id:id});
@@ -83,16 +82,7 @@ exports.login=async (req, res) => {
 
 		const token = user.generateAuthToken();
 
-		// if(user.Role==="sousAdmin"){
-		// // const leSousAdmin = await sousAdmin.findOne({ user: user._id }).populate({ path: "user", select: ["_id"] });
-		// const leSousAdminAvecWilaya = await sousAdmin.findOne({ user: user._id }).populate({ path: "Wilaya", select: ["_id", "name"] });
-		// let wilaya = leSousAdminAvecWilaya.Wilaya.name
-		//   res.status(200).json({
-		// 	Role:user.Role,
-		// 	token:token,
-		// 	wilaya: wilaya
-		// })
-	//	 }else{
+	
 		res.status(200).json({
 		Role:user.Role,
 		token:token

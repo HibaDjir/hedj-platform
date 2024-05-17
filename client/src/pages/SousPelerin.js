@@ -33,7 +33,7 @@ export default function Dashboard() {
     const [userId, setUserId] = useState(null);
 
     const response = localStorage.getItem('user');
-    const parsedRes = JSON.parse(response);
+    const parsedRes = JSON.parse(response); 
     const token = parsedRes.token
     const decodedToken = jwtDecode(token);
 

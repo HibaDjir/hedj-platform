@@ -105,6 +105,14 @@ export default function Sidebar() {
                         </a>
                     </li>
                     <li>
+                        <a href="TirageSeq" className="flex items-center p-5 text-gray-900 rounded-lg dark:text-black hover:text-[#D8A353]  group">
+                            <svg className="h-7 w-7 text-gray-500 transition duration-75 dark:text-black group-hover:text-[#D8A353] dark:group-hover:text-[#D8A353]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+                            <IoShuffleSharp />
+                            </svg>
+                            <span className="ms-3">Tirage Séquentiel</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="SousCandidat" className="flex items-center p-5 text-gray-900 rounded-lg dark:text-black hover:text-[#D8A353]  group">
                             <svg className="h-7 w-7 text-gray-500 transition duration-75 dark:text-black group-hover:text-[#D8A353] dark:group-hover:text-[#D8A353]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
                                 <FaPeopleGroup />
@@ -121,7 +129,7 @@ export default function Sidebar() {
                         </a>
                     </li>
                     <li>
-                        <a href="AttentePelerin" className="flex items-center p-5 text-gray-900 rounded-lg dark:text-black hover:text-[#D8A353]  group">
+                        <a href="SousAttente" className="flex items-center p-5 text-gray-900 rounded-lg dark:text-black hover:text-[#D8A353]  group">
                             <svg className="h-7 w-7 text-gray-500 transition duration-75 dark:text-black group-hover:text-[#D8A353] dark:group-hover:text-[#D8A353]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
                                 <GiSandsOfTime />
                             </svg>

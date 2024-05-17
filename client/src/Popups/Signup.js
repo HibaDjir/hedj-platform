@@ -60,35 +60,6 @@ function Modal({ onClose }) {
     })
 
 
-    // axios.post('http://localhost:3000/api/users/signup', { firstName, lastName, email, password })
-    //   .then(res => {
-    //     setIsLoading(false);
-    //     if (res.ok) {
-    //       alert("تم إنشاء الحساب بنجاح! تفقد حسابك البريدي");
-    //       onClose();
-    //       // Clear form fields
-    //       setFirstName('');
-    //       setLastName('');
-    //       setEmail('');
-    //       setPassword('');
-    //       setConfirmPassword('');
-    //       // Show success alert
-    //     } else {
-    //       alert("created");
-    //       if (res.data.token) {
-    //         localStorage.setItem('token', res.data.token)
-    //       }
-    //     }
-    //   }).catch(err => {
-    //     if (err.response && err.response.data && err.response.data.message) {
-    //       let translatedErrorMessage = errorTranslations[err.response.data.message] || 'حدث خطأ. يرجى المحاولة مرة أخرى في وقت لاحق.';
-    //       setErrorMessage(translatedErrorMessage);
-    //     } else {
-    //       setErrorMessage('حدث خطأ. يرجى المحاولة مرة أخرى في وقت لاحق');
-    //     }
-    //     console.log(err);
-    //   });
-
   };
 
   const modalRef = useRef();

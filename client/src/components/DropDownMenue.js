@@ -19,7 +19,6 @@ const DropdownMenu = () => {
   const [candidature, setCandidature] = useState([]);
 
   const { logout } = useLogout();
-  const { user } = useAuthContext();
 
   const handleClickLogout = () => {
     logout();
@@ -134,12 +133,11 @@ const DropdownMenu = () => {
               role="menuitem"
             >
               <img src={log_out} className='w-6 h-6 mr-2' alt="Logout Icon" />
-              {user && (
-          <div>
-            <button onClick={handleClickLogout}>Log out</button>
-          </div>
-        )}
-            </Link>
+
+              <button onClick={handleClickLogout}> تسجيل الخروج</button>     
+              </Link>
+          
+            
           </div>
         </div>
       )}
